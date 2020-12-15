@@ -1,0 +1,11 @@
+{
+  "name": "rademono",
+  "private": "true",
+  "workspaces": [
+    "libs/game-mechanics"
+  ],
+  "version": "1.0.0",
+  "scripts": {
+    "start": "echo"
+  }
+}

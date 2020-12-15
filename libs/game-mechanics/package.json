@@ -1,0 +1,15 @@
+{
+  "name": "@libs/game-mechanics",
+  "version": "1.0.0",
+  "description": "desc",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc --watch"
+  },
+  "author": "Zdravko",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  }
+}
