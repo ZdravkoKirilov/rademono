@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { gosho } from '@libs/game-mechanics';
+import { renderKit } from '@libs/shared';
 
 @Injectable()
 export class AppService {
   getHello(): string {
-    return gosho;
+    return renderKit;
   }
 }

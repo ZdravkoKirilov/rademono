@@ -1,1 +1,0 @@
-export const gosho = 'Hello from gosho!!??..';

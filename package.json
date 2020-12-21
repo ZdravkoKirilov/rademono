@@ -2,7 +2,7 @@
   "name": "rademono",
   "private": "true",
   "workspaces": [
-    "libs/game-mechanics"
+    "libs/shared"
   ],
   "version": "1.0.0",
   "scripts": {

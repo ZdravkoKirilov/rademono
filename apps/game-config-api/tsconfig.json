@@ -12,5 +12,5 @@
     "baseUrl": "./",
     "incremental": true
   },
-  "references": [{ "path": "../../libs/game-mechanics" }]
+  "references": [{ "path": "../../libs/shared" }]
 }
