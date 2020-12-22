@@ -2,7 +2,8 @@
   "name": "rademono",
   "private": "true",
   "workspaces": [
-    "libs/shared"
+    "libs/client",
+    "libs/global"
   ],
   "version": "1.0.0",
   "scripts": {

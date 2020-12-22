@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { renderKit } from '@global/shared';
+import { renderKit } from '@end/global';
 
 @Injectable()
 export class AppService {

@@ -1,0 +1,14 @@
+{
+  "name": "@end/global",
+  "version": "1.0.0",
+  "description": "desc",
+  "main": "lib/index.js",
+  "scripts": {
+    "compile": "tsc --watch"
+  },
+  "author": "Zdravko",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  }
+}
