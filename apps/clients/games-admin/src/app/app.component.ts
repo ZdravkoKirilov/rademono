@@ -13,7 +13,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.api.name.subscribe(name => {
-      debugger;
       this.title = name;
     })
   }

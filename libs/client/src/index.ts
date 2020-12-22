@@ -8,6 +8,6 @@ export * from './render-kit';
 @Injectable()
 export class SomeService {
 
-    name = new BehaviorSubject('Pesho');
+    name = new BehaviorSubject('Tosho');
 
 }
