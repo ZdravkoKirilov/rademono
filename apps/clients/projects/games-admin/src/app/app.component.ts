@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-
-import { gameMech } from '@libs/shared';
+import { gosho } from '@client/shared';
+import { gameMech } from '@global/shared';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +8,6 @@ import { gameMech } from '@libs/shared';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = gameMech;
+  title = gosho;
+  title2 = gameMech;
 }

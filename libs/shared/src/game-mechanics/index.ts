@@ -1,1 +1,1 @@
-export const gameMech = 'game-mechanicsss';
+export const gameMech = 'game-mechanics!';

@@ -1,1 +1,1 @@
-export const renderKit = 'render-kit';
+export const renderKit = 'render-kit!';

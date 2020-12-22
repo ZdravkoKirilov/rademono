@@ -1,5 +1,5 @@
 {
-  "name": "@libs/shared",
+  "name": "@global/shared",
   "version": "1.0.0",
   "description": "desc",
   "main": "lib/index.js",
