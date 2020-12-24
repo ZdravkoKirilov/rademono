@@ -176,24 +176,359 @@
         "signature": "1f03b495671c3a1bd24510f38b8947f0991dfd6bf0278c68eca14af15b306e1f",
         "affectsGlobalScope": false
       },
-      "./src/game-mechanics/index.ts": {
-        "version": "1554e87624ce575099f34c6511f9350e8a1d2d3b0842bb1eed4a6576fd62cadc",
-        "signature": "5f645f3737b672349c42b4cfd4db17f29f4f71efb6e088fc565b1fc3e5c05ee2",
+      "./node_modules/simplytyped/types/predicates.d.ts": {
+        "version": "8936c03f17cab53b130cef17392cbef7b5bdeda4369019f566a9b7d90b9a5585",
+        "signature": "8936c03f17cab53b130cef17392cbef7b5bdeda4369019f566a9b7d90b9a5585",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/simplytyped/types/strings.d.ts": {
+        "version": "96aa03b95ee7911c6c5a89f7bf09fee2cf8bb0970e7344ae5ed02971da95a237",
+        "signature": "96aa03b95ee7911c6c5a89f7bf09fee2cf8bb0970e7344ae5ed02971da95a237",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/simplytyped/types/conditionals.d.ts": {
+        "version": "4c1a48242908c4a5d7f44f9aac7db7dcdef46b2dba1d696c2f4b3f402cc1a87a",
+        "signature": "4c1a48242908c4a5d7f44f9aac7db7dcdef46b2dba1d696c2f4b3f402cc1a87a",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/simplytyped/types/functions.d.ts": {
+        "version": "76326d78b7a50b55e8492a354d6a1cccf68e406869ee57c85d19598a3384b94f",
+        "signature": "76326d78b7a50b55e8492a354d6a1cccf68e406869ee57c85d19598a3384b94f",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/simplytyped/types/numbers.d.ts": {
+        "version": "73488bf698ffef792d0cb2fe783c375a4e1f977e86b0f4296b4f5dd8cde17935",
+        "signature": "73488bf698ffef792d0cb2fe783c375a4e1f977e86b0f4296b4f5dd8cde17935",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/simplytyped/types/objects.d.ts": {
+        "version": "a85594aee414ee0ca368e46dcea3ebe44245ee7994cb56dcdc92d495d443550e",
+        "signature": "a85594aee414ee0ca368e46dcea3ebe44245ee7994cb56dcdc92d495d443550e",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/simplytyped/types/utils.d.ts": {
+        "version": "188e84b021d1111a06e5f9e0f563b594c1d6e932c8c6ed360ce587deac24c06c",
+        "signature": "188e84b021d1111a06e5f9e0f563b594c1d6e932c8c6ed360ce587deac24c06c",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/simplytyped/types/tuples.d.ts": {
+        "version": "7d28db53ddddaf9a4175f4a86ba27a05a68c74ee8bcc1add3d6fa7cffbea9ef1",
+        "signature": "7d28db53ddddaf9a4175f4a86ba27a05a68c74ee8bcc1add3d6fa7cffbea9ef1",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/simplytyped/types.d.ts": {
+        "version": "f3dcb8cafdb9f0497a3ee633c1ceeabda146cbcc9a9ee6e69fccee2510219175",
+        "signature": "f3dcb8cafdb9f0497a3ee633c1ceeabda146cbcc9a9ee6e69fccee2510219175",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/simplytyped/impl/objects.d.ts": {
+        "version": "2cbf3a082eaa0edb9993f692fec4d45b07a63793f85780616422530dbaf3cbdf",
+        "signature": "2cbf3a082eaa0edb9993f692fec4d45b07a63793f85780616422530dbaf3cbdf",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/simplytyped/impl.d.ts": {
+        "version": "4752276fe5c4024412a80d2029867f805e6131b5c1a711bd6d35475e324755b3",
+        "signature": "4752276fe5c4024412a80d2029867f805e6131b5c1a711bd6d35475e324755b3",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/simplytyped/index.d.ts": {
+        "version": "bca3741ba0d1a5bb53e5a4f6626dc6cf9b791e5f5ee8534c45614499788c11a4",
+        "signature": "bca3741ba0d1a5bb53e5a4f6626dc6cf9b791e5f5ee8534c45614499788c11a4",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/common.d.ts": {
+        "version": "3594c022901a1c8993b0f78a3f534cfb81e7b619ed215348f7f6882f3db02abc",
+        "signature": "3594c022901a1c8993b0f78a3f534cfb81e7b619ed215348f7f6882f3db02abc",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/array.d.ts": {
+        "version": "d03a1ae3d39f757c9f22e4e775b940a98d86bb50ec85529b59e32a17b65c2b90",
+        "signature": "d03a1ae3d39f757c9f22e4e775b940a98d86bb50ec85529b59e32a17b65c2b90",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/collection.d.ts": {
+        "version": "0c75b204aed9cf6ff1c7b4bed87a3ece0d9d6fc857a6350c0c95ed0c38c814e8",
+        "signature": "0c75b204aed9cf6ff1c7b4bed87a3ece0d9d6fc857a6350c0c95ed0c38c814e8",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/date.d.ts": {
+        "version": "187119ff4f9553676a884e296089e131e8cc01691c546273b1d0089c3533ce42",
+        "signature": "187119ff4f9553676a884e296089e131e8cc01691c546273b1d0089c3533ce42",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/function.d.ts": {
+        "version": "c9f396e71966bd3a890d8a36a6a497dbf260e9b868158ea7824d4b5421210afe",
+        "signature": "c9f396e71966bd3a890d8a36a6a497dbf260e9b868158ea7824d4b5421210afe",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/lang.d.ts": {
+        "version": "509235563ea2b939e1bbe92aae17e71e6a82ceab8f568b45fb4fce7d72523a32",
+        "signature": "509235563ea2b939e1bbe92aae17e71e6a82ceab8f568b45fb4fce7d72523a32",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/math.d.ts": {
+        "version": "9364c7566b0be2f7b70ff5285eb34686f83ccb01bda529b82d23b2a844653bfb",
+        "signature": "9364c7566b0be2f7b70ff5285eb34686f83ccb01bda529b82d23b2a844653bfb",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/number.d.ts": {
+        "version": "00baffbe8a2f2e4875367479489b5d43b5fc1429ecb4a4cc98cfc3009095f52a",
+        "signature": "00baffbe8a2f2e4875367479489b5d43b5fc1429ecb4a4cc98cfc3009095f52a",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/object.d.ts": {
+        "version": "c311349ec71bb69399ffc4092853e7d8a86c1ca39ddb4cd129e775c19d985793",
+        "signature": "c311349ec71bb69399ffc4092853e7d8a86c1ca39ddb4cd129e775c19d985793",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/seq.d.ts": {
+        "version": "3c92b6dfd43cc1c2485d9eba5ff0b74a19bb8725b692773ef1d66dac48cda4bd",
+        "signature": "3c92b6dfd43cc1c2485d9eba5ff0b74a19bb8725b692773ef1d66dac48cda4bd",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/string.d.ts": {
+        "version": "4908e4c00832b26ce77a629de8501b0e23a903c094f9e79a7fec313a15da796a",
+        "signature": "4908e4c00832b26ce77a629de8501b0e23a903c094f9e79a7fec313a15da796a",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/common/util.d.ts": {
+        "version": "2630a7cbb597e85d713b7ef47f2946d4280d3d4c02733282770741d40672b1a5",
+        "signature": "2630a7cbb597e85d713b7ef47f2946d4280d3d4c02733282770741d40672b1a5",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/lodash/index.d.ts": {
+        "version": "0714e2046df66c0e93c3330d30dbc0565b3e8cd3ee302cf99e4ede6220e5fec8",
+        "signature": "0714e2046df66c0e93c3330d30dbc0565b3e8cd3ee302cf99e4ede6220e5fec8",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/@types/lodash/fp.d.ts": {
+        "version": "a507b650a73901790c5a77b7379911a9bd481ff71cc92db6fca47dec379d67c3",
+        "signature": "a507b650a73901790c5a77b7379911a9bd481ff71cc92db6fca47dec379d67c3",
+        "affectsGlobalScope": false
+      },
+      "./src/types/Dictionary.ts": {
+        "version": "3a53adc1f1b5dc4694a351008d69d44387896b3f374c0525f6f92ab0a8d1321e",
+        "signature": "ac22751455c3cb2192a6fb83d2541223c3f448172333be352910cbc8ff6c465f",
+        "affectsGlobalScope": false
+      },
+      "./src/types/ExpressionContext.ts": {
+        "version": "c8df215c36b9321ff6a4e7075da5fa014beb5237fb930ae00472c90872514771",
+        "signature": "e9ad9bcd0d6614822edec5f3cef36a2e741548090fa71a4cad992c92037ca7a8",
+        "affectsGlobalScope": false
+      },
+      "./src/types/Subscription.ts": {
+        "version": "c1c56ab594fd6c8218a28878997a5e73c93c3ad5c6b7d0ddae1f3c45f40ad965",
+        "signature": "1873ddd36e10d55bfa37a6c89276b2e0575bf1dcca567ff0c96136bc551ce4a4",
+        "affectsGlobalScope": false
+      },
+      "./src/types/Tagged.ts": {
+        "version": "31cb80584f43ed4964a85ddfdffb7dad142fc01ef25a78165c06f7dd272ff4d3",
+        "signature": "d904dbe639ee718dab475b784669ea994df7d7d91a00c2b078b34b6417364eea",
+        "affectsGlobalScope": false
+      },
+      "./src/types/index.ts": {
+        "version": "166deb9a547f8e04c40e4c08a512dbef3ea792d03daba5f5100ebc87b23313e6",
+        "signature": "cf51dd4f656dbad2e3ad113c9b603da3d5c88540b3b4ce624586d48da8b57874",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/utils/env.d.ts": {
+        "version": "4df0891b133884cd9ed752d31c7d0ec0a09234e9ed5394abffd3c660761598db",
+        "signature": "4df0891b133884cd9ed752d31c7d0ec0a09234e9ed5394abffd3c660761598db",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/utils/errors.d.ts": {
+        "version": "707ca249c5dd57e1056c5b5ae53e41b67fd0500c7e391c0a493b4fa2a5a6df55",
+        "signature": "707ca249c5dd57e1056c5b5ae53e41b67fd0500c7e391c0a493b4fa2a5a6df55",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/types/types-external.d.ts": {
+        "version": "eb53bbecdc0eea7535ccb7cf84e13e46bf553ee21a50798084c31fc39a8966d3",
+        "signature": "eb53bbecdc0eea7535ccb7cf84e13e46bf553ee21a50798084c31fc39a8966d3",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/types/types-internal.d.ts": {
+        "version": "f658e3aed89cc33c855b107ff97d79b15391e284b1d684d958ce455f2f5afcc2",
+        "signature": "f658e3aed89cc33c855b107ff97d79b15391e284b1d684d958ce455f2f5afcc2",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/utils/common.d.ts": {
+        "version": "56d9702b02da881f6260ef6e4ada42115e92b92f956247bd1426127d13b34b9b",
+        "signature": "56d9702b02da881f6260ef6e4ada42115e92b92f956247bd1426127d13b34b9b",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/utils/plugins.d.ts": {
+        "version": "3fa9ce284ebac5776e96849360702816bfc5e8ddb32e092703432f1564fa9d00",
+        "signature": "3fa9ce284ebac5776e96849360702816bfc5e8ddb32e092703432f1564fa9d00",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/core/scope.d.ts": {
+        "version": "71c67dc6987bdbd5599353f90009ff825dd7db0450ef9a0aee5bb0c574d18512",
+        "signature": "71c67dc6987bdbd5599353f90009ff825dd7db0450ef9a0aee5bb0c574d18512",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/core/finalize.d.ts": {
+        "version": "6f12403b5eca6ae7ca8e3efe3eeb9c683b06ce3e3844ccfd04098d83cd7e4957",
+        "signature": "6f12403b5eca6ae7ca8e3efe3eeb9c683b06ce3e3844ccfd04098d83cd7e4957",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/core/proxy.d.ts": {
+        "version": "a2478ca45caf1d829c4246ac2d49013023b59d08174aacceec4fc72a7734c5b2",
+        "signature": "a2478ca45caf1d829c4246ac2d49013023b59d08174aacceec4fc72a7734c5b2",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/core/immerClass.d.ts": {
+        "version": "2f25d1af42a3da3fb79a49fb3721867799a418108b5ec78bfb4efe10c31a34bf",
+        "signature": "2f25d1af42a3da3fb79a49fb3721867799a418108b5ec78bfb4efe10c31a34bf",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/core/current.d.ts": {
+        "version": "11a9e38611ac3c77c74240c58b6bd64a0032128b29354e999650f1de1e034b1c",
+        "signature": "11a9e38611ac3c77c74240c58b6bd64a0032128b29354e999650f1de1e034b1c",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/internal.d.ts": {
+        "version": "4ed103ca6fff9cb244f7c4b86d1eb28ce8069c32db720784329946731badb5bb",
+        "signature": "4ed103ca6fff9cb244f7c4b86d1eb28ce8069c32db720784329946731badb5bb",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/plugins/es5.d.ts": {
+        "version": "d738f282842970e058672663311c6875482ee36607c88b98ffb6604fba99cb2a",
+        "signature": "d738f282842970e058672663311c6875482ee36607c88b98ffb6604fba99cb2a",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/plugins/patches.d.ts": {
+        "version": "ec859cd8226aa623e41bbb47c249a55ee16dc1b8647359585244d57d3a5ed0c7",
+        "signature": "ec859cd8226aa623e41bbb47c249a55ee16dc1b8647359585244d57d3a5ed0c7",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/plugins/mapset.d.ts": {
+        "version": "8891c6e959d253a66434ff5dc9ae46058fb3493e84b4ca39f710ef2d350656b1",
+        "signature": "8891c6e959d253a66434ff5dc9ae46058fb3493e84b4ca39f710ef2d350656b1",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/plugins/all.d.ts": {
+        "version": "c4463cf02535444dcbc3e67ecd29f1972490f74e49957d6fd4282a1013796ba6",
+        "signature": "c4463cf02535444dcbc3e67ecd29f1972490f74e49957d6fd4282a1013796ba6",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/immer/dist/immer.d.ts": {
+        "version": "3dbd423358f8d9248642c036ea6fd568ad04a71da40cec7839175c3b1fe43bbb",
+        "signature": "3dbd423358f8d9248642c036ea6fd568ad04a71da40cec7839175c3b1fe43bbb",
+        "affectsGlobalScope": false
+      },
+      "./src/shared/entity-parsing.ts": {
+        "version": "4d19435bce8a530f670ba8fb235abb65cade5b37e4181703718c88b48cb76ca1",
+        "signature": "f84cac9e5716fb56e44d9ee4fdd5079bf35b4fcabf247d66a2fa92006380822a",
+        "affectsGlobalScope": false
+      },
+      "./src/shared/index.ts": {
+        "version": "4cccd2f486f7ba9ae8b42cd7cae2af54ef706dc1740696ef99e8016d49894ccd",
+        "signature": "9223ee508c5ea98feb23e640989eb1532467735341465ce7e98ced8364dc4e1a",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Sound.model.ts": {
+        "version": "8117425962d0ccd51016c09ffc33f54fada418822dfc660c362469f8a4dd5d58",
+        "signature": "ea487ae496b138c4bf75fa843b2061b4924ffa06548b6dfcadb44c574c83ec08",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Sonata.model.ts": {
+        "version": "869fc0c65ce1acbf5d3ab5b6bf6b268e028765ebece9b8e7930f431d26af6a36",
+        "signature": "5b7c9b05acc5cc6889a7ee08eda76da2a5e9946c50980ef6247e9ee3282cf933",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Style.model.ts": {
+        "version": "b7239dd9d338042e8638a8ffa185f3a5d6ad10daf90551b4a90804b40c22b147",
+        "signature": "035d814b33466dbe3eddbf09bc3bc819ae1b86c3b88510a9e75137dae51811f5",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Shape.model.ts": {
+        "version": "bf8e3b8b8162fc473fd264f6024ebc73a27e20be5f8685ff71c6c387db59ea4c",
+        "signature": "87d77e1abfdfa27012fda3536ace6ecfd78bb18d5ebccb5c5b99449d9e97b976",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/ImageAsset.model.ts": {
+        "version": "c4c7eee23152e17ceeadbe33021e6347ce888a9d18528d4e7e56dcfcc92e5994",
+        "signature": "ba576ae7173f9b46a6dddb3a90def1a09f00be12be30c8e2b173df9175095bcd",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Widget.model.ts": {
+        "version": "ba859ab608a7f83cdecc957fa42fafe05483e2c51023916fe1a677b55e66aa45",
+        "signature": "8559d3e0732bbdbff410f39a048f6c7acaf2c5f3e595b179d9c094f14bc839f1",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Game.model.ts": {
+        "version": "801c83bd8ffb1dc9034c59284c69bf7aa27ee3c1dfb775c2a40e8be8a6bbc927",
+        "signature": "939be3e189bae1b292a5a987948bf7d03790b1a5fe078a5170254c955112bc79",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Text.model.ts": {
+        "version": "366c0cb315e994ee0277a5aad553b6b76b95639ae7ee3a5ae4687b5cc9534106",
+        "signature": "15f6136c0ceb348a5771481125afd96e9f455a9e6834ddb19c7707ab119be288",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Token.model.ts": {
+        "version": "f44dab9c590c140869adcdf652cb65fe394a0c902a1d81b4849ebb2733531b0c",
+        "signature": "4b92ad7be201cc0fda03885b289cc4b785f204db177ef24460856a776ea276a5",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/WidgetNode.model.ts": {
+        "version": "aabc2fdbe5c0b423836329026dc29060c9346fc0cc9b11983cf240e209f9c9f7",
+        "signature": "68a541bcd647a41ae71748cfad5ce51f0fad7f289b7d2c824d4d4d906c4c5eee",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Expression.model.ts": {
+        "version": "6a25a378a7e969bce27a9c41a99de264dde4b0d9b5c3fb84e33907790bc3c18a",
+        "signature": "f8a8160eb07e43a90f6dd829893df8088f38a13347cb63a06c6ccba0f4d5df0f",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Version.model.ts": {
+        "version": "6ca4287f677954f59866222c4d646b4ea6387e687c557de581414efd09230d82",
+        "signature": "df290dd3f809cc5efa48a95b527e46cc4c9a9e896ab28743a5b3fbd4559187f3",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Setup.model.ts": {
+        "version": "9b88cc147c2638c9cdca430b8dca199cb23058a3e84a87e2ab65e112f588bb48",
+        "signature": "76861cf5fe7b034c57bc05b0222f2ce541ea440197c936f4ffbdbd47a8275f7f",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Animation.model.ts": {
+        "version": "eedb6fcafd2d32490539a228f78622013557a6d26ce2d2dd2fbb8cf5043ef0f2",
+        "signature": "5bc4172c86641dbe430486ecd43922b11c5f44536de5f1c21ebb3585ade13561",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Sandbox.model.ts": {
+        "version": "b91f67b8e402489cd1108448042f5b1a8ba0ae082af4aa52ebab6f5776c9a8ed",
+        "signature": "33317472b46f1b1185b5223bf609f08a8db639e92a5b7e53a81ccb7db941864a",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/types.ts": {
+        "version": "ac1cb0e0c052f7955bafc7123c16b1a8790caff511bd637d29c273cb9209e760",
+        "signature": "6457afa66fd41ce91bc9db5b6f64a025a87b8b3acb3458399e0e7ed1feabf921",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Base.model.ts": {
+        "version": "fedaf58a44b969325e4774a6f8628683fcfc0639fb65df714139c6edf2032ec5",
+        "signature": "6e5be561ac6ed3e315ba1f71ec018381c33f0f6a43f959e9799b7a7717c8fa0b",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/Module.model.ts": {
+        "version": "57690f712109d093fa924b7043d3b2446d7b04c4d0fceee1ed36959947ce01ed",
+        "signature": "9144a2ad0820c08d7ab8d2d2b2112d80b2937e7c2bfb3f9fbb6865a89719cdac",
+        "affectsGlobalScope": false
+      },
+      "./src/game-entities/index.ts": {
+        "version": "4b41d6565f52b0f3e395ec6bca638df2aa662c1851f2aef4159e0cc9d7c193c2",
+        "signature": "ad0a08201c9f93a7b7fc9bd87ce5c5d82cda8715ad2cca91d53c939e55a9c356",
+        "affectsGlobalScope": false
+      },
+      "./src/index.ts": {
+        "version": "296b7d89d5e060fb1a356d6caeae303d0b3c3f4862dc19e8bc756c41a23f0762",
+        "signature": "779d47386635f152f1641b1130d0ede574500eee2693865ee835ac4de0ff3e6c",
         "affectsGlobalScope": false
       },
       "./src/transport/index.ts": {
         "version": "d45cfc1c8bc85a3d009b1197e765c8482aa0a78968db722fd3b95022a943b06e",
         "signature": "63ac41ed45360c31b3624fff7845f40a8f6b94e6f783c54805791917bdb3b3c3",
-        "affectsGlobalScope": false
-      },
-      "./src/render-kit/index.ts": {
-        "version": "0548eb0b5eb6b5e1e7201dc6db3755ab71f0dc6cb85874fd6fc07d7c5be7251c",
-        "signature": "92c3012863895138a0f0047366eaedaa3ce47e3911b00633443083a16709d8fb",
-        "affectsGlobalScope": false
-      },
-      "./src/index.ts": {
-        "version": "0c54d4055e31d0352108d54e3b08d1ea698c0cc810a8cec9b6d24a3ef8432e5e",
-        "signature": "9c35c20665299620a65cab979b0b8a9b794eae7ef97da2239c22dd5aee31bc76",
         "affectsGlobalScope": false
       }
     },
@@ -215,20 +550,1008 @@
       "configFilePath": "./tsconfig.json"
     },
     "referencedMap": {
+      "./node_modules/@types/lodash/common/array.d.ts": [
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/collection.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/common.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/date.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/function.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/lang.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/math.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/number.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/object.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/seq.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/string.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/util.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/fp.d.ts": [
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/index.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts"
+      ],
+      "./node_modules/immer/dist/core/finalize.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/core/immerClass.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/core/proxy.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/core/scope.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/immer.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts",
+        "./node_modules/immer/dist/plugins/all.d.ts",
+        "./node_modules/immer/dist/plugins/es5.d.ts",
+        "./node_modules/immer/dist/plugins/mapset.d.ts",
+        "./node_modules/immer/dist/plugins/patches.d.ts"
+      ],
+      "./node_modules/immer/dist/internal.d.ts": [
+        "./node_modules/immer/dist/core/current.d.ts",
+        "./node_modules/immer/dist/core/finalize.d.ts",
+        "./node_modules/immer/dist/core/immerClass.d.ts",
+        "./node_modules/immer/dist/core/proxy.d.ts",
+        "./node_modules/immer/dist/core/scope.d.ts",
+        "./node_modules/immer/dist/types/types-external.d.ts",
+        "./node_modules/immer/dist/types/types-internal.d.ts",
+        "./node_modules/immer/dist/utils/common.d.ts",
+        "./node_modules/immer/dist/utils/env.d.ts",
+        "./node_modules/immer/dist/utils/errors.d.ts",
+        "./node_modules/immer/dist/utils/plugins.d.ts"
+      ],
+      "./node_modules/immer/dist/types/types-external.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/types/types-internal.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/utils/common.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/utils/plugins.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/simplytyped/impl.d.ts": [
+        "./node_modules/simplytyped/impl/objects.d.ts"
+      ],
+      "./node_modules/simplytyped/impl/objects.d.ts": [
+        "./node_modules/simplytyped/types/objects.d.ts"
+      ],
+      "./node_modules/simplytyped/index.d.ts": [
+        "./node_modules/simplytyped/impl.d.ts",
+        "./node_modules/simplytyped/types.d.ts"
+      ],
+      "./node_modules/simplytyped/types.d.ts": [
+        "./node_modules/simplytyped/types/conditionals.d.ts",
+        "./node_modules/simplytyped/types/functions.d.ts",
+        "./node_modules/simplytyped/types/numbers.d.ts",
+        "./node_modules/simplytyped/types/objects.d.ts",
+        "./node_modules/simplytyped/types/predicates.d.ts",
+        "./node_modules/simplytyped/types/strings.d.ts",
+        "./node_modules/simplytyped/types/tuples.d.ts",
+        "./node_modules/simplytyped/types/utils.d.ts"
+      ],
+      "./node_modules/simplytyped/types/conditionals.d.ts": [
+        "./node_modules/simplytyped/types/strings.d.ts"
+      ],
+      "./node_modules/simplytyped/types/numbers.d.ts": [
+        "./node_modules/simplytyped/types/conditionals.d.ts"
+      ],
+      "./node_modules/simplytyped/types/objects.d.ts": [
+        "./node_modules/simplytyped/types/conditionals.d.ts"
+      ],
+      "./node_modules/simplytyped/types/predicates.d.ts": [
+        "./node_modules/simplytyped/types/conditionals.d.ts"
+      ],
+      "./node_modules/simplytyped/types/strings.d.ts": [
+        "./node_modules/simplytyped/types/conditionals.d.ts",
+        "./node_modules/simplytyped/types/predicates.d.ts"
+      ],
+      "./node_modules/simplytyped/types/tuples.d.ts": [
+        "./node_modules/simplytyped/types/utils.d.ts"
+      ],
+      "./node_modules/simplytyped/types/utils.d.ts": [
+        "./node_modules/simplytyped/types/objects.d.ts"
+      ],
+      "./src/game-entities/Animation.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Base.model.ts": [
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/game-entities/types.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Expression.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Sonata.model.ts",
+        "./src/game-entities/WidgetNode.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Game.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/index.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/ImageAsset.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Module.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Version.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Sandbox.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Token.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/game-entities/WidgetNode.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Setup.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Game.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Version.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Shape.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Sonata.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Sound.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Sound.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Style.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Text.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Game.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Token.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Shape.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/game-entities/Text.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Version.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Game.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Widget.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/WidgetNode.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/WidgetNode.model.ts": [
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Shape.model.ts",
+        "./src/game-entities/Sonata.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/game-entities/Text.model.ts",
+        "./src/game-entities/Token.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/shared/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/index.ts": [
+        "./src/game-entities/Animation.model.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Game.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Sandbox.model.ts",
+        "./src/game-entities/Setup.model.ts",
+        "./src/game-entities/Shape.model.ts",
+        "./src/game-entities/Sonata.model.ts",
+        "./src/game-entities/Sound.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/game-entities/Text.model.ts",
+        "./src/game-entities/Token.model.ts",
+        "./src/game-entities/Version.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/game-entities/WidgetNode.model.ts",
+        "./src/game-entities/types.ts"
+      ],
+      "./src/game-entities/types.ts": [
+        "./src/game-entities/Animation.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Game.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Sandbox.model.ts",
+        "./src/game-entities/Setup.model.ts",
+        "./src/game-entities/Shape.model.ts",
+        "./src/game-entities/Sonata.model.ts",
+        "./src/game-entities/Sound.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/game-entities/Text.model.ts",
+        "./src/game-entities/Token.model.ts",
+        "./src/game-entities/Version.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/game-entities/WidgetNode.model.ts"
+      ],
       "./src/index.ts": [
-        "./src/game-mechanics/index.ts",
-        "./src/render-kit/index.ts",
-        "./src/transport/index.ts"
+        "./src/game-entities/index.ts"
+      ],
+      "./src/shared/entity-parsing.ts": [
+        "./node_modules/@types/lodash/index.d.ts",
+        "./node_modules/immer/dist/immer.d.ts",
+        "./src/game-entities/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/shared/index.ts": [
+        "./src/shared/entity-parsing.ts"
+      ],
+      "./src/types/ExpressionContext.ts": [
+        "./node_modules/@types/lodash/index.d.ts",
+        "./src/game-entities/index.ts"
+      ],
+      "./src/types/index.ts": [
+        "./src/types/Dictionary.ts",
+        "./src/types/ExpressionContext.ts",
+        "./src/types/Subscription.ts",
+        "./src/types/Tagged.ts"
       ]
     },
     "exportedModulesMap": {
+      "./node_modules/@types/lodash/common/array.d.ts": [
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/collection.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/common.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/date.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/function.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/lang.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/math.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/number.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/object.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/seq.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/string.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/common/util.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/fp.d.ts": [
+        "./node_modules/@types/lodash/index.d.ts"
+      ],
+      "./node_modules/@types/lodash/index.d.ts": [
+        "./node_modules/@types/lodash/common/array.d.ts",
+        "./node_modules/@types/lodash/common/collection.d.ts",
+        "./node_modules/@types/lodash/common/common.d.ts",
+        "./node_modules/@types/lodash/common/date.d.ts",
+        "./node_modules/@types/lodash/common/function.d.ts",
+        "./node_modules/@types/lodash/common/lang.d.ts",
+        "./node_modules/@types/lodash/common/math.d.ts",
+        "./node_modules/@types/lodash/common/number.d.ts",
+        "./node_modules/@types/lodash/common/object.d.ts",
+        "./node_modules/@types/lodash/common/seq.d.ts",
+        "./node_modules/@types/lodash/common/string.d.ts",
+        "./node_modules/@types/lodash/common/util.d.ts"
+      ],
+      "./node_modules/immer/dist/core/finalize.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/core/immerClass.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/core/proxy.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/core/scope.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/immer.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts",
+        "./node_modules/immer/dist/plugins/all.d.ts",
+        "./node_modules/immer/dist/plugins/es5.d.ts",
+        "./node_modules/immer/dist/plugins/mapset.d.ts",
+        "./node_modules/immer/dist/plugins/patches.d.ts"
+      ],
+      "./node_modules/immer/dist/internal.d.ts": [
+        "./node_modules/immer/dist/core/current.d.ts",
+        "./node_modules/immer/dist/core/finalize.d.ts",
+        "./node_modules/immer/dist/core/immerClass.d.ts",
+        "./node_modules/immer/dist/core/proxy.d.ts",
+        "./node_modules/immer/dist/core/scope.d.ts",
+        "./node_modules/immer/dist/types/types-external.d.ts",
+        "./node_modules/immer/dist/types/types-internal.d.ts",
+        "./node_modules/immer/dist/utils/common.d.ts",
+        "./node_modules/immer/dist/utils/env.d.ts",
+        "./node_modules/immer/dist/utils/errors.d.ts",
+        "./node_modules/immer/dist/utils/plugins.d.ts"
+      ],
+      "./node_modules/immer/dist/types/types-external.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/types/types-internal.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/utils/common.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/immer/dist/utils/plugins.d.ts": [
+        "./node_modules/immer/dist/internal.d.ts"
+      ],
+      "./node_modules/simplytyped/impl.d.ts": [
+        "./node_modules/simplytyped/impl/objects.d.ts"
+      ],
+      "./node_modules/simplytyped/impl/objects.d.ts": [
+        "./node_modules/simplytyped/types/objects.d.ts"
+      ],
+      "./node_modules/simplytyped/index.d.ts": [
+        "./node_modules/simplytyped/impl.d.ts",
+        "./node_modules/simplytyped/types.d.ts"
+      ],
+      "./node_modules/simplytyped/types.d.ts": [
+        "./node_modules/simplytyped/types/conditionals.d.ts",
+        "./node_modules/simplytyped/types/functions.d.ts",
+        "./node_modules/simplytyped/types/numbers.d.ts",
+        "./node_modules/simplytyped/types/objects.d.ts",
+        "./node_modules/simplytyped/types/predicates.d.ts",
+        "./node_modules/simplytyped/types/strings.d.ts",
+        "./node_modules/simplytyped/types/tuples.d.ts",
+        "./node_modules/simplytyped/types/utils.d.ts"
+      ],
+      "./node_modules/simplytyped/types/conditionals.d.ts": [
+        "./node_modules/simplytyped/types/strings.d.ts"
+      ],
+      "./node_modules/simplytyped/types/numbers.d.ts": [
+        "./node_modules/simplytyped/types/conditionals.d.ts"
+      ],
+      "./node_modules/simplytyped/types/objects.d.ts": [
+        "./node_modules/simplytyped/types/conditionals.d.ts"
+      ],
+      "./node_modules/simplytyped/types/predicates.d.ts": [
+        "./node_modules/simplytyped/types/conditionals.d.ts"
+      ],
+      "./node_modules/simplytyped/types/strings.d.ts": [
+        "./node_modules/simplytyped/types/conditionals.d.ts",
+        "./node_modules/simplytyped/types/predicates.d.ts"
+      ],
+      "./node_modules/simplytyped/types/tuples.d.ts": [
+        "./node_modules/simplytyped/types/utils.d.ts"
+      ],
+      "./node_modules/simplytyped/types/utils.d.ts": [
+        "./node_modules/simplytyped/types/objects.d.ts"
+      ],
+      "./src/game-entities/Animation.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Base.model.ts": [
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/game-entities/types.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Expression.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Sonata.model.ts",
+        "./src/game-entities/WidgetNode.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Game.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/ImageAsset.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Module.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Version.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Sandbox.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Token.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/game-entities/WidgetNode.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Setup.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Game.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Version.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Shape.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Sonata.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Sound.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Sound.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Style.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Text.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Game.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Token.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/Shape.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/game-entities/Text.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Version.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Game.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/Widget.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/WidgetNode.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/WidgetNode.model.ts": [
+        "./node_modules/simplytyped/index.d.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Shape.model.ts",
+        "./src/game-entities/Sonata.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/game-entities/Text.model.ts",
+        "./src/game-entities/Token.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/game-entities/index.ts": [
+        "./src/game-entities/Animation.model.ts",
+        "./src/game-entities/Base.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Game.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Sandbox.model.ts",
+        "./src/game-entities/Setup.model.ts",
+        "./src/game-entities/Shape.model.ts",
+        "./src/game-entities/Sonata.model.ts",
+        "./src/game-entities/Sound.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/game-entities/Text.model.ts",
+        "./src/game-entities/Token.model.ts",
+        "./src/game-entities/Version.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/game-entities/WidgetNode.model.ts",
+        "./src/game-entities/types.ts"
+      ],
+      "./src/game-entities/types.ts": [
+        "./src/game-entities/Animation.model.ts",
+        "./src/game-entities/Expression.model.ts",
+        "./src/game-entities/Game.model.ts",
+        "./src/game-entities/ImageAsset.model.ts",
+        "./src/game-entities/Module.model.ts",
+        "./src/game-entities/Sandbox.model.ts",
+        "./src/game-entities/Setup.model.ts",
+        "./src/game-entities/Shape.model.ts",
+        "./src/game-entities/Sonata.model.ts",
+        "./src/game-entities/Sound.model.ts",
+        "./src/game-entities/Style.model.ts",
+        "./src/game-entities/Text.model.ts",
+        "./src/game-entities/Token.model.ts",
+        "./src/game-entities/Version.model.ts",
+        "./src/game-entities/Widget.model.ts",
+        "./src/game-entities/WidgetNode.model.ts"
+      ],
       "./src/index.ts": [
-        "./src/game-mechanics/index.ts",
-        "./src/render-kit/index.ts",
-        "./src/transport/index.ts"
+        "./src/game-entities/index.ts"
+      ],
+      "./src/shared/entity-parsing.ts": [
+        "./src/game-entities/index.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/shared/index.ts": [
+        "./src/shared/entity-parsing.ts"
+      ],
+      "./src/types/ExpressionContext.ts": [
+        "./node_modules/@types/lodash/index.d.ts",
+        "./src/game-entities/index.ts"
+      ],
+      "./src/types/index.ts": [
+        "./src/types/Dictionary.ts",
+        "./src/types/ExpressionContext.ts",
+        "./src/types/Subscription.ts",
+        "./src/types/Tagged.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
+      "./node_modules/@types/lodash/common/array.d.ts",
+      "./node_modules/@types/lodash/common/collection.d.ts",
+      "./node_modules/@types/lodash/common/common.d.ts",
+      "./node_modules/@types/lodash/common/date.d.ts",
+      "./node_modules/@types/lodash/common/function.d.ts",
+      "./node_modules/@types/lodash/common/lang.d.ts",
+      "./node_modules/@types/lodash/common/math.d.ts",
+      "./node_modules/@types/lodash/common/number.d.ts",
+      "./node_modules/@types/lodash/common/object.d.ts",
+      "./node_modules/@types/lodash/common/seq.d.ts",
+      "./node_modules/@types/lodash/common/string.d.ts",
+      "./node_modules/@types/lodash/common/util.d.ts",
+      "./node_modules/@types/lodash/fp.d.ts",
+      "./node_modules/@types/lodash/index.d.ts",
+      "./node_modules/immer/dist/core/current.d.ts",
+      "./node_modules/immer/dist/core/finalize.d.ts",
+      "./node_modules/immer/dist/core/immerClass.d.ts",
+      "./node_modules/immer/dist/core/proxy.d.ts",
+      "./node_modules/immer/dist/core/scope.d.ts",
+      "./node_modules/immer/dist/immer.d.ts",
+      "./node_modules/immer/dist/internal.d.ts",
+      "./node_modules/immer/dist/plugins/all.d.ts",
+      "./node_modules/immer/dist/plugins/es5.d.ts",
+      "./node_modules/immer/dist/plugins/mapset.d.ts",
+      "./node_modules/immer/dist/plugins/patches.d.ts",
+      "./node_modules/immer/dist/types/types-external.d.ts",
+      "./node_modules/immer/dist/types/types-internal.d.ts",
+      "./node_modules/immer/dist/utils/common.d.ts",
+      "./node_modules/immer/dist/utils/env.d.ts",
+      "./node_modules/immer/dist/utils/errors.d.ts",
+      "./node_modules/immer/dist/utils/plugins.d.ts",
+      "./node_modules/simplytyped/impl.d.ts",
+      "./node_modules/simplytyped/impl/objects.d.ts",
+      "./node_modules/simplytyped/index.d.ts",
+      "./node_modules/simplytyped/types.d.ts",
+      "./node_modules/simplytyped/types/conditionals.d.ts",
+      "./node_modules/simplytyped/types/functions.d.ts",
+      "./node_modules/simplytyped/types/numbers.d.ts",
+      "./node_modules/simplytyped/types/objects.d.ts",
+      "./node_modules/simplytyped/types/predicates.d.ts",
+      "./node_modules/simplytyped/types/strings.d.ts",
+      "./node_modules/simplytyped/types/tuples.d.ts",
+      "./node_modules/simplytyped/types/utils.d.ts",
       "./node_modules/typescript/lib/lib.dom.d.ts",
       "./node_modules/typescript/lib/lib.dom.iterable.d.ts",
       "./node_modules/typescript/lib/lib.es2015.collection.d.ts",
@@ -264,10 +1587,34 @@
       "./node_modules/typescript/lib/lib.es5.d.ts",
       "./node_modules/typescript/lib/lib.scripthost.d.ts",
       "./node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
-      "./src/game-mechanics/index.ts",
+      "./src/game-entities/Animation.model.ts",
+      "./src/game-entities/Base.model.ts",
+      "./src/game-entities/Expression.model.ts",
+      "./src/game-entities/Game.model.ts",
+      "./src/game-entities/ImageAsset.model.ts",
+      "./src/game-entities/Module.model.ts",
+      "./src/game-entities/Sandbox.model.ts",
+      "./src/game-entities/Setup.model.ts",
+      "./src/game-entities/Shape.model.ts",
+      "./src/game-entities/Sonata.model.ts",
+      "./src/game-entities/Sound.model.ts",
+      "./src/game-entities/Style.model.ts",
+      "./src/game-entities/Text.model.ts",
+      "./src/game-entities/Token.model.ts",
+      "./src/game-entities/Version.model.ts",
+      "./src/game-entities/Widget.model.ts",
+      "./src/game-entities/WidgetNode.model.ts",
+      "./src/game-entities/index.ts",
+      "./src/game-entities/types.ts",
       "./src/index.ts",
-      "./src/render-kit/index.ts",
-      "./src/transport/index.ts"
+      "./src/shared/entity-parsing.ts",
+      "./src/shared/index.ts",
+      "./src/transport/index.ts",
+      "./src/types/Dictionary.ts",
+      "./src/types/ExpressionContext.ts",
+      "./src/types/Subscription.ts",
+      "./src/types/Tagged.ts",
+      "./src/types/index.ts"
     ]
   },
   "version": "4.1.3"
