@@ -20,9 +20,6 @@ import { enrichEntity, parseAndBind, safeJSON } from '../shared';
 export type WidgetNodeId = Nominal<string, 'WidgetNodeId'>;
 export const toNodeId = (source: unknown) => String(source) as WidgetNodeId;
 
-type StatefulComponent = any;
-type RzEventTypes = any;
-
 export type WidgetNode = WithStyle & Tagged<'WidgetNode', {
   id: WidgetNodeId;
   owner: WidgetId;
@@ -67,16 +64,16 @@ export type RuntimeWidgetNode = Omit<WidgetNode, 'module' | 'token' | 'shape' | 
   widget: Widget;
   module: Module;
   image: ImageAsset;
-  dynamic_text: ParamedExpressionFunc<{ node: RuntimeWidgetNode, component: StatefulComponent }, Text>;
+  dynamic_text: ParamedExpressionFunc<{ node: RuntimeWidgetNode, component: {} }, Text>;
   text: Text;
 
-  style: ParamedExpressionFunc<{ node: RuntimeWidgetNode, component: StatefulComponent }, Style>;
+  style: ParamedExpressionFunc<{ node: RuntimeWidgetNode, component: {} }, Style>;
   style_inline: CoreStyles;
 
-  provide_context: ParamedExpressionFunc<{ node: RuntimeWidgetNode, component: StatefulComponent }, any>; // provideValueToSubscribers
+  provide_context: ParamedExpressionFunc<{ node: RuntimeWidgetNode, component: {} }, any>; // provideValueToSubscribers
   consume_context: ContextSubscribingFunc;
 
-  pass_to_children: ParamedExpressionFunc<{ node: RuntimeWidgetNode, component: StatefulComponent }, any>;
+  pass_to_children: ParamedExpressionFunc<{ node: RuntimeWidgetNode, component: {} }, any>;
 };
 
 export const WidgetNode: GameEntityParser<WidgetNode, DtoWidgetNode, RuntimeWidgetNode> & WidgetNodeOperations = {
@@ -191,6 +188,29 @@ type WidgetNodeOperations = {
 export type NodeHandlerId = Nominal<string, "NodeHandlerId">;
 export const toHandlerId = (source: unknown) => String(source) as NodeHandlerId;
 
+export enum EventType {
+  onClick = 'onClick',
+
+  onPointerDown = 'onPointerDown',
+  onPointerUp = 'onPointerUp',
+  onPointerUpOutside = 'onPointerUpOutside',
+  onPointerOver = 'onPointerOver',
+  onPointerOut = 'onPointerOut',
+  onPointerMove = 'onPointerMove',
+
+  onDragEnd = 'onDragEnd',
+  onDragMove = 'onDragMove',
+  onScroll = 'onScroll',
+  onScrollEnd = 'onScrollEnd',
+
+  onWheel = 'onWheel',
+  onKeypress = 'onKeypress',
+  onFocus = 'onFocus',
+  onBlur = 'onBlur',
+
+  onChange = 'onChange',
+};
+
 export type NodeHandler = Tagged<'NodeHandler', {
   id: NodeHandlerId;
   owner: WidgetNodeId;
@@ -198,7 +218,7 @@ export type NodeHandler = Tagged<'NodeHandler', {
   name: string;
   description: string;
 
-  type: RzEventTypes;
+  type: EventType;
   effect: string; // Expression
   dynamic_sound: string; // Expression -> Sonata
   sound: SonataId;
@@ -242,7 +262,7 @@ export const NodeHandler: GameEntityParser<NodeHandler, DtoNodeHandler, RuntimeN
       id: toHandlerId(dto.id),
       owner: toNodeId(dto.owner),
       sound: toSonataId(dto.sound),
-      type: dto.type as RzEventTypes,
+      type: dto.type as EventType,
     };
   },
 

@@ -193,7 +193,7 @@ export type GameState = {
   module: ModuleId;
 };
 
-type LobbyPlayer = any;
+type LobbyPlayer = {};
 
 export type CreateGamePayload = {
   game_id: number;

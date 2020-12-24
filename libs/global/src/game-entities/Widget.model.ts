@@ -13,8 +13,8 @@ export type WidgetId = Nominal<string, 'WidgetId'>;
 
 export const toWidgetId = (source: string | number) => String(source) as WidgetId;
 
-type StatefulComponent = any;
-type RzNode = any;
+type StatefulComponent = {};
+type RzNode = {};
 
 export type Widget = BaseModel<WidgetId> & WithStyle & Tagged<'Widget', {
 

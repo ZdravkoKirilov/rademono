@@ -12,9 +12,9 @@ import { toModuleId } from './Module.model';
 export type ExpressionId = Nominal<string, 'ExpressionId'>;
 export const toExpressionId = (source: unknown) => String(source) as ExpressionId;
 
-type GenericEvent = any;
-type StatefulComponent = any;
-type DidUpdatePayload = any;
+type GenericEvent = {};
+type StatefulComponent = {};
+type DidUpdatePayload = {};
 
 export type Expression = Tagged<'Expression', BaseModel<ExpressionId> & {
   code: string;

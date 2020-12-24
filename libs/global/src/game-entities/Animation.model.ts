@@ -12,8 +12,8 @@ import { toModuleId } from './Module.model';
 export type AnimationId = Nominal<string, 'AnimationId'>;
 const toAnimationId = (source: unknown) => String(source) as AnimationId;
 
-type AnimationEasing = any;
-type AnimationPayload = any;
+type AnimationEasing = {};
+type AnimationPayload = {};
 
 export type Animation = Tagged<'Animation', BaseModel<AnimationId> & {
 

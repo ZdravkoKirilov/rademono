@@ -20,7 +20,7 @@ export enum SandboxType {
 export type SandboxId = Nominal<string, 'SandboxId'>;
 export const toSandboxId = (source: unknown) => String(source) as SandboxId;
 
-type StatefulComponent = any;
+type StatefulComponent = {};
 
 export type Sandbox = Tagged<'Sandbox', {
   id: SandboxId;
