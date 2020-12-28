@@ -1,6 +1,9 @@
 {
   "name": "rademono",
   "private": "true",
+  "engines": {
+    "node": "15.3.0"
+  },
   "workspaces": [
     "libs/client",
     "libs/global"
