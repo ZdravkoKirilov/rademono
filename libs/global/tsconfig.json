@@ -7,10 +7,12 @@
     "sourceMap": true,
     "composite": true,
     "strict": true,
+    "strictPropertyInitialization": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
     "rootDir": "src",
     "outDir": "lib"
   },

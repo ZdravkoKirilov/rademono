@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GamesModule } from '../games';
+
+import { GameEditorModule } from '../game-editor';
 
 @Module({
   imports: [
@@ -16,8 +16,8 @@ import { GamesModule } from '../games';
       synchronize: true,
       autoLoadEntities: true,
     }),
-    GamesModule,
+    GameEditorModule
   ],
-  exports: [TypeOrmModule, GamesModule],
+  exports: [TypeOrmModule],
 })
 export class CoreModule {}

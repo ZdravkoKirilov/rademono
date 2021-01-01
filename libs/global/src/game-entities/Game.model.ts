@@ -1,100 +1,124 @@
 import { Nominal } from 'simplytyped';
-import { isObject, omit } from 'lodash/fp';
+import { isObject, isString, omit } from 'lodash/fp';
+import { Observable } from 'rxjs';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 import {
-  Module, Token, Expression, Sonata, Sound,
-  Widget, Text, ImageAsset, Sandbox, Shape, Style, Animation, ImageAssetId, GameEntityParser, ModuleId, toImageId, toModuleId, SetupId
+  Token, Expression, Sonata, Sound,
+  Widget, Text, ImageAsset, Sandbox, Shape, Style, Animation, ImageAssetId, GameEntityParser, ModuleId, toImageId, SetupId
 } from './';
 import { enrichEntity } from '../shared';
-import { Dictionary, Tagged } from '../types';
+import { Dictionary, Tagged, toTagged, UUIDv4, Url, ParsingError, CannotBeEmpty, MustBeAstring, InvalidPayload } from '../types';
 
-export type GameId = Nominal<string, 'GameId'>;
-export const toGameId = (source: unknown) => String(source) as GameId;
 
-export type Game = Tagged<'Game', {
+const NotAValidGameId = 'NotAValidGameId';
+type InvalidGameId = Tagged<typeof NotAValidGameId>;
+export type GameId = Nominal<UUIDv4, 'GameId'>;
+
+export const toGameId = (source: unknown): GameId | InvalidGameId => {
+  const result = UUIDv4.parse(source);
+  return isString(result) ? result as GameId : toTagged('NotAValidGameId');
+};
+
+type tag = 'Game';
+
+export type Game = Tagged<tag, {
   id: GameId;
 
   title: string;
-  description: string;
-  image: string;
+  description?: string;
+  image?: Url;
 
-  languages: GameLanguage[];
-  menu: ModuleId;
 }>;
 
-export type DtoGame = Omit<Game, '__tag' | 'id' | 'languages' | 'menu'> & {
+@Entity()
+export class GameDBModel {
+  @PrimaryGeneratedColumn()
   id: number;
-  menu: number;
-  languages: DtoGameLanguage[];
-};
 
-export const Game: GameEntityParser<Game, DtoGame, RuntimeGame> & GameOperations = {
+  @Column('uuid')
+  public_id: string;
 
-  saveLanguage(game, language) {
-    return {
-      ...game,
-      languages: game.languages.map(elem => elem.id === language.id ? language : elem),
-    };
-  },
+  @Column({ length: 500 })
+  title: string;
 
-  removeLanguage(game, language) {
-    return {
-      ...game,
-      languages: game.languages.filter(elem => elem.id !== language.id)
-    };
-  },
+  @Column('text')
+  description?: string;
 
-  fromUnknown: {
-
-    toEntity(input: unknown) {
-
-      if (!isObject(input)) {
-        throw new Error('NotAnObject');
-      }
-
-      return { //TODO: don't spread
-        __tag: 'Game',
-        ...input
-      } as Game;
-    },
-
-  },
-
-  toRuntime(context, game) {
-    return enrichEntity<Game, RuntimeGame>(context.conf, {
-      menu: 'modules',
-    }, game);
-  },
-
-  toDto(game) {
-    return {
-      ...omit('__tag', game),
-      id: Number(game.id),
-      menu: Number(game.menu),
-      languages: game.languages.map(elem => GameLanguage.toDto(elem)),
-    }
-  },
-
-  toEntity(gameDto) {
-    return {
-      ...gameDto,
-      __tag: 'Game',
-      id: toGameId(gameDto.id),
-      menu: toModuleId(gameDto.menu),
-      languages: gameDto.languages.map(elem => GameLanguage.toEntity(elem))
-    }
-  }
+  @Column('text')
+  image?: string;
 
 }
+
+export type TaggedGameDto = Tagged<tag, CreateGameDto | UpdateGameDto | DeleteGameDto>;
+
+type CreateGameDto = {
+  title: string;
+  description: string;
+  image: string;
+};
+
+type UpdateGameDto = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+};
+
+type DeleteGameDto = {
+  id: string;
+};
+
+type ReadGameDto = {
+  id: string;
+};
+
+type FullGameDto = Omit<GameDBModel, 'public_id'>;
+
+type CreateGameDtoParsingError = ParsingError<InvalidPayload, Partial<{
+  title: CannotBeEmpty | MustBeAstring,
+  description: MustBeAstring,
+  image: MustBeAstring,
+}>>;
+
+type DeleteGameDtoParsingError = ParsingError<InvalidPayload, Partial<{
+  id: CannotBeEmpty | MustBeAstring,
+}>>;
+
+type ReadGameDtoParsingError = ParsingError<InvalidPayload, Partial<{
+  id: CannotBeEmpty | MustBeAstring,
+}>>;
+
+type UpdateGameDtoParsingError = ParsingError<InvalidPayload, Partial<{
+  id: CannotBeEmpty | MustBeAstring,
+  title: CannotBeEmpty | MustBeAstring,
+  description: MustBeAstring,
+  image: MustBeAstring,
+}>>;
 
 type GameOperations = {
-  saveLanguage: (game: Game, language: GameLanguage) => Game;
-  removeLanguage: (game: Game, language: GameLanguage) => Game;
-}
 
-export type RuntimeGame = Omit<Game, 'menu'> & {
-  menu: Module;
+  /* FE before send ( validation ), BE on receive */
+  toCreateDto: (input: unknown) => Observable<CreateGameDto | CreateGameDtoParsingError>,
+  toDeleteDto: (input: unknown) => Observable<DeleteGameDto | DeleteGameDtoParsingError>,
+  toEditDto: (input: unknown) => Observable<UpdateGameDto | UpdateGameDtoParsingError>,
+  toReadDto: (input: unknown) => Observable<ReadGameDto | ReadGameDtoParsingError>,
+
+  create: (input: CreateGameDto) => CreateGameDto & { public_id: UUIDv4 },
+  update: (input: UpdateGameDto) => Partial<FullGameDto>,
+
+  /* BE before response, 'public_id' becomes 'id' here. DB corruption validation
+  could possibly happen here */
+  toFullDto: (input: GameDBModel) => FullGameDto,
+
+  /* FE on receive */
+  toEntity: (input: FullGameDto) => Game,
+
 };
+
+export const GameEntity: GameOperations = {
+
+}
 
 const GameLanguage: GameEntityParser<GameLanguage, DtoGameLanguage, RuntimeGameLanguage> = {
 

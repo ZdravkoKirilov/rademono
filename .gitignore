@@ -7,3 +7,6 @@ lib
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+# TypeScript incremental compilation cache
+*.tsbuildinfo
+libs/global/tsconfig.tsbuildinfo

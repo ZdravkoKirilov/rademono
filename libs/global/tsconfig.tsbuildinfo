@@ -307,7 +307,7 @@
         "affectsGlobalScope": false
       },
       "./src/types/Dictionary.ts": {
-        "version": "3a53adc1f1b5dc4694a351008d69d44387896b3f374c0525f6f92ab0a8d1321e",
+        "version": "e759bea5573d5f61091cc6a71f8fde3763064f4010b11ff0bb9b8be8313ec7cb",
         "signature": "ac22751455c3cb2192a6fb83d2541223c3f448172333be352910cbc8ff6c465f",
         "affectsGlobalScope": false
       },
@@ -317,18 +317,28 @@
         "affectsGlobalScope": false
       },
       "./src/types/Subscription.ts": {
-        "version": "c1c56ab594fd6c8218a28878997a5e73c93c3ad5c6b7d0ddae1f3c45f40ad965",
+        "version": "5ee67c000c7de98b6d813ce5a90d59598096178d0dd2ca4f821d5e4a13a3ef5f",
         "signature": "1873ddd36e10d55bfa37a6c89276b2e0575bf1dcca567ff0c96136bc551ce4a4",
         "affectsGlobalScope": false
       },
       "./src/types/Tagged.ts": {
-        "version": "31cb80584f43ed4964a85ddfdffb7dad142fc01ef25a78165c06f7dd272ff4d3",
-        "signature": "d904dbe639ee718dab475b784669ea994df7d7d91a00c2b078b34b6417364eea",
+        "version": "e0d7b69c10bac4a6c45e04bbe2d5d7baf9adb939e1b27c62a57e1161b34a8a0d",
+        "signature": "45caffe04821517e5815c02a295c3beb14a3816f438736fbd3c2ee633465ef2d",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/uuid/index.d.ts": {
+        "version": "96b49a9de749afcf92b5bce1d8cc42cfae6816cdf5ea36584fd9256b8b2e5292",
+        "signature": "96b49a9de749afcf92b5bce1d8cc42cfae6816cdf5ea36584fd9256b8b2e5292",
+        "affectsGlobalScope": false
+      },
+      "./src/types/UUIDv4.ts": {
+        "version": "3609f004ccd6534950bd52feebf38016b319ea4cd0edba7e4d584ab31a88c8f1",
+        "signature": "01c3c09c069aeedb3c59859f4c655123a0fd064a0f4d4e3750a530dab513946b",
         "affectsGlobalScope": false
       },
       "./src/types/index.ts": {
-        "version": "166deb9a547f8e04c40e4c08a512dbef3ea792d03daba5f5100ebc87b23313e6",
-        "signature": "cf51dd4f656dbad2e3ad113c9b603da3d5c88540b3b4ce624586d48da8b57874",
+        "version": "61b085d8a306fbece1e4f4b18238d109fee998b1989274914c18810ad211512d",
+        "signature": "58a4c9d778d5a13bded03d1f6452991d617ed48486c149508844e9aadf20b22e",
         "affectsGlobalScope": false
       },
       "./node_modules/immer/dist/utils/env.d.ts": {
@@ -452,13 +462,13 @@
         "affectsGlobalScope": false
       },
       "./src/game-entities/Widget.model.ts": {
-        "version": "ba859ab608a7f83cdecc957fa42fafe05483e2c51023916fe1a677b55e66aa45",
-        "signature": "8559d3e0732bbdbff410f39a048f6c7acaf2c5f3e595b179d9c094f14bc839f1",
+        "version": "fa02ea8e4c5a137a7ba3161ee87e5893d68976bbf4ffc3d4ff1861213a645646",
+        "signature": "b8b24f7326f45f49ba6ad42b1586918a4d42853151f236829069803e85fbf13b",
         "affectsGlobalScope": false
       },
       "./src/game-entities/Game.model.ts": {
-        "version": "801c83bd8ffb1dc9034c59284c69bf7aa27ee3c1dfb775c2a40e8be8a6bbc927",
-        "signature": "939be3e189bae1b292a5a987948bf7d03790b1a5fe078a5170254c955112bc79",
+        "version": "94f2e326daef6470756e9c41e3c123f81bfcb15a08a8b8cf4d921ef3118b215c",
+        "signature": "375d2b0a5080a26ea0f9c6cfbb6dd4b23b4de0bd51bacaaa10fb6e4a7c21c2a2",
         "affectsGlobalScope": false
       },
       "./src/game-entities/Text.model.ts": {
@@ -472,13 +482,13 @@
         "affectsGlobalScope": false
       },
       "./src/game-entities/WidgetNode.model.ts": {
-        "version": "aabc2fdbe5c0b423836329026dc29060c9346fc0cc9b11983cf240e209f9c9f7",
-        "signature": "68a541bcd647a41ae71748cfad5ce51f0fad7f289b7d2c824d4d4d906c4c5eee",
+        "version": "b73d1d476a1dabbe3988e3364947a1066a014ed0ddb1c0bfb3007f9e72b01951",
+        "signature": "2fa661fdf82cac9637f214876a9ddd6c67015df79e20b0d82df07b4ba61aea1e",
         "affectsGlobalScope": false
       },
       "./src/game-entities/Expression.model.ts": {
-        "version": "6a25a378a7e969bce27a9c41a99de264dde4b0d9b5c3fb84e33907790bc3c18a",
-        "signature": "f8a8160eb07e43a90f6dd829893df8088f38a13347cb63a06c6ccba0f4d5df0f",
+        "version": "3a165c298ee23aa94a402675ee8df0bb04c508773d37863ad353887a07ca7d1c",
+        "signature": "ae4f0441881d81eec88846def8de8e44dbcc0a7b2c27c40e3f69765e92c4dae3",
         "affectsGlobalScope": false
       },
       "./src/game-entities/Version.model.ts": {
@@ -492,13 +502,13 @@
         "affectsGlobalScope": false
       },
       "./src/game-entities/Animation.model.ts": {
-        "version": "eedb6fcafd2d32490539a228f78622013557a6d26ce2d2dd2fbb8cf5043ef0f2",
-        "signature": "5bc4172c86641dbe430486ecd43922b11c5f44536de5f1c21ebb3585ade13561",
+        "version": "8249138677134e5b5b4eed277f557e13fc56caddee8c08714d1c07c8054fd986",
+        "signature": "fe9227805acea9e4f6cd81bfd61cd10dbd6b51d5072a02769b98c6dc00d4474e",
         "affectsGlobalScope": false
       },
       "./src/game-entities/Sandbox.model.ts": {
-        "version": "b91f67b8e402489cd1108448042f5b1a8ba0ae082af4aa52ebab6f5776c9a8ed",
-        "signature": "33317472b46f1b1185b5223bf609f08a8db639e92a5b7e53a81ccb7db941864a",
+        "version": "48e9c633bb9cd941447b2f0dbb5a29b34cfce156e3b8054a77b387079143b44f",
+        "signature": "82f42a818c7da153156e70d1c95ecff884c2e008cf2bbe6238c7cb982c2b821c",
         "affectsGlobalScope": false
       },
       "./src/game-entities/types.ts": {
@@ -522,8 +532,8 @@
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
-        "version": "296b7d89d5e060fb1a356d6caeae303d0b3c3f4862dc19e8bc756c41a23f0762",
-        "signature": "779d47386635f152f1641b1130d0ede574500eee2693865ee835ac4de0ff3e6c",
+        "version": "13bd8f1e3221ab0bb45516fe7bde84ede09c37b80c68a4e125417dd2ff70756c",
+        "signature": "3f61879aabecb0b7e78559f923840781758491cd669c2788ab6c8a9bcf12d991",
         "affectsGlobalScope": false
       },
       "./src/transport/index.ts": {
@@ -1027,7 +1037,8 @@
         "./src/game-entities/WidgetNode.model.ts"
       ],
       "./src/index.ts": [
-        "./src/game-entities/index.ts"
+        "./src/game-entities/index.ts",
+        "./src/types/Tagged.ts"
       ],
       "./src/shared/entity-parsing.ts": [
         "./node_modules/@types/lodash/index.d.ts",
@@ -1042,11 +1053,19 @@
         "./node_modules/@types/lodash/index.d.ts",
         "./src/game-entities/index.ts"
       ],
+      "./src/types/Tagged.ts": [
+        "./node_modules/@types/lodash/fp.d.ts"
+      ],
+      "./src/types/UUIDv4.ts": [
+        "./node_modules/@types/uuid/index.d.ts",
+        "./src/types/Tagged.ts"
+      ],
       "./src/types/index.ts": [
         "./src/types/Dictionary.ts",
         "./src/types/ExpressionContext.ts",
         "./src/types/Subscription.ts",
-        "./src/types/Tagged.ts"
+        "./src/types/Tagged.ts",
+        "./src/types/UUIDv4.ts"
       ]
     },
     "exportedModulesMap": {
@@ -1488,7 +1507,8 @@
         "./src/game-entities/WidgetNode.model.ts"
       ],
       "./src/index.ts": [
-        "./src/game-entities/index.ts"
+        "./src/game-entities/index.ts",
+        "./src/types/Tagged.ts"
       ],
       "./src/shared/entity-parsing.ts": [
         "./src/game-entities/index.ts",
@@ -1501,11 +1521,15 @@
         "./node_modules/@types/lodash/index.d.ts",
         "./src/game-entities/index.ts"
       ],
+      "./src/types/UUIDv4.ts": [
+        "./src/types/Tagged.ts"
+      ],
       "./src/types/index.ts": [
         "./src/types/Dictionary.ts",
         "./src/types/ExpressionContext.ts",
         "./src/types/Subscription.ts",
-        "./src/types/Tagged.ts"
+        "./src/types/Tagged.ts",
+        "./src/types/UUIDv4.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -1523,6 +1547,7 @@
       "./node_modules/@types/lodash/common/util.d.ts",
       "./node_modules/@types/lodash/fp.d.ts",
       "./node_modules/@types/lodash/index.d.ts",
+      "./node_modules/@types/uuid/index.d.ts",
       "./node_modules/immer/dist/core/current.d.ts",
       "./node_modules/immer/dist/core/finalize.d.ts",
       "./node_modules/immer/dist/core/immerClass.d.ts",
@@ -1614,6 +1639,7 @@
       "./src/types/ExpressionContext.ts",
       "./src/types/Subscription.ts",
       "./src/types/Tagged.ts",
+      "./src/types/UUIDv4.ts",
       "./src/types/index.ts"
     ]
   },
