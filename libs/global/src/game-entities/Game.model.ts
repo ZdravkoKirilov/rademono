@@ -1,24 +1,21 @@
 import { Nominal } from 'simplytyped';
-import { isObject, isString, omit } from 'lodash/fp';
-import { Observable } from 'rxjs';
+import { isObject, omit } from 'lodash/fp';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import * as e from 'fp-ts/lib/Either';
+import * as o from 'fp-ts/lib/Option';
 
 import {
   Token, Expression, Sonata, Sound,
   Widget, Text, ImageAsset, Sandbox, Shape, Style, Animation, ImageAssetId, GameEntityParser, ModuleId, toImageId, SetupId
 } from './';
-import { enrichEntity } from '../shared';
-import { Dictionary, Tagged, toTagged, UUIDv4, Url, ParsingError, CannotBeEmpty, MustBeAstring, InvalidPayload } from '../types';
 
+import { Dictionary, Tagged, UUIDv4, Url, ParsingError, InvalidPayload, PayloadIsNotAnObject, toParsingError } from '../types';
+import { enrichEntity, CannotBeEmpty, MustBeAstring, nonEmptyObject, parseObject, unwrapNone, unwrapLeft, unwrapSome, UnknownObject, optionalString, nonEmptyString } from '../parsers';
+import { pipe } from 'fp-ts/lib/pipeable';
 
-const NotAValidGameId = 'NotAValidGameId';
-type InvalidGameId = Tagged<typeof NotAValidGameId>;
 export type GameId = Nominal<UUIDv4, 'GameId'>;
-
-export const toGameId = (source: unknown): GameId | InvalidGameId => {
-  const result = UUIDv4.parse(source);
-  return isString(result) ? result as GameId : toTagged('NotAValidGameId');
-};
 
 type tag = 'Game';
 
@@ -75,11 +72,13 @@ type ReadGameDto = {
 
 type FullGameDto = Omit<GameDBModel, 'public_id'>;
 
-type CreateGameDtoParsingError = ParsingError<InvalidPayload, Partial<{
+type InvalidCreateGameDtoFields = {
   title: CannotBeEmpty | MustBeAstring,
   description: MustBeAstring,
   image: MustBeAstring,
-}>>;
+};
+
+type CreateGameDtoParsingError = ParsingError<InvalidPayload, Partial<InvalidCreateGameDtoFields>>;
 
 type DeleteGameDtoParsingError = ParsingError<InvalidPayload, Partial<{
   id: CannotBeEmpty | MustBeAstring,
@@ -96,16 +95,31 @@ type UpdateGameDtoParsingError = ParsingError<InvalidPayload, Partial<{
   image: MustBeAstring,
 }>>;
 
+type UpdateEntityParsingError = ParsingError<InvalidPayload, Partial<{
+  id: typeof UUIDv4.NotAValidUUID,
+  image: typeof Url.NotAValidUrl,
+}>>;
+
+type CreateEntityParsingError = ParsingError<InvalidPayload, Partial<{
+  image: typeof Url.NotAValidUrl,
+}>>;
+
 type GameOperations = {
 
-  /* FE before send ( validation ), BE on receive */
-  toCreateDto: (input: unknown) => Observable<CreateGameDto | CreateGameDtoParsingError>,
-  toDeleteDto: (input: unknown) => Observable<DeleteGameDto | DeleteGameDtoParsingError>,
-  toEditDto: (input: unknown) => Observable<UpdateGameDto | UpdateGameDtoParsingError>,
-  toReadDto: (input: unknown) => Observable<ReadGameDto | ReadGameDtoParsingError>,
+  toPrimaryId: (input: unknown) => o.Option<GameId>,
 
-  create: (input: CreateGameDto) => CreateGameDto & { public_id: UUIDv4 },
-  update: (input: UpdateGameDto) => Partial<FullGameDto>,
+  /* FE before send ( validation ), BE on receive */
+  toCreateDto: (input: unknown) => Observable<e.Either<CreateGameDtoParsingError, CreateGameDto>>,
+  toDeleteDto: (input: unknown) => Observable<e.Either<DeleteGameDtoParsingError, DeleteGameDto>>,
+  toUpdateDto: (input: unknown) => Observable<e.Either<UpdateGameDtoParsingError, UpdateGameDto>>,
+  toReadDto: (input: unknown) => Observable<e.Either<ReadGameDtoParsingError, ReadGameDto>>,
+
+  create: (input: CreateGameDto) =>
+    e.Either<
+      CreateEntityParsingError,
+      Omit<GameDBModel, 'id' | 'public_id'> & { public_id: UUIDv4 }
+    >,
+  update: (input: UpdateGameDto) => e.Either<UpdateEntityParsingError, Omit<GameDBModel, 'id' | 'public_id'>>,
 
   /* BE before response, 'public_id' becomes 'id' here. DB corruption validation
   could possibly happen here */
@@ -118,6 +132,44 @@ type GameOperations = {
 
 export const GameEntity: GameOperations = {
 
+  toPrimaryId: (input) => {
+    return UUIDv4.parse(input) as o.Option<GameId>;
+  },
+
+  toCreateDto(input) {
+
+    return of(nonEmptyObject(input))
+      .pipe(
+        switchMap(opt => {
+
+          if (o.isSome(opt)) {
+            const values = opt.value;
+
+            return of(
+              pipe(
+                parseObject
+              )
+            )
+
+            return of(parseObject<CreateGameDto, InvalidCreateGameDtoFields>({
+              image: optionalString(values.image),
+              title: nonEmptyString(values.title),
+              description: optionalString(values.description)
+            })).pipe(
+              map(res => {
+                if (e.isLeft(res)) {
+                  return toParsingError<InvalidPayload, InvalidCreateGameDtoFields>(InvalidPayload, InvalidPayload, res.left)
+                }
+                return res;
+              })
+            )
+          }
+
+          return of(e.left(toParsingError<InvalidPayload>(PayloadIsNotAnObject, InvalidPayload)))
+        }),
+      )
+
+  }
 }
 
 const GameLanguage: GameEntityParser<GameLanguage, DtoGameLanguage, RuntimeGameLanguage> = {
@@ -151,7 +203,7 @@ const GameLanguage: GameEntityParser<GameLanguage, DtoGameLanguage, RuntimeGameL
       ...dtoLanguage,
       __tag: 'GameLanguage',
       id: toGameLanguageId(dtoLanguage.id),
-      owner: toGameId(dtoLanguage.owner),
+      owner: GameEntity.toPrimaryId(dtoLanguage.owner),
       image: toImageId(dtoLanguage.image),
     }
   },

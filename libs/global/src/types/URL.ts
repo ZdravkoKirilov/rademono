@@ -1,22 +1,16 @@
 import { isString } from "lodash/fp";
 import validator from "validator";
-import { Never } from "./Never";
+import * as o from 'fp-ts/lib/Option';
 
-import { Tagged, toTagged } from "./Tagged";
+import { Never } from "./Never";
 
 export type Url<A extends string = string> = A & Never<"__Url__">;
 
 const NotAValidUrl = 'NotAValidUrl';
 
-type ParseError = Tagged<typeof NotAValidUrl>;
+const parse = (value: unknown): o.Option<Url> => {
+  const trimmed = isString(value) ? value.trim() : '';
+  return validator.isURL(trimmed) ? o.some(trimmed as Url) : o.none;
+};
 
-export const parse = (value: unknown): Url | ParseError => {
-  if (!isString(value)) {
-    return toTagged(NotAValidUrl);
-  }
-  if (!validator.isURL(value.trim())) {
-    return toTagged(NotAValidUrl);
-  }
-  return value as Url;
-}
-  
+export const Url = { parse, NotAValidUrl };
