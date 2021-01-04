@@ -1,5 +1,5 @@
-import { Observable, of } from "rxjs";
-import { filter, map } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { filter, map, switchMap, of } from "rxjs/operators";
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 
@@ -32,5 +32,22 @@ export const unwrapNone = (callback: () => unknown) => (source: Observable<o.Opt
   return source.pipe(
     filter(o.isSome),
     map(() => callback())
+  );
+};
+
+
+export const unwrapOption = <Value>(
+  onNone: () => Observable<unknown>,
+  onSome: (value: Value) => Observable<Value>
+) => (opt: o.Option<Value>) => (source: Observable<o.Option<Value>>) => {
+
+  if (o.isSome(opt)) {
+    return source.pipe(
+      switchMap(() => of(onSome(opt.value)))
+    )
+  }
+
+  return source.pipe(
+    switchMap(() => of(onNone()))
   );
 };

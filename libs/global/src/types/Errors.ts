@@ -12,7 +12,7 @@ export type ParsingError<Message, Errors> = Tagged<typeof InvalidPayload | typeo
   errors?: Partial<Errors>;
 }>;
 
-export const toParsingError = <Message, Errors = {}>(
+export const toParsingError = <Message = '', Errors = {}>(
   tag: InvalidPayload | PayloadIsNotAnObject,
   message?: Message,
   errors?: Errors,

@@ -5,6 +5,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 import {
   Token, Expression, Sonata, Sound,
@@ -12,8 +13,7 @@ import {
 } from './';
 
 import { Dictionary, Tagged, UUIDv4, Url, ParsingError, InvalidPayload, PayloadIsNotAnObject, toParsingError } from '../types';
-import { enrichEntity, CannotBeEmpty, MustBeAstring, nonEmptyObject, parseObject, unwrapNone, unwrapLeft, unwrapSome, UnknownObject, optionalString, nonEmptyString } from '../parsers';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { enrichEntity, CannotBeEmpty, MustBeAstring, nonEmptyObject, parseObject, optionalString, nonEmptyString } from '../parsers';
 
 /*
   toCreateDto, toUpdateDto, toDeleteDto - FE edit, BE input, ( with validation )
@@ -153,37 +153,24 @@ export const GameEntity: GameOperations = {
 
   toCreateDto(input) {
 
-    return of(nonEmptyObject(input))
+    return nonEmptyObject(input)
       .pipe(
         switchMap(opt => {
 
           if (o.isSome(opt)) {
             const values = opt.value;
 
-            return of(
-              pipe(
-                parseObject
-              )
-            )
-
-            return of(parseObject<CreateGameDto, InvalidCreateGameDtoFields>({
+            return parseObject<CreateGameDto, InvalidCreateGameDtoFields>({
               image: optionalString(values.image),
               title: nonEmptyString(values.title),
-              description: optionalString(values.description)
-            })).pipe(
-              map(res => {
-                if (e.isLeft(res)) {
-                  return toParsingError<InvalidPayload, InvalidCreateGameDtoFields>(InvalidPayload, InvalidPayload, res.left)
-                }
-                return res;
-              })
-            )
+              description: optionalString(values.description),
+            });
+            
           }
 
           return of(e.left(toParsingError<InvalidPayload>(PayloadIsNotAnObject, InvalidPayload)))
         }),
-      )
-
+      );
   }
 }
 
