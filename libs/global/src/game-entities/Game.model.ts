@@ -15,6 +15,21 @@ import { Dictionary, Tagged, UUIDv4, Url, ParsingError, InvalidPayload, PayloadI
 import { enrichEntity, CannotBeEmpty, MustBeAstring, nonEmptyObject, parseObject, unwrapNone, unwrapLeft, unwrapSome, UnknownObject, optionalString, nonEmptyString } from '../parsers';
 import { pipe } from 'fp-ts/lib/pipeable';
 
+/*
+  toCreateDto, toUpdateDto, toDeleteDto - FE edit, BE input, ( with validation )
+  toReadDto - BE response ( no validation ) DTO version of public entity
+
+  toPublicEntity - FE on receive ( no validation ), FE on form change ( with validation ),
+    entity with limited fields
+    
+  toRichEntity - FE, populated entity
+
+  create - BE, full entity ( has id, which the repository will use as public_id) (has validation)
+  update - BE, full entity ( has validation )
+  toEntity - BE during repo read, full fields entity ( has validation )
+
+*/
+
 export type GameId = Nominal<UUIDv4, 'GameId'>;
 
 type tag = 'Game';
