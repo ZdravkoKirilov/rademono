@@ -23,7 +23,6 @@
     "lodash": "^4.17.20",
     "rxjs": "^6.6.3",
     "simplytyped": "^3.3.0",
-    "typeorm": "^0.2.29",
     "uuid": "^8.3.2",
     "validator": "^13.5.2"
   }

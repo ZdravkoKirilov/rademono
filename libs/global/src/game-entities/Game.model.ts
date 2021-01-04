@@ -1,11 +1,10 @@
 import { Nominal } from 'simplytyped';
-import { isObject, omit } from 'lodash/fp';
-import { Observable, of } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { IsOptional, IsString, validate } from 'class-validator';
+import { plainToClass } from 'class-transformer';
 
 import {
   Token, Expression, Sonata, Sound,
@@ -13,7 +12,8 @@ import {
 } from './';
 
 import { Dictionary, Tagged, UUIDv4, Url, ParsingError, InvalidPayload, PayloadIsNotAnObject, toParsingError } from '../types';
-import { enrichEntity, CannotBeEmpty, MustBeAstring, nonEmptyObject, parseObject, optionalString, nonEmptyString } from '../parsers';
+import { enrichEntity, CannotBeEmpty, MustBeAstring, nonEmptyObject, parseObject, optionalString, nonEmptyString, StringOfLength } from '../parsers';
+import { isObject } from 'lodash';
 
 /*
   toCreateDto, toUpdateDto, toDeleteDto - FE edit, BE input, ( with validation )
@@ -37,55 +37,41 @@ type tag = 'Game';
 export type Game = Tagged<tag, {
   id: GameId;
 
-  title: string;
-  description?: string;
+  title: StringOfLength<2, 100>;
+  description?: StringOfLength<2, 2000>;
   image?: Url;
 
 }>;
 
-@Entity()
-export class GameDBModel {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column('uuid')
-  public_id: string;
-
-  @Column({ length: 500 })
-  title: string;
-
-  @Column('text')
-  description?: string;
-
-  @Column('text')
-  image?: string;
-
-}
-
 export type TaggedGameDto = Tagged<tag, CreateGameDto | UpdateGameDto | DeleteGameDto>;
 
-type CreateGameDto = {
+class BaseGameDto {
+  @IsString()
   title: string;
-  description: string;
-  image: string;
-};
 
-type UpdateGameDto = {
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  image?: string;
+}
+
+class UpdateGameDto extends BaseGameDto {
+  @IsString()
   id: string;
-  title: string;
-  description: string;
-  image: string;
-};
+}
 
-type DeleteGameDto = {
+class DeleteGameDto {
+  @IsString()
+  id: string;
+}
+
+class ReadGameDto extends BaseGameDto {
+  @IsString()
   id: string;
 };
-
-type ReadGameDto = {
-  id: string;
-};
-
-type FullGameDto = Omit<GameDBModel, 'public_id'>;
 
 type InvalidCreateGameDtoFields = {
   title: CannotBeEmpty | MustBeAstring,
@@ -152,91 +138,17 @@ export const GameEntity: GameOperations = {
   },
 
   toCreateDto(input) {
+    if (!isObject(input)) {
+      return e.left(PayloadIsNotAnObject);
+    }
+    const dto = plainToClass(BaseGameDto, input);
+    return from(validate(dto, { whitelist: true })).pipe(
+      map(errors => {
 
-    return nonEmptyObject(input)
-      .pipe(
-        switchMap(opt => {
-
-          if (o.isSome(opt)) {
-            const values = opt.value;
-
-            return parseObject<CreateGameDto, InvalidCreateGameDtoFields>({
-              image: optionalString(values.image),
-              title: nonEmptyString(values.title),
-              description: optionalString(values.description),
-            });
-            
-          }
-
-          return of(e.left(toParsingError<InvalidPayload>(PayloadIsNotAnObject, InvalidPayload)))
-        }),
-      );
+      })
+    )
   }
 }
-
-const GameLanguage: GameEntityParser<GameLanguage, DtoGameLanguage, RuntimeGameLanguage> = {
-
-  fromUnknown: {
-
-    toEntity(input: unknown) {
-
-      if (!isObject(input)) {
-        throw new Error('NotAnObject');
-      }
-
-      return { //TODO: don't spread
-        __tag: 'GameLanguage',
-        ...input
-      } as GameLanguage;
-    },
-
-  },
-
-  toDto(language) {
-    return {
-      ...omit('__tag', language),
-      id: Number(language.id),
-      owner: Number(language.owner),
-      image: Number(language.image),
-    };
-  },
-  toEntity(dtoLanguage) {
-    return {
-      ...dtoLanguage,
-      __tag: 'GameLanguage',
-      id: toGameLanguageId(dtoLanguage.id),
-      owner: GameEntity.toPrimaryId(dtoLanguage.owner),
-      image: toImageId(dtoLanguage.image),
-    }
-  },
-
-  toRuntime(context, language) {
-    return enrichEntity<GameLanguage, RuntimeGameLanguage>(context.conf, {
-      image: 'images',
-    }, language);
-  }
-};
-
-export type GameLanguageId = Nominal<string, 'GameLanguageId'>;
-export const toGameLanguageId = (source: unknown) => String(source) as GameLanguageId;
-
-export type GameLanguage = Tagged<'GameLanguage', {
-  id: GameLanguageId;
-  owner: GameId;
-  name: string;
-  display_name?: string;
-  image?: ImageAssetId;
-}>;
-
-export type RuntimeGameLanguage = Omit<GameLanguage, 'image'> & {
-  image?: ImageAsset;
-};
-
-export type DtoGameLanguage = Omit<GameLanguage, '__tag' | 'id' | 'owner' | 'image'> & {
-  id: number;
-  owner: number;
-  image: number;
-};
 
 export type GameTemplate = {
   tokens: Dictionary<Token>;
