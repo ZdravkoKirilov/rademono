@@ -1,27 +1,58 @@
-import { Tagged } from "./Tagged";
+import { ValidationError } from "class-validator";
 
-export const PayloadIsNotAnObject = 'PayloadIsNotAnObject';
-export const InvalidPayload = 'InvalidPayload';
-export const CorruptedData = 'CorruptedData';
+export enum GenericErrors {
+  PayloadIsNotAnObject = 'PayloadIsNotAnObject',
+}
 
-export type PayloadIsNotAnObject = typeof PayloadIsNotAnObject;
-export type InvalidPayload = typeof InvalidPayload;
+type FieldError = Pick<ValidationError, 'property' | 'constraints'> & { name: string };
 
-export type ParsingError<Message, Errors> = Tagged<typeof InvalidPayload | typeof PayloadIsNotAnObject, {
-  message?: Message;
-  errors?: Partial<Errors>;
-}>;
+export const toFieldErrors = (source: ValidationError[]): FieldError[] => {
+  return source.map(error => ({
+    property: error.property,
+    constraints: error.constraints,
+    name: error?.contexts?.name
+  }));
+}
 
-export const toParsingError = <Message = '', Errors = {}>(
-  tag: InvalidPayload | PayloadIsNotAnObject,
-  message?: Message,
-  errors?: Errors,
-): ParsingError<Message, Errors> => ({
-  __tag: tag,
-  message, errors
-} as const)
+export class ParsingError extends Error {
+  name = 'ParsingError';
+  errors: FieldError[];
 
-export type CorruptedDataError = Tagged<typeof CorruptedData, {
-  type: string;
-  id: string;
-}>;
+  constructor(public message: string, errors?: ValidationError[]) {
+    super();
+    this.errors = errors ? toFieldErrors(errors) : [];
+  }
+};
+
+export class UnexpectedError<Error = unknown> extends Error {
+  name = 'UnexpectedError';
+
+  constructor(public message: string, public error: Error) {
+    super();
+  }
+};
+
+export class MalformedPayloadError extends Error {
+  name = 'MalformedPayload';
+
+  constructor(public message: string = GenericErrors.PayloadIsNotAnObject) {
+    super();
+  }
+}
+
+export class InvalidCommandError extends Error {
+  name = 'InvalidCommand';
+
+  constructor(public message: string) {
+    super();
+  }
+}
+
+export type HttpException = {
+  statusCode: number;
+  message: string;
+  name: string; // localization key
+  errors?: FieldError[];
+}
+
+export const toHttpException = (data: HttpException) => data;

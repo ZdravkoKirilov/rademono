@@ -7,8 +7,8 @@ export type UUIDv4 = string & Never<"__UUIDv4__">;
 
 const NotAValidUUID = 'NotAValidUUID';
 
-const parse = (value: unknown): o.Option<UUIDv4> => {
-  return validate(String(value)) ? o.some(value as UUIDv4) : o.none
+const parse = <T extends UUIDv4 = UUIDv4>(value: unknown): o.Option<T> => {
+  return validate(String(value)) ? o.some(value as T) : o.none
 };
 
 const generate = <T extends UUIDv4>() => v4() as T;

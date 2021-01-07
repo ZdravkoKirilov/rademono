@@ -1,50 +1,38 @@
 import { Nominal } from 'simplytyped';
-import { Observable, from } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
-import { IsOptional, IsString, validate } from 'class-validator';
-import { plainToClass } from 'class-transformer';
+import { IsOptional, IsString, IsUrl, IsUUID, Max, Min } from 'class-validator';
 
 import {
   Token, Expression, Sonata, Sound,
-  Widget, Text, ImageAsset, Sandbox, Shape, Style, Animation, ImageAssetId, GameEntityParser, ModuleId, toImageId, SetupId
+  Widget, Text, ImageAsset, Sandbox, Shape, Style, Animation, ModuleId, SetupId
 } from './';
-
-import { Dictionary, Tagged, UUIDv4, Url, ParsingError, InvalidPayload, PayloadIsNotAnObject, toParsingError } from '../types';
-import { enrichEntity, CannotBeEmpty, MustBeAstring, nonEmptyObject, parseObject, optionalString, nonEmptyString, StringOfLength } from '../parsers';
-import { isObject } from 'lodash';
-
-/*
-  toCreateDto, toUpdateDto, toDeleteDto - FE edit, BE input, ( with validation )
-  toReadDto - BE response ( no validation ) DTO version of public entity
-
-  toPublicEntity - FE on receive ( no validation ), FE on form change ( with validation ),
-    entity with limited fields
-    
-  toRichEntity - FE, populated entity
-
-  create - BE, full entity ( has id, which the repository will use as public_id) (has validation)
-  update - BE, full entity ( has validation )
-  toEntity - BE during repo read, full fields entity ( has validation )
-
-*/
+import { Dictionary, UUIDv4, Url, ParsingError, MalformedPayloadError } from '../types';
+import { parseAndValidate, StringOfLength } from '../parsers';
 
 export type GameId = Nominal<UUIDv4, 'GameId'>;
 
-type tag = 'Game';
+export class Game {
 
-export type Game = Tagged<tag, {
+  @IsUUID('4')
   id: GameId;
 
+  @IsString()
+  @Min(2)
+  @Max(100)
   title: StringOfLength<2, 100>;
+
+  @IsString()
+  @Min(2)
+  @Max(2000)
   description?: StringOfLength<2, 2000>;
+
+  @IsUrl()
   image?: Url;
+}
 
-}>;
-
-export type TaggedGameDto = Tagged<tag, CreateGameDto | UpdateGameDto | DeleteGameDto>;
-
+export class FullGame extends Game { };
 class BaseGameDto {
   @IsString()
   title: string;
@@ -57,6 +45,8 @@ class BaseGameDto {
   @IsString()
   image?: string;
 }
+
+class CreateGameDto extends BaseGameDto { };
 
 class UpdateGameDto extends BaseGameDto {
   @IsString()
@@ -73,80 +63,33 @@ class ReadGameDto extends BaseGameDto {
   id: string;
 };
 
-type InvalidCreateGameDtoFields = {
-  title: CannotBeEmpty | MustBeAstring,
-  description: MustBeAstring,
-  image: MustBeAstring,
-};
-
-type CreateGameDtoParsingError = ParsingError<InvalidPayload, Partial<InvalidCreateGameDtoFields>>;
-
-type DeleteGameDtoParsingError = ParsingError<InvalidPayload, Partial<{
-  id: CannotBeEmpty | MustBeAstring,
-}>>;
-
-type ReadGameDtoParsingError = ParsingError<InvalidPayload, Partial<{
-  id: CannotBeEmpty | MustBeAstring,
-}>>;
-
-type UpdateGameDtoParsingError = ParsingError<InvalidPayload, Partial<{
-  id: CannotBeEmpty | MustBeAstring,
-  title: CannotBeEmpty | MustBeAstring,
-  description: MustBeAstring,
-  image: MustBeAstring,
-}>>;
-
-type UpdateEntityParsingError = ParsingError<InvalidPayload, Partial<{
-  id: typeof UUIDv4.NotAValidUUID,
-  image: typeof Url.NotAValidUrl,
-}>>;
-
-type CreateEntityParsingError = ParsingError<InvalidPayload, Partial<{
-  image: typeof Url.NotAValidUrl,
-}>>;
-
 type GameOperations = {
 
-  toPrimaryId: (input: unknown) => o.Option<GameId>,
+  toId: (input: unknown) => o.Option<GameId>
 
   /* FE before send ( validation ), BE on receive */
-  toCreateDto: (input: unknown) => Observable<e.Either<CreateGameDtoParsingError, CreateGameDto>>,
-  toDeleteDto: (input: unknown) => Observable<e.Either<DeleteGameDtoParsingError, DeleteGameDto>>,
-  toUpdateDto: (input: unknown) => Observable<e.Either<UpdateGameDtoParsingError, UpdateGameDto>>,
-  toReadDto: (input: unknown) => Observable<e.Either<ReadGameDtoParsingError, ReadGameDto>>,
+  toCreateDto: (input: unknown) => Observable<e.Either<ParsingError | MalformedPayloadError, CreateGameDto>>,
+  toDeleteDto: (input: unknown) => Observable<e.Either<ParsingError, DeleteGameDto>>,
+  toUpdateDto: (input: unknown) => Observable<e.Either<ParsingError, UpdateGameDto>>,
+  toReadDto: (input: unknown) => Observable<e.Either<ParsingError, ReadGameDto>>,
 
-  create: (input: CreateGameDto) =>
-    e.Either<
-      CreateEntityParsingError,
-      Omit<GameDBModel, 'id' | 'public_id'> & { public_id: UUIDv4 }
-    >,
-  update: (input: UpdateGameDto) => e.Either<UpdateEntityParsingError, Omit<GameDBModel, 'id' | 'public_id'>>,
-
-  /* BE before response, 'public_id' becomes 'id' here. DB corruption validation
-  could possibly happen here */
-  toFullDto: (input: GameDBModel) => FullGameDto,
+  create: (input: CreateGameDto) => Observable<e.Either<ParsingError, FullGame>>;
+  update: (input: UpdateGameDto) => Observable<e.Either<ParsingError, FullGame>>,
 
   /* FE on receive */
-  toEntity: (input: FullGameDto) => Game,
+  toEntity: (input: ReadGameDto) => Game,
+  toFullEntity: (input: unknown) => Observable<e.Either<ParsingError, FullGame>>;
 
 };
 
 export const GameEntity: GameOperations = {
 
-  toPrimaryId: (input) => {
-    return UUIDv4.parse(input) as o.Option<GameId>;
+  toId: (input) => {
+    return UUIDv4.parse(input);
   },
 
   toCreateDto(input) {
-    if (!isObject(input)) {
-      return e.left(PayloadIsNotAnObject);
-    }
-    const dto = plainToClass(BaseGameDto, input);
-    return from(validate(dto, { whitelist: true })).pipe(
-      map(errors => {
-
-      })
-    )
+    return parseAndValidate(input, CreateGameDto);
   }
 }
 
