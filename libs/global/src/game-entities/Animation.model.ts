@@ -2,7 +2,7 @@ import { Nominal, Omit } from 'simplytyped';
 import { omit, isObject } from 'lodash/fp';
 
 import { Dictionary, Tagged } from '../types';
-import { enrichEntity, parseAndBind, safeJSON } from '../shared';
+import { enrichEntity, parseAndBind, safeJSON } from '../parsers';
 
 import { Style } from "./Style.model";
 import { ParamedExpressionFunc } from "./Expression.model";

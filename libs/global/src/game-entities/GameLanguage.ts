@@ -1,3 +1,12 @@
+import { isObject, omit } from "lodash/fp";
+import { Nominal } from "simplytyped";
+
+import { enrichEntity } from "../parsers";
+import { Tagged } from "../types";
+import { GameEntityParser } from "./Base.model";
+import { GameId, GameParser } from "./Game.model";
+import { ImageAsset, ImageAssetId, toImageId } from "./ImageAsset.model";
+
 const GameLanguage: GameEntityParser<GameLanguage, DtoGameLanguage, RuntimeGameLanguage> = {
 
   fromUnknown: {
@@ -29,9 +38,9 @@ const GameLanguage: GameEntityParser<GameLanguage, DtoGameLanguage, RuntimeGameL
       ...dtoLanguage,
       __tag: 'GameLanguage',
       id: toGameLanguageId(dtoLanguage.id),
-      owner: GameEntity.toPrimaryId(dtoLanguage.owner),
+      owner: GameParser.toPrimaryId(dtoLanguage.owner),
       image: toImageId(dtoLanguage.image),
-    }
+    } as any
   },
 
   toRuntime(context, language) {

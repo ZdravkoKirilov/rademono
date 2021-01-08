@@ -13,7 +13,8 @@ import { DtoSonata, DtoSonataStep, RuntimeSonata, RuntimeSonataStep, Sonata, Son
 import { DtoShape, DtoShapePoint, RuntimeShape, Shape, ShapePoint } from './Shape.model';
 import { DtoSandbox, RuntimeSandbox, Sandbox } from './Sandbox.model';
 import { Translation, Text, DtoText, RuntimeText, DtoTranslation, RuntimeTranslation } from './Text.model';
-import { DtoGameLanguage, Game, GameLanguage, RuntimeGameLanguage } from './Game.model';
+import { DtoGameLanguage, GameLanguage, RuntimeGameLanguage } from './GameLanguage';
+import { Game } from './Game.model';
 
 export type VersionedEntity = Module | Setup;
 export type DtoVersionedEntity = DtoModule | DtoSetup;

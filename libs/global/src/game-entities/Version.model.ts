@@ -3,9 +3,9 @@ import { isObject, omit } from 'lodash/fp';
 
 import { Module, ModuleId, toModuleId } from "./Module.model";
 import { GameEntityParser } from './Base.model';
-import { GameId, toGameId } from './Game.model';
+import { GameId, GameParser } from './Game.model';
 import { Tagged } from '../types';
-import { enrichEntity } from '../shared';
+import { enrichEntity } from '../parsers';
 
 export type VersionId = Nominal<string, 'VersionId'>;
 export const toVersionId = (source: unknown) => String(source) as VersionId;
@@ -63,9 +63,9 @@ export const Version: GameEntityParser<Version, DtoVersion, RuntimeVersion> = {
       ...dto,
       __tag: 'Version',
       id: toVersionId(dto.id),
-      game: toGameId(dto.game),
+      game: GameParser.toPrimaryId(dto.game),
       menu: toModuleId(dto.menu),
-    };
+    } as any;
   },
 
   toDto(entity) {

@@ -9,7 +9,7 @@ import { ImageAsset, ImageAssetId, toImageId } from "./ImageAsset.model";
 import { CoreStyles, Style, toStyleId } from "./Style.model";
 import { Shape, ShapeId, toShapeId } from "./Shape.model";
 import { Tagged } from "../types";
-import { enrichEntity, safeJSON } from "../shared";
+import { enrichEntity, safeJSON } from "../parsers";
 
 export type TokenId = Nominal<string, 'TokenId'>;
 export const toTokenId = (source: unknown) => String(source) as TokenId;

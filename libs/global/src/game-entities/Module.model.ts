@@ -5,7 +5,7 @@ import { GameEntityParser } from './Base.model';
 import { toWidgetId, Widget, WidgetId } from './Widget.model';
 import { toVersionId, VersionId } from './Version.model';
 import { Tagged } from '../types';
-import { enrichEntity } from '../shared';
+import { enrichEntity } from '../parsers';
 
 export type ModuleId = Nominal<string, 'ModuleId'>;
 export const toModuleId = (source: unknown) => String(source) as ModuleId;

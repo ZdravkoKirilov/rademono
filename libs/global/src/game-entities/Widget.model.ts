@@ -7,7 +7,7 @@ import { DtoWidgetNode, WidgetNode } from "./WidgetNode.model";
 import { ImageAsset, ImageAssetId, toImageId } from './ImageAsset.model';
 import { toModuleId } from './Module.model';
 import { Tagged } from '../types';
-import { enrichEntity, parseAndBind, safeJSON } from '../shared';
+import { enrichEntity, parseAndBind, safeJSON } from '../parsers';
 
 export type WidgetId = Nominal<string, 'WidgetId'>;
 

@@ -15,7 +15,7 @@ import { Module, ModuleId, toModuleId } from "./Module.model";
 import { ImageAsset, ImageAssetId, toImageId } from './ImageAsset.model';
 import { CoreStyles, Style } from './Style.model';
 import { Tagged } from '../types';
-import { enrichEntity, parseAndBind, safeJSON } from '../shared';
+import { enrichEntity, parseAndBind, safeJSON } from '../parsers';
 
 export type WidgetNodeId = Nominal<string, 'WidgetNodeId'>;
 export const toNodeId = (source: unknown) => String(source) as WidgetNodeId;

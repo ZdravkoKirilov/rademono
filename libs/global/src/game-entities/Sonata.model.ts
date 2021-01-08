@@ -5,7 +5,7 @@ import { Sound, SoundId, toSoundId } from "./Sound.model";
 import { BaseModel, GameEntityParser } from "./Base.model";
 import { toModuleId } from './Module.model';
 import { Tagged } from '../types';
-import { enrichEntity } from '../shared';
+import { enrichEntity } from '../parsers';
 
 export type SonataId = Nominal<string, 'SonataId'>;
 export const toSonataId = (source: unknown) => String(source) as SonataId;

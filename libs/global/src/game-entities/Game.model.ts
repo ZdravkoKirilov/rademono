@@ -1,39 +1,57 @@
 import { Nominal } from 'simplytyped';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 import { IsOptional, IsString, IsUrl, IsUUID, Max, Min } from 'class-validator';
+import { classToPlain, Expose, plainToClass } from 'class-transformer';
 
 import {
   Token, Expression, Sonata, Sound,
   Widget, Text, ImageAsset, Sandbox, Shape, Style, Animation, ModuleId, SetupId
 } from './';
 import { Dictionary, UUIDv4, Url, ParsingError, MalformedPayloadError } from '../types';
-import { parseAndValidate, StringOfLength } from '../parsers';
+import { parseAndValidateObject, parseAndValidateUnknown, StringOfLength, ClassType } from '../parsers';
 
 export type GameId = Nominal<UUIDv4, 'GameId'>;
 
 export class Game {
 
-  @IsUUID('4')
   id: GameId;
+  title: StringOfLength<2, 100>;
+  description?: StringOfLength<2, 2000>;
+  image?: Url;
+}
 
+abstract class ValidatedGameBase {
+
+  @Expose()
   @IsString()
   @Min(2)
   @Max(100)
   title: StringOfLength<2, 100>;
 
+  @Expose()
   @IsString()
   @Min(2)
   @Max(2000)
   description?: StringOfLength<2, 2000>;
 
+  @Expose()
   @IsUrl()
   image?: Url;
+
 }
 
-export class FullGame extends Game { };
-class BaseGameDto {
+export class FullGame extends ValidatedGameBase {
+
+  @Expose({ name: 'id' })
+  @IsUUID('4')
+  public_id: GameId;
+}
+
+export class NewGame extends ValidatedGameBase { }
+
+abstract class BaseGameDto {
   @IsString()
   title: string;
 
@@ -47,51 +65,89 @@ class BaseGameDto {
 }
 
 class CreateGameDto extends BaseGameDto { };
-
 class UpdateGameDto extends BaseGameDto {
   @IsString()
   id: string;
 }
 
-class DeleteGameDto {
-  @IsString()
-  id: string;
-}
-
 class ReadGameDto extends BaseGameDto {
-  @IsString()
   id: string;
 };
 
-type GameOperations = {
+type AbstractEntity<Id, Entity, CreateDto, UpdateDto, ReadDto, NewInstance, FullInstance> = {
+  toPrimaryId: (input: unknown) => o.Option<Id>
 
-  toId: (input: unknown) => o.Option<GameId>
+  /* FE before send, BE on receive */
+  toCreateDto: (input: unknown) => Observable<e.Either<ParsingError | MalformedPayloadError, CreateDto>>,
+  toUpdateDto: (input: unknown) => Observable<e.Either<ParsingError | MalformedPayloadError, UpdateDto>>,
 
-  /* FE before send ( validation ), BE on receive */
-  toCreateDto: (input: unknown) => Observable<e.Either<ParsingError | MalformedPayloadError, CreateGameDto>>,
-  toDeleteDto: (input: unknown) => Observable<e.Either<ParsingError, DeleteGameDto>>,
-  toUpdateDto: (input: unknown) => Observable<e.Either<ParsingError, UpdateGameDto>>,
-  toReadDto: (input: unknown) => Observable<e.Either<ParsingError, ReadGameDto>>,
-
-  create: (input: CreateGameDto) => Observable<e.Either<ParsingError, FullGame>>;
-  update: (input: UpdateGameDto) => Observable<e.Either<ParsingError, FullGame>>,
+  /* FE: validation combined with the above DTO; BE - same */
+  create: (input: CreateDto) => Observable<e.Either<ParsingError, NewInstance>>;
+  update: (input: UpdateDto) => Observable<e.Either<ParsingError, FullInstance>>,
 
   /* FE on receive */
-  toEntity: (input: ReadGameDto) => Game,
-  toFullEntity: (input: unknown) => Observable<e.Either<ParsingError, FullGame>>;
+  toEntity: (input: ReadDto) => Entity,
 
-};
+  // BE before response to FE
+  toReadDto: (input: FullInstance) => ReadDto,
+  // BE Repo after read from DB
+  toFullEntity: (input: unknown) => Observable<e.Either<ParsingError, FullInstance>>;
+}
 
-export const GameEntity: GameOperations = {
+const createAbstractEntity = <Id extends UUIDv4>() => <Entity, CreateDto, UpdateDto, ReadDto, NewInstance, FullInstance>(
+  {
+    entityType, createDtoType, updateDtoType, readDtoType, newInstanceType, fullInstanceType
+  }: {
+    entityType: ClassType<Entity>,
+    createDtoType: ClassType<CreateDto>,
+    updateDtoType: ClassType<UpdateDto>,
+    readDtoType: ClassType<ReadDto>,
+    newInstanceType: ClassType<NewInstance>,
+    fullInstanceType: ClassType<FullInstance>,
+  }
+): AbstractEntity<Id, Entity, CreateDto, UpdateDto, ReadDto, NewInstance, FullInstance> => ({
 
-  toId: (input) => {
-    return UUIDv4.parse(input);
+  toPrimaryId: (input) => {
+    return UUIDv4.parse(input) as o.Option<Id>;
   },
 
   toCreateDto(input) {
-    return parseAndValidate(input, CreateGameDto);
+    return parseAndValidateUnknown(input, createDtoType);
+  },
+
+  toUpdateDto(input) {
+    return parseAndValidateUnknown(input, updateDtoType);
+  },
+
+  toReadDto(input) {
+    return plainToClass(readDtoType, classToPlain(input));
+  },
+
+  toEntity(input) {
+    return plainToClass(entityType, input);
+  },
+
+  toFullEntity(input) {
+    return parseAndValidateObject(input, fullInstanceType);
+  },
+
+  create(input) {
+    return parseAndValidateObject(input, newInstanceType);
+  },
+
+  update(input) {
+    return parseAndValidateObject(input, fullInstanceType);
   }
-}
+});
+
+export const GameParser = createAbstractEntity<GameId>()({
+  entityType: Game,
+  createDtoType: CreateGameDto,
+  updateDtoType: UpdateGameDto,
+  readDtoType: ReadGameDto,
+  newInstanceType: NewGame,
+  fullInstanceType: FullGame
+});
 
 export type GameTemplate = {
   tokens: Dictionary<Token>;

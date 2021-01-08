@@ -5,9 +5,10 @@ import { BaseModel, GameEntityParser, WithStyle } from "./Base.model";
 import { ParamedExpressionFunc } from "./Expression.model";
 import { CoreStyles, Style } from "./Style.model";
 import { toModuleId } from './Module.model';
-import { Game, GameLanguage, GameLanguageId, toGameLanguageId } from './Game.model';
+import { Game } from './Game.model';
 import { Tagged } from '../types';
-import { enrichEntity, parseAndBind, safeJSON } from '../shared';
+import { enrichEntity, parseAndBind, safeJSON } from '../parsers';
+import { GameLanguage, GameLanguageId, toGameLanguageId } from './GameLanguage';
 
 export type TextId = Nominal<string, 'TextId'>;
 export const toTextId = (source: unknown) => String(source) as TextId;
@@ -160,7 +161,7 @@ const Translation: GameEntityParser<Translation, DtoTranslation, RuntimeTranslat
 
   toRuntime(context, entity, game: Game) {
     return enrichEntity<Translation, RuntimeTranslation>(context.conf, {
-      language: id => game.languages.find(lang => lang.id === id)
-    }, entity);
+      language: null
+    } as any, entity);
   }
 };

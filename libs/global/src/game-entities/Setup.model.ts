@@ -6,9 +6,9 @@ import { ModuleId } from './Module.model';
 import { toVersionId, VersionId } from './Version.model';
 import { ImageAssetId, toImageId } from './ImageAsset.model';
 import { GameEntityParser } from './Base.model';
-import { GameLanguageId } from './Game.model';
 import { Tagged } from '../types';
-import { enrichEntity, parseAndBind } from '../shared';
+import { enrichEntity, parseAndBind } from '../parsers';
+import { GameLanguageId } from './GameLanguage';
 
 export type SetupId = Nominal<string, 'SetupId'>;
 export const toSetupId = (source: unknown) => String(source) as SetupId;

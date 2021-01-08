@@ -8,7 +8,7 @@ import { Module, ModuleId, toModuleId } from './Module.model';
 import { toNodeId, WidgetNode, WidgetNodeId } from './WidgetNode.model';
 import { Token, TokenId, toTokenId } from './Token.model';
 import { Tagged } from '../types';
-import { enrichEntity, parseAndBind } from '../shared';
+import { enrichEntity, parseAndBind } from '../parsers';
 
 export enum SandboxType {
   'widget' = 'widget',

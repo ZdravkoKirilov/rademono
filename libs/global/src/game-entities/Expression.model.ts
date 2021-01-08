@@ -1,7 +1,7 @@
 import { Omit, Nominal } from 'simplytyped';
 import { omit, isObject } from 'lodash/fp';
 
-import { enrichEntity, parseAndBind } from '../shared';
+import { enrichEntity, parseAndBind } from '../parsers';
 import { GenericSubscription, Tagged } from '../types';
 
 import { BaseModel, GameEntityParser } from "./Base.model";
