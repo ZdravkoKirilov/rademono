@@ -1,17 +1,19 @@
 import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { map } from 'rxjs/operators';
+
 import { GamesService } from './games.service';
-import { CreateGameDto } from './dto/create-game.dto';
-import { UpdateGameDto } from './dto/update-game.dto';
-import { Game } from '@end/global';
 
 @Controller('games')
 export class GamesController {
-  constructor(private readonly gamesService: GamesService) {}
+  constructor(private readonly gamesService: GamesService) { }
 
   @Post()
-  async create(@Body() createGameDto: CreateGameDto): Promise<Game> {
-    const game = await this.gamesService.create(createGameDto);
-    return game;
+  create(@Body() createGamePayload: unknown): unknown {
+    return this.gamesService.create(createGamePayload).pipe(
+      map(result => {
+        // switch
+      })
+    );
   }
 
   @Get()
@@ -25,7 +27,7 @@ export class GamesController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateGameDto: UpdateGameDto) {
+  update(@Param('id') id: string, @Body() updateGameDto: unknown) {
     return this.gamesService.update(+id, updateGameDto);
   }
 

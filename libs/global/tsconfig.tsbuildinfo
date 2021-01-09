@@ -1261,6 +1261,41 @@
         "signature": "f84cac9e5716fb56e44d9ee4fdd5079bf35b4fcabf247d66a2fa92006380822a",
         "affectsGlobalScope": false
       },
+      "./node_modules/class-transformer/ClassTransformOptions.d.ts": {
+        "version": "d3717ebff6037a2e7c72674f085393f58a6825e82a49ac8966234641d230c6b8",
+        "signature": "d3717ebff6037a2e7c72674f085393f58a6825e82a49ac8966234641d230c6b8",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/class-transformer/ClassTransformer.d.ts": {
+        "version": "a866bf053c8578a2784e8c9b1bb657924a2e70ba4793cc047e35e03d84d1a5ec",
+        "signature": "a866bf053c8578a2784e8c9b1bb657924a2e70ba4793cc047e35e03d84d1a5ec",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/class-transformer/metadata/ExposeExcludeOptions.d.ts": {
+        "version": "1df726755b1ba47971bb0e1dd7ca514008a4b4049ce5c84bf7305d6c7cb90ab6",
+        "signature": "1df726755b1ba47971bb0e1dd7ca514008a4b4049ce5c84bf7305d6c7cb90ab6",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/class-transformer/enums/transformation-type.enum.d.ts": {
+        "version": "ba06bf784edafe0db0e2bd1f6ecf3465b81f6b1819871bf190a0e0137b5b7f18",
+        "signature": "ba06bf784edafe0db0e2bd1f6ecf3465b81f6b1819871bf190a0e0137b5b7f18",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/class-transformer/enums/index.d.ts": {
+        "version": "a0500233cb989bcb78f5f1a81f51eabc06b5c39e3042c560a7489f022f1f55a3",
+        "signature": "a0500233cb989bcb78f5f1a81f51eabc06b5c39e3042c560a7489f022f1f55a3",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/class-transformer/decorators.d.ts": {
+        "version": "2d6cba5e473d8ffb9a79966dae588177793ec087753f728377fff22c1e5ae32b",
+        "signature": "2d6cba5e473d8ffb9a79966dae588177793ec087753f728377fff22c1e5ae32b",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/class-transformer/index.d.ts": {
+        "version": "ea4f5e760ac2f6dd1fb06785f38d42b6dde82b29d8a1be10a7540dc598a5e4af",
+        "signature": "ea4f5e760ac2f6dd1fb06785f38d42b6dde82b29d8a1be10a7540dc598a5e4af",
+        "affectsGlobalScope": false
+      },
       "./node_modules/rxjs/internal/Subscription.d.ts": {
         "version": "6cb35d83d21a7e72bd00398c93302749bcd38349d0cc5e76ff3a90c6d1498a4d",
         "signature": "6cb35d83d21a7e72bd00398c93302749bcd38349d0cc5e76ff3a90c6d1498a4d",
@@ -2101,44 +2136,9 @@
         "signature": "e80599bf4ef4579f28b0e623a64064a512330584dde58875b498ff8da7e347f7",
         "affectsGlobalScope": false
       },
-      "./node_modules/class-transformer/ClassTransformOptions.d.ts": {
-        "version": "d3717ebff6037a2e7c72674f085393f58a6825e82a49ac8966234641d230c6b8",
-        "signature": "d3717ebff6037a2e7c72674f085393f58a6825e82a49ac8966234641d230c6b8",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/class-transformer/ClassTransformer.d.ts": {
-        "version": "a866bf053c8578a2784e8c9b1bb657924a2e70ba4793cc047e35e03d84d1a5ec",
-        "signature": "a866bf053c8578a2784e8c9b1bb657924a2e70ba4793cc047e35e03d84d1a5ec",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/class-transformer/metadata/ExposeExcludeOptions.d.ts": {
-        "version": "1df726755b1ba47971bb0e1dd7ca514008a4b4049ce5c84bf7305d6c7cb90ab6",
-        "signature": "1df726755b1ba47971bb0e1dd7ca514008a4b4049ce5c84bf7305d6c7cb90ab6",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/class-transformer/enums/transformation-type.enum.d.ts": {
-        "version": "ba06bf784edafe0db0e2bd1f6ecf3465b81f6b1819871bf190a0e0137b5b7f18",
-        "signature": "ba06bf784edafe0db0e2bd1f6ecf3465b81f6b1819871bf190a0e0137b5b7f18",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/class-transformer/enums/index.d.ts": {
-        "version": "a0500233cb989bcb78f5f1a81f51eabc06b5c39e3042c560a7489f022f1f55a3",
-        "signature": "a0500233cb989bcb78f5f1a81f51eabc06b5c39e3042c560a7489f022f1f55a3",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/class-transformer/decorators.d.ts": {
-        "version": "2d6cba5e473d8ffb9a79966dae588177793ec087753f728377fff22c1e5ae32b",
-        "signature": "2d6cba5e473d8ffb9a79966dae588177793ec087753f728377fff22c1e5ae32b",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/class-transformer/index.d.ts": {
-        "version": "ea4f5e760ac2f6dd1fb06785f38d42b6dde82b29d8a1be10a7540dc598a5e4af",
-        "signature": "ea4f5e760ac2f6dd1fb06785f38d42b6dde82b29d8a1be10a7540dc598a5e4af",
-        "affectsGlobalScope": false
-      },
       "./src/parsers/validate.ts": {
-        "version": "6f12b074dd8723cb81f257fc3c388bf10626940f1f0324bac4a36d9842fb4692",
-        "signature": "94d6b0b9338534b35376ac2fe45d86240463d82d2a00acc9c4bd0ca037899021",
+        "version": "0ee0f20a7a3ef5830115e26f9b2192185198745aa2c4a5461893fcdb0f51f417",
+        "signature": "4e8c6881aea645ce5d03057171e147ff05e5fea1e51c93556ef06534244b0ac3",
         "affectsGlobalScope": false
       },
       "./src/parsers/index.ts": {
@@ -2177,12 +2177,12 @@
         "affectsGlobalScope": false
       },
       "./src/game-entities/Game.model.ts": {
-        "version": "c992c683a0cf1ff3ee69ea45861d490202c177e4401d99d8aa57839668a4ac4f",
-        "signature": "c01780f58dcf158ffed94e1ad9bf252a939113ac28a43eb6534ca51fa7619c52",
+        "version": "c748b23fc5e8d6b4c62c901852ec5a265b7ad7a3e0b6fbc6abc61ddbb949e8a1",
+        "signature": "512f1a38cd263f263ab65dd8b5c0cf652e5f40bf2005de4f1bac46e04150d4c3",
         "affectsGlobalScope": false
       },
       "./src/game-entities/GameLanguage.ts": {
-        "version": "8348dca8419cf8a5efcda8811b1519bc61f64a08c71dbfb2646f6f021db5901d",
+        "version": "9313e3c81f90e3b90003b64cc9dfad80efb4dd87031bdaa8a5ce0f5410d4cbd3",
         "signature": "7d0bd1cdbe7b4ad693801e33e641feb0e762293b9b6b1626002e9e6ee7816c0d",
         "affectsGlobalScope": false
       },
@@ -2207,7 +2207,7 @@
         "affectsGlobalScope": false
       },
       "./src/game-entities/Version.model.ts": {
-        "version": "b3cb836c19d6068af782a7838cb5d30d76464b119bb4998bb8f70a7a5adaca2b",
+        "version": "f6e2944b1e2f3d88f30ea8577597db5cb6cfcb94a5afaf83497d760ebc358286",
         "signature": "df290dd3f809cc5efa48a95b527e46cc4c9a9e896ab28743a5b3fbd4559187f3",
         "affectsGlobalScope": false
       },
@@ -4102,6 +4102,7 @@
         "./src/types/index.ts"
       ],
       "./src/game-entities/Game.model.ts": [
+        "./node_modules/class-transformer/index.d.ts",
         "./node_modules/class-validator/types/index.d.ts",
         "./node_modules/fp-ts/lib/Either.d.ts",
         "./node_modules/fp-ts/lib/Option.d.ts",

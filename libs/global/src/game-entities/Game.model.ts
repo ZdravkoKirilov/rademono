@@ -64,13 +64,13 @@ abstract class BaseGameDto {
   image?: string;
 }
 
-class CreateGameDto extends BaseGameDto { };
-class UpdateGameDto extends BaseGameDto {
+export class CreateGameDto extends BaseGameDto { };
+export class UpdateGameDto extends BaseGameDto {
   @IsString()
   id: string;
 }
 
-class ReadGameDto extends BaseGameDto {
+export class ReadGameDto extends BaseGameDto {
   id: string;
 };
 
