@@ -14,7 +14,7 @@ import { DtoShape, DtoShapePoint, RuntimeShape, Shape, ShapePoint } from './Shap
 import { DtoSandbox, RuntimeSandbox, Sandbox } from './Sandbox.model';
 import { Translation, Text, DtoText, RuntimeText, DtoTranslation, RuntimeTranslation } from './Text.model';
 import { DtoGameLanguage, GameLanguage, RuntimeGameLanguage } from './GameLanguage';
-import { Game } from './Game.model';
+import { Game } from './game';
 
 export type VersionedEntity = Module | Setup;
 export type DtoVersionedEntity = DtoModule | DtoSetup;

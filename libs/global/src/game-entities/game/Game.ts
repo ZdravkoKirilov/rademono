@@ -1,16 +1,15 @@
 import { Nominal } from 'simplytyped';
 import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
 import { IsOptional, IsString, IsUrl, IsUUID, Max, Min } from 'class-validator';
 import { classToPlain, Expose, plainToClass } from 'class-transformer';
 
 import {
   Token, Expression, Sonata, Sound,
   Widget, Text, ImageAsset, Sandbox, Shape, Style, Animation, ModuleId, SetupId
-} from './';
-import { Dictionary, UUIDv4, Url, ParsingError, MalformedPayloadError } from '../types';
-import { parseAndValidateObject, parseAndValidateUnknown, StringOfLength, ClassType } from '../parsers';
+} from '../';
+import { Dictionary, UUIDv4, Url, ParsingError, MalformedPayloadError } from '../../types';
+import { parseAndValidateObject, parseAndValidateUnknown, StringOfLength, ClassType } from '../../parsers';
 
 export type GameId = Nominal<UUIDv4, 'GameId'>;
 
@@ -52,13 +51,16 @@ export class FullGame extends ValidatedGameBase {
 export class NewGame extends ValidatedGameBase { }
 
 abstract class BaseGameDto {
+  @Expose()
   @IsString()
   title: string;
 
+  @Expose()
   @IsOptional()
   @IsString()
   description?: string;
 
+  @Expose()
   @IsOptional()
   @IsString()
   image?: string;
@@ -66,16 +68,18 @@ abstract class BaseGameDto {
 
 export class CreateGameDto extends BaseGameDto { };
 export class UpdateGameDto extends BaseGameDto {
+  @Expose()
   @IsString()
   id: string;
 }
 
 export class ReadGameDto extends BaseGameDto {
+  @Expose()
   id: string;
 };
 
 type AbstractEntity<Id, Entity, CreateDto, UpdateDto, ReadDto, NewInstance, FullInstance> = {
-  toPrimaryId: (input: unknown) => o.Option<Id>
+  toPrimaryId: (input: unknown) => Id
 
   /* FE before send, BE on receive */
   toCreateDto: (input: unknown) => Observable<e.Either<ParsingError | MalformedPayloadError, CreateDto>>,
@@ -108,7 +112,7 @@ const createAbstractEntity = <Id extends UUIDv4>() => <Entity, CreateDto, Update
 ): AbstractEntity<Id, Entity, CreateDto, UpdateDto, ReadDto, NewInstance, FullInstance> => ({
 
   toPrimaryId: (input) => {
-    return UUIDv4.parse(input) as o.Option<Id>;
+    return input as Id;
   },
 
   toCreateDto(input) {

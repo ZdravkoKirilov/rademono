@@ -1,4 +1,4 @@
-import { Game } from "./Game.model";
+import { Game } from "./Game";
 
 describe("Game Entity", () => {
 

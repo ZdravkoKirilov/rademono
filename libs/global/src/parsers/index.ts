@@ -1,3 +1,3 @@
 export * from './string';
 export * from './entity-parsing';
-export * from './validate';
+export { parseAndValidateObject, parseAndValidateUnknown, ClassType } from './validate';

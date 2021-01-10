@@ -12,10 +12,14 @@ export type ClassType<T> = {
   new(...args: any[]): T;
 };
 
-const validateObject = (data: Object, options: ValidatorOptions = { whitelist: true }) =>
+export const validateObject = (data: Object, options: ValidatorOptions = {
+  whitelist: true,
+  forbidNonWhitelisted: true,
+  forbidUnknownValues: true
+}) =>
   from(validate(data, options));
 
-const parseToClass = <Subject = unknown, Target = Object>(data: Subject, targetClass: ClassType<Target>) => {
+export const parseToClass = <Subject = unknown, Target = ClassType<Object>>(data: Subject, targetClass: ClassType<Target>) => {
   return isObject(data) ? of(o.some(plainToClass(targetClass, data, { excludeExtraneousValues: true }))) : of(o.none);
 }
 

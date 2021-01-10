@@ -15,7 +15,7 @@ export * from './Shape.model';
 export * from './Version.model';
 
 export * from './Sandbox.model';
-export * from './Game.model';
+export * from './game';
 
 export * from './types';
 

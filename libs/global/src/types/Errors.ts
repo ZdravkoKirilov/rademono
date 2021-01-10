@@ -10,7 +10,7 @@ export const toFieldErrors = (source: ValidationError[]): FieldError[] => {
   return source.map(error => ({
     property: error.property,
     constraints: error.constraints,
-    name: error?.contexts?.name
+    name: error?.contexts?.name // localize key
   }));
 }
 
