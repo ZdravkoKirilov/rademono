@@ -7,7 +7,7 @@ import { MalformedPayloadError, ParsingError } from '../types';
 import { parseAndValidateObject, parseAndValidateUnknown, parseToClass, validateObject } from "./validate";
 
 const throwError = () => {
-  throw new Error()
+  throw new Error('This code should not be called');
 };
 
 describe("parsers/validate", () => {

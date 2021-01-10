@@ -2,11 +2,20 @@ import { validate, ValidatorOptions } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import { from, Observable, of } from "rxjs";
 import { switchMap, map } from 'rxjs/operators';
-import { isObject } from 'lodash';
+import { isNil, isObject, omit, get } from 'lodash';
 import * as o from 'fp-ts/lib/Option';
 import * as e from 'fp-ts/lib/Either';
 
 import { MalformedPayloadError, ParsingError } from '../types';
+
+const stripUndefinedFields = (obj: any) => {
+  Object.keys(obj).forEach((key) => {
+    if (isNil(get(obj, key))) {
+      delete obj[key];
+    }
+  });
+  return obj;
+};
 
 export type ClassType<T> = {
   new(...args: any[]): T;
@@ -34,7 +43,10 @@ export const parseAndValidateUnknown = <Subject = Object, Target = Object>(
         return of(e.left(new MalformedPayloadError()));
       }
       return validateObject(opt.value, options.validationOptions).pipe(
-        map(errors => errors.length ? e.left(new ParsingError('', errors)) : e.right(opt.value))
+        map(errors => {
+          const wihoutBlankFields = stripUndefinedFields(opt.value) as Target;
+          return errors.length ? e.left(new ParsingError('', errors)) : e.right(wihoutBlankFields);
+        })
       );
     }),
   )
@@ -49,8 +61,11 @@ export const parseAndValidateObject = <Subject = Object, Target = Object>(
 ): Observable<e.Either<ParsingError, Target>> => {
 
   const asClass = plainToClass(targetClass, data, { excludeExtraneousValues: true });
+  const result = stripUndefinedFields(asClass) as Target;
 
-  return validateObject(asClass, options.validationOptions).pipe(
-    map(errors => errors.length ? e.left(new ParsingError('', errors)) : e.right(asClass))
+  return validateObject(result, options.validationOptions).pipe(
+    map(errors => {
+      return errors.length ? e.left(new ParsingError('', errors)) : e.right(result)
+    })
   );
 };
