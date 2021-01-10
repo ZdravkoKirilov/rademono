@@ -13,9 +13,7 @@ export type ClassType<T> = {
 };
 
 export const validateObject = (data: Object, options: ValidatorOptions = {
-  whitelist: true,
-  forbidNonWhitelisted: true,
-  forbidUnknownValues: true
+  whitelist: true, forbidNonWhitelisted: true
 }) =>
   from(validate(data, options));
 

@@ -7,7 +7,7 @@ import { MalformedPayloadError, ParsingError } from '../types';
 import { parseAndValidateObject, parseAndValidateUnknown, parseToClass, validateObject } from "./validate";
 
 const throwError = () => {
-  throwError()
+  throw new Error()
 };
 
 describe("parsers/validate", () => {
@@ -145,7 +145,6 @@ describe("parsers/validate", () => {
         throwError();
       }
     });
-
 
   });
 
