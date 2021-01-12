@@ -15,7 +15,7 @@ export const toFieldErrors = (source: ValidationError[]): FieldError[] => {
 }
 
 export class ParsingError extends Error {
-  name = 'ParsingError';
+  readonly name = 'ParsingError';
   errors: FieldError[];
 
   constructor(public message: string, errors?: ValidationError[]) {
@@ -25,7 +25,7 @@ export class ParsingError extends Error {
 };
 
 export class UnexpectedError<Error = unknown> extends Error {
-  name = 'UnexpectedError';
+  readonly name = 'UnexpectedError';
 
   constructor(public message: string, public error: Error) {
     super();
@@ -33,7 +33,7 @@ export class UnexpectedError<Error = unknown> extends Error {
 };
 
 export class MalformedPayloadError extends Error {
-  name = 'MalformedPayload';
+  readonly name = 'MalformedPayload';
 
   constructor(public message: string = GenericErrors.PayloadIsNotAnObject) {
     super();
@@ -41,18 +41,18 @@ export class MalformedPayloadError extends Error {
 }
 
 export class InvalidCommandError extends Error {
-  name = 'InvalidCommand';
+  readonly name = 'InvalidCommand';
 
   constructor(public message: string) {
     super();
   }
 }
 
-export type HttpException = {
+export type CustomHttpException = {
   statusCode: number;
   message: string;
   name: string; // localization key
   errors?: FieldError[];
 }
 
-export const toHttpException = (data: HttpException) => data;
+export const toHttpException = (data: CustomHttpException) => data;

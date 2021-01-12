@@ -5,7 +5,7 @@ import { BaseModel, GameEntityParser, WithStyle } from "./Base.model";
 import { ParamedExpressionFunc } from "./Expression.model";
 import { CoreStyles, Style } from "./Style.model";
 import { toModuleId } from './Module.model';
-import { Game } from './Game.model';
+import { Game } from './game';
 import { Tagged } from '../types';
 import { enrichEntity, parseAndBind, safeJSON } from '../parsers';
 import { GameLanguage, GameLanguageId, toGameLanguageId } from './GameLanguage';

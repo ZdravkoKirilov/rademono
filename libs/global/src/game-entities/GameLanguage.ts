@@ -4,7 +4,7 @@ import { Nominal } from "simplytyped";
 import { enrichEntity } from "../parsers";
 import { Tagged } from "../types";
 import { GameEntityParser } from "./Base.model";
-import { GameId, GameParser } from "./Game.model";
+import { GameId, GameParser } from "./game";
 import { ImageAsset, ImageAssetId, toImageId } from "./ImageAsset.model";
 
 const GameLanguage: GameEntityParser<GameLanguage, DtoGameLanguage, RuntimeGameLanguage> = {

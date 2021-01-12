@@ -3,7 +3,7 @@ import { isObject, omit } from 'lodash/fp';
 
 import { Module, ModuleId, toModuleId } from "./Module.model";
 import { GameEntityParser } from './Base.model';
-import { GameId, GameParser } from './Game.model';
+import { GameId, GameParser } from './game';
 import { Tagged } from '../types';
 import { enrichEntity } from '../parsers';
 
