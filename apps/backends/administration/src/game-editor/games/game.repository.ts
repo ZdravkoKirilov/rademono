@@ -1,12 +1,25 @@
 import { from, Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
-import { Entity, Column, PrimaryGeneratedColumn, Index, EntityRepository, Repository } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Index,
+  Repository,
+} from 'typeorm';
 
-import { CreateGameDto, FullGame, GameParser, ParsingError, UnexpectedError } from '@end/global';
+import {
+  CreateGameDto,
+  FullGame,
+  GameParser,
+  ParsingError,
+  UnexpectedError,
+} from '@end/global';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Entity()
-class GameDBModel {
+export class GameDBModel {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -22,18 +35,22 @@ class GameDBModel {
 
   @Column('text')
   image?: string;
-
 }
+export class GameRepository {
+  constructor(
+    @InjectRepository(GameDBModel) private repo: Repository<GameDBModel>,
+  ) {}
 
-@EntityRepository(GameDBModel)
-export class GameRepository extends Repository<GameDBModel> {
-
-  createNew(dto: CreateGameDto): Observable<e.Either<UnexpectedError | ParsingError, FullGame>> {
-    return from(this.save(dto)).pipe(
-      switchMap(res => {
+  createNew(
+    dto: CreateGameDto,
+  ): Observable<e.Either<UnexpectedError | ParsingError, FullGame>> {
+    return from(this.repo.save(dto)).pipe(
+      switchMap((res) => {
         return GameParser.toFullEntity(res);
       }),
-      catchError(err => of(e.left(new UnexpectedError('DB save failed', err))))
+      catchError((err) =>
+        of(e.left(new UnexpectedError('DB save failed', err))),
+      ),
     );
   }
 }

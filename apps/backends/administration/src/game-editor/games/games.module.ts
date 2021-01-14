@@ -3,13 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { GamesService } from './games.service';
 import { GamesController } from './games.controller';
-import { GameRepository } from './game.repository';
+import { GameDBModel, GameRepository } from './game.repository';
 
 @Module({
   controllers: [GamesController],
-  providers: [GamesService],
-  imports: [
-    TypeOrmModule.forFeature([GameRepository])
-  ]
+  providers: [GamesService, GameRepository],
+  imports: [TypeOrmModule.forFeature([GameDBModel])],
 })
-export class GamesModule { }
+export class GamesModule {}

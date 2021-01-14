@@ -16,7 +16,7 @@ import { GameEditorModule } from '../game-editor';
       synchronize: true,
       autoLoadEntities: true,
     }),
-    GameEditorModule
+    GameEditorModule,
   ],
   exports: [TypeOrmModule],
 })

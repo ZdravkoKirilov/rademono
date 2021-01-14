@@ -1,21 +1,36 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+  HttpStatus,
+} from '@nestjs/common';
 import { map } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 
 import { GamesService } from './games.service';
 import { Observable } from 'rxjs';
-import { CustomHttpException, ReadGameDto, toHttpException, UnexpectedError } from '@end/global';
+import {
+  CustomHttpException,
+  ReadGameDto,
+  toHttpException,
+  UnexpectedError,
+} from '@end/global';
 
 @Controller('games')
 export class GamesController {
-  constructor(private readonly gamesService: GamesService) { }
+  constructor(private readonly gamesService: GamesService) {}
 
   @Post()
-  create(@Body() createGamePayload: unknown): Observable<ReadGameDto | CustomHttpException> {
+  create(
+    @Body() createGamePayload: unknown,
+  ): Observable<ReadGameDto | CustomHttpException> {
     return this.gamesService.create(createGamePayload).pipe(
-      map(result => {
+      map((result) => {
         if (e.isLeft(result)) {
-
           switch (result.left.name) {
             case 'MalformedPayload':
               return toHttpException({
@@ -28,7 +43,7 @@ export class GamesController {
                 statusCode: HttpStatus.BAD_REQUEST,
                 message: result.left.message,
                 name: result.left.name,
-                errors: result.left.errors
+                errors: result.left.errors,
               });
             }
             case 'UnexpectedError': {
@@ -42,16 +57,14 @@ export class GamesController {
               return toHttpException({
                 statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
                 message: 'Unexpected error',
-                name: UnexpectedError.prototype.name
+                name: UnexpectedError.prototype.name,
               });
             }
           }
-
-
         } else {
           return result.right;
         }
-      })
+      }),
     );
   }
 

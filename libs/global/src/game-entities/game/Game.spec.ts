@@ -241,6 +241,7 @@ describe("Game Entity", () => {
     });
 
     it("fails if Image is not a valid url", async () => {
+      
       const result = await GameParser.update(entity, { image: 'notAUrl', id: publicId }).toPromise();
 
       if (isRight(result)) {

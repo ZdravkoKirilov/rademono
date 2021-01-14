@@ -1,39 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { Observable, from, of } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 
-import { GameParser, MalformedPayloadError, ParsingError, ReadGameDto, toLeftObs, UnexpectedError } from '@end/global';
+import {
+  GameParser,
+  MalformedPayloadError,
+  ParsingError,
+  ReadGameDto,
+  toLeftObs,
+  UnexpectedError,
+} from '@end/global';
 import { GameRepository } from './game.repository';
 
 @Injectable()
 export class GamesService {
+  constructor(private readonly gamesRepository: GameRepository) {}
 
-  constructor(
-    @InjectRepository(GameRepository)
-    private readonly gamesRepository: GameRepository,
-  ) { }
-
-  create(payload: unknown): Observable<e.Either<UnexpectedError | MalformedPayloadError | ParsingError, ReadGameDto>> {
+  create(
+    payload: unknown,
+  ): Observable<
+    e.Either<
+      UnexpectedError | MalformedPayloadError | ParsingError,
+      ReadGameDto
+    >
+  > {
     return GameParser.toCreateDto(payload).pipe(
       switchMap((res) => {
         if (e.isLeft(res)) {
           return of(res);
         }
-        return from(
-          this.gamesRepository.createNew(res.right))
-          .pipe(
-            map(result => {
-              if (e.isLeft(result)) {
-                return e.left(new UnexpectedError('Failed to save the game', result.left));
-              } else {
-                return e.right(GameParser.toReadDto(result.right));
-              }
-            }),
-          )
+        return from(this.gamesRepository.createNew(res.right)).pipe(
+          map((result) => {
+            if (e.isLeft(result)) {
+              return e.left(
+                new UnexpectedError('Failed to save the game', result.left),
+              );
+            } else {
+              return e.right(GameParser.toReadDto(result.right));
+            }
+          }),
+        );
       }),
-      catchError(err => toLeftObs(new UnexpectedError('Failed to save the game', err)))
+      catchError((err) =>
+        toLeftObs(new UnexpectedError('Failed to save the game', err)),
+      ),
     );
   }
 

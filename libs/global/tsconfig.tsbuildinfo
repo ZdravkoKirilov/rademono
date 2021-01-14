@@ -2257,7 +2257,7 @@
         "affectsGlobalScope": false
       },
       "./src/game-entities/game/Game.spec.ts": {
-        "version": "780a79c6e139dfbd9eb53e9d38f3aa5d92d006a9a9fc4e41fbc528b43c82e979",
+        "version": "ebbd2e52b3c065f67d21a25d4520828fd14bfb97495b778f03ac87b0505a5a92",
         "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
         "affectsGlobalScope": false
       },
