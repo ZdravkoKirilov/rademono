@@ -186,6 +186,11 @@
         "signature": "1f03b495671c3a1bd24510f38b8947f0991dfd6bf0278c68eca14af15b306e1f",
         "affectsGlobalScope": false
       },
+      "./node_modules/tslib/tslib.d.ts": {
+        "version": "4576b4e61049f5ffd7c9e935cf88832e089265bdb15ffc35077310042cbbbeea",
+        "signature": "4576b4e61049f5ffd7c9e935cf88832e089265bdb15ffc35077310042cbbbeea",
+        "affectsGlobalScope": false
+      },
       "./node_modules/simplytyped/types/predicates.d.ts": {
         "version": "8936c03f17cab53b130cef17392cbef7b5bdeda4369019f566a9b7d90b9a5585",
         "signature": "8936c03f17cab53b130cef17392cbef7b5bdeda4369019f566a9b7d90b9a5585",
@@ -2177,7 +2182,7 @@
         "affectsGlobalScope": false
       },
       "./src/game-entities/game/Game.ts": {
-        "version": "64aee6ff6643641d2b5d0c1b9d8e4cdf3b2bf0261c510b3aa9e1151950783032",
+        "version": "2e2126c6ab27e08321aec2c88ea3557184699128be4cbd5a480a380ca93b9620",
         "signature": "de70b46dc273fc05ccb355e54d017a48411e598a74fb3e6c95a430ea5e019c60",
         "affectsGlobalScope": false
       },
@@ -2623,19 +2628,24 @@
       }
     },
     "options": {
-      "incremental": true,
-      "target": 6,
       "module": 1,
       "declaration": true,
+      "removeComments": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "allowSyntheticDefaultImports": true,
+      "noFallthroughCasesInSwitch": true,
+      "target": 6,
       "sourceMap": true,
-      "composite": true,
+      "incremental": true,
       "strict": true,
       "strictPropertyInitialization": false,
+      "importHelpers": true,
+      "composite": true,
       "moduleResolution": 2,
       "esModuleInterop": true,
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
-      "experimentalDecorators": true,
       "rootDir": "./src",
       "outDir": "./lib",
       "baseUrl": "./",
@@ -4639,6 +4649,7 @@
       "./src/game-entities/Animation.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Expression.model.ts",
         "./src/game-entities/Module.model.ts",
@@ -4647,6 +4658,7 @@
         "./src/types/index.ts"
       ],
       "./src/game-entities/Base.model.ts": [
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Expression.model.ts",
         "./src/game-entities/Module.model.ts",
         "./src/game-entities/Style.model.ts",
@@ -4656,6 +4668,7 @@
       "./src/game-entities/Expression.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Module.model.ts",
         "./src/game-entities/Sonata.model.ts",
@@ -4666,6 +4679,7 @@
       "./src/game-entities/GameLanguage.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/ImageAsset.model.ts",
         "./src/game-entities/game/index.ts",
@@ -4675,6 +4689,7 @@
       "./src/game-entities/ImageAsset.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Module.model.ts",
         "./src/types/index.ts"
@@ -4682,6 +4697,7 @@
       "./src/game-entities/Module.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Version.model.ts",
         "./src/game-entities/Widget.model.ts",
@@ -4691,6 +4707,7 @@
       "./src/game-entities/Sandbox.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Expression.model.ts",
         "./src/game-entities/Module.model.ts",
@@ -4703,6 +4720,7 @@
       "./src/game-entities/Setup.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Expression.model.ts",
         "./src/game-entities/GameLanguage.ts",
@@ -4715,6 +4733,7 @@
       "./src/game-entities/Shape.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Expression.model.ts",
         "./src/game-entities/Module.model.ts",
@@ -4725,6 +4744,7 @@
       "./src/game-entities/Sonata.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Module.model.ts",
         "./src/game-entities/Sound.model.ts",
@@ -4734,6 +4754,7 @@
       "./src/game-entities/Sound.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Module.model.ts",
         "./src/types/index.ts"
@@ -4741,6 +4762,7 @@
       "./src/game-entities/Style.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Module.model.ts",
         "./src/types/index.ts"
@@ -4748,6 +4770,7 @@
       "./src/game-entities/Text.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Expression.model.ts",
         "./src/game-entities/GameLanguage.ts",
@@ -4760,6 +4783,7 @@
       "./src/game-entities/Token.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/ImageAsset.model.ts",
         "./src/game-entities/Module.model.ts",
@@ -4773,6 +4797,7 @@
       "./src/game-entities/Version.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Module.model.ts",
         "./src/game-entities/game/index.ts",
@@ -4782,6 +4807,7 @@
       "./src/game-entities/Widget.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Expression.model.ts",
         "./src/game-entities/ImageAsset.model.ts",
@@ -4793,6 +4819,7 @@
       "./src/game-entities/WidgetNode.model.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/simplytyped/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Expression.model.ts",
         "./src/game-entities/ImageAsset.model.ts",
@@ -4808,6 +4835,7 @@
       ],
       "./src/game-entities/game/Game.spec.ts": [
         "./node_modules/fp-ts/lib/Either.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/game/Game.ts",
         "./src/types/index.ts"
       ],
@@ -4817,14 +4845,17 @@
         "./node_modules/fp-ts/lib/Either.d.ts",
         "./node_modules/rxjs/index.d.ts",
         "./node_modules/rxjs/operators/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/index.ts",
         "./src/parsers/index.ts",
         "./src/types/index.ts"
       ],
       "./src/game-entities/game/index.ts": [
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/game/Game.ts"
       ],
       "./src/game-entities/index.ts": [
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Animation.model.ts",
         "./src/game-entities/Base.model.ts",
         "./src/game-entities/Expression.model.ts",
@@ -4845,6 +4876,7 @@
         "./src/game-entities/types.ts"
       ],
       "./src/game-entities/types.ts": [
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/Animation.model.ts",
         "./src/game-entities/Expression.model.ts",
         "./src/game-entities/GameLanguage.ts",
@@ -4864,6 +4896,7 @@
         "./src/game-entities/game/index.ts"
       ],
       "./src/index.ts": [
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/index.ts",
         "./src/parsers/index.ts",
         "./src/types/Errors.ts",
@@ -4872,14 +4905,17 @@
       "./src/parsers/entity-parsing.ts": [
         "./node_modules/@types/lodash/index.d.ts",
         "./node_modules/immer/dist/immer.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/index.ts",
         "./src/types/index.ts"
       ],
       "./src/parsers/fp-ts-adaptors.ts": [
         "./node_modules/fp-ts/lib/Either.d.ts",
-        "./node_modules/rxjs/index.d.ts"
+        "./node_modules/rxjs/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts"
       ],
       "./src/parsers/index.ts": [
+        "./node_modules/tslib/tslib.d.ts",
         "./src/parsers/entity-parsing.ts",
         "./src/parsers/fp-ts-adaptors.ts",
         "./src/parsers/validate.ts"
@@ -4889,6 +4925,7 @@
         "./node_modules/class-validator/types/index.d.ts",
         "./node_modules/fp-ts/lib/Either.d.ts",
         "./node_modules/fp-ts/lib/Option.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/parsers/validate.ts",
         "./src/types/index.ts"
       ],
@@ -4900,30 +4937,46 @@
         "./node_modules/fp-ts/lib/Option.d.ts",
         "./node_modules/rxjs/index.d.ts",
         "./node_modules/rxjs/operators/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/types/index.ts"
       ],
+      "./src/types/Dictionary.ts": [
+        "./node_modules/tslib/tslib.d.ts"
+      ],
       "./src/types/Errors.ts": [
-        "./node_modules/class-validator/types/index.d.ts"
+        "./node_modules/class-validator/types/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts"
       ],
       "./src/types/ExpressionContext.ts": [
         "./node_modules/@types/lodash/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/index.ts"
       ],
+      "./src/types/Never.ts": [
+        "./node_modules/tslib/tslib.d.ts"
+      ],
+      "./src/types/Subscription.ts": [
+        "./node_modules/tslib/tslib.d.ts"
+      ],
       "./src/types/Tagged.ts": [
-        "./node_modules/@types/lodash/fp.d.ts"
+        "./node_modules/@types/lodash/fp.d.ts",
+        "./node_modules/tslib/tslib.d.ts"
       ],
       "./src/types/URL.ts": [
         "./node_modules/@types/lodash/fp.d.ts",
         "./node_modules/@types/validator/index.d.ts",
         "./node_modules/fp-ts/lib/Option.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/types/Never.ts"
       ],
       "./src/types/UUIDv4.ts": [
         "./node_modules/@types/uuid/index.d.ts",
         "./node_modules/fp-ts/lib/Option.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
         "./src/types/Never.ts"
       ],
       "./src/types/index.ts": [
+        "./node_modules/tslib/tslib.d.ts",
         "./src/types/Dictionary.ts",
         "./src/types/Errors.ts",
         "./src/types/ExpressionContext.ts",
@@ -4934,6 +4987,7 @@
         "./src/types/string.ts"
       ],
       "./src/types/string.ts": [
+        "./node_modules/tslib/tslib.d.ts",
         "./src/types/Never.ts"
       ]
     },
@@ -7613,6 +7667,7 @@
       "./node_modules/simplytyped/types/strings.d.ts",
       "./node_modules/simplytyped/types/tuples.d.ts",
       "./node_modules/simplytyped/types/utils.d.ts",
+      "./node_modules/tslib/tslib.d.ts",
       "./node_modules/typescript/lib/lib.dom.d.ts",
       "./node_modules/typescript/lib/lib.dom.iterable.d.ts",
       "./node_modules/typescript/lib/lib.es2015.collection.d.ts",

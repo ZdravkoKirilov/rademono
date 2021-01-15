@@ -1,20 +1,49 @@
 import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
-import { IsOptional, IsString, IsUrl, IsUUID, MinLength, MaxLength } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsUrl,
+  IsUUID,
+  MinLength,
+  MaxLength,
+} from 'class-validator';
 import { classToPlain, Expose, plainToClass } from 'class-transformer';
 import { map } from 'rxjs/operators';
 
 import {
-  Token, Expression, Sonata, Sound,
-  Widget, Text, ImageAsset, Sandbox, Shape, Style, Animation, ModuleId, SetupId
+  Token,
+  Expression,
+  Sonata,
+  Sound,
+  Widget,
+  Text,
+  ImageAsset,
+  Sandbox,
+  Shape,
+  Style,
+  Animation,
+  ModuleId,
+  SetupId,
 } from '../';
-import { Dictionary, UUIDv4, Url, ParsingError, MalformedPayloadError, StringOfLength, Tagged } from '../../types';
-import { parseAndValidateObject, parseAndValidateUnknown, ClassType } from '../../parsers';
+import {
+  Dictionary,
+  UUIDv4,
+  Url,
+  ParsingError,
+  MalformedPayloadError,
+  StringOfLength,
+  Tagged,
+} from '../../types';
+import {
+  parseAndValidateObject,
+  parseAndValidateUnknown,
+  ClassType,
+} from '../../parsers';
 
 export type GameId = Tagged<'GameId', UUIDv4>;
 
 export class Game {
-
   id: GameId;
   title: StringOfLength<2, 100>;
   description?: StringOfLength<2, 2000>;
@@ -22,7 +51,6 @@ export class Game {
 }
 
 abstract class ValidatedGameBase {
-
   @Expose()
   @IsString()
   @MinLength(2)
@@ -40,17 +68,15 @@ abstract class ValidatedGameBase {
   @IsOptional()
   @IsUrl()
   image?: Url;
-
 }
 
 export class FullGame extends ValidatedGameBase {
-
   @Expose({ name: 'id' })
   @IsUUID('4')
   public_id: GameId;
 }
 
-export class NewGame extends ValidatedGameBase { }
+export class NewGame extends ValidatedGameBase {}
 
 export class CreateGameDto {
   @Expose()
@@ -91,41 +117,78 @@ export class UpdateGameDto {
 export class ReadGameDto {
   @Expose()
   id: string;
-};
-
-type AbstractEntity<Id, Entity, CreateDto, UpdateDto, ReadDto, NewInstance, FullInstance> = {
-  toPrimaryId: (input: unknown) => Id
-
-  /* FE before send, BE on receive */
-  toCreateDto: (input: unknown) => Observable<e.Either<ParsingError | MalformedPayloadError, CreateDto>>,
-  toUpdateDto: (input: unknown) => Observable<e.Either<ParsingError | MalformedPayloadError, UpdateDto>>,
-
-  /* FE: validation combined with the above DTO; BE - same */
-  create: (input: CreateDto, createId?: () => UUIDv4) => Observable<e.Either<ParsingError, NewInstance>>;
-  update: (entity: Entity, input: UpdateDto,) => Observable<e.Either<ParsingError, FullInstance>>,
-
-  /* FE on receive */
-  toEntity: (input: ReadDto) => Entity,
-
-  // BE before response to FE
-  toReadDto: (input: FullInstance) => ReadDto,
-  // BE Repo after read from DB
-  toFullEntity: (input: unknown) => Observable<e.Either<ParsingError, FullInstance>>;
 }
 
-const createAbstractEntity = <Id extends UUIDv4>() => <Entity, CreateDto, UpdateDto, ReadDto, NewInstance, FullInstance>(
-  {
-    entityType, createDtoType, updateDtoType, readDtoType, newInstanceType, fullInstanceType
-  }: {
-    entityType: ClassType<Entity>,
-    createDtoType: ClassType<CreateDto>,
-    updateDtoType: ClassType<UpdateDto>,
-    readDtoType: ClassType<ReadDto>,
-    newInstanceType: ClassType<NewInstance>,
-    fullInstanceType: ClassType<FullInstance>,
-  }
-): AbstractEntity<Id, Entity, CreateDto, UpdateDto, ReadDto, NewInstance, FullInstance> => ({
+type AbstractEntity<
+  Id,
+  Entity,
+  CreateDto,
+  UpdateDto,
+  ReadDto,
+  NewInstance,
+  FullInstance
+> = {
+  toPrimaryId: (input: unknown) => Id;
 
+  /* FE before send, BE on receive */
+  toCreateDto: (
+    input: unknown,
+  ) => Observable<e.Either<ParsingError | MalformedPayloadError, CreateDto>>;
+  toUpdateDto: (
+    input: unknown,
+  ) => Observable<e.Either<ParsingError | MalformedPayloadError, UpdateDto>>;
+
+  /* FE: validation combined with the above DTO; BE - same */
+  create: (
+    input: CreateDto,
+    createId?: () => UUIDv4,
+  ) => Observable<e.Either<ParsingError, NewInstance>>;
+  update: (
+    entity: Entity,
+    input: UpdateDto,
+  ) => Observable<e.Either<ParsingError, FullInstance>>;
+
+  /* FE on receive */
+  toEntity: (input: ReadDto) => Entity;
+
+  // BE before response to FE
+  toReadDto: (input: FullInstance) => ReadDto;
+  // BE Repo after read from DB
+  toFullEntity: (
+    input: unknown,
+  ) => Observable<e.Either<ParsingError, FullInstance>>;
+};
+
+const createAbstractEntity = <Id extends UUIDv4>() => <
+  Entity,
+  CreateDto,
+  UpdateDto,
+  ReadDto,
+  NewInstance,
+  FullInstance
+>({
+  entityType,
+  createDtoType,
+  updateDtoType,
+  readDtoType,
+  newInstanceType,
+  fullInstanceType,
+}: {
+  entityType: ClassType<Entity>;
+  createDtoType: ClassType<CreateDto>;
+  updateDtoType: ClassType<UpdateDto>;
+  readDtoType: ClassType<ReadDto>;
+  newInstanceType: ClassType<NewInstance>;
+  fullInstanceType: ClassType<FullInstance>;
+}): AbstractEntity<
+  Id,
+  Entity,
+  CreateDto,
+  UpdateDto,
+  ReadDto,
+  NewInstance,
+  FullInstance
+> => ({
   toPrimaryId: (input) => {
     return input as Id;
   },
@@ -152,28 +215,31 @@ const createAbstractEntity = <Id extends UUIDv4>() => <Entity, CreateDto, Update
 
   create(input, createId = UUIDv4.generate) {
     return parseAndValidateObject(input, newInstanceType).pipe(
-      map(result => {
+      map((result) => {
         if (e.isRight(result)) {
           return e.right({
             ...result.right,
-            public_id: createId()
+            public_id: createId(),
           });
         }
         return result;
-      })
+      }),
     );
   },
 
   update(entity, input) {
-    return parseAndValidateObject({...entity, ...input}, fullInstanceType).pipe(
-      map(result => {
+    return parseAndValidateObject(
+      { ...entity, ...input },
+      fullInstanceType,
+    ).pipe(
+      map((result) => {
         if (e.isRight(result)) {
           return e.right({ ...entity, ...result.right });
         }
         return result;
-      })
+      }),
     );
-  }
+  },
 });
 
 export const GameParser = createAbstractEntity<GameId>()({
@@ -182,7 +248,7 @@ export const GameParser = createAbstractEntity<GameId>()({
   updateDtoType: UpdateGameDto,
   readDtoType: ReadGameDto,
   newInstanceType: NewGame,
-  fullInstanceType: FullGame
+  fullInstanceType: FullGame,
 });
 
 export type GameTemplate = {

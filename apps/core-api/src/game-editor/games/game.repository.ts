@@ -8,6 +8,7 @@ import {
   Index,
   Repository,
 } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import {
   CreateGameDto,
@@ -16,7 +17,6 @@ import {
   ParsingError,
   UnexpectedError,
 } from '@end/global';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Entity()
 export class GameDBModel {

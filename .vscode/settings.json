@@ -1,10 +1,8 @@
 {
     "editor.tabSize": 2,
     "eslint.workingDirectories": [
-        "apps/backends/administration",
-        "apps/backends/runtime",
-        "apps/clients/games-admin",
-        "apps/clients/games-home",
+        "apps/core-api",
+        "apps/games-admin",
         "libs/client",
         "libs/global"
     ]
