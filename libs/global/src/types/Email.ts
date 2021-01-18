@@ -1,6 +1,6 @@
-import { Branded } from './Branded';
+import { Tagged } from './Tagged';
 
-export type Email = string & Branded<'__Email__'>;
+export type Email = Tagged<'__Email__', string>;
 
 const generate = <T extends Email>(from: string) => from as T;
 

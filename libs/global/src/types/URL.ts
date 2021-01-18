@@ -1,16 +1,3 @@
-import { isString } from 'lodash/fp';
-import validator from 'validator';
-import * as o from 'fp-ts/lib/Option';
+import { Tagged } from './Tagged';
 
-import { Branded } from './Branded';
-
-export type Url<A extends string = string> = A & Branded<'__Url__'>;
-
-const NotAValidUrl = 'NotAValidUrl';
-
-const parse = (value: unknown): o.Option<Url> => {
-  const trimmed = isString(value) ? value.trim() : '';
-  return validator.isURL(trimmed) ? o.some(trimmed as Url) : o.none;
-};
-
-export const Url = { parse, NotAValidUrl };
+export type Url<A extends string = string> = Tagged<'__Url__', A>;

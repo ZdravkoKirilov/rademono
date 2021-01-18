@@ -1,9 +1,9 @@
-import { Branded } from '../types/Branded';
+import { Tagged } from './Tagged';
 
 export type StringOfLength<
   Min extends number,
   Max extends number
-> = Branded<'StringOfLength'> & {
+> = Tagged<'StringOfLength'> & {
   min: Min;
   max: Max;
 };

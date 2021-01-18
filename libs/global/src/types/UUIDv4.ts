@@ -1,8 +1,8 @@
 import { v4 } from 'uuid';
 
-import { Branded } from './Branded';
+import { Tagged } from './Tagged';
 
-export type UUIDv4 = string & Branded<'__UUIDv4__'>;
+export type UUIDv4 = Tagged<'__UUIDv4__', string>;
 
 const generate = <T extends UUIDv4>() => v4() as T;
 
