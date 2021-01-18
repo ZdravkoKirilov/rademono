@@ -6,3 +6,4 @@ export * from './UUIDv4';
 export * from './Errors';
 export * from './URL';
 export * from './string';
+export * from './Email';

@@ -7,11 +7,13 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
     "target": "es2017",
     "sourceMap": true,
-    "incremental": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "importHelpers": true
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
 }

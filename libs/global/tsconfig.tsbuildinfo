@@ -26,11 +26,6 @@
         "signature": "5f4e733ced4e129482ae2186aae29fde948ab7182844c3a5a51dd346182c7b06",
         "affectsGlobalScope": false
       },
-      "./node_modules/typescript/lib/lib.es2019.d.ts": {
-        "version": "e6b724280c694a9f588847f754198fb96c43d805f065c3a5b28bbc9594541c84",
-        "signature": "e6b724280c694a9f588847f754198fb96c43d805f065c3a5b28bbc9594541c84",
-        "affectsGlobalScope": false
-      },
       "./node_modules/typescript/lib/lib.dom.d.ts": {
         "version": "abadddbf660adeec27e9a56584907d52fa1d6e1e1dc49f639a921baa951b7a84",
         "signature": "abadddbf660adeec27e9a56584907d52fa1d6e1e1dc49f639a921baa951b7a84",
@@ -151,26 +146,6 @@
         "signature": "c80df75850fea5caa2afe43b9949338ce4e2de086f91713e9af1a06f973872b8",
         "affectsGlobalScope": true
       },
-      "./node_modules/typescript/lib/lib.es2019.array.d.ts": {
-        "version": "9d57b2b5d15838ed094aa9ff1299eecef40b190722eb619bac4616657a05f951",
-        "signature": "9d57b2b5d15838ed094aa9ff1299eecef40b190722eb619bac4616657a05f951",
-        "affectsGlobalScope": true
-      },
-      "./node_modules/typescript/lib/lib.es2019.object.d.ts": {
-        "version": "6c51b5dd26a2c31dbf37f00cfc32b2aa6a92e19c995aefb5b97a3a64f1ac99de",
-        "signature": "6c51b5dd26a2c31dbf37f00cfc32b2aa6a92e19c995aefb5b97a3a64f1ac99de",
-        "affectsGlobalScope": true
-      },
-      "./node_modules/typescript/lib/lib.es2019.string.d.ts": {
-        "version": "93544ca2f26a48716c1b6c5091842cad63129daac422dfa4bc52460465f22bb1",
-        "signature": "93544ca2f26a48716c1b6c5091842cad63129daac422dfa4bc52460465f22bb1",
-        "affectsGlobalScope": true
-      },
-      "./node_modules/typescript/lib/lib.es2019.symbol.d.ts": {
-        "version": "2ad234885a4240522efccd77de6c7d99eecf9b4de0914adb9a35c0c22433f993",
-        "signature": "2ad234885a4240522efccd77de6c7d99eecf9b4de0914adb9a35c0c22433f993",
-        "affectsGlobalScope": true
-      },
       "./node_modules/typescript/lib/lib.es2020.bigint.d.ts": {
         "version": "7b5a10e3c897fabece5a51aa85b4111727d7adb53c2734b5d37230ff96802a09",
         "signature": "7b5a10e3c897fabece5a51aa85b4111727d7adb53c2734b5d37230ff96802a09",
@@ -181,9 +156,9 @@
         "signature": "89bf2b7a601b73ea4311eda9c41f86a58994fec1bee3b87c4a14d68d9adcdcbd",
         "affectsGlobalScope": true
       },
-      "./node_modules/typescript/lib/lib.es2019.full.d.ts": {
-        "version": "1f03b495671c3a1bd24510f38b8947f0991dfd6bf0278c68eca14af15b306e1f",
-        "signature": "1f03b495671c3a1bd24510f38b8947f0991dfd6bf0278c68eca14af15b306e1f",
+      "./node_modules/typescript/lib/lib.es2017.full.d.ts": {
+        "version": "d2f31f19e1ba6ed59be9259d660a239d9a3fcbbc8e038c6b2009bde34b175fed",
+        "signature": "d2f31f19e1ba6ed59be9259d660a239d9a3fcbbc8e038c6b2009bde34b175fed",
         "affectsGlobalScope": false
       },
       "./node_modules/tslib/tslib.d.ts": {
@@ -346,189 +321,14 @@
         "signature": "96b49a9de749afcf92b5bce1d8cc42cfae6816cdf5ea36584fd9256b8b2e5292",
         "affectsGlobalScope": false
       },
-      "./node_modules/fp-ts/lib/function.d.ts": {
-        "version": "79dd55583b8f2adfb5c9894abdeb83fd557d1d717de10c96e4b849a6f19171e6",
-        "signature": "79dd55583b8f2adfb5c9894abdeb83fd557d1d717de10c96e4b849a6f19171e6",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/HKT.d.ts": {
-        "version": "54a098c654bd4a1b420702693a923df4a2e767c82fc4461550ff32b43f965511",
-        "signature": "54a098c654bd4a1b420702693a923df4a2e767c82fc4461550ff32b43f965511",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Functor.d.ts": {
-        "version": "95652e5c3398426e171c1ee53f6ccc7043846667072423d592baaae257af302d",
-        "signature": "95652e5c3398426e171c1ee53f6ccc7043846667072423d592baaae257af302d",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Alt.d.ts": {
-        "version": "5c3fab10db01d3693457f87f570af8a735d5e5f49c6afc6af491c462ab8d58ac",
-        "signature": "5c3fab10db01d3693457f87f570af8a735d5e5f49c6afc6af491c462ab8d58ac",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Apply.d.ts": {
-        "version": "7e45bd1d3b8fb1a84e572ade2b7cb189f810a6fba05291a61a4405c431b8a24b",
-        "signature": "7e45bd1d3b8fb1a84e572ade2b7cb189f810a6fba05291a61a4405c431b8a24b",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Applicative.d.ts": {
-        "version": "16e204fc72a65e0589b4120c52817bc5e110df780f76d54af7feb04c20c73db3",
-        "signature": "16e204fc72a65e0589b4120c52817bc5e110df780f76d54af7feb04c20c73db3",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Alternative.d.ts": {
-        "version": "376697226b23441755bd9b183f350a013e5fbaa1e86ec939bb187d6ca809d72d",
-        "signature": "376697226b23441755bd9b183f350a013e5fbaa1e86ec939bb187d6ca809d72d",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Bifunctor.d.ts": {
-        "version": "168ac212cb3450fdae5870a7aab058be48f77ff6a7c9c6e2d2fe18fe1b4b6307",
-        "signature": "168ac212cb3450fdae5870a7aab058be48f77ff6a7c9c6e2d2fe18fe1b4b6307",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Chain.d.ts": {
-        "version": "bc371fdec1ac7bbcbd28bc0fb63e16e10c86990c407db7cc9d71bec51292f366",
-        "signature": "bc371fdec1ac7bbcbd28bc0fb63e16e10c86990c407db7cc9d71bec51292f366",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/ChainRec.d.ts": {
-        "version": "8e1562c1007a9607099190e50e1f209ccdb4851012d60678597fde9011936a59",
-        "signature": "8e1562c1007a9607099190e50e1f209ccdb4851012d60678597fde9011936a59",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Contravariant.d.ts": {
-        "version": "27f53cbb8bca360fec4caeabb124bc29d371b19fd5183ae7067b1ae62f27a1d1",
-        "signature": "27f53cbb8bca360fec4caeabb124bc29d371b19fd5183ae7067b1ae62f27a1d1",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Magma.d.ts": {
-        "version": "d86e0824f362d8bc50fd96342ee506b8db3fa371310f3ad344b9e65ccbaac846",
-        "signature": "d86e0824f362d8bc50fd96342ee506b8db3fa371310f3ad344b9e65ccbaac846",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Filterable.d.ts": {
-        "version": "702b939f2426d0a1cf9404b1eb714271c1321f11f6a3df54b7523af11ddbd221",
-        "signature": "702b939f2426d0a1cf9404b1eb714271c1321f11f6a3df54b7523af11ddbd221",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/FunctorWithIndex.d.ts": {
-        "version": "b5c3cdc3a9e43b3760887e8a9617c3fef6f166fd5bbdf4b187c2c314a62d8e0f",
-        "signature": "b5c3cdc3a9e43b3760887e8a9617c3fef6f166fd5bbdf4b187c2c314a62d8e0f",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/FilterableWithIndex.d.ts": {
-        "version": "96c709d9b4655ad0ff4323ea245ab3aa1b5eba1b7be59c8fcc10ccfbf2be7361",
-        "signature": "96c709d9b4655ad0ff4323ea245ab3aa1b5eba1b7be59c8fcc10ccfbf2be7361",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Monad.d.ts": {
-        "version": "f52166acadbc6ce500281d9d1ddc767c12f28d2664356cb8e3c095abe049b4c1",
-        "signature": "f52166acadbc6ce500281d9d1ddc767c12f28d2664356cb8e3c095abe049b4c1",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Foldable.d.ts": {
-        "version": "5d9d8f024cb8d716a31934103ad466d5325560035f3c03175fe7527400796a00",
-        "signature": "5d9d8f024cb8d716a31934103ad466d5325560035f3c03175fe7527400796a00",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/FoldableWithIndex.d.ts": {
-        "version": "83107c85b273401c75234cd54a079d570e0c3b7a14c9c4ca1bcc8db497f90cd0",
-        "signature": "83107c85b273401c75234cd54a079d570e0c3b7a14c9c4ca1bcc8db497f90cd0",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Show.d.ts": {
-        "version": "157ad24896df24ac6faa6cc0d838c15cf5b11fd5b5bc5f9bcd7a3bae747e1756",
-        "signature": "157ad24896df24ac6faa6cc0d838c15cf5b11fd5b5bc5f9bcd7a3bae747e1756",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Traversable.d.ts": {
-        "version": "cffd1890715b61ced2622280cd5ed0553aa960255e747c91d89b69cb01bb746f",
-        "signature": "cffd1890715b61ced2622280cd5ed0553aa960255e747c91d89b69cb01bb746f",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/TraversableWithIndex.d.ts": {
-        "version": "5509d07a6a598798b9a03a97e9a01ce9a949ef6914cbcb16314b9e62e74b7dd0",
-        "signature": "5509d07a6a598798b9a03a97e9a01ce9a949ef6914cbcb16314b9e62e74b7dd0",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Unfoldable.d.ts": {
-        "version": "3a84da3d0bddb1854642016f7860853850c2073628f5e278559cac66d7ad7e7f",
-        "signature": "3a84da3d0bddb1854642016f7860853850c2073628f5e278559cac66d7ad7e7f",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Witherable.d.ts": {
-        "version": "1326b1489b72536037d6c6b7bb0db45e95ae940c12d5a5d4dddefc907f38aec4",
-        "signature": "1326b1489b72536037d6c6b7bb0db45e95ae940c12d5a5d4dddefc907f38aec4",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/ReadonlyRecord.d.ts": {
-        "version": "3d61273d1f558113b82efc2ad4407f384d6952ab4a7fff14d067ede27149608c",
-        "signature": "3d61273d1f558113b82efc2ad4407f384d6952ab4a7fff14d067ede27149608c",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Semigroup.d.ts": {
-        "version": "6ef54faf50f79c590495912baab972154b00bcbb7219067999523d900aff152f",
-        "signature": "6ef54faf50f79c590495912baab972154b00bcbb7219067999523d900aff152f",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Ordering.d.ts": {
-        "version": "0242dea1cf844b31a654c9f6806d70e999683e0f6045bb29b29cbcb187cbb5a0",
-        "signature": "0242dea1cf844b31a654c9f6806d70e999683e0f6045bb29b29cbcb187cbb5a0",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Ord.d.ts": {
-        "version": "a5235ec4a0912b10436a52fb7e9a62a5cfdc56b6ebc79f2858fbcb487edeb902",
-        "signature": "a5235ec4a0912b10436a52fb7e9a62a5cfdc56b6ebc79f2858fbcb487edeb902",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Bounded.d.ts": {
-        "version": "f9f75302784e02478da6917f4820efb633867da8bb037cec96b2318818a7ca13",
-        "signature": "f9f75302784e02478da6917f4820efb633867da8bb037cec96b2318818a7ca13",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Monoid.d.ts": {
-        "version": "4d1612ef3a51430ad7132831b55cd2e65107ef045c29277859dd5dc3311ff433",
-        "signature": "4d1612ef3a51430ad7132831b55cd2e65107ef045c29277859dd5dc3311ff433",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Eq.d.ts": {
-        "version": "077699f2100eeeee5fa16992321302e42eeb9c07077249d2bcb58f29acf49f2b",
-        "signature": "077699f2100eeeee5fa16992321302e42eeb9c07077249d2bcb58f29acf49f2b",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Extend.d.ts": {
-        "version": "6ee39c4fb749b48fef9ce908cba025fc774b40790c5f2c0d19ed70e55d688fb6",
-        "signature": "6ee39c4fb749b48fef9ce908cba025fc774b40790c5f2c0d19ed70e55d688fb6",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/MonadThrow.d.ts": {
-        "version": "25c318c9a9e87a1163cabfc325c6b85b14b8cfb4a01679ef4211217cb843f174",
-        "signature": "25c318c9a9e87a1163cabfc325c6b85b14b8cfb4a01679ef4211217cb843f174",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Either.d.ts": {
-        "version": "011ef0065d3c3921e3246f2279e735e76ed822119ba0616415f51d6f2a5b2943",
-        "signature": "011ef0065d3c3921e3246f2279e735e76ed822119ba0616415f51d6f2a5b2943",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Compactable.d.ts": {
-        "version": "4a70e0caac8a77c43749ff31a6af96c327208eaed4ffe8b98452da81a3b4a73e",
-        "signature": "4a70e0caac8a77c43749ff31a6af96c327208eaed4ffe8b98452da81a3b4a73e",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/fp-ts/lib/Option.d.ts": {
-        "version": "58bb48f49578390a6d63bf010638f15f505186d932db8ea7338a49b048423671",
-        "signature": "58bb48f49578390a6d63bf010638f15f505186d932db8ea7338a49b048423671",
-        "affectsGlobalScope": false
-      },
-      "./src/types/Never.ts": {
-        "version": "65806e446ba3c6cfb835e27207befca55e5d26a47df3839fc349003e06fd8300",
-        "signature": "728db2ce29f03b764da783d488af6b0d7e8f8feba300975c33187b4a3e534f53",
+      "./src/types/Branded.ts": {
+        "version": "b68c8f46d8b552cfa8abaa3249b5b09296f17fa19010643878dcc933a9b17d74",
+        "signature": "676d9fbe3a0b919c7aedabe5bbbf6159c598b49558584f2257a64da0604d02b6",
         "affectsGlobalScope": false
       },
       "./src/types/UUIDv4.ts": {
-        "version": "9ef21d2fb5f94db4d2629e298a627be528db05ea71635922f8f5400079dd6977",
-        "signature": "e66796f9f14bf4f1bcfb60fab020d95afc68f8daedf78e707bec3f3607d23c3d",
+        "version": "e239534dfd6905c2abd2c0b464275775e2b3cc0841c483ad463c44f84ece079b",
+        "signature": "9ee8c5ce654987297c8f991f4dfdbae90d8b6d9b039ee5434456a573a18c7f51",
         "affectsGlobalScope": false
       },
       "./node_modules/class-validator/types/validation/ValidationError.d.ts": {
@@ -1156,19 +956,199 @@
         "signature": "1f650494655358e68c3e7dfba8286e677562f2d317304aa73e507a75989b8dc7",
         "affectsGlobalScope": false
       },
+      "./node_modules/fp-ts/lib/function.d.ts": {
+        "version": "79dd55583b8f2adfb5c9894abdeb83fd557d1d717de10c96e4b849a6f19171e6",
+        "signature": "79dd55583b8f2adfb5c9894abdeb83fd557d1d717de10c96e4b849a6f19171e6",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/HKT.d.ts": {
+        "version": "54a098c654bd4a1b420702693a923df4a2e767c82fc4461550ff32b43f965511",
+        "signature": "54a098c654bd4a1b420702693a923df4a2e767c82fc4461550ff32b43f965511",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Functor.d.ts": {
+        "version": "95652e5c3398426e171c1ee53f6ccc7043846667072423d592baaae257af302d",
+        "signature": "95652e5c3398426e171c1ee53f6ccc7043846667072423d592baaae257af302d",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Alt.d.ts": {
+        "version": "5c3fab10db01d3693457f87f570af8a735d5e5f49c6afc6af491c462ab8d58ac",
+        "signature": "5c3fab10db01d3693457f87f570af8a735d5e5f49c6afc6af491c462ab8d58ac",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Apply.d.ts": {
+        "version": "7e45bd1d3b8fb1a84e572ade2b7cb189f810a6fba05291a61a4405c431b8a24b",
+        "signature": "7e45bd1d3b8fb1a84e572ade2b7cb189f810a6fba05291a61a4405c431b8a24b",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Applicative.d.ts": {
+        "version": "16e204fc72a65e0589b4120c52817bc5e110df780f76d54af7feb04c20c73db3",
+        "signature": "16e204fc72a65e0589b4120c52817bc5e110df780f76d54af7feb04c20c73db3",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Alternative.d.ts": {
+        "version": "376697226b23441755bd9b183f350a013e5fbaa1e86ec939bb187d6ca809d72d",
+        "signature": "376697226b23441755bd9b183f350a013e5fbaa1e86ec939bb187d6ca809d72d",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Bifunctor.d.ts": {
+        "version": "168ac212cb3450fdae5870a7aab058be48f77ff6a7c9c6e2d2fe18fe1b4b6307",
+        "signature": "168ac212cb3450fdae5870a7aab058be48f77ff6a7c9c6e2d2fe18fe1b4b6307",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Chain.d.ts": {
+        "version": "bc371fdec1ac7bbcbd28bc0fb63e16e10c86990c407db7cc9d71bec51292f366",
+        "signature": "bc371fdec1ac7bbcbd28bc0fb63e16e10c86990c407db7cc9d71bec51292f366",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/ChainRec.d.ts": {
+        "version": "8e1562c1007a9607099190e50e1f209ccdb4851012d60678597fde9011936a59",
+        "signature": "8e1562c1007a9607099190e50e1f209ccdb4851012d60678597fde9011936a59",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Contravariant.d.ts": {
+        "version": "27f53cbb8bca360fec4caeabb124bc29d371b19fd5183ae7067b1ae62f27a1d1",
+        "signature": "27f53cbb8bca360fec4caeabb124bc29d371b19fd5183ae7067b1ae62f27a1d1",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Magma.d.ts": {
+        "version": "d86e0824f362d8bc50fd96342ee506b8db3fa371310f3ad344b9e65ccbaac846",
+        "signature": "d86e0824f362d8bc50fd96342ee506b8db3fa371310f3ad344b9e65ccbaac846",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Filterable.d.ts": {
+        "version": "702b939f2426d0a1cf9404b1eb714271c1321f11f6a3df54b7523af11ddbd221",
+        "signature": "702b939f2426d0a1cf9404b1eb714271c1321f11f6a3df54b7523af11ddbd221",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/FunctorWithIndex.d.ts": {
+        "version": "b5c3cdc3a9e43b3760887e8a9617c3fef6f166fd5bbdf4b187c2c314a62d8e0f",
+        "signature": "b5c3cdc3a9e43b3760887e8a9617c3fef6f166fd5bbdf4b187c2c314a62d8e0f",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/FilterableWithIndex.d.ts": {
+        "version": "96c709d9b4655ad0ff4323ea245ab3aa1b5eba1b7be59c8fcc10ccfbf2be7361",
+        "signature": "96c709d9b4655ad0ff4323ea245ab3aa1b5eba1b7be59c8fcc10ccfbf2be7361",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Monad.d.ts": {
+        "version": "f52166acadbc6ce500281d9d1ddc767c12f28d2664356cb8e3c095abe049b4c1",
+        "signature": "f52166acadbc6ce500281d9d1ddc767c12f28d2664356cb8e3c095abe049b4c1",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Foldable.d.ts": {
+        "version": "5d9d8f024cb8d716a31934103ad466d5325560035f3c03175fe7527400796a00",
+        "signature": "5d9d8f024cb8d716a31934103ad466d5325560035f3c03175fe7527400796a00",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/FoldableWithIndex.d.ts": {
+        "version": "83107c85b273401c75234cd54a079d570e0c3b7a14c9c4ca1bcc8db497f90cd0",
+        "signature": "83107c85b273401c75234cd54a079d570e0c3b7a14c9c4ca1bcc8db497f90cd0",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Show.d.ts": {
+        "version": "157ad24896df24ac6faa6cc0d838c15cf5b11fd5b5bc5f9bcd7a3bae747e1756",
+        "signature": "157ad24896df24ac6faa6cc0d838c15cf5b11fd5b5bc5f9bcd7a3bae747e1756",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Traversable.d.ts": {
+        "version": "cffd1890715b61ced2622280cd5ed0553aa960255e747c91d89b69cb01bb746f",
+        "signature": "cffd1890715b61ced2622280cd5ed0553aa960255e747c91d89b69cb01bb746f",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/TraversableWithIndex.d.ts": {
+        "version": "5509d07a6a598798b9a03a97e9a01ce9a949ef6914cbcb16314b9e62e74b7dd0",
+        "signature": "5509d07a6a598798b9a03a97e9a01ce9a949ef6914cbcb16314b9e62e74b7dd0",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Unfoldable.d.ts": {
+        "version": "3a84da3d0bddb1854642016f7860853850c2073628f5e278559cac66d7ad7e7f",
+        "signature": "3a84da3d0bddb1854642016f7860853850c2073628f5e278559cac66d7ad7e7f",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Witherable.d.ts": {
+        "version": "1326b1489b72536037d6c6b7bb0db45e95ae940c12d5a5d4dddefc907f38aec4",
+        "signature": "1326b1489b72536037d6c6b7bb0db45e95ae940c12d5a5d4dddefc907f38aec4",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/ReadonlyRecord.d.ts": {
+        "version": "3d61273d1f558113b82efc2ad4407f384d6952ab4a7fff14d067ede27149608c",
+        "signature": "3d61273d1f558113b82efc2ad4407f384d6952ab4a7fff14d067ede27149608c",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Semigroup.d.ts": {
+        "version": "6ef54faf50f79c590495912baab972154b00bcbb7219067999523d900aff152f",
+        "signature": "6ef54faf50f79c590495912baab972154b00bcbb7219067999523d900aff152f",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Ordering.d.ts": {
+        "version": "0242dea1cf844b31a654c9f6806d70e999683e0f6045bb29b29cbcb187cbb5a0",
+        "signature": "0242dea1cf844b31a654c9f6806d70e999683e0f6045bb29b29cbcb187cbb5a0",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Ord.d.ts": {
+        "version": "a5235ec4a0912b10436a52fb7e9a62a5cfdc56b6ebc79f2858fbcb487edeb902",
+        "signature": "a5235ec4a0912b10436a52fb7e9a62a5cfdc56b6ebc79f2858fbcb487edeb902",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Bounded.d.ts": {
+        "version": "f9f75302784e02478da6917f4820efb633867da8bb037cec96b2318818a7ca13",
+        "signature": "f9f75302784e02478da6917f4820efb633867da8bb037cec96b2318818a7ca13",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Monoid.d.ts": {
+        "version": "4d1612ef3a51430ad7132831b55cd2e65107ef045c29277859dd5dc3311ff433",
+        "signature": "4d1612ef3a51430ad7132831b55cd2e65107ef045c29277859dd5dc3311ff433",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Eq.d.ts": {
+        "version": "077699f2100eeeee5fa16992321302e42eeb9c07077249d2bcb58f29acf49f2b",
+        "signature": "077699f2100eeeee5fa16992321302e42eeb9c07077249d2bcb58f29acf49f2b",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Extend.d.ts": {
+        "version": "6ee39c4fb749b48fef9ce908cba025fc774b40790c5f2c0d19ed70e55d688fb6",
+        "signature": "6ee39c4fb749b48fef9ce908cba025fc774b40790c5f2c0d19ed70e55d688fb6",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/MonadThrow.d.ts": {
+        "version": "25c318c9a9e87a1163cabfc325c6b85b14b8cfb4a01679ef4211217cb843f174",
+        "signature": "25c318c9a9e87a1163cabfc325c6b85b14b8cfb4a01679ef4211217cb843f174",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Either.d.ts": {
+        "version": "011ef0065d3c3921e3246f2279e735e76ed822119ba0616415f51d6f2a5b2943",
+        "signature": "011ef0065d3c3921e3246f2279e735e76ed822119ba0616415f51d6f2a5b2943",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Compactable.d.ts": {
+        "version": "4a70e0caac8a77c43749ff31a6af96c327208eaed4ffe8b98452da81a3b4a73e",
+        "signature": "4a70e0caac8a77c43749ff31a6af96c327208eaed4ffe8b98452da81a3b4a73e",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/fp-ts/lib/Option.d.ts": {
+        "version": "58bb48f49578390a6d63bf010638f15f505186d932db8ea7338a49b048423671",
+        "signature": "58bb48f49578390a6d63bf010638f15f505186d932db8ea7338a49b048423671",
+        "affectsGlobalScope": false
+      },
       "./src/types/URL.ts": {
-        "version": "18f6a2cb40c68bb67592308892041be97efd9a6748357cfa4ded3d6fb7f070d1",
-        "signature": "5f270e673bc990259ab7dec0116334a73fb904a440bb6654173767ef4fd77771",
+        "version": "a1e3a21a7e69da3a1b7776e5640959076029f394f1f79a07c982f7082a25c017",
+        "signature": "ec292ca1b0689f12f1702077c37b5a642b10884733a011d23388ca20a7699bef",
         "affectsGlobalScope": false
       },
       "./src/types/string.ts": {
-        "version": "6383e9d76391a4728f6c1cac789a9979b6a0bc4cdf60d3d28a151a9df41b0216",
-        "signature": "b1383c1e2351fd265c78404b7717f054f98284ba572a55e0482de2458536d8e8",
+        "version": "863c5b4dde02bd5c678f17a66f64c5123918967e36b62fac2f4ce1074a0a2be2",
+        "signature": "5fa39e6df53a213635d1b87c8036175e6ca67cf481b4f52a44866e861f6efe7b",
+        "affectsGlobalScope": false
+      },
+      "./src/types/Email.ts": {
+        "version": "54ffa7edb2bdf0179087092663dad12c6c447e986e3ef64e4c6dfa09783ae2f8",
+        "signature": "1a71ca9f35bb9e7c2e01506495bdd7c72341d9af4b52214ff226aad7decb8637",
         "affectsGlobalScope": false
       },
       "./src/types/index.ts": {
-        "version": "1cf6dca2363a46e0d6f82d519a618bc07858884a019be82263ce9e973ae077e0",
-        "signature": "5c572759906f4882e25347ce314805375803c014b4c2058725b1f77ff0fdf2b2",
+        "version": "ff7be0441a98c67d0b08d8a88ebc76462c8e8e53a8ce2feead96d68ba869a820",
+        "signature": "ff7be0441a98c67d0b08d8a88ebc76462c8e8e53a8ce2feead96d68ba869a820",
         "affectsGlobalScope": false
       },
       "./node_modules/immer/dist/utils/env.d.ts": {
@@ -2137,8 +2117,8 @@
         "affectsGlobalScope": false
       },
       "./src/parsers/validate.ts": {
-        "version": "ff9d519c7b903b74e4d0646f83f0e0d90d8bbb06567cf3774b8835fbd17dbcff",
-        "signature": "e084535abc88ce50c29aa39b27c2c3d82639a80bee1c064c80111bf5691ccbc2",
+        "version": "4c70f510ae6a78230376b6cf71f45d53e50db910f71129df92e80a95ad4f2ec1",
+        "signature": "15ab88856b530612105e00c225446713af549430040920fa14d848c0776d1fcb",
         "affectsGlobalScope": false
       },
       "./src/parsers/fp-ts-adaptors.ts": {
@@ -2256,9 +2236,44 @@
         "signature": "0ae895e22c062cbc35d8b5504be9a4cfa745f1462b96175059447b6802640673",
         "affectsGlobalScope": false
       },
+      "./src/organization-entities/users/AdminUser.ts": {
+        "version": "d149bdbcd52694e235870c9703f61abdf8c2c1e8de0bdfa954c5ea1923b4435e",
+        "signature": "bf03b61860e03282ae929207402ef6341fa9ff0972252454c516ce0a506866cd",
+        "affectsGlobalScope": false
+      },
+      "./src/organization-entities/users/SuperUser.ts": {
+        "version": "021d60a19db1aa000d3d3ec022d057f771730508360cf981b6766a5eeef70c3e",
+        "signature": "c7ef333f44aadeb1c397cc87debe6ce37d13e87fa5bd411c654b6c79ea43a482",
+        "affectsGlobalScope": false
+      },
+      "./src/organization-entities/users/Consumer.ts": {
+        "version": "bbeb02de505470d8ce920578d2f6ada7fe624e8e69042777fefd59df579b6f5d",
+        "signature": "0094c8a4450f9ddc31dcc32f41098b12926ab3a62d4a03430cb749a83123aea4",
+        "affectsGlobalScope": false
+      },
+      "./src/organization-entities/users/index.ts": {
+        "version": "f20e4d1a46387413dc281905430d1d79861e9c6ea5e2a5859d4a843bbf2e524d",
+        "signature": "f20e4d1a46387413dc281905430d1d79861e9c6ea5e2a5859d4a843bbf2e524d",
+        "affectsGlobalScope": false
+      },
+      "./src/organization-entities/organizations/Organization.ts": {
+        "version": "5e8850fdc9d093c99ca2285ecc615e0e60c6864f704a40ebb47b67ff3a0a7aa4",
+        "signature": "611afbfab239db65f8de38f01c291aacbc91fbf3c763258da1e089dbabbdac11",
+        "affectsGlobalScope": false
+      },
+      "./src/organization-entities/organizations/index.ts": {
+        "version": "738d8d1db51827e50d671144a308fbf044d64e75f1f72d1f6c3a992fb94f64c7",
+        "signature": "738d8d1db51827e50d671144a308fbf044d64e75f1f72d1f6c3a992fb94f64c7",
+        "affectsGlobalScope": false
+      },
+      "./src/organization-entities/index.ts": {
+        "version": "888cef2ca9ad3ada702564edec35eb4e2d442adcbfa462e0028553e5a2b0cf23",
+        "signature": "888cef2ca9ad3ada702564edec35eb4e2d442adcbfa462e0028553e5a2b0cf23",
+        "affectsGlobalScope": false
+      },
       "./src/index.ts": {
-        "version": "d013c918a9be4e17969575117e5e818f709e9761681bc80c35ed26c49a5f593f",
-        "signature": "b7db22512833833f44a8af76a92c1a90ccbead62b7efb196361284df1183c2f7",
+        "version": "9fd5e0d2e98a9c4e65ce4f05246802f8f8a7f093ea73436630b924869a45fbd0",
+        "signature": "9fd5e0d2e98a9c4e65ce4f05246802f8f8a7f093ea73436630b924869a45fbd0",
         "affectsGlobalScope": false
       },
       "./src/game-entities/game/Game.spec.ts": {
@@ -2625,6 +2640,11 @@
         "version": "19a1bd57c2b3dd10bc4ae33eaa9e88f0f067858e32b7765b7e9d38138cd07f30",
         "signature": "19a1bd57c2b3dd10bc4ae33eaa9e88f0f067858e32b7765b7e9d38138cd07f30",
         "affectsGlobalScope": false
+      },
+      "../../node_modules/@types/json-schema/index.d.ts": {
+        "version": "b2be568d8ce95fcb26eebd04c035d94825655fdf689bf67d799f5ff8cbbb1024",
+        "signature": "b2be568d8ce95fcb26eebd04c035d94825655fdf689bf67d799f5ff8cbbb1024",
+        "affectsGlobalScope": false
       }
     },
     "options": {
@@ -2635,17 +2655,15 @@
       "experimentalDecorators": true,
       "allowSyntheticDefaultImports": true,
       "noFallthroughCasesInSwitch": true,
-      "target": 6,
+      "forceConsistentCasingInFileNames": true,
+      "target": 4,
       "sourceMap": true,
-      "incremental": true,
       "strict": true,
       "strictPropertyInitialization": false,
       "importHelpers": true,
-      "composite": true,
-      "moduleResolution": 2,
-      "esModuleInterop": true,
       "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true,
+      "esModuleInterop": true,
+      "composite": true,
       "rootDir": "./src",
       "outDir": "./lib",
       "baseUrl": "./",
@@ -4898,9 +4916,39 @@
       "./src/index.ts": [
         "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/index.ts",
+        "./src/organization-entities/index.ts",
         "./src/parsers/index.ts",
         "./src/types/Errors.ts",
         "./src/types/Tagged.ts"
+      ],
+      "./src/organization-entities/index.ts": [
+        "./node_modules/tslib/tslib.d.ts",
+        "./src/organization-entities/organizations/index.ts",
+        "./src/organization-entities/users/index.ts"
+      ],
+      "./src/organization-entities/organizations/Organization.ts": [
+        "./node_modules/tslib/tslib.d.ts"
+      ],
+      "./src/organization-entities/organizations/index.ts": [
+        "./node_modules/tslib/tslib.d.ts",
+        "./src/organization-entities/organizations/Organization.ts"
+      ],
+      "./src/organization-entities/users/AdminUser.ts": [
+        "./node_modules/tslib/tslib.d.ts"
+      ],
+      "./src/organization-entities/users/Consumer.ts": [
+        "./node_modules/tslib/tslib.d.ts"
+      ],
+      "./src/organization-entities/users/SuperUser.ts": [
+        "./node_modules/class-validator/types/index.d.ts",
+        "./node_modules/tslib/tslib.d.ts",
+        "./src/types/index.ts"
+      ],
+      "./src/organization-entities/users/index.ts": [
+        "./node_modules/tslib/tslib.d.ts",
+        "./src/organization-entities/users/AdminUser.ts",
+        "./src/organization-entities/users/Consumer.ts",
+        "./src/organization-entities/users/SuperUser.ts"
       ],
       "./src/parsers/entity-parsing.ts": [
         "./node_modules/@types/lodash/index.d.ts",
@@ -4940,8 +4988,15 @@
         "./node_modules/tslib/tslib.d.ts",
         "./src/types/index.ts"
       ],
+      "./src/types/Branded.ts": [
+        "./node_modules/tslib/tslib.d.ts"
+      ],
       "./src/types/Dictionary.ts": [
         "./node_modules/tslib/tslib.d.ts"
+      ],
+      "./src/types/Email.ts": [
+        "./node_modules/tslib/tslib.d.ts",
+        "./src/types/Branded.ts"
       ],
       "./src/types/Errors.ts": [
         "./node_modules/class-validator/types/index.d.ts",
@@ -4951,9 +5006,6 @@
         "./node_modules/@types/lodash/index.d.ts",
         "./node_modules/tslib/tslib.d.ts",
         "./src/game-entities/index.ts"
-      ],
-      "./src/types/Never.ts": [
-        "./node_modules/tslib/tslib.d.ts"
       ],
       "./src/types/Subscription.ts": [
         "./node_modules/tslib/tslib.d.ts"
@@ -4967,17 +5019,17 @@
         "./node_modules/@types/validator/index.d.ts",
         "./node_modules/fp-ts/lib/Option.d.ts",
         "./node_modules/tslib/tslib.d.ts",
-        "./src/types/Never.ts"
+        "./src/types/Branded.ts"
       ],
       "./src/types/UUIDv4.ts": [
         "./node_modules/@types/uuid/index.d.ts",
-        "./node_modules/fp-ts/lib/Option.d.ts",
         "./node_modules/tslib/tslib.d.ts",
-        "./src/types/Never.ts"
+        "./src/types/Branded.ts"
       ],
       "./src/types/index.ts": [
         "./node_modules/tslib/tslib.d.ts",
         "./src/types/Dictionary.ts",
+        "./src/types/Email.ts",
         "./src/types/Errors.ts",
         "./src/types/ExpressionContext.ts",
         "./src/types/Subscription.ts",
@@ -4988,7 +5040,7 @@
       ],
       "./src/types/string.ts": [
         "./node_modules/tslib/tslib.d.ts",
-        "./src/types/Never.ts"
+        "./src/types/Branded.ts"
       ]
     },
     "exportedModulesMap": {
@@ -7164,9 +7216,25 @@
       ],
       "./src/index.ts": [
         "./src/game-entities/index.ts",
+        "./src/organization-entities/index.ts",
         "./src/parsers/index.ts",
         "./src/types/Errors.ts",
         "./src/types/Tagged.ts"
+      ],
+      "./src/organization-entities/index.ts": [
+        "./src/organization-entities/organizations/index.ts",
+        "./src/organization-entities/users/index.ts"
+      ],
+      "./src/organization-entities/organizations/index.ts": [
+        "./src/organization-entities/organizations/Organization.ts"
+      ],
+      "./src/organization-entities/users/SuperUser.ts": [
+        "./src/types/index.ts"
+      ],
+      "./src/organization-entities/users/index.ts": [
+        "./src/organization-entities/users/AdminUser.ts",
+        "./src/organization-entities/users/Consumer.ts",
+        "./src/organization-entities/users/SuperUser.ts"
       ],
       "./src/parsers/entity-parsing.ts": [
         "./src/game-entities/index.ts",
@@ -7188,6 +7256,9 @@
         "./node_modules/rxjs/index.d.ts",
         "./src/types/index.ts"
       ],
+      "./src/types/Email.ts": [
+        "./src/types/Branded.ts"
+      ],
       "./src/types/Errors.ts": [
         "./node_modules/class-validator/types/index.d.ts"
       ],
@@ -7197,14 +7268,14 @@
       ],
       "./src/types/URL.ts": [
         "./node_modules/fp-ts/lib/Option.d.ts",
-        "./src/types/Never.ts"
+        "./src/types/Branded.ts"
       ],
       "./src/types/UUIDv4.ts": [
-        "./node_modules/fp-ts/lib/Option.d.ts",
-        "./src/types/Never.ts"
+        "./src/types/Branded.ts"
       ],
       "./src/types/index.ts": [
         "./src/types/Dictionary.ts",
+        "./src/types/Email.ts",
         "./src/types/Errors.ts",
         "./src/types/ExpressionContext.ts",
         "./src/types/Subscription.ts",
@@ -7214,7 +7285,7 @@
         "./src/types/string.ts"
       ],
       "./src/types/string.ts": [
-        "./src/types/Never.ts"
+        "./src/types/Branded.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -7683,6 +7754,7 @@
       "./node_modules/typescript/lib/lib.es2016.array.include.d.ts",
       "./node_modules/typescript/lib/lib.es2016.d.ts",
       "./node_modules/typescript/lib/lib.es2017.d.ts",
+      "./node_modules/typescript/lib/lib.es2017.full.d.ts",
       "./node_modules/typescript/lib/lib.es2017.intl.d.ts",
       "./node_modules/typescript/lib/lib.es2017.object.d.ts",
       "./node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts",
@@ -7694,12 +7766,6 @@
       "./node_modules/typescript/lib/lib.es2018.intl.d.ts",
       "./node_modules/typescript/lib/lib.es2018.promise.d.ts",
       "./node_modules/typescript/lib/lib.es2018.regexp.d.ts",
-      "./node_modules/typescript/lib/lib.es2019.array.d.ts",
-      "./node_modules/typescript/lib/lib.es2019.d.ts",
-      "./node_modules/typescript/lib/lib.es2019.full.d.ts",
-      "./node_modules/typescript/lib/lib.es2019.object.d.ts",
-      "./node_modules/typescript/lib/lib.es2019.string.d.ts",
-      "./node_modules/typescript/lib/lib.es2019.symbol.d.ts",
       "./node_modules/typescript/lib/lib.es2020.bigint.d.ts",
       "./node_modules/typescript/lib/lib.es5.d.ts",
       "./node_modules/typescript/lib/lib.esnext.intl.d.ts",
@@ -7728,21 +7794,30 @@
       "./src/game-entities/index.ts",
       "./src/game-entities/types.ts",
       "./src/index.ts",
+      "./src/organization-entities/index.ts",
+      "./src/organization-entities/organizations/Organization.ts",
+      "./src/organization-entities/organizations/index.ts",
+      "./src/organization-entities/users/AdminUser.ts",
+      "./src/organization-entities/users/Consumer.ts",
+      "./src/organization-entities/users/SuperUser.ts",
+      "./src/organization-entities/users/index.ts",
       "./src/parsers/entity-parsing.ts",
       "./src/parsers/fp-ts-adaptors.ts",
       "./src/parsers/index.ts",
       "./src/parsers/validate.spec.ts",
       "./src/parsers/validate.ts",
+      "./src/types/Branded.ts",
       "./src/types/Dictionary.ts",
+      "./src/types/Email.ts",
       "./src/types/Errors.ts",
       "./src/types/ExpressionContext.ts",
-      "./src/types/Never.ts",
       "./src/types/Subscription.ts",
       "./src/types/Tagged.ts",
       "./src/types/URL.ts",
       "./src/types/UUIDv4.ts",
       "./src/types/index.ts",
-      "./src/types/string.ts"
+      "./src/types/string.ts",
+      "../../node_modules/@types/json-schema/index.d.ts"
     ]
   },
   "version": "4.1.3"

@@ -1,10 +1,10 @@
-import { isString } from "lodash/fp";
-import validator from "validator";
+import { isString } from 'lodash/fp';
+import validator from 'validator';
 import * as o from 'fp-ts/lib/Option';
 
-import { Never } from "./Never";
+import { Branded } from './Branded';
 
-export type Url<A extends string = string> = A & Never<"__Url__">;
+export type Url<A extends string = string> = A & Branded<'__Url__'>;
 
 const NotAValidUrl = 'NotAValidUrl';
 

@@ -46,7 +46,10 @@ export class GameRepository {
   ): Observable<e.Either<UnexpectedError | ParsingError, FullGame>> {
     return from(this.repo.save(dto)).pipe(
       switchMap((res) => {
-        return GameParser.toFullEntity(res);
+        return GameParser.toFullEntity({
+          ...res,
+          id: res.public_id,
+        });
       }),
       catchError((err) =>
         of(e.left(new UnexpectedError('DB save failed', err))),
