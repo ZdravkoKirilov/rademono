@@ -1,15 +1,21 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { AdminUsersService } from './admin-users.service';
-import { CreateAdminUserDto } from './dto/create-admin-user.dto';
-import { UpdateAdminUserDto } from './dto/update-admin-user.dto';
 
 @Controller('admin-users')
 export class AdminUsersController {
   constructor(private readonly adminUsersService: AdminUsersService) {}
 
   @Post()
-  create(@Body() createAdminUserDto: CreateAdminUserDto) {
-    return this.adminUsersService.create(createAdminUserDto);
+  create(@Body() payload: unknown) {
+    return this.adminUsersService.create(payload);
   }
 
   @Get()
@@ -23,8 +29,8 @@ export class AdminUsersController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateAdminUserDto: UpdateAdminUserDto) {
-    return this.adminUsersService.update(+id, updateAdminUserDto);
+  update(@Param('id') id: string, @Body() payload: unknown) {
+    return this.adminUsersService.update(+id, payload);
   }
 
   @Delete(':id')
