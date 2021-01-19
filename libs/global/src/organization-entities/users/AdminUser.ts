@@ -2,6 +2,7 @@ import {
   IsBoolean,
   IsDate,
   IsEmail,
+  IsIn,
   IsOptional,
   IsUUID,
 } from 'class-validator';
@@ -13,6 +14,11 @@ type AdminUserId = Tagged<'AdminUserId', UUIDv4>;
 abstract class CommonFields {
   @IsEmail()
   email: Email;
+}
+
+export enum AdminUserTypes {
+  superuser = 'superuser',
+  standard = 'standard',
 }
 
 export class AdminUser extends CommonFields {
@@ -31,6 +37,9 @@ export class FullAdminUser extends AdminUser {
 
   @IsBoolean()
   verified: boolean;
+
+  @IsIn(Object.values(AdminUserTypes))
+  type: AdminUserTypes;
 }
 
 export class SendCodeDto {
