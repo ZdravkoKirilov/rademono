@@ -1,19 +1,20 @@
-import clone from 'immer';
 import { isArray, get } from 'lodash';
 
-import { GameTemplate } from "../game-entities";
-import { Dictionary } from "../types";
+import { GameTemplate } from '../game-entities';
+import { Dictionary } from '../types';
 
 const parseFromString = <T = any>(context: Dictionary) => (src: string): T => {
   try {
-    const result = (new Function("with(this) {" + src + "}")).call(context);
+    const result = new Function('with(this) {' + src + '}').call(context);
     return result !== undefined ? result : '';
   } catch (err) {
     return '' as any;
   }
 };
 
-export const parseAndBind = <T = Function>(context: Dictionary) => (src: string): T => {
+export const parseAndBind = <T = Function>(context: Dictionary) => (
+  src: string,
+): T => {
   const func = parseFromString(context)(src) as Function;
   return typeof func === 'function' ? func.bind(context) : func;
 };
@@ -30,32 +31,34 @@ export const safeJSON = <T = {}>(source: any, fallback?: unknown): T => {
   }
 };
 
-type ParseConfig<T> = Partial<{
-  [K in keyof T]: string | ((item: any) => any);
-}>;
+type ParseConfig<T> = Partial<
+  {
+    [K in keyof T]: string | ((item: any) => any);
+  }
+>;
 
 export const enrichEntity = <T, P>(
   config: GameTemplate,
   parseConfig: ParseConfig<T>,
   source: T,
 ): P => {
-  return clone<P>(source as any, (draft: any) => {
-    for (let key in parseConfig) {
-      const parser = parseConfig[key] as any;
-      const currentPropertyValue = draft[key];
+  const draft = { ...source };
 
-      if (typeof parser === 'string') {
-        draft[key] = get(config, [parser, source[key] as any], null);
-      }
-      if (typeof parser === 'function') {
-        if (isArray(currentPropertyValue)) {
-          draft[key] = currentPropertyValue.map(elem => {
-            return parser(elem);
-          }) as any;
-        } else {
-          draft[key] = parser(currentPropertyValue);
-        }
+  for (const key in parseConfig) {
+    const parser = parseConfig[key] as any;
+    const currentPropertyValue = draft[key];
+
+    if (typeof parser === 'string') {
+      draft[key] = get(config, [parser, source[key] as any], null);
+    }
+    if (typeof parser === 'function') {
+      if (isArray(currentPropertyValue)) {
+        draft[key] = currentPropertyValue.map((elem) => {
+          return parser(elem);
+        }) as any;
+      } else {
+        draft[key] = parser(currentPropertyValue);
       }
     }
-  });
+  }
 };

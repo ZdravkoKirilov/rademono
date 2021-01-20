@@ -15,6 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^26.0.15",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/lodash": "^4.14.166",
     "@types/uuid": "^8.3.0",
     "@types/validator": "^13.1.2",
@@ -27,8 +28,9 @@
   "dependencies": {
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
+    "date-fns": "^2.16.1",
     "fp-ts": "^2.9.3",
-    "immer": "^8.0.0",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
     "nanoid": "^3.1.20",
     "rxjs": "^6.6.3",

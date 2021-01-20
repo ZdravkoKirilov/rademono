@@ -8,3 +8,4 @@ export * from './URL';
 export * from './string';
 export * from './Email';
 export * from './NanoId';
+export * from './JWT';
