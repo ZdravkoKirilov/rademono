@@ -1,8 +1,8 @@
 import { validate, ValidatorOptions } from 'class-validator';
-import { plainToClass } from 'class-transformer';
+import { classToPlain, plainToClass } from 'class-transformer';
 import { from, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { isNil, isObject, omit, get } from 'lodash';
+import { isNil, isObject, get } from 'lodash';
 import * as o from 'fp-ts/lib/Option';
 import * as e from 'fp-ts/lib/Either';
 
@@ -21,28 +21,44 @@ export type ClassType<T> = {
   new (...args: any[]): T;
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+type UnknownObject = {};
+
 export const validateObject = (
-  data: Object,
+  data: UnknownObject,
   options: ValidatorOptions = {
     whitelist: true,
     forbidNonWhitelisted: true,
   },
 ) => from(validate(data, options));
 
-export const parseToClass = <Subject = unknown, Target = ClassType<Object>>(
+export const transformToClass = <
+  Subject = unknown,
+  Target = ClassType<UnknownObject>
+>(
+  targetClass: ClassType<Target>,
+  data: Subject,
+) => plainToClass(targetClass, data, { excludeExtraneousValues: true });
+
+export const transformToPlain = <T = unknown>(targetClass: T) =>
+  classToPlain(targetClass, { excludeExtraneousValues: true });
+
+export const parseToClass = <
+  Subject = unknown,
+  Target = ClassType<UnknownObject>
+>(
   data: Subject,
   targetClass: ClassType<Target>,
 ) => {
   return isObject(data)
-    ? of(
-        o.some(
-          plainToClass(targetClass, data, { excludeExtraneousValues: true }),
-        ),
-      )
+    ? of(o.some(transformToClass(targetClass, data)))
     : of(o.none);
 };
 
-export const parseAndValidateUnknown = <Subject = Object, Target = Object>(
+export const parseAndValidateUnknown = <
+  Subject = UnknownObject,
+  Target = UnknownObject
+>(
   data: Subject,
   targetClass: ClassType<Target>,
   options: {
@@ -66,16 +82,17 @@ export const parseAndValidateUnknown = <Subject = Object, Target = Object>(
   );
 };
 
-export const parseAndValidateObject = <Subject = Object, Target = Object>(
+export const parseAndValidateObject = <
+  Subject = UnknownObject,
+  Target = UnknownObject
+>(
   data: Subject,
   targetClass: ClassType<Target>,
   options: {
     validationOptions: ValidatorOptions;
   } = { validationOptions: { whitelist: true } },
 ): Observable<e.Either<ParsingError, Target>> => {
-  const asClass = plainToClass(targetClass, data, {
-    excludeExtraneousValues: true,
-  });
+  const asClass = transformToClass(targetClass, data);
   const result = stripUndefinedFields(asClass) as Target;
 
   return validateObject(result, options.validationOptions).pipe(

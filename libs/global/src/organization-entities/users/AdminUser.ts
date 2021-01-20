@@ -7,12 +7,18 @@ import {
   IsUUID,
 } from 'class-validator';
 import add from 'date-fns/add';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as o from 'fp-ts/lib/Option';
+import * as e from 'fp-ts/lib/Either';
+import { omit } from 'lodash/fp';
+import { Observable } from 'rxjs';
 
-import { parseAndValidateObject, parseAndValidateUnknown } from '../../parsers';
-import { Email, NanoId, Tagged, UUIDv4, JWT } from '../../types';
+import {
+  parseAndValidateObject,
+  parseAndValidateUnknown,
+  transformToClass,
+} from '../../parsers';
+import { Email, NanoId, Tagged, UUIDv4, JWT, ParsingError } from '../../types';
 
 type AdminUserId = Tagged<'AdminUserId', UUIDv4>;
 
@@ -35,15 +41,15 @@ export class AdminUser {
 export class FullAdminUser extends AdminUser {
   @IsOptional()
   @NanoId.IsNanoId()
-  loginCode: NanoId;
+  loginCode?: NanoId;
 
   @IsOptional()
   @IsDate()
-  loginCodeExpiration: Date;
+  loginCodeExpiration?: Date;
 
   @IsOptional()
   @IsDate()
-  lastLogin: Date;
+  lastLogin?: Date;
 }
 
 class SendCodeDto {
@@ -68,7 +74,29 @@ export const AdminUserParser = {
   toSignInDto: (payload: unknown) =>
     parseAndValidateUnknown(payload, SignInDto),
 
-  generateCode: (entity: FullAdminUser, now: Date): FullAdminUser => {
+  create: (
+    payload: SendCodeDto,
+    createId = UUIDv4.generate,
+  ): Observable<e.Either<ParsingError, AdminUser>> => {
+    return parseAndValidateObject(payload, SendCodeDto).pipe(
+      map((result) => {
+        if (e.isRight(result)) {
+          const plain: AdminUser = {
+            ...result.right,
+            id: createId(),
+            type: AdminUserTypes.standard,
+          };
+
+          return e.right(transformToClass(AdminUser, plain));
+        }
+        return result;
+      }),
+    );
+  },
+
+  toFullEntity: (data: unknown) => parseAndValidateUnknown(data, FullAdminUser),
+
+  addLoginCode: (entity: FullAdminUser, now = new Date()): FullAdminUser => {
     const code = NanoId.generate();
     const expiration = add(now, { minutes: 30 });
 
@@ -97,5 +125,12 @@ export const AdminUserParser = {
         return result.value.email === entity.email ? true : false;
       }),
     );
+  },
+
+  signIn: (entity: FullAdminUser, now = new Date()): FullAdminUser => {
+    return {
+      ...omit(['loginCode', 'loginCodeExpiration'], entity),
+      lastLogin: now,
+    };
   },
 };

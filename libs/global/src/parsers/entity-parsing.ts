@@ -61,4 +61,6 @@ export const enrichEntity = <T, P>(
       }
     }
   }
+
+  return (draft as unknown) as P;
 };

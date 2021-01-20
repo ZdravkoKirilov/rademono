@@ -6,6 +6,11 @@ import {
   Repository,
 } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { from, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { isUndefined } from 'lodash/fp';
+
+import { AdminUserParser, Email, FullAdminUser } from '@end/global';
 
 @Entity()
 export class AdminUserDBModel {
@@ -16,19 +21,19 @@ export class AdminUserDBModel {
   @Column('uuid')
   public_id: string;
 
-  @Column('string')
+  @Column('text')
   email: string;
 
   @Column('text')
-  activationCode: string;
+  loginCode: string;
 
   @Column('date')
-  actionCodeExpiration: Date;
+  loginCodeExpiration: Date;
 
-  @Column('boolean')
-  verified: boolean;
+  @Column('date')
+  lastLogin: Date;
 
-  @Column('string')
+  @Column('text')
   type: string;
 }
 
@@ -37,4 +42,22 @@ export class AdminUserRepository {
     @InjectRepository(AdminUserDBModel)
     private repo: Repository<AdminUserDBModel>,
   ) {}
+
+  insertUser: (user: FullAdminUser) => {};
+
+  updateUser: () => {};
+
+  findUser(email: Email) {
+    return from(this.repo.findOne({ email })).pipe(
+      switchMap((res) => {
+        if (isUndefined(res)) {
+          return of(res);
+        }
+        return AdminUserParser.toFullEntity({
+          ...res,
+          id: res.public_id,
+        });
+      }),
+    );
+  }
 }
