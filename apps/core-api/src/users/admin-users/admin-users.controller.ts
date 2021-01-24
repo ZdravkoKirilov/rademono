@@ -6,16 +6,67 @@ import {
   Put,
   Param,
   Delete,
+  HttpStatus,
 } from '@nestjs/common';
+import { map, catchError } from 'rxjs/operators';
+import * as e from 'fp-ts/lib/Either';
+import { of } from 'rxjs';
+
+import { toHttpException, UnexpectedError } from '@end/global';
+
 import { AdminUsersService } from './admin-users.service';
 
 @Controller('admin-users')
 export class AdminUsersController {
   constructor(private readonly adminUsersService: AdminUsersService) {}
 
-  @Post()
-  create(@Body() payload: unknown) {
-    return this.adminUsersService.create(payload);
+  @Post('get-login-code')
+  requestLoginCode(@Body() payload: unknown) {
+    return this.adminUsersService.requestLoginCode(payload).pipe(
+      map((result) => {
+        if (e.isLeft(result)) {
+          switch (result.left.name) {
+            case 'MalformedPayload':
+              return toHttpException({
+                statusCode: HttpStatus.BAD_REQUEST,
+                message: result.left.message,
+                name: result.left.name,
+              });
+            case 'ParsingError': {
+              return toHttpException({
+                statusCode: HttpStatus.BAD_REQUEST,
+                message: result.left.message,
+                name: result.left.name,
+                errors: result.left.errors,
+              });
+            }
+            case 'UnexpectedError': {
+              return toHttpException({
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+                message: result.left.message,
+                name: result.left.name,
+              });
+            }
+            default: {
+              return toHttpException({
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Unexpected error',
+                name: UnexpectedError.prototype.name,
+              });
+            }
+          }
+        }
+      }),
+      catchError(() =>
+        of(
+          toHttpException({
+            statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+            message: 'Unexpected error',
+            name: UnexpectedError.prototype.name,
+          }),
+        ),
+      ),
+    );
   }
 
   @Get()

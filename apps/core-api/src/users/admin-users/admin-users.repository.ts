@@ -6,11 +6,21 @@ import {
   Repository,
 } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { from, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import { isUndefined } from 'lodash/fp';
+import * as e from 'fp-ts/lib/Either';
+import * as o from 'fp-ts/lib/Option';
 
-import { AdminUserParser, Email, FullAdminUser } from '@end/global';
+import {
+  AdminUserParser,
+  Email,
+  PrivateAdminUser,
+  NanoId,
+  UUIDv4,
+  ParsingError,
+  MalformedPayloadError,
+} from '@end/global';
 
 @Entity()
 export class AdminUserDBModel {
@@ -37,26 +47,51 @@ export class AdminUserDBModel {
   type: string;
 }
 
+type UpdateOneMatcher = { public_id: UUIDv4 };
+
+type FindOneMatcher =
+  | { email: Email }
+  | { loginCode: NanoId }
+  | { public_id: UUIDv4 };
+
 export class AdminUserRepository {
   constructor(
     @InjectRepository(AdminUserDBModel)
     private repo: Repository<AdminUserDBModel>,
   ) {}
 
-  insertUser: (user: FullAdminUser) => {};
+  insertUser(newUser: PrivateAdminUser) {
+    return from(this.repo.insert(newUser)).pipe(map(() => undefined));
+  }
 
-  updateUser: () => {};
+  updateUser(updatedUser: PrivateAdminUser, criteria: UpdateOneMatcher) {
+    return from(this.repo.update(criteria, updatedUser)).pipe(
+      map(() => undefined),
+    );
+  }
 
-  findUser(email: Email) {
-    return from(this.repo.findOne({ email })).pipe(
+  saveUser(updatedUser: PrivateAdminUser) {
+    return from(this.repo.save(updatedUser)).pipe(map(() => undefined));
+  }
+
+  findUser(
+    criteria: FindOneMatcher,
+  ): Observable<
+    e.Either<ParsingError | MalformedPayloadError, o.Option<PrivateAdminUser>>
+  > {
+    return from(this.repo.findOne(criteria)).pipe(
       switchMap((res) => {
         if (isUndefined(res)) {
-          return of(res);
+          return of(e.right(o.none));
         }
-        return AdminUserParser.toFullEntity({
-          ...res,
-          id: res.public_id,
-        });
+        return AdminUserParser.toPrivateEntity(res).pipe(
+          map((res) => {
+            if (e.isRight(res)) {
+              return e.right(o.some(res.right));
+            }
+            return e.right(o.none);
+          }),
+        );
       }),
     );
   }

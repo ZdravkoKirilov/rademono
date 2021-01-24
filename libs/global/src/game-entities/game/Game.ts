@@ -22,8 +22,9 @@ import {
   Animation,
   ModuleId,
   SetupId,
-  createAbstractEntity,
 } from '../';
+
+import { createAbstractEntityParser } from '../Base.model';
 import { Dictionary, UUIDv4, Url, StringOfLength, Tagged } from '../../types';
 
 export type GameId = Tagged<'GameId', UUIDv4>;
@@ -104,7 +105,7 @@ export class ReadGameDto {
   id: string;
 }
 
-export const GameParser = createAbstractEntity<GameId>()({
+export const GameParser = createAbstractEntityParser<GameId>()({
   entityType: Game,
   createDtoType: CreateGameDto,
   updateDtoType: UpdateGameDto,

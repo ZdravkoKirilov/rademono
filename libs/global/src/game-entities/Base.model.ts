@@ -92,7 +92,7 @@ type AbstractEntity<
   ) => Observable<e.Either<ParsingError, FullInstance>>;
 };
 
-export const createAbstractEntity = <Id extends UUIDv4>() => <
+export const createAbstractEntityParser = <Id extends UUIDv4>() => <
   Entity,
   CreateDto,
   UpdateDto,
