@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
 import { map, catchError } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
@@ -20,7 +21,8 @@ import { AdminUsersService } from './admin-users.service';
 export class AdminUsersController {
   constructor(private readonly adminUsersService: AdminUsersService) {}
 
-  @Post('get-login-code')
+  @Post('request-login-code')
+  @HttpCode(HttpStatus.NO_CONTENT)
   requestLoginCode(@Body() payload: unknown) {
     return this.adminUsersService.requestLoginCode(payload).pipe(
       map((result) => {
@@ -56,6 +58,7 @@ export class AdminUsersController {
             }
           }
         }
+        return result.right;
       }),
       catchError(() =>
         of(

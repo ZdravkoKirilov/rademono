@@ -14,7 +14,12 @@ describe('AdminUsersController', () => {
     controller = module.get<AdminUsersController>(AdminUsersController);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  it('succeeds with correct data', (done) => {
+    controller
+      .requestLoginCode({ email: 'email@email.com' })
+      .subscribe((res) => {
+        expect(res).toBeUndefined();
+        done();
+      });
   });
 });
