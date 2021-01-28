@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
+
 import { AppModule } from './../src/app.module';
 
-describe('AppController (e2e)', () => {
+describe('AdminUserController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -15,7 +16,13 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer()).get('/').expect(404);
+  it('/admin-users/request-login-code (POST)', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/admin-users/request-login-code')
+      .send({ email: 'email@email.com' })
+      .expect(204)
+      .then((res) => res.body);
+
+    expect(response).toEqual({});
   });
 });

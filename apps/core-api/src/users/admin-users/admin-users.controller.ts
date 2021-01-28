@@ -60,15 +60,16 @@ export class AdminUsersController {
         }
         return result.right;
       }),
-      catchError(() =>
-        of(
+      catchError((err) => {
+        debugger;
+        return of(
           toHttpException({
             statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
             message: 'Unexpected error',
             name: UnexpectedError.prototype.name,
           }),
-        ),
-      ),
+        );
+      }),
     );
   }
 

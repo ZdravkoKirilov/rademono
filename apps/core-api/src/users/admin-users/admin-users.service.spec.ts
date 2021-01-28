@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { AdminUserRepository } from './admin-users.repository';
 import { AdminUsersService } from './admin-users.service';
 
 describe('AdminUsersService', () => {
@@ -6,7 +7,13 @@ describe('AdminUsersService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AdminUsersService],
+      providers: [
+        AdminUsersService,
+        {
+          provide: AdminUserRepository,
+          useValue: {},
+        },
+      ],
     }).compile();
 
     service = module.get<AdminUsersService>(AdminUsersService);
