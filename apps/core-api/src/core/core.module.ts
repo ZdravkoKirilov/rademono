@@ -1,25 +1,21 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import path from 'path';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { OrganizationsModule } from '../organizations';
 import { GameEditorModule } from '../game-editor';
 import { UsersModule } from '../users';
+import { AppConfigModule, AppConfigService } from '../config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: path.resolve(__dirname, '../../.env'),
-      isGlobal: true,
-    }),
+    AppConfigModule,
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
+      imports: [AppConfigModule],
+      inject: [AppConfigService],
+      useFactory: async (configService: AppConfigService) => ({
         type: 'postgres',
         host: configService.get('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
+        port: configService.getDBPort(),
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
@@ -27,16 +23,6 @@ import { UsersModule } from '../users';
         autoLoadEntities: true,
       }),
     }),
-    /*     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'admin',
-      password: process.env['DB_PASSWORD'],
-      database: 'postgres',
-      synchronize: true,
-      autoLoadEntities: true,
-    }), */
     GameEditorModule,
     OrganizationsModule,
     UsersModule,

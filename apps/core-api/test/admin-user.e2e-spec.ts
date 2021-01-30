@@ -16,7 +16,7 @@ describe('AdminUserController (e2e)', () => {
     await app.init();
   });
 
-  it('/admin-users/request-login-code (POST)', async () => {
+  it('/admin-users/request-login-code (POST)', async (done) => {
     const response = await request(app.getHttpServer())
       .post('/admin-users/request-login-code')
       .send({ email: 'email@email.com' })
@@ -24,5 +24,6 @@ describe('AdminUserController (e2e)', () => {
       .then((res) => res.body);
 
     expect(response).toEqual({});
+    done();
   });
 });

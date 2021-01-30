@@ -5,7 +5,7 @@ services:
     image: postgres:13.1
     restart: always
     environment:
-      POSTGRES_DB: postgres
+      POSTGRES_DB: local
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     volumes:
@@ -14,6 +14,19 @@ services:
     command: 'postgres -c config_file=/usr/local/etc/postgres/postgres.conf'
     ports:
       - '5432:5432'
+  test-db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - './postgres/postgres.conf:/usr/local/etc/postgres/postgres.conf'
+      - /data/test-db:/data/test-db
+    command: 'postgres -c config_file=/usr/local/etc/postgres/postgres.conf'
+    ports:
+      - '5433:5432'
 
   pgadmin:
     image: dpage/pgadmin4:latest
