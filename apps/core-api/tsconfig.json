@@ -3,6 +3,9 @@
   "references": [{ "path": "../../libs/global" }],
   "compilerOptions": {
     "outDir": "./dist",
-    "baseUrl": "./"
-  },
+    "baseUrl": "./",
+    "paths": {
+      "@app/shared": ["src/shared/index"]
+    }
+  }
 }

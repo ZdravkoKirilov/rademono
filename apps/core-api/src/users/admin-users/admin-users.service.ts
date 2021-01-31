@@ -48,15 +48,19 @@ export class AdminUsersService {
         }
 
         const userWithLoginToken = AdminUserParser.addLoginCode(mbUser.right);
-
         return this.repo.saveUser(userWithLoginToken).pipe(
-          tap(() => {
-            // send email
+          map((mbSaved) => {
+            debugger;
+            return e.isLeft(mbSaved)
+              ? e.left(new UnexpectedError())
+              : e.right(undefined);
           }),
-          map(() => e.right(undefined)),
         );
       }),
-      catchError(() => toLeftObs(new UnexpectedError())),
+      catchError((err) => {
+        debugger;
+        return toLeftObs(new UnexpectedError('Caught an error', err));
+      }),
     );
   }
 

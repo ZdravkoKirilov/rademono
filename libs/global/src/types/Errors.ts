@@ -50,11 +50,9 @@ export class InvalidCommandError extends Error {
   }
 }
 
-export type CustomHttpException = {
-  statusCode: number;
+export type HttpApiError = {
   message: string;
   name: string; // localization key
   errors?: FieldError[];
+  originalError?: unknown;
 };
-
-export const toHttpException = (data: CustomHttpException) => data;

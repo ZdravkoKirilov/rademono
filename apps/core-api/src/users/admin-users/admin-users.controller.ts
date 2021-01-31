@@ -9,12 +9,12 @@ import {
   HttpStatus,
   HttpCode,
 } from '@nestjs/common';
-import { map, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
-import { of } from 'rxjs';
 
-import { toHttpException, UnexpectedError } from '@end/global';
+import { UnexpectedError } from '@end/global';
 
+import { toBadRequest, toUnexpectedError } from '@app/shared';
 import { AdminUsersService } from './admin-users.service';
 
 @Controller('admin-users')
@@ -29,29 +29,25 @@ export class AdminUsersController {
         if (e.isLeft(result)) {
           switch (result.left.name) {
             case 'MalformedPayload':
-              return toHttpException({
-                statusCode: HttpStatus.BAD_REQUEST,
+              throw toBadRequest({
                 message: result.left.message,
                 name: result.left.name,
               });
             case 'ParsingError': {
-              return toHttpException({
-                statusCode: HttpStatus.BAD_REQUEST,
+              throw toBadRequest({
                 message: result.left.message,
                 name: result.left.name,
                 errors: result.left.errors,
               });
             }
             case 'UnexpectedError': {
-              return toHttpException({
-                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+              throw toUnexpectedError({
                 message: result.left.message,
                 name: result.left.name,
               });
             }
             default: {
-              return toHttpException({
-                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+              throw toUnexpectedError({
                 message: 'Unexpected error',
                 name: UnexpectedError.prototype.name,
               });
@@ -59,16 +55,6 @@ export class AdminUsersController {
           }
         }
         return result.right;
-      }),
-      catchError((err) => {
-        debugger;
-        return of(
-          toHttpException({
-            statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-            message: 'Unexpected error',
-            name: UnexpectedError.prototype.name,
-          }),
-        );
       }),
     );
   }

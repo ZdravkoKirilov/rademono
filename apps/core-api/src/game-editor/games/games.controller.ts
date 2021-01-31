@@ -6,19 +6,14 @@ import {
   Put,
   Param,
   Delete,
-  HttpStatus,
 } from '@nestjs/common';
 import { map } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
-
-import { GamesService } from './games.service';
 import { Observable } from 'rxjs';
-import {
-  CustomHttpException,
-  ReadGameDto,
-  toHttpException,
-  UnexpectedError,
-} from '@end/global';
+import { HttpApiError, ReadGameDto, UnexpectedError } from '@end/global';
+
+import { toBadRequest, toUnexpectedError } from '@app/shared';
+import { GamesService } from './games.service';
 
 @Controller('games')
 export class GamesController {
@@ -27,35 +22,31 @@ export class GamesController {
   @Post()
   create(
     @Body() createGamePayload: unknown,
-  ): Observable<ReadGameDto | CustomHttpException> {
+  ): Observable<ReadGameDto | HttpApiError> {
     return this.gamesService.create(createGamePayload).pipe(
       map((result) => {
         if (e.isLeft(result)) {
           switch (result.left.name) {
             case 'MalformedPayload':
-              return toHttpException({
-                statusCode: HttpStatus.BAD_REQUEST,
+              throw toBadRequest({
                 message: result.left.message,
                 name: result.left.name,
               });
             case 'ParsingError': {
-              return toHttpException({
-                statusCode: HttpStatus.BAD_REQUEST,
+              throw toBadRequest({
                 message: result.left.message,
                 name: result.left.name,
                 errors: result.left.errors,
               });
             }
             case 'UnexpectedError': {
-              return toHttpException({
-                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+              throw toUnexpectedError({
                 message: result.left.message,
                 name: result.left.name,
               });
             }
             default: {
-              return toHttpException({
-                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+              throw toUnexpectedError({
                 message: 'Unexpected error',
                 name: UnexpectedError.prototype.name,
               });

@@ -1,2 +1,7 @@
-export { AdminUserParser, AdminUser, PrivateAdminUser } from './AdminUser';
+export {
+  AdminUserParser,
+  AdminUser,
+  PrivateAdminUser,
+  AdminUserTypes,
+} from './AdminUser';
 export * from './Consumer';

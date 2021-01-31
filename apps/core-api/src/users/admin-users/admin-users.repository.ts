@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable, of } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, catchError } from 'rxjs/operators';
 import { isUndefined } from 'lodash/fp';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
@@ -20,6 +20,9 @@ import {
   UUIDv4,
   ParsingError,
   MalformedPayloadError,
+  UnexpectedError,
+  toLeftObs,
+  toRightObs,
 } from '@end/global';
 
 @Entity()
@@ -40,7 +43,7 @@ export class AdminUserDBModel {
   @Column('date')
   loginCodeExpiration: Date;
 
-  @Column('date')
+  @Column('date', { nullable: true })
   lastLogin: Date;
 
   @Column('text')
@@ -70,8 +73,15 @@ export class AdminUserRepository {
     );
   }
 
-  saveUser(updatedUser: PrivateAdminUser) {
-    return from(this.repo.save(updatedUser)).pipe(map(() => undefined));
+  saveUser(
+    updatedUser: PrivateAdminUser,
+  ): Observable<e.Either<UnexpectedError, undefined>> {
+    return from(this.repo.save(updatedUser)).pipe(
+      switchMap(() => toRightObs(undefined)),
+      catchError((err) =>
+        toLeftObs(new UnexpectedError('Failed to save the user', err)),
+      ),
+    );
   }
 
   findUser(
