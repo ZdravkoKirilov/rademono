@@ -43,14 +43,6 @@ export class UnexpectedError<Error = unknown> extends Error {
   }
 }
 
-export class InvalidCommandError extends Error {
-  readonly name = 'InvalidCommand';
-
-  constructor(public message: string) {
-    super();
-  }
-}
-
 export type HttpApiError = {
   message: string;
   name: string; // localization key
