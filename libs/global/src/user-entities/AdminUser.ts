@@ -147,7 +147,10 @@ export const AdminUserParser = {
     return expires ? isAfter(expires, now) : false;
   },
 
-  generateToken: (entity: PrivateAdminUser, createToken = JWT.generate) => {
+  generateToken: (
+    entity: PrivateAdminUser,
+    createToken = JWT.generate,
+  ): Observable<e.Either<ParsingError, TokenDto>> => {
     return parseAndValidateObject(
       {
         token: createToken({ email: entity.email }),

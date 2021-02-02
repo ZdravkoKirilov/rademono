@@ -19,7 +19,6 @@ import {
   NanoId,
   UUIDv4,
   ParsingError,
-  MalformedPayloadError,
   UnexpectedError,
   toLeftObs,
   toRightObs,
@@ -87,7 +86,7 @@ export class AdminUserRepository {
   findUser(
     criteria: FindOneMatcher,
   ): Observable<
-    e.Either<ParsingError | MalformedPayloadError, o.Option<PrivateAdminUser>>
+    e.Either<UnexpectedError | ParsingError, o.Option<PrivateAdminUser>>
   > {
     return from(this.repo.findOne(criteria)).pipe(
       switchMap((res) => {
@@ -103,6 +102,9 @@ export class AdminUserRepository {
           }),
         );
       }),
+      catchError((err) =>
+        toLeftObs(new UnexpectedError('Failed to find the user', err)),
+      ),
     );
   }
 }

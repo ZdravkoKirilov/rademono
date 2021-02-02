@@ -1,6 +1,6 @@
 import { isLeft, isRight } from 'fp-ts/lib/Either';
 
-import { MalformedPayloadError, ParsingError, UUIDv4 } from '../../types';
+import { ParsingError, UUIDv4 } from '../../types';
 import { GameParser } from './Game';
 
 const throwError = () => {
@@ -31,7 +31,7 @@ describe('Game Entity', () => {
       if (isRight(result)) {
         throwError();
       } else {
-        expect(result.left).toBeInstanceOf(MalformedPayloadError);
+        expect(result.left).toBeInstanceOf(ParsingError);
       }
     });
 
@@ -98,7 +98,7 @@ describe('Game Entity', () => {
       if (isRight(result)) {
         throwError();
       } else {
-        expect(result.left).toBeInstanceOf(MalformedPayloadError);
+        expect(result.left).toBeInstanceOf(ParsingError);
       }
     });
 

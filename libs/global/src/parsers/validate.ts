@@ -6,7 +6,7 @@ import { isNil, isObject, get } from 'lodash';
 import * as o from 'fp-ts/lib/Option';
 import * as e from 'fp-ts/lib/Either';
 
-import { MalformedPayloadError, ParsingError } from '../types';
+import { ParsingError } from '../types';
 
 const stripUndefinedFields = (obj: any) => {
   Object.keys(obj).forEach((key) => {
@@ -64,11 +64,11 @@ export const parseAndValidateUnknown = <
   options: {
     validationOptions: ValidatorOptions;
   } = { validationOptions: { whitelist: true } },
-): Observable<e.Either<MalformedPayloadError | ParsingError, Target>> => {
+): Observable<e.Either<ParsingError, Target>> => {
   return parseToClass(data, targetClass).pipe(
     switchMap((opt) => {
       if (o.isNone(opt)) {
-        return of(e.left(new MalformedPayloadError()));
+        return of(e.left(new ParsingError('Payload is not an object')));
       }
       return validateObject(opt.value, options.validationOptions).pipe(
         map((errors) => {

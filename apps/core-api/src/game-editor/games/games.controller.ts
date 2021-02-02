@@ -10,7 +10,7 @@ import {
 import { map } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 import { Observable } from 'rxjs';
-import { HttpApiError, ReadGameDto, UnexpectedError } from '@end/global';
+import { ReadGameDto, UnexpectedError } from '@end/global';
 
 import { toBadRequest, toUnexpectedError } from '@app/shared';
 import { GamesService } from './games.service';
@@ -20,18 +20,11 @@ export class GamesController {
   constructor(private readonly gamesService: GamesService) {}
 
   @Post()
-  create(
-    @Body() createGamePayload: unknown,
-  ): Observable<ReadGameDto | HttpApiError> {
+  create(@Body() createGamePayload: unknown): Observable<ReadGameDto> {
     return this.gamesService.create(createGamePayload).pipe(
       map((result) => {
         if (e.isLeft(result)) {
           switch (result.left.name) {
-            case 'MalformedPayload':
-              throw toBadRequest({
-                message: result.left.message,
-                name: result.left.name,
-              });
             case 'ParsingError': {
               throw toBadRequest({
                 message: result.left.message,
@@ -43,12 +36,14 @@ export class GamesController {
               throw toUnexpectedError({
                 message: result.left.message,
                 name: result.left.name,
+                originalError: result.left.error,
               });
             }
             default: {
               throw toUnexpectedError({
                 message: 'Unexpected error',
                 name: UnexpectedError.prototype.name,
+                originalError: result.left,
               });
             }
           }

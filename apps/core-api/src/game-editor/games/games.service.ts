@@ -5,7 +5,6 @@ import * as e from 'fp-ts/lib/Either';
 
 import {
   GameParser,
-  MalformedPayloadError,
   ParsingError,
   ReadGameDto,
   toLeftObs,
@@ -19,12 +18,7 @@ export class GamesService {
 
   create(
     payload: unknown,
-  ): Observable<
-    e.Either<
-      UnexpectedError | MalformedPayloadError | ParsingError,
-      ReadGameDto
-    >
-  > {
+  ): Observable<e.Either<UnexpectedError | ParsingError, ReadGameDto>> {
     return GameParser.toCreateDto(payload).pipe(
       switchMap((res) => {
         if (e.isLeft(res)) {

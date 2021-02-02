@@ -2,14 +2,7 @@ import * as e from 'fp-ts/lib/Either';
 import { get } from 'lodash/fp';
 import { add, sub } from 'date-fns';
 
-import {
-  Email,
-  JWT,
-  MalformedPayloadError,
-  NanoId,
-  ParsingError,
-  UUIDv4,
-} from '../types';
+import { Email, JWT, NanoId, ParsingError, UUIDv4 } from '../types';
 import {
   AdminUserId,
   AdminUserParser,
@@ -91,7 +84,7 @@ describe('AdminUserParser', () => {
 
       AdminUserParser.toSendCodeDto(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
-        expect(get('left', res)).toBeInstanceOf(MalformedPayloadError);
+        expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
       });
     });
@@ -128,7 +121,7 @@ describe('AdminUserParser', () => {
 
       AdminUserParser.toSignInDto(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
-        expect(get('left', res)).toBeInstanceOf(MalformedPayloadError);
+        expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
       });
     });
@@ -182,7 +175,7 @@ describe('AdminUserParser', () => {
 
       AdminUserParser.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
-        expect(get('left', res)).toBeInstanceOf(MalformedPayloadError);
+        expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
       });
     });

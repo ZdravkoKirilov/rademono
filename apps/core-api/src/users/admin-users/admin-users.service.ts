@@ -1,14 +1,15 @@
 import {
   AdminUserParser,
-  MalformedPayloadError,
   ParsingError,
   toLeftObs,
   toRightObs,
   UnexpectedError,
+  TokenDto,
+  DomainError,
 } from '@end/global';
 import { Injectable } from '@nestjs/common';
-import { from, Observable } from 'rxjs';
-import { switchMap, tap, catchError, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { switchMap, catchError, map } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 
@@ -18,12 +19,44 @@ import { AdminUserRepository } from './admin-users.repository';
 export class AdminUsersService {
   constructor(private readonly repo: AdminUserRepository) {}
 
-  requestLoginCode(
+  requestAuthToken(
     payload: unknown,
   ): Observable<
-    e.Either<ParsingError | MalformedPayloadError | UnexpectedError, undefined>
+    e.Either<ParsingError | UnexpectedError | DomainError, TokenDto>
   > {
-    return from(AdminUserParser.toSendCodeDto(payload)).pipe(
+    return AdminUserParser.toSignInDto(payload).pipe(
+      switchMap((mbSignInDto) => {
+        if (e.isLeft(mbSignInDto)) {
+          return toLeftObs(mbSignInDto.left);
+        }
+
+        return this.repo.findUser({ loginCode: mbSignInDto.right.code });
+      }),
+      switchMap((data) => {
+        if (e.isLeft(data)) {
+          return toLeftObs(data.left);
+        }
+
+        if (o.isNone(data.right)) {
+          return toLeftObs(new DomainError('Login code is invalid'));
+        }
+
+        if (AdminUserParser.verifyLoginCode(data.right.value, new Date())) {
+          return AdminUserParser.generateToken(data.right.value);
+        }
+
+        return toLeftObs(new DomainError('Login code is invalid'));
+      }),
+      catchError((err) =>
+        toLeftObs(new UnexpectedError('Something went wrong', err)),
+      ),
+    );
+  }
+
+  requestLoginCode(
+    payload: unknown,
+  ): Observable<e.Either<ParsingError | UnexpectedError, undefined>> {
+    return AdminUserParser.toSendCodeDto(payload).pipe(
       switchMap((dto) => {
         if (e.isLeft(dto)) {
           return toLeftObs(dto.left);
@@ -50,7 +83,6 @@ export class AdminUsersService {
         const userWithLoginToken = AdminUserParser.addLoginCode(mbUser.right);
         return this.repo.saveUser(userWithLoginToken).pipe(
           map((mbSaved) => {
-            debugger;
             return e.isLeft(mbSaved)
               ? e.left(new UnexpectedError())
               : e.right(undefined);
@@ -58,7 +90,6 @@ export class AdminUsersService {
         );
       }),
       catchError((err) => {
-        debugger;
         return toLeftObs(new UnexpectedError('Caught an error', err));
       }),
     );

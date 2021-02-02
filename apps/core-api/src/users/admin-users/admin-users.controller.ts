@@ -28,11 +28,6 @@ export class AdminUsersController {
       map((result) => {
         if (e.isLeft(result)) {
           switch (result.left.name) {
-            case 'MalformedPayload':
-              throw toBadRequest({
-                message: result.left.message,
-                name: result.left.name,
-              });
             case 'ParsingError': {
               throw toBadRequest({
                 message: result.left.message,

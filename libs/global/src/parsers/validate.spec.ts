@@ -3,7 +3,7 @@ import { IsString, IsNumber } from 'class-validator';
 import { isLeft, isRight } from 'fp-ts/lib/Either';
 import { isSome, isNone } from 'fp-ts/lib/Option';
 
-import { MalformedPayloadError, ParsingError } from '../types';
+import { ParsingError } from '../types';
 import {
   parseAndValidateObject,
   parseAndValidateUnknown,
@@ -116,7 +116,7 @@ describe('parsers/validate', () => {
       ).toPromise();
 
       if (isLeft(result)) {
-        expect(result.left).toBeInstanceOf(MalformedPayloadError);
+        expect(result.left).toBeInstanceOf(ParsingError);
       } else {
         throwError();
       }

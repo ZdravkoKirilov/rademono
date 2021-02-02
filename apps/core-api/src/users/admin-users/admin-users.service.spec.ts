@@ -9,7 +9,6 @@ import {
   AdminUserTypes,
   toRightObs,
   ParsingError,
-  MalformedPayloadError,
   UnexpectedError,
   toLeftObs,
 } from '@end/global';
@@ -99,7 +98,7 @@ describe('AdminUsersService', () => {
         return throwError();
       }
 
-      expect(mbDto.left).toBeInstanceOf(MalformedPayloadError);
+      expect(mbDto.left).toBeInstanceOf(ParsingError);
       done();
     });
   });

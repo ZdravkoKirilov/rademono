@@ -1,20 +1,29 @@
 import { ValidationError } from 'class-validator';
 
-export enum GenericErrors {
-  PayloadIsNotAnObject = 'PayloadIsNotAnObject',
-}
-
 type FieldError = Pick<ValidationError, 'property' | 'constraints'> & {
   name: string;
 };
 
-export const toFieldErrors = (source: ValidationError[]): FieldError[] => {
+type AnyError = {
+  name: string;
+  message: string;
+};
+
+const toFieldErrors = (source: ValidationError[]): FieldError[] => {
   return source.map((error) => ({
     property: error.property,
     constraints: error.constraints,
     name: error?.contexts?.name, // localize key
   }));
 };
+
+export class DomainError extends Error {
+  readonly name = 'DomainError';
+
+  constructor(public message: string, public errors?: AnyError[]) {
+    super();
+  }
+}
 
 export class ParsingError extends Error {
   readonly name = 'ParsingError';
@@ -34,14 +43,6 @@ export class UnexpectedError<Error = unknown> extends Error {
   }
 }
 
-export class MalformedPayloadError extends Error {
-  readonly name = 'MalformedPayload';
-
-  constructor(public message: string = GenericErrors.PayloadIsNotAnObject) {
-    super();
-  }
-}
-
 export class InvalidCommandError extends Error {
   readonly name = 'InvalidCommand';
 
@@ -53,6 +54,6 @@ export class InvalidCommandError extends Error {
 export type HttpApiError = {
   message: string;
   name: string; // localization key
-  errors?: FieldError[];
+  errors?: FieldError[] | AnyError[];
   originalError?: unknown;
 };

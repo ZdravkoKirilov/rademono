@@ -2,12 +2,7 @@ import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 import { map } from 'rxjs/operators';
 
-import {
-  ExpressionContext,
-  MalformedPayloadError,
-  ParsingError,
-  UUIDv4,
-} from '../types';
+import { ExpressionContext, ParsingError, UUIDv4 } from '../types';
 import { ParamedExpressionFunc } from './Expression.model';
 import { ModuleId } from './Module.model';
 import { CoreStyles } from './Style.model';
@@ -66,10 +61,10 @@ type AbstractEntity<
   /* FE before send, BE on receive */
   toCreateDto: (
     input: unknown,
-  ) => Observable<e.Either<ParsingError | MalformedPayloadError, CreateDto>>;
+  ) => Observable<e.Either<ParsingError, CreateDto>>;
   toUpdateDto: (
     input: unknown,
-  ) => Observable<e.Either<ParsingError | MalformedPayloadError, UpdateDto>>;
+  ) => Observable<e.Either<ParsingError, UpdateDto>>;
 
   /* FE: validation combined with the above DTO; BE - same */
   create: (
