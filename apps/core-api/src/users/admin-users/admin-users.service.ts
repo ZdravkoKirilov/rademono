@@ -41,11 +41,11 @@ export class AdminUsersService {
           return toLeftObs(new DomainError('Login code is invalid'));
         }
 
-        if (AdminUserParser.verifyLoginCode(data.right.value, new Date())) {
-          return AdminUserParser.generateToken(data.right.value);
+        if (!AdminUserParser.verifyLoginCode(data.right.value, new Date())) {
+          return toLeftObs(new DomainError('Login code is invalid'));
         }
 
-        return toLeftObs(new DomainError('Login code is invalid'));
+        return AdminUserParser.generateToken(data.right.value);
       }),
       catchError((err) =>
         toLeftObs(new UnexpectedError('Something went wrong', err)),
