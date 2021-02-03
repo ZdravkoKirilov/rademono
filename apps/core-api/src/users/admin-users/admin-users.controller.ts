@@ -9,17 +9,73 @@ import {
   HttpStatus,
   HttpCode,
 } from '@nestjs/common';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 
 import { UnexpectedError } from '@end/global';
 
-import { toBadRequest, toUnexpectedError } from '@app/shared';
+import {
+  isKnownError,
+  toBadRequest,
+  toForbiddenError,
+  toUnexpectedError,
+} from '@app/shared';
 import { AdminUsersService } from './admin-users.service';
 
 @Controller('admin-users')
 export class AdminUsersController {
   constructor(private readonly adminUsersService: AdminUsersService) {}
+
+  @Post('request-auth-token')
+  requestAuthToken(@Body() payload: unknown) {
+    return this.adminUsersService.requestAuthToken(payload).pipe(
+      map((result) => {
+        if (e.isLeft(result)) {
+          switch (result.left.name) {
+            case 'ParsingError': {
+              throw toBadRequest({
+                message: result.left.message,
+                name: result.left.name,
+                errors: result.left.errors,
+              });
+            }
+            case 'UnexpectedError': {
+              throw toUnexpectedError({
+                message: result.left.message,
+                name: result.left.name,
+              });
+            }
+            case 'DomainError': {
+              throw toForbiddenError({
+                message: result.left.message,
+                name: result.left.name,
+                errors: result.left.errors,
+              });
+            }
+            default: {
+              throw toUnexpectedError({
+                message: 'Unexpected error',
+                name: UnexpectedError.prototype.name,
+              });
+            }
+          }
+        }
+        return result.right;
+      }),
+      catchError((err) => {
+        if (isKnownError(err)) {
+          throw err;
+        }
+
+        // TODO: log
+
+        throw toUnexpectedError({
+          message: 'Unexpected error',
+          name: UnexpectedError.prototype.name,
+        });
+      }),
+    );
+  }
 
   @Post('request-login-code')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -50,6 +106,18 @@ export class AdminUsersController {
           }
         }
         return result.right;
+      }),
+      catchError((err) => {
+        if (isKnownError(err)) {
+          throw err;
+        }
+
+        // TODO: log
+
+        throw toUnexpectedError({
+          message: 'Unexpected error',
+          name: UnexpectedError.prototype.name,
+        });
       }),
     );
   }
