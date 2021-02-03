@@ -36,7 +36,7 @@ export class AdminUserDBModel {
   @Column('text')
   email: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   loginCode: string;
 
   @Column('timestamp', {

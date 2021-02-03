@@ -2,7 +2,6 @@ import {
   BadRequestException,
   ForbiddenException,
   InternalServerErrorException,
-  UnauthorizedException,
 } from '@nestjs/common';
 
 import { HttpApiError } from '@end/global';
@@ -11,7 +10,6 @@ const KnownErrors = {
   BadRequestException,
   ForbiddenException,
   InternalServerErrorException,
-  UnauthorizedException,
 };
 
 export const toBadRequest = (data: HttpApiError) => {
@@ -24,10 +22,6 @@ export const toForbiddenError = (data: HttpApiError) => {
 
 export const toUnexpectedError = (data: HttpApiError) => {
   return new KnownErrors.InternalServerErrorException(data);
-};
-
-export const toUnauthorizedError = (data: HttpApiError) => {
-  return new KnownErrors.UnauthorizedException(data);
 };
 
 export const isKnownError = (err: unknown) =>

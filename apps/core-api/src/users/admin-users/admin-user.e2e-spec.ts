@@ -5,7 +5,13 @@ import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 import { Connection } from 'typeorm';
 
-import { AdminUserParser, Email, JWT } from '@end/global';
+import {
+  AdminUserParser,
+  AdminUserTypes,
+  Email,
+  UUIDv4,
+  AdminUserId,
+} from '@end/global';
 
 import { AppModule } from '../../app.module';
 import { AdminUserRepository } from './admin-users.repository';
@@ -13,6 +19,7 @@ import { AdminUserRepository } from './admin-users.repository';
 describe('AdminUserController (e2e)', () => {
   let app: INestApplication;
   let repository: AdminUserRepository;
+  let connection: Connection;
 
   const throwError = () => {
     throw new Error('This shouldn`t be reached');
@@ -23,10 +30,71 @@ describe('AdminUserController (e2e)', () => {
       imports: [AppModule],
     }).compile();
     app = moduleFixture.createNestApplication();
-    const connection = app.get(Connection);
+    connection = app.get(Connection);
     await connection.synchronize(true);
     await app.init();
     repository = moduleFixture.get(AdminUserRepository);
+  });
+
+  afterAll(async () => {
+    await app.close();
+    await connection.close();
+  });
+
+  describe('/admin-users/current (GET)', () => {
+    it('returns the current user given a valid auth token', async (done) => {
+      const userId = UUIDv4.generate<AdminUserId>();
+
+      const mbEntity = await AdminUserParser.create(
+        {
+          email: Email.generate('email3@email.com'),
+        },
+        () => userId,
+      ).toPromise();
+
+      if (e.isLeft(mbEntity)) {
+        return throwError();
+      }
+
+      await repository.saveUser(mbEntity.right).toPromise();
+
+      const mbToken = await AdminUserParser.generateToken(
+        mbEntity.right,
+      ).toPromise();
+
+      if (e.isLeft(mbToken)) {
+        return throwError();
+      }
+
+      const token = mbToken.right.token;
+
+      const { body } = await request(app.getHttpServer())
+        .get('/admin-users/current')
+        .set('Authorization', token)
+        .expect(200);
+
+      expect(body).toEqual({
+        id: userId,
+        type: AdminUserTypes.standard,
+        email: 'email3@email.com',
+      });
+
+      done();
+    });
+
+    it('returns Forbidden error when the token is invalid', async (done) => {
+      const { body } = await request(app.getHttpServer())
+        .get('/admin-users/current')
+        .set('Authorization', 'whatever')
+        .expect(403);
+
+      expect(body).toEqual({
+        message: 'Forbidden resource',
+        name: 'Forbidden',
+      });
+
+      done();
+    });
   });
 
   describe('/admin-users/request-login-code (POST)', () => {
@@ -101,7 +169,7 @@ describe('AdminUserController (e2e)', () => {
       }
     });
 
-    it('returns an error when the token is invalid', async (done) => {
+    it('returns an error when the login code is invalid', async (done) => {
       const loginCode = 'invalid';
 
       const { body } = await request(app.getHttpServer())

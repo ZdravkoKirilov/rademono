@@ -8,12 +8,16 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
-  Headers,
+  UseGuards,
 } from '@nestjs/common';
 import { catchError, map } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 
-import { AdminUserParser, UnexpectedError } from '@end/global';
+import {
+  AdminUserParser,
+  PrivateAdminUser,
+  UnexpectedError,
+} from '@end/global';
 
 import {
   isKnownError,
@@ -22,13 +26,18 @@ import {
   toUnexpectedError,
 } from '@app/shared';
 import { AdminUsersService } from './admin-users.service';
+import { AuthGuard } from './auth.guard';
+import { WithUser } from './with-user';
 
 @Controller('admin-users')
 export class AdminUsersController {
   constructor(private readonly adminUsersService: AdminUsersService) {}
 
   @Get('current')
-  getCurrentUser(@Headers('Authorization') token: unknown) {}
+  @UseGuards(AuthGuard)
+  getCurrentUser(@WithUser() user: PrivateAdminUser) {
+    return AdminUserParser.exposePublic(user || {});
+  }
 
   @Post('token')
   requestAuthToken(@Body() payload: unknown) {

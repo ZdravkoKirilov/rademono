@@ -484,7 +484,7 @@ describe('AdminUserParser', () => {
     });
 
     it('fails with undefined token', (done) => {
-      AdminUserParser.decodeToken(undefined).subscribe((result) => {
+      AdminUserParser.decodeToken(undefined as any).subscribe((result) => {
         if (e.isRight(result)) {
           return throwError();
         }
