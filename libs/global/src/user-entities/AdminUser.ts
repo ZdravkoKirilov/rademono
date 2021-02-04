@@ -177,7 +177,11 @@ export const AdminUserParser = {
     );
   },
 
-  verifyToken: (token: JWT, entity: PrivateAdminUser, verify = JWT.verify) => {
+  verifyToken: (
+    token: JWT,
+    entity: PrivateAdminUser,
+    verify = JWT.verify,
+  ): Observable<boolean> => {
     return verify(token, 'secret').pipe(
       map((result) => {
         if (o.isNone(result)) {

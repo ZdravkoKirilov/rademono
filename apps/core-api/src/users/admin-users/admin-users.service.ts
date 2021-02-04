@@ -84,7 +84,9 @@ export class AdminUsersService {
         return this.repo.saveUser(userWithLoginToken).pipe(
           map((mbSaved) => {
             return e.isLeft(mbSaved)
-              ? e.left(new UnexpectedError())
+              ? e.left(
+                  new UnexpectedError('Failed to save the user', mbSaved.left),
+                )
               : e.right(undefined);
           }),
         );

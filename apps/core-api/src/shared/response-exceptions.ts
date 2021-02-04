@@ -19,6 +19,6 @@ export const toUnexpectedError = (data: HttpApiError) => {
 };
 
 export const isKnownError = (err: unknown) =>
-  [BadRequestException, InternalServerErrorException].some(
+  [BadRequestException, InternalServerErrorException, ForbiddenException].some(
     (exception) => err instanceof exception,
   );

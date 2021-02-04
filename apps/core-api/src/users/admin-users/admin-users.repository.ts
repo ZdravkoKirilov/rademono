@@ -39,10 +39,12 @@ export class AdminUserDBModel {
   @Column('text')
   loginCode: string;
 
-  @Column('date')
+  @Column('timestamp', {
+    nullable: true,
+  })
   loginCodeExpiration: Date;
 
-  @Column('date', { nullable: true })
+  @Column('timestamp', { nullable: true })
   lastLogin: Date;
 
   @Column('text')
@@ -59,27 +61,20 @@ type FindOneMatcher =
 export class AdminUserRepository {
   constructor(
     @InjectRepository(AdminUserDBModel)
-    private repo: Repository<AdminUserDBModel>,
+    public repo: Repository<AdminUserDBModel>,
   ) {}
-
-  insertUser(newUser: PrivateAdminUser) {
-    return from(this.repo.insert(newUser)).pipe(map(() => undefined));
-  }
-
-  updateUser(updatedUser: PrivateAdminUser, criteria: UpdateOneMatcher) {
-    return from(this.repo.update(criteria, updatedUser)).pipe(
-      map(() => undefined),
-    );
-  }
 
   saveUser(
     updatedUser: PrivateAdminUser,
   ): Observable<e.Either<UnexpectedError, undefined>> {
     return from(this.repo.save(updatedUser)).pipe(
-      switchMap(() => toRightObs(undefined)),
-      catchError((err) =>
-        toLeftObs(new UnexpectedError('Failed to save the user', err)),
-      ),
+      switchMap(() => {
+        return toRightObs(undefined);
+      }),
+      catchError((err) => {
+        console.log(err);
+        return toLeftObs(new UnexpectedError('Failed to save the user', err));
+      }),
     );
   }
 
@@ -88,17 +83,18 @@ export class AdminUserRepository {
   ): Observable<
     e.Either<UnexpectedError | ParsingError, o.Option<PrivateAdminUser>>
   > {
-    return from(this.repo.findOne(criteria)).pipe(
+    return from(this.repo.findOne({ where: criteria })).pipe(
       switchMap((res) => {
         if (isUndefined(res)) {
           return of(e.right(o.none));
         }
+
         return AdminUserParser.toPrivateEntity(res).pipe(
           map((res) => {
             if (e.isRight(res)) {
               return e.right(o.some(res.right));
             }
-            return e.right(o.none);
+            return res;
           }),
         );
       }),

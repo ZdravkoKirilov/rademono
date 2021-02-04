@@ -26,7 +26,7 @@ import { AdminUsersService } from './admin-users.service';
 export class AdminUsersController {
   constructor(private readonly adminUsersService: AdminUsersService) {}
 
-  @Post('request-auth-token')
+  @Post('token')
   requestAuthToken(@Body() payload: unknown) {
     return this.adminUsersService.requestAuthToken(payload).pipe(
       map((result) => {
