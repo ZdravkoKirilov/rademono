@@ -27,7 +27,8 @@ import {
   UUIDv4,
   JWT,
   ParsingError,
-  InvalidJWT,
+  DomainError,
+  DecodedJWT,
 } from '../types';
 import { Expose } from 'class-transformer';
 
@@ -98,6 +99,8 @@ export const AdminUserParser = {
   toSignInDto: (payload: unknown) =>
     parseAndValidateUnknown(payload, SignInDto),
 
+  toTokenDto: (payload: unknown) => parseAndValidateUnknown(payload, TokenDto),
+
   create: (
     payload: SendCodeDto,
     createId = UUIDv4.generate,
@@ -159,16 +162,18 @@ export const AdminUserParser = {
     );
   },
 
-  decodeToken: (token: unknown) => {
+  decodeToken: (
+    token: JWT,
+  ): Observable<e.Either<DomainError | ParsingError, DecodedJWT>> => {
     return parseAndValidateObject({ token }, TokenDto).pipe(
       switchMap((mbToken) => {
         if (e.isLeft(mbToken)) {
-          return toLeftObs(new InvalidJWT('Invalid token'));
+          return toLeftObs(new DomainError('Invalid jwt token'));
         }
         return JWT.verify(mbToken.right.token).pipe(
           map((mbDecoded) => {
             if (o.isNone(mbDecoded)) {
-              return e.left(new InvalidJWT('Invalid token'));
+              return e.left(new DomainError('Invalid jwt token'));
             }
             return e.right(mbDecoded.value);
           }),

@@ -100,5 +100,17 @@ describe('AdminUserController (e2e)', () => {
         done();
       }
     });
+
+    it('returns an error when the token is invalid', async (done) => {
+      const loginCode = 'invalid';
+
+      const { body } = await request(app.getHttpServer())
+        .post('/admin-users/token')
+        .expect(400)
+        .send({ code: loginCode });
+
+      expect(body.name).toEqual('ParsingError');
+      done();
+    });
   });
 });

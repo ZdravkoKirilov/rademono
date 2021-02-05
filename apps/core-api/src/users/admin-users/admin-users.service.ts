@@ -6,6 +6,8 @@ import {
   UnexpectedError,
   TokenDto,
   DomainError,
+  AdminUser,
+  PrivateAdminUser,
 } from '@end/global';
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
@@ -18,6 +20,52 @@ import { AdminUserRepository } from './admin-users.repository';
 @Injectable()
 export class AdminUsersService {
   constructor(private readonly repo: AdminUserRepository) {}
+
+  getCurrentUser(
+    token: unknown,
+  ): Observable<
+    e.Either<UnexpectedError | DomainError | ParsingError, AdminUser>
+  > {
+    return AdminUserParser.toTokenDto({ token }).pipe(
+      switchMap((mbDto) => {
+        if (e.isLeft(mbDto)) {
+          return toLeftObs(mbDto.left);
+        }
+
+        return AdminUserParser.decodeToken(mbDto.right.token);
+      }),
+      switchMap(
+        (
+          mbDecoded,
+        ): Observable<
+          e.Either<
+            DomainError | ParsingError | UnexpectedError,
+            o.Option<PrivateAdminUser>
+          >
+        > => {
+          if (e.isLeft(mbDecoded)) {
+            return toLeftObs(mbDecoded.left);
+          }
+
+          return this.repo.findUser({ email: mbDecoded.right.email });
+        },
+      ),
+      switchMap((mbUser) => {
+        if (e.isLeft(mbUser)) {
+          return toLeftObs(mbUser.left);
+        }
+
+        if (o.isNone(mbUser.right)) {
+          return toLeftObs(new DomainError('Invalid token'));
+        }
+
+        return toRightObs(AdminUserParser.exposePublic(mbUser.right.value));
+      }),
+      catchError((err) =>
+        toLeftObs(new UnexpectedError('Failed to get current user', err)),
+      ),
+    );
+  }
 
   requestAuthToken(
     payload: unknown,

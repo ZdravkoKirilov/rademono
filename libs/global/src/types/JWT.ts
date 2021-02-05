@@ -18,8 +18,6 @@ export class DecodedJWT {
   email: Email;
 }
 
-export class InvalidJWT extends Error {}
-
 const generate = (
   data: DecodedJWT & { exp?: number },
   signOptions: jwt.SignOptions = { expiresIn: '24h' },

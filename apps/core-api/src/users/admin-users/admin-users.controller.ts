@@ -8,11 +8,12 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
+  Headers,
 } from '@nestjs/common';
 import { catchError, map } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 
-import { UnexpectedError } from '@end/global';
+import { AdminUserParser, UnexpectedError } from '@end/global';
 
 import {
   isKnownError,
@@ -25,6 +26,9 @@ import { AdminUsersService } from './admin-users.service';
 @Controller('admin-users')
 export class AdminUsersController {
   constructor(private readonly adminUsersService: AdminUsersService) {}
+
+  @Get('current')
+  getCurrentUser(@Headers('Authorization') token: unknown) {}
 
   @Post('token')
   requestAuthToken(@Body() payload: unknown) {
