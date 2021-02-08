@@ -34,25 +34,8 @@ export class PrivateAdminProfile {
   @MinLength(1)
   @MaxLength(100)
   name: StringOfLength<1, 100>;
-}
 
-class CreateUserGroupDto {
-  @Expose()
-  @MinLength(1)
-  @MaxLength(100)
-  name: StringOfLength<1, 100>;
-
-  @Expose()
-  @IsUUID('4')
-  user: AdminUserId;
-
-  @Expose()
-  @IsUUID('4')
-  group: ProfileGroupId;
-}
-
-export const AdminProfileParser = {
-  create(
+  static create(
     payload: unknown,
     createId = UUIDv4.generate,
   ): Observable<e.Either<ParsingError, PrivateAdminProfile>> {
@@ -69,5 +52,20 @@ export const AdminProfileParser = {
         return result;
       }),
     );
-  },
-};
+  }
+}
+
+class CreateUserGroupDto {
+  @Expose()
+  @MinLength(1)
+  @MaxLength(100)
+  name: StringOfLength<1, 100>;
+
+  @Expose()
+  @IsUUID('4')
+  user: AdminUserId;
+
+  @Expose()
+  @IsUUID('4')
+  group: ProfileGroupId;
+}

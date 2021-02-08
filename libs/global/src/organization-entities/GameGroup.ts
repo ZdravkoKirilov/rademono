@@ -30,23 +30,8 @@ export class PrivateGameGroup {
   @MinLength(1)
   @MaxLength(5000)
   description: StringOfLength<1, 5000>;
-}
 
-class CreateGameGroupDto {
-  @Expose()
-  @MinLength(1)
-  @MaxLength(100)
-  name: StringOfLength<1, 100>;
-
-  @Expose()
-  @IsOptional()
-  @MinLength(1)
-  @MaxLength(5000)
-  description: StringOfLength<1, 5000>;
-}
-
-export const GameGroupParser = {
-  create(
+  static create(
     payload: unknown,
     createId = UUIDv4.generate,
   ): Observable<e.Either<ParsingError, PrivateGameGroup>> {
@@ -63,5 +48,18 @@ export const GameGroupParser = {
         return result;
       }),
     );
-  },
-};
+  }
+}
+
+class CreateGameGroupDto {
+  @Expose()
+  @MinLength(1)
+  @MaxLength(100)
+  name: StringOfLength<1, 100>;
+
+  @Expose()
+  @IsOptional()
+  @MinLength(1)
+  @MaxLength(5000)
+  description: StringOfLength<1, 5000>;
+}
