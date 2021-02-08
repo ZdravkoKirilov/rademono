@@ -13,6 +13,7 @@ import * as o from 'fp-ts/lib/Option';
 import * as e from 'fp-ts/lib/Either';
 import { omit } from 'lodash/fp';
 import { Observable } from 'rxjs';
+import { Expose } from 'class-transformer';
 
 import {
   parseAndValidateObject,
@@ -30,7 +31,6 @@ import {
   DomainError,
   DecodedJWT,
 } from '../types';
-import { Expose } from 'class-transformer';
 
 export type AdminUserId = Tagged<'AdminUserId', UUIDv4>;
 
