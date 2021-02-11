@@ -5,7 +5,12 @@ import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 
 import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
-import { parseAndValidateObject, transformToClass } from '../parsers';
+import {
+  parseAndValidateObject,
+  transformToClass,
+  transformToPlain,
+} from '../parsers';
+import { ProfileGroupId } from './ProfileGroup';
 
 type OrganizationId = Tagged<'OrganizationId', UUIDv4>;
 export class Organization {
@@ -17,6 +22,9 @@ export class Organization {
 
   @Expose()
   description: StringOfLength<1, 5000>;
+
+  @Expose()
+  admin_group_id: ProfileGroupId;
 }
 
 class CreateOrganizationDto {
@@ -31,6 +39,7 @@ class CreateOrganizationDto {
   @MaxLength(5000)
   description: StringOfLength<1, 5000>;
 }
+
 export class PrivateOrganization {
   @Expose()
   @IsUUID('4')
@@ -47,14 +56,20 @@ export class PrivateOrganization {
   @MaxLength(5000)
   description: StringOfLength<1, 5000>;
 
+  @Expose()
+  @IsUUID('4')
+  admin_group_id: ProfileGroupId;
+
   static create(
     payload: unknown,
     createId = UUIDv4.generate,
-  ): Observable<e.Either<ParsingError, PrivateOrganization>> {
+  ): Observable<
+    e.Either<ParsingError, Omit<PrivateOrganization, 'admin_group_id'>>
+  > {
     return parseAndValidateObject(payload, CreateOrganizationDto).pipe(
       map((result) => {
         if (e.isRight(result)) {
-          const plain: PrivateOrganization = {
+          const plain: Omit<PrivateOrganization, 'admin_group_id'> = {
             ...result.right,
             public_id: createId(),
           };
@@ -64,5 +79,15 @@ export class PrivateOrganization {
         return result;
       }),
     );
+  }
+
+  static setAdminGroup(
+    entity: Omit<PrivateOrganization, 'admin_group_id'>,
+    adminGroupId: ProfileGroupId,
+  ): PrivateOrganization {
+    return transformToClass(PrivateOrganization, {
+      ...transformToPlain(entity),
+      admin_group: adminGroupId,
+    });
   }
 }

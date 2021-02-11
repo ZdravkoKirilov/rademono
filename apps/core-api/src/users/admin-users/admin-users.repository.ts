@@ -72,7 +72,6 @@ export class AdminUserRepository {
         return toRightObs(undefined);
       }),
       catchError((err) => {
-        console.log(err);
         return toLeftObs(new UnexpectedError('Failed to save the user', err));
       }),
     );

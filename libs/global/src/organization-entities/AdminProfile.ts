@@ -12,9 +12,17 @@ import { ProfileGroupId } from './ProfileGroup';
 type AdminProfileId = Tagged<'AdminProfileId', UUIDv4>;
 
 export class AdminProfile {
+  @Expose()
   id: AdminProfileId;
+
+  @Expose()
   user: AdminUserId;
+
+  @Expose()
   group: ProfileGroupId;
+
+  @Expose()
+  name: StringOfLength<1, 100>;
 }
 
 export class PrivateAdminProfile {
