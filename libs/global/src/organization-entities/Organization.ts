@@ -6,13 +6,13 @@ import * as e from 'fp-ts/lib/Either';
 
 import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
 import {
-  parseAndValidateObject,
+  parseAndValidateUnknown,
   transformToClass,
   transformToPlain,
 } from '../parsers';
 import { ProfileGroupId } from './ProfileGroup';
 
-type OrganizationId = Tagged<'OrganizationId', UUIDv4>;
+export type OrganizationId = Tagged<'OrganizationId', UUIDv4>;
 export class Organization {
   @Expose()
   readonly id: OrganizationId;
@@ -66,7 +66,7 @@ export class PrivateOrganization {
   ): Observable<
     e.Either<ParsingError, Omit<PrivateOrganization, 'admin_group_id'>>
   > {
-    return parseAndValidateObject(payload, CreateOrganizationDto).pipe(
+    return parseAndValidateUnknown(payload, CreateOrganizationDto).pipe(
       map((result) => {
         if (e.isRight(result)) {
           const plain: Omit<PrivateOrganization, 'admin_group_id'> = {

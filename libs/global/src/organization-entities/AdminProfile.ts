@@ -5,7 +5,11 @@ import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 
 import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
-import { parseAndValidateObject, transformToClass } from '../parsers';
+import {
+  parseAndValidateObject,
+  parseAndValidateUnknown,
+  transformToClass,
+} from '../parsers';
 import { AdminUserId } from '../user-entities';
 import { ProfileGroupId } from './ProfileGroup';
 
@@ -43,11 +47,30 @@ export class PrivateAdminProfile {
   @MaxLength(100)
   name: StringOfLength<1, 100>;
 
-  static create(
+  static createFromUnknown(
     payload: unknown,
     createId = UUIDv4.generate,
   ): Observable<e.Either<ParsingError, PrivateAdminProfile>> {
-    return parseAndValidateObject(payload, CreateUserGroupDto).pipe(
+    return parseAndValidateUnknown(payload, CreateAdminProfileDto).pipe(
+      map((result) => {
+        if (e.isRight(result)) {
+          const plain: PrivateAdminProfile = {
+            ...result.right,
+            public_id: createId(),
+          };
+
+          return e.right(transformToClass(PrivateAdminProfile, plain));
+        }
+        return result;
+      }),
+    );
+  }
+
+  static createFromDto(
+    payload: CreateAdminProfileDto,
+    createId = UUIDv4.generate,
+  ): Observable<e.Either<ParsingError, PrivateAdminProfile>> {
+    return parseAndValidateObject(payload, CreateAdminProfileDto).pipe(
       map((result) => {
         if (e.isRight(result)) {
           const plain: PrivateAdminProfile = {
@@ -63,7 +86,7 @@ export class PrivateAdminProfile {
   }
 }
 
-class CreateUserGroupDto {
+class CreateAdminProfileDto {
   @Expose()
   @MinLength(1)
   @MaxLength(100)

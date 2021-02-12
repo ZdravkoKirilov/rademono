@@ -27,7 +27,7 @@ export class OrganizationDBModel {
   public_id: string;
 
   @Column('uuid')
-  admin_group_id?: string;
+  admin_group?: string;
 
   @Column('text')
   name: string;
