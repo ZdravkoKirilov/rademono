@@ -50,7 +50,7 @@ export class PrivateProfileGroup {
 
   static createFromUnknown(
     payload: unknown,
-    createId = UUIDv4.generate,
+    createId: typeof UUIDv4.generate,
   ): Observable<e.Either<ParsingError, PrivateProfileGroup>> {
     return parseAndValidateUnknown(payload, CreateProfileGroupDto).pipe(
       map((result) => {
@@ -84,6 +84,10 @@ export class PrivateProfileGroup {
         return result;
       }),
     );
+  }
+
+  static toPrivateEntity(data: unknown) {
+    return parseAndValidateUnknown(data, PrivateProfileGroup);
   }
 }
 

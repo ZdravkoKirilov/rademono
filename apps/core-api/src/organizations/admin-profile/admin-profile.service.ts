@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { map, switchMap } from 'rxjs/operators';
+import { Inject, Injectable } from '@nestjs/common';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 import { Observable } from 'rxjs';
@@ -10,19 +10,24 @@ import {
   PrivateAdminProfile,
   toLeftObs,
   UnexpectedError,
+  UUIDv4,
 } from '@end/global';
 
 import { AdminProfileRepository } from './admin-profile.repository';
+import { PUBLIC_ID_GENERATOR } from '@app/shared';
 @Injectable()
 export class AdminProfileService {
-  constructor(private repo: AdminProfileRepository) {}
+  constructor(
+    @Inject(PUBLIC_ID_GENERATOR) private createId: typeof UUIDv4.generate,
+    private repo: AdminProfileRepository,
+  ) {}
 
   create(
     payload: unknown,
   ): Observable<
     e.Either<UnexpectedError | ParsingError | DomainError, PrivateAdminProfile>
   > {
-    return PrivateAdminProfile.createFromUnknown(payload).pipe(
+    return PrivateAdminProfile.createFromUnknown(payload, this.createId).pipe(
       switchMap((mbProfile) => {
         if (e.isLeft(mbProfile)) {
           return toLeftObs(mbProfile.left);
@@ -53,10 +58,20 @@ export class AdminProfileService {
             new DomainError('Profile already exists in this group'),
           );
         }
-        return this.repo
-          .saveProfile(mbExisting.right.parsed)
-          .pipe(map(() => e.right(mbExisting.right.parsed)));
+        return this.repo.saveProfile(mbExisting.right.parsed).pipe(
+          map((saved) => {
+            return e.isRight(saved) ? e.right(mbExisting.right.parsed) : saved;
+          }),
+        );
       }),
+      catchError((err) =>
+        toLeftObs(
+          new UnexpectedError(
+            'Unexpected error while trying to create an admin profile',
+            err,
+          ),
+        ),
+      ),
     );
   }
 }

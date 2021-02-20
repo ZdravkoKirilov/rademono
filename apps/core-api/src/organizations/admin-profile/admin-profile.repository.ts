@@ -7,9 +7,10 @@ import {
 } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { switchMap, catchError, map } from 'rxjs/operators';
-import { from, Observable, of } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
+import { isUndefined } from 'lodash/fp';
 
 import {
   UUIDv4,
@@ -19,7 +20,6 @@ import {
   toRightObs,
   ParsingError,
 } from '@end/global';
-import { isUndefined } from 'lodash/fp';
 
 @Entity()
 export class AdminProfileDBModel {
@@ -48,7 +48,9 @@ export class AdminProfileRepository {
     public repo: Repository<AdminProfileDBModel>,
   ) {}
 
-  saveProfile(adminProfile: PrivateAdminProfile) {
+  saveProfile(
+    adminProfile: PrivateAdminProfile,
+  ): Observable<e.Either<UnexpectedError, undefined>> {
     return from(this.repo.save(adminProfile)).pipe(
       switchMap(() => {
         return toRightObs(undefined);
@@ -69,7 +71,7 @@ export class AdminProfileRepository {
     return from(this.repo.find({ where: matcher })).pipe(
       switchMap((res) => {
         if (isUndefined(res)) {
-          return of(e.right(o.none));
+          return toRightObs(o.none);
         }
 
         return PrivateAdminProfile.toPrivateEntity(res).pipe(

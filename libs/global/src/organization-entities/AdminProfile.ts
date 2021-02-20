@@ -49,7 +49,7 @@ export class PrivateAdminProfile {
 
   static createFromUnknown(
     payload: unknown,
-    createId = UUIDv4.generate,
+    createId: typeof UUIDv4.generate,
   ): Observable<e.Either<ParsingError, PrivateAdminProfile>> {
     return parseAndValidateUnknown(payload, CreateAdminProfileDto).pipe(
       map((result) => {
