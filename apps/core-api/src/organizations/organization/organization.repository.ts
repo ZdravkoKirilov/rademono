@@ -44,10 +44,10 @@ export class OrganizationRepository {
     public repo: Repository<OrganizationDBModel>,
   ) {}
 
-  saveOrganization(updatedOrganization: PrivateOrganization) {
+  saveOrganization(updatedOrganization: Partial<PrivateOrganization>) {
     return from(this.repo.save(updatedOrganization)).pipe(
       switchMap(() => {
-        return toRightObs(undefined);
+        return toRightObs(updatedOrganization);
       }),
       catchError((err) => {
         return toLeftObs(

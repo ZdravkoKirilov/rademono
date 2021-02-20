@@ -6,15 +6,15 @@ import {
 } from '@end/global';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 
 import { AdminUserRepository } from './admin-users.repository';
-import { isKnownError, toForbiddenError, toUnexpectedError } from '@app/shared';
+import { isKnownError, toForbiddenError } from '@app/shared';
 
-export type RequestWithUser = Request & { user?: PrivateAdminUser };
+export type RequestWithUser = Request & { user: PrivateAdminUser };
 
 const forbid = () => {
   throw toForbiddenError({

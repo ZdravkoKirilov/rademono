@@ -3,9 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Put,
-  Param,
-  Delete,
   HttpStatus,
   HttpCode,
   UseGuards,
@@ -133,25 +130,5 @@ export class AdminUsersController {
         });
       }),
     );
-  }
-
-  @Get()
-  findAll() {
-    return this.adminUsersService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminUsersService.findOne(+id);
-  }
-
-  @Put(':id')
-  update(@Param('id') id: string, @Body() payload: unknown) {
-    return this.adminUsersService.update(+id, payload);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.adminUsersService.remove(+id);
   }
 }

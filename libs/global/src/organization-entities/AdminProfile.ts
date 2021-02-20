@@ -84,9 +84,13 @@ export class PrivateAdminProfile {
       }),
     );
   }
+
+  static toPrivateEntity(data: unknown) {
+    return parseAndValidateUnknown(data, PrivateAdminProfile);
+  }
 }
 
-class CreateAdminProfileDto {
+export class CreateAdminProfileDto {
   @Expose()
   @MinLength(1)
   @MaxLength(100)

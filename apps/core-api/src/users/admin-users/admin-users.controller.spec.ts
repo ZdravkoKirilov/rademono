@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { of } from 'rxjs';
 
 import { toRightObs } from '@end/global';
 
 import { AdminUsersController } from './admin-users.controller';
 import { AdminUsersService } from './admin-users.service';
+import { AuthGuard } from './auth.guard';
 
 describe('AdminUsersController', () => {
   let controller: AdminUsersController;
@@ -19,7 +21,12 @@ describe('AdminUsersController', () => {
           },
         },
       ],
-    }).compile();
+    })
+      .overrideGuard(AuthGuard)
+      .useValue({
+        canActivate: async () => true,
+      })
+      .compile();
 
     controller = module.get<AdminUsersController>(AdminUsersController);
 

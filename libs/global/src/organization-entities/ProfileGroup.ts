@@ -87,7 +87,7 @@ export class PrivateProfileGroup {
   }
 }
 
-class CreateProfileGroupDto {
+export class CreateProfileGroupDto {
   @Expose()
   @IsUUID('4')
   organization: ProfileGroupId;
