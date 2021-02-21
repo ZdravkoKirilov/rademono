@@ -24,7 +24,7 @@ export class Organization {
   description: StringOfLength<1, 5000>;
 
   @Expose()
-  admin_group_id: ProfileGroupId;
+  admin_group: ProfileGroupId;
 }
 
 class CreateOrganizationDto {
@@ -58,18 +58,16 @@ export class PrivateOrganization {
 
   @Expose()
   @IsUUID('4')
-  admin_group_id: ProfileGroupId;
+  admin_group: ProfileGroupId;
 
   static create(
     payload: unknown,
-    createId = UUIDv4.generate,
-  ): Observable<
-    e.Either<ParsingError, Omit<PrivateOrganization, 'admin_group_id'>>
-  > {
+    createId: typeof UUIDv4.generate,
+  ): Observable<e.Either<ParsingError, InitialOrganization>> {
     return parseAndValidateUnknown(payload, CreateOrganizationDto).pipe(
       map((result) => {
         if (e.isRight(result)) {
-          const plain: Omit<PrivateOrganization, 'admin_group_id'> = {
+          const plain: InitialOrganization = {
             ...result.right,
             public_id: createId(),
           };
@@ -82,7 +80,7 @@ export class PrivateOrganization {
   }
 
   static setAdminGroup(
-    entity: Omit<PrivateOrganization, 'admin_group_id'>,
+    entity: InitialOrganization,
     adminGroupId: ProfileGroupId,
   ): PrivateOrganization {
     return transformToClass(PrivateOrganization, {
@@ -90,4 +88,19 @@ export class PrivateOrganization {
       admin_group: adminGroupId,
     });
   }
+
+  static toPrivateEntity(data: unknown) {
+    return parseAndValidateUnknown(data, PrivateOrganization);
+  }
+
+  static toPublicEntity(source: PrivateOrganization): Organization {
+    return {
+      id: source.public_id,
+      name: source.name,
+      admin_group: source.admin_group,
+      description: source.description,
+    };
+  }
 }
+
+export type InitialOrganization = Omit<PrivateOrganization, 'admin_group'>;
