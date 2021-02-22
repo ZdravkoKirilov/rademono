@@ -79,6 +79,21 @@ export class OrganizationRepository {
     );
   }
 
+  organizationExists(
+    matcher: FindOneMatcher,
+  ): Observable<e.Either<UnexpectedError, boolean>> {
+    return from(this.repo.count({ where: matcher })).pipe(
+      switchMap((count) => {
+        return toRightObs(count > 0);
+      }),
+      catchError((err) => {
+        return toLeftObs(
+          new UnexpectedError('Failed to find the organization', err),
+        );
+      }),
+    );
+  }
+
   getOrganization(
     matcher: FindOneMatcher,
   ): Observable<

@@ -13,21 +13,8 @@ import {
 import { ProfileGroupId } from './ProfileGroup';
 
 export type OrganizationId = Tagged<'OrganizationId', UUIDv4>;
-export class Organization {
-  @Expose()
-  readonly id: OrganizationId;
 
-  @Expose()
-  name: StringOfLength<1, 100>;
-
-  @Expose()
-  description: StringOfLength<1, 5000>;
-
-  @Expose()
-  admin_group: ProfileGroupId;
-}
-
-class CreateOrganizationDto {
+class BasicFields {
   @Expose()
   @MinLength(1)
   @MaxLength(100)
@@ -40,25 +27,27 @@ class CreateOrganizationDto {
   description: StringOfLength<1, 5000>;
 }
 
-export class PrivateOrganization {
+class ValidationBase extends BasicFields {
+  @Expose()
+  @IsUUID('4')
+  admin_group: ProfileGroupId;
+}
+export class Organization extends ValidationBase {
+  @Expose()
+  @IsUUID('4')
+  readonly id: OrganizationId;
+
+  static fromUnknown(payload: unknown) {
+    return parseAndValidateUnknown(payload, Organization);
+  }
+}
+
+class CreateOrganizationDto extends BasicFields {}
+
+export class PrivateOrganization extends ValidationBase {
   @Expose()
   @IsUUID('4')
   readonly public_id: OrganizationId;
-
-  @Expose()
-  @MinLength(1)
-  @MaxLength(100)
-  name: StringOfLength<1, 100>;
-
-  @Expose()
-  @IsOptional()
-  @MinLength(1)
-  @MaxLength(5000)
-  description: StringOfLength<1, 5000>;
-
-  @Expose()
-  @IsUUID('4')
-  admin_group: ProfileGroupId;
 
   static create(
     payload: unknown,

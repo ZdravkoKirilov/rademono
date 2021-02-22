@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
 import { Observable } from 'rxjs';
 
 import {
@@ -47,12 +46,12 @@ export class OrganizationService {
           if (e.isLeft(mbDto)) {
             return toLeftObs(mbDto.left);
           }
-          return this.repo.getOrganization({ name: mbDto.right.name }).pipe(
+          return this.repo.organizationExists({ name: mbDto.right.name }).pipe(
             switchMap((mbOrganization) => {
               if (e.isLeft(mbOrganization)) {
                 return toLeftObs(mbOrganization.left);
               }
-              if (o.isSome(mbOrganization.right)) {
+              if (mbOrganization.right) {
                 return toLeftObs(
                   new DomainError('Organization with that name already exists'),
                 );
