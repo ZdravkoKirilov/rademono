@@ -190,5 +190,30 @@ describe('Organization entity', () => {
         });
       });
     });
+
+    describe(PrivateOrganization.toPublicEntity.name, () => {
+      it('correctly transforms from private to public fields', () => {
+        const adminGroup = UUIDv4.generate();
+        const publicId = UUIDv4.generate();
+
+        const data = {
+          name: 'Private',
+          description: 'Desc',
+          admin_group: adminGroup,
+          public_id: publicId,
+        };
+
+        const result = PrivateOrganization.toPublicEntity(
+          transformToClass(PrivateOrganization, data),
+        );
+
+        expect(result).toEqual({
+          name: 'Private',
+          description: 'Desc',
+          admin_group: adminGroup,
+          id: publicId,
+        });
+      });
+    });
   });
 });
