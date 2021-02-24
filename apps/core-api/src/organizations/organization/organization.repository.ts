@@ -52,16 +52,22 @@ export class OrganizationRepository {
   createOrganization(
     updatedOrganization: InitialOrganization,
   ): Observable<e.Either<UnexpectedError, InitialOrganization>> {
-    return from(this.repo.save(updatedOrganization)).pipe(
-      switchMap(() => {
-        return toRightObs(updatedOrganization);
-      }),
-      catchError((err) => {
-        return toLeftObs(
-          new UnexpectedError('Failed to save the organization', err),
-        );
-      }),
-    );
+    try {
+      return from(this.repo.save(updatedOrganization)).pipe(
+        switchMap(() => {
+          return toRightObs(updatedOrganization);
+        }),
+        catchError((err) => {
+          return toLeftObs(
+            new UnexpectedError('Failed to save the organization', err),
+          );
+        }),
+      );
+    } catch (err) {
+      return toLeftObs(
+        new UnexpectedError('Failed to save the organization', err),
+      );
+    }
   }
 
   saveOrganization(

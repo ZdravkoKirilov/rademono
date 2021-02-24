@@ -3,7 +3,12 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as e from 'fp-ts/lib/Either';
 
-import { InitialOrganization, UUIDv4, breakTest } from '@end/global';
+import {
+  InitialOrganization,
+  UUIDv4,
+  breakTest,
+  UnexpectedError,
+} from '@end/global';
 
 import {
   OrganizationDBModel,
@@ -46,6 +51,27 @@ describe(OrganizationRepository.name, () => {
           return breakTest();
         }
         expect(res.right).toEqual(data);
+        done();
+      });
+    });
+
+    it('handles unexpected errors', async (done) => {
+      const { service } = await createTestingModule({
+        save: () => {
+          throw new Error('Whoops');
+        },
+      });
+
+      const data = {
+        name: 'Name',
+        public_id: UUIDv4.generate(),
+      } as InitialOrganization;
+
+      service.createOrganization(data).subscribe((res) => {
+        if (e.isRight(res)) {
+          return breakTest();
+        }
+        expect(res.left).toBeInstanceOf(UnexpectedError);
         done();
       });
     });
