@@ -27,7 +27,7 @@ export class AdminProfileService {
   ): Observable<
     e.Either<UnexpectedError | ParsingError | DomainError, PrivateAdminProfile>
   > {
-    return PrivateAdminProfile.createFromUnknown(payload, this.createId).pipe(
+    return PrivateAdminProfile.create(payload, this.createId).pipe(
       switchMap((mbProfile) => {
         if (e.isLeft(mbProfile)) {
           return toLeftObs(mbProfile.left);

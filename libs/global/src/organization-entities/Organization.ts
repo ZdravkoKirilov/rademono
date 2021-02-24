@@ -24,7 +24,7 @@ class BasicFields {
   @IsOptional()
   @MinLength(1)
   @MaxLength(5000)
-  description: StringOfLength<1, 5000>;
+  description?: StringOfLength<1, 5000>;
 }
 
 class ValidationBase extends BasicFields {

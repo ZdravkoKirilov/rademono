@@ -29,7 +29,7 @@ export class ProfileGroupService {
   ): Observable<
     e.Either<UnexpectedError | ParsingError | DomainError, PrivateProfileGroup>
   > {
-    return PrivateProfileGroup.createFromUnknown(payload, this.createId).pipe(
+    return PrivateProfileGroup.create(payload, this.createId).pipe(
       switchMap((mbGroup) => {
         if (e.isLeft(mbGroup)) {
           return toLeftObs(mbGroup.left);
