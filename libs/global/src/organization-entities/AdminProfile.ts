@@ -59,6 +59,15 @@ export class PrivateAdminProfile extends ValidationBase {
   static toPrivateEntity(data: unknown) {
     return parseAndValidateUnknown(data, PrivateAdminProfile);
   }
+
+  static toPublicEntity(source: PrivateAdminProfile): AdminProfile {
+    return {
+      id: source.public_id,
+      name: source.name,
+      user: source.user,
+      group: source.group,
+    };
+  }
 }
 
 export class CreateAdminProfileDto extends ValidationBase {}

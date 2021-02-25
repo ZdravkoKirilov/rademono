@@ -1,5 +1,6 @@
 import * as e from 'fp-ts/lib/Either';
 
+import { transformToClass } from '../parsers';
 import { breakTest } from '../test';
 import { ParsingError, UUIDv4 } from '../types';
 import { AdminProfileId, PrivateAdminProfile } from './AdminProfile';
@@ -205,6 +206,27 @@ describe('AdminProfile entity', () => {
           expect(res.left.errors).toHaveLength(1);
           expect(res.left.errors[0].property).toBe('public_id');
           done();
+        });
+      });
+    });
+
+    describe(PrivateAdminProfile.toPublicEntity.name, () => {
+      it('transforms the data', () => {
+        const data = {
+          public_id: UUIDv4.generate(),
+          name: 'Name',
+          user: UUIDv4.generate(),
+          group: UUIDv4.generate(),
+        };
+        expect(
+          PrivateAdminProfile.toPublicEntity(
+            transformToClass(PrivateAdminProfile, data),
+          ),
+        ).toEqual({
+          id: data.public_id,
+          name: data.name,
+          user: data.user,
+          group: data.group,
         });
       });
     });
