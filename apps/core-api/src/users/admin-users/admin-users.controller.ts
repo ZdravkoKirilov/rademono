@@ -10,11 +10,7 @@ import {
 import { catchError, map } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 
-import {
-  AdminUserParser,
-  PrivateAdminUser,
-  UnexpectedError,
-} from '@end/global';
+import { PrivateAdminUser, UnexpectedError } from '@end/global';
 
 import {
   isKnownError,
@@ -33,7 +29,7 @@ export class AdminUsersController {
   @Get('current')
   @UseGuards(AuthGuard)
   getCurrentUser(@WithUser() user: PrivateAdminUser) {
-    return AdminUserParser.exposePublic(user || {});
+    return PrivateAdminUser.exposePublic(user || {});
   }
 
   @Post('token')

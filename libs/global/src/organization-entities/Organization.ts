@@ -1,3 +1,9 @@
+/*
+1. has collections // departments
+2. has profile groups // permission groups, teacher stuff
+3. has game groups // school subjects
+*/
+
 import { Expose } from 'class-transformer';
 import { IsOptional, IsUUID, MaxLength, MinLength } from 'class-validator';
 import { map } from 'rxjs/operators';

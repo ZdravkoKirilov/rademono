@@ -1,9 +1,4 @@
-import {
-  AdminUserParser,
-  DecodedJWT,
-  PrivateAdminUser,
-  toLeftObs,
-} from '@end/global';
+import { DecodedJWT, PrivateAdminUser, toLeftObs } from '@end/global';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
@@ -36,7 +31,7 @@ export class AuthGuard implements CanActivate {
       forbid();
     }
 
-    const result = await AdminUserParser.toTokenDto({ token: authToken })
+    const result = await PrivateAdminUser.toTokenDto({ token: authToken })
       .pipe(
         switchMap(
           (mbDto): Observable<e.Either<unknown, DecodedJWT>> => {
@@ -44,7 +39,7 @@ export class AuthGuard implements CanActivate {
               return toLeftObs(false);
             }
 
-            return AdminUserParser.decodeToken(mbDto.right.token);
+            return PrivateAdminUser.decodeToken(mbDto.right.token);
           },
         ),
         switchMap(

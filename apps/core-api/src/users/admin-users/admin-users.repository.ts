@@ -13,7 +13,6 @@ import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 
 import {
-  AdminUserParser,
   Email,
   PrivateAdminUser,
   NanoId,
@@ -88,7 +87,7 @@ export class AdminUserRepository {
           return of(e.right(o.none));
         }
 
-        return AdminUserParser.toPrivateEntity(res).pipe(
+        return PrivateAdminUser.toPrivateEntity(res).pipe(
           map((res) => {
             if (e.isRight(res)) {
               return e.right(o.some(res.right));

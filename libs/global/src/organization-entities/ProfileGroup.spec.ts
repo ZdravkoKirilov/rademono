@@ -1,5 +1,7 @@
 import * as e from 'fp-ts/lib/Either';
+import { omit } from 'lodash/fp';
 
+import { transformToClass } from '../parsers';
 import { breakTest } from '../test';
 import { ParsingError, UUIDv4 } from '../types';
 import { PrivateProfileGroup, ProfileGroupId } from './ProfileGroup';
@@ -162,6 +164,24 @@ describe('ProfileGroup entity', () => {
           expect(res.left.errors[0].property).toBe('public_id');
           done();
         });
+      });
+    });
+
+    describe(PrivateProfileGroup.toPublicEntity.name, () => {
+      it('transforms data', (done) => {
+        const data = transformToClass(PrivateProfileGroup, {
+          public_id: UUIDv4.generate(),
+          name: 'Name',
+          description: 'Desc',
+          organization: UUIDv4.generate(),
+        });
+
+        const result = PrivateProfileGroup.toPublicEntity(data);
+        expect(result).toEqual({
+          ...omit('public_id', data),
+          id: data.public_id,
+        });
+        done();
       });
     });
   });

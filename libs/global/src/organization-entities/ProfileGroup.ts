@@ -58,6 +58,15 @@ export class PrivateProfileGroup extends ValidationBase {
   static toPrivateEntity(data: unknown) {
     return parseAndValidateUnknown(data, PrivateProfileGroup);
   }
+
+  static toPublicEntity(data: PrivateProfileGroup): ProfileGroup {
+    return {
+      id: data.public_id,
+      name: data.name,
+      description: data.description,
+      organization: data.organization,
+    };
+  }
 }
 
 export class CreateProfileGroupDto extends ValidationBase {}

@@ -5,7 +5,6 @@ import { add, sub } from 'date-fns';
 import { Email, JWT, NanoId, ParsingError, UUIDv4 } from '../types';
 import {
   AdminUserId,
-  AdminUserParser,
   AdminUserTypes,
   PrivateAdminUser,
   TokenDto,
@@ -17,8 +16,8 @@ const throwError = () => {
   throw new Error('Unexpected');
 };
 
-describe('AdminUserParser', () => {
-  describe(AdminUserParser.create.name, () => {
+describe(PrivateAdminUser.name, () => {
+  describe(PrivateAdminUser.create.name, () => {
     it('passes with correct data', (done) => {
       const payload = {
         email: Email.generate('email@gmail.com'),
@@ -26,7 +25,7 @@ describe('AdminUserParser', () => {
       const publicId = UUIDv4.generate<AdminUserId>();
       const createId = () => publicId;
 
-      AdminUserParser.create(payload, createId).subscribe((res) => {
+      PrivateAdminUser.create(payload, createId).subscribe((res) => {
         expect(e.isRight(res)).toBe(true);
         expect(get('right', res)).toEqual({
           email: payload.email,
@@ -45,7 +44,7 @@ describe('AdminUserParser', () => {
       const publicId = UUIDv4.generate<AdminUserId>();
       const createId = () => publicId;
 
-      AdminUserParser.create(payload, createId).subscribe((res) => {
+      PrivateAdminUser.create(payload, createId).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -53,13 +52,13 @@ describe('AdminUserParser', () => {
     });
   });
 
-  describe(AdminUserParser.toSendCodeDto.name, () => {
+  describe(PrivateAdminUser.toSendCodeDto.name, () => {
     it('passes with correct data', (done) => {
       const payload = {
         email: 'email@gmail.com',
       };
 
-      AdminUserParser.toSendCodeDto(payload).subscribe((res) => {
+      PrivateAdminUser.toSendCodeDto(payload).subscribe((res) => {
         expect(e.isRight(res)).toBe(true);
         expect(get('right', res)).toEqual(payload);
         expect(get('right', res)).toBeInstanceOf(SendCodeDto);
@@ -72,7 +71,7 @@ describe('AdminUserParser', () => {
         email: 1,
       };
 
-      AdminUserParser.toSendCodeDto(payload).subscribe((res) => {
+      PrivateAdminUser.toSendCodeDto(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -82,7 +81,7 @@ describe('AdminUserParser', () => {
     it('fails when payload is not an object', (done) => {
       const payload = null as any;
 
-      AdminUserParser.toSendCodeDto(payload).subscribe((res) => {
+      PrivateAdminUser.toSendCodeDto(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -90,13 +89,13 @@ describe('AdminUserParser', () => {
     });
   });
 
-  describe(AdminUserParser.toSignInDto.name, () => {
+  describe(PrivateAdminUser.toSignInDto.name, () => {
     it('passes with correct data', (done) => {
       const payload = {
         code: NanoId.generate(),
       };
 
-      AdminUserParser.toSignInDto(payload).subscribe((res) => {
+      PrivateAdminUser.toSignInDto(payload).subscribe((res) => {
         expect(e.isRight(res)).toBe(true);
         expect(get('right', res)).toBeInstanceOf(SignInDto);
         expect(get('right', res)).toEqual(payload);
@@ -109,7 +108,7 @@ describe('AdminUserParser', () => {
         code: 1,
       };
 
-      AdminUserParser.toSignInDto(payload).subscribe((res) => {
+      PrivateAdminUser.toSignInDto(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -119,7 +118,7 @@ describe('AdminUserParser', () => {
     it('fails when payload is not an object', (done) => {
       const payload = null as any;
 
-      AdminUserParser.toSignInDto(payload).subscribe((res) => {
+      PrivateAdminUser.toSignInDto(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -127,7 +126,7 @@ describe('AdminUserParser', () => {
     });
   });
 
-  describe(AdminUserParser.toPrivateEntity.name, () => {
+  describe(PrivateAdminUser.toPrivateEntity.name, () => {
     it('passes with correct data and required fields only', (done) => {
       const publicId = UUIDv4.generate<AdminUserId>();
 
@@ -137,7 +136,7 @@ describe('AdminUserParser', () => {
         public_id: publicId,
       };
 
-      AdminUserParser.toPrivateEntity(payload).subscribe((res) => {
+      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isRight(res)).toBe(true);
         expect(get('right', res)).toEqual({
           email: payload.email,
@@ -162,7 +161,7 @@ describe('AdminUserParser', () => {
         loginCodeExpiration: new Date(),
       };
 
-      AdminUserParser.toPrivateEntity(payload).subscribe((res) => {
+      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isRight(res)).toBe(true);
         expect(get('right', res)).toEqual(payload);
         expect(get('right', res)).toBeInstanceOf(PrivateAdminUser);
@@ -173,7 +172,7 @@ describe('AdminUserParser', () => {
     it('fails if payload is not an object', (done) => {
       const payload = null as any;
 
-      AdminUserParser.toPrivateEntity(payload).subscribe((res) => {
+      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -192,7 +191,7 @@ describe('AdminUserParser', () => {
         loginCodeExpiration: new Date(),
       };
 
-      AdminUserParser.toPrivateEntity(payload).subscribe((res) => {
+      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -212,7 +211,7 @@ describe('AdminUserParser', () => {
         loginCodeExpiration: new Date(),
       };
 
-      AdminUserParser.toPrivateEntity(payload).subscribe((res) => {
+      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -231,7 +230,7 @@ describe('AdminUserParser', () => {
         loginCodeExpiration: new Date(),
       };
 
-      AdminUserParser.toPrivateEntity(payload).subscribe((res) => {
+      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -252,7 +251,7 @@ describe('AdminUserParser', () => {
         loginCodeExpiration: new Date(),
       };
 
-      AdminUserParser.toPrivateEntity(payload).subscribe((res) => {
+      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -272,7 +271,7 @@ describe('AdminUserParser', () => {
         loginCodeExpiration: new Date(),
       };
 
-      AdminUserParser.toPrivateEntity(payload).subscribe((res) => {
+      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -293,7 +292,7 @@ describe('AdminUserParser', () => {
         loginCodeExpiration: 'whaat' as any,
       };
 
-      AdminUserParser.toPrivateEntity(payload).subscribe((res) => {
+      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -302,7 +301,7 @@ describe('AdminUserParser', () => {
     });
   });
 
-  describe(AdminUserParser.addLoginCode.name, () => {
+  describe(PrivateAdminUser.addLoginCode.name, () => {
     it('produces correct entity', () => {
       const now = new Date();
       const expiration = add(now, { minutes: 30 });
@@ -315,7 +314,7 @@ describe('AdminUserParser', () => {
         public_id: UUIDv4.generate<AdminUserId>(),
       };
 
-      const result = AdminUserParser.addLoginCode(entity, now, createCode);
+      const result = PrivateAdminUser.addLoginCode(entity, now, createCode);
 
       expect(result).toEqual({
         ...entity,
@@ -325,7 +324,7 @@ describe('AdminUserParser', () => {
     });
   });
 
-  describe(AdminUserParser.generateToken.name, () => {
+  describe(PrivateAdminUser.generateToken.name, () => {
     it('produces a token', (done) => {
       const publicId = UUIDv4.generate<AdminUserId>();
 
@@ -338,15 +337,17 @@ describe('AdminUserParser', () => {
       const token = JWT.generate({ email: payload.email });
       const createToken = () => token;
 
-      AdminUserParser.generateToken(payload, createToken).subscribe((value) => {
-        if (e.isLeft(value)) {
-          return throwError();
-        }
+      PrivateAdminUser.generateToken(payload, createToken).subscribe(
+        (value) => {
+          if (e.isLeft(value)) {
+            return throwError();
+          }
 
-        expect(value.right).toBeInstanceOf(TokenDto);
-        expect(value.right).toEqual({ token });
-        done();
-      });
+          expect(value.right).toBeInstanceOf(TokenDto);
+          expect(value.right).toEqual({ token });
+          done();
+        },
+      );
     });
 
     it('fails if the produced token is invalid', (done) => {
@@ -361,19 +362,21 @@ describe('AdminUserParser', () => {
       const token = 'not a token' as JWT;
       const createToken = () => token;
 
-      AdminUserParser.generateToken(payload, createToken).subscribe((value) => {
-        if (e.isRight(value)) {
-          return throwError();
-        }
+      PrivateAdminUser.generateToken(payload, createToken).subscribe(
+        (value) => {
+          if (e.isRight(value)) {
+            return throwError();
+          }
 
-        expect(value.left).toBeInstanceOf(ParsingError);
-        expect(value.left.errors[0].property).toEqual('token');
-        done();
-      });
+          expect(value.left).toBeInstanceOf(ParsingError);
+          expect(value.left.errors[0].property).toEqual('token');
+          done();
+        },
+      );
     });
   });
 
-  describe(AdminUserParser.verifyToken.name, () => {
+  describe(PrivateAdminUser.verifyToken.name, () => {
     it('passes with a valid token', (done) => {
       const publicId = UUIDv4.generate<AdminUserId>();
 
@@ -386,7 +389,7 @@ describe('AdminUserParser', () => {
       const tokenData = { email: payload.email };
       const token = JWT.generate(tokenData);
 
-      AdminUserParser.verifyToken(token, payload).subscribe((response) => {
+      PrivateAdminUser.verifyToken(token, payload).subscribe((response) => {
         expect(response).toBe(true);
         done();
       });
@@ -403,14 +406,14 @@ describe('AdminUserParser', () => {
 
       const token = 'invalidToken' as JWT;
 
-      AdminUserParser.verifyToken(token, payload).subscribe((response) => {
+      PrivateAdminUser.verifyToken(token, payload).subscribe((response) => {
         expect(response).toBe(false);
         done();
       });
     });
   });
 
-  describe(AdminUserParser.signIn.name, () => {
+  describe(PrivateAdminUser.signIn.name, () => {
     it('modifies the user entity', () => {
       const publicId = UUIDv4.generate<AdminUserId>();
       const now = new Date();
@@ -423,7 +426,7 @@ describe('AdminUserParser', () => {
         loginCodeExpiration: new Date(),
       };
 
-      const result = AdminUserParser.signIn(payload, now);
+      const result = PrivateAdminUser.signIn(payload, now);
 
       expect(result).toEqual({
         email: payload.email,
@@ -434,7 +437,7 @@ describe('AdminUserParser', () => {
     });
   });
 
-  describe(AdminUserParser.verifyLoginCode.name, () => {
+  describe(PrivateAdminUser.verifyLoginCode.name, () => {
     it('passes when the login code is fresh', () => {
       const now = new Date();
 
@@ -446,7 +449,7 @@ describe('AdminUserParser', () => {
         loginCodeExpiration: add(now, { hours: 5 }),
       };
 
-      const isValid = AdminUserParser.verifyLoginCode(entity, now);
+      const isValid = PrivateAdminUser.verifyLoginCode(entity, now);
       expect(isValid).toBe(true);
     });
 
@@ -461,12 +464,12 @@ describe('AdminUserParser', () => {
         loginCodeExpiration: sub(now, { hours: 5 }),
       };
 
-      const isValid = AdminUserParser.verifyLoginCode(entity, now);
+      const isValid = PrivateAdminUser.verifyLoginCode(entity, now);
       expect(isValid).toBe(false);
     });
   });
 
-  describe(AdminUserParser.decodeToken.name, () => {
+  describe(PrivateAdminUser.decodeToken.name, () => {
     it('passes with valid token', (done) => {
       const tokenData = {
         email: Email.generate('email@email.com'),
@@ -474,7 +477,7 @@ describe('AdminUserParser', () => {
 
       const token = JWT.generate(tokenData);
 
-      AdminUserParser.decodeToken(token).subscribe((result) => {
+      PrivateAdminUser.decodeToken(token).subscribe((result) => {
         if (e.isLeft(result)) {
           return throwError();
         }
@@ -484,7 +487,7 @@ describe('AdminUserParser', () => {
     });
 
     it('fails with undefined token', (done) => {
-      AdminUserParser.decodeToken(undefined as any).subscribe((result) => {
+      PrivateAdminUser.decodeToken(undefined as any).subscribe((result) => {
         if (e.isRight(result)) {
           return throwError();
         }
@@ -503,7 +506,7 @@ describe('AdminUserParser', () => {
         'secret',
       );
 
-      AdminUserParser.decodeToken(token).subscribe((result) => {
+      PrivateAdminUser.decodeToken(token).subscribe((result) => {
         if (e.isRight(result)) {
           return throwError();
         }

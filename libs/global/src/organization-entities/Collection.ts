@@ -1,3 +1,6 @@
+/* Collections are campuses, departments, school classes and so on. All game groups
+under it use the same customer profile to login. Might have different permissions and
+editors */
 import { Expose } from 'class-transformer';
 import { IsOptional, IsUUID, MaxLength, MinLength } from 'class-validator';
 import { Observable } from 'rxjs';

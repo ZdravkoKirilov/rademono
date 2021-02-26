@@ -1,5 +1,4 @@
 import {
-  AdminUserParser,
   ParsingError,
   toLeftObs,
   toRightObs,
@@ -26,13 +25,13 @@ export class AdminUsersService {
   ): Observable<
     e.Either<UnexpectedError | DomainError | ParsingError, AdminUser>
   > {
-    return AdminUserParser.toTokenDto({ token }).pipe(
+    return PrivateAdminUser.toTokenDto({ token }).pipe(
       switchMap((mbDto) => {
         if (e.isLeft(mbDto)) {
           return toLeftObs(mbDto.left);
         }
 
-        return AdminUserParser.decodeToken(mbDto.right.token);
+        return PrivateAdminUser.decodeToken(mbDto.right.token);
       }),
       switchMap(
         (
@@ -59,7 +58,7 @@ export class AdminUsersService {
           return toLeftObs(new DomainError('Invalid token'));
         }
 
-        return toRightObs(AdminUserParser.exposePublic(mbUser.right.value));
+        return toRightObs(PrivateAdminUser.exposePublic(mbUser.right.value));
       }),
       catchError((err) =>
         toLeftObs(new UnexpectedError('Failed to get current user', err)),
@@ -72,7 +71,7 @@ export class AdminUsersService {
   ): Observable<
     e.Either<ParsingError | UnexpectedError | DomainError, TokenDto>
   > {
-    return AdminUserParser.toSignInDto(payload).pipe(
+    return PrivateAdminUser.toSignInDto(payload).pipe(
       switchMap((mbSignInDto) => {
         if (e.isLeft(mbSignInDto)) {
           return toLeftObs(mbSignInDto.left);
@@ -89,11 +88,11 @@ export class AdminUsersService {
           return toLeftObs(new DomainError('Login code is invalid'));
         }
 
-        if (!AdminUserParser.verifyLoginCode(data.right.value, new Date())) {
+        if (!PrivateAdminUser.verifyLoginCode(data.right.value, new Date())) {
           return toLeftObs(new DomainError('Login code is invalid'));
         }
 
-        return AdminUserParser.generateToken(data.right.value);
+        return PrivateAdminUser.generateToken(data.right.value);
       }),
       catchError((err) =>
         toLeftObs(new UnexpectedError('Something went wrong', err)),
@@ -104,7 +103,7 @@ export class AdminUsersService {
   requestLoginCode(
     payload: unknown,
   ): Observable<e.Either<ParsingError | UnexpectedError, undefined>> {
-    return AdminUserParser.toSendCodeDto(payload).pipe(
+    return PrivateAdminUser.toSendCodeDto(payload).pipe(
       switchMap((dto) => {
         if (e.isLeft(dto)) {
           return toLeftObs(dto.left);
@@ -116,7 +115,7 @@ export class AdminUsersService {
             }
 
             if (o.isNone(maybeUser.right)) {
-              return AdminUserParser.create(dto.right);
+              return PrivateAdminUser.create(dto.right);
             }
 
             return toRightObs(maybeUser.right.value);
@@ -128,7 +127,7 @@ export class AdminUsersService {
           return toLeftObs(mbUser.left);
         }
 
-        const userWithLoginToken = AdminUserParser.addLoginCode(mbUser.right);
+        const userWithLoginToken = PrivateAdminUser.addLoginCode(mbUser.right);
         return this.repo.saveUser(userWithLoginToken).pipe(
           map((mbSaved) => {
             return e.isLeft(mbSaved)

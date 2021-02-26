@@ -6,7 +6,7 @@ import * as o from 'fp-ts/lib/Option';
 import { Connection } from 'typeorm';
 
 import {
-  AdminUserParser,
+  PrivateAdminUser,
   AdminUserTypes,
   Email,
   UUIDv4,
@@ -45,7 +45,7 @@ describe('AdminUserController (e2e)', () => {
     it('returns the current user given a valid auth token', async (done) => {
       const userId = UUIDv4.generate<AdminUserId>();
 
-      const mbEntity = await AdminUserParser.create(
+      const mbEntity = await PrivateAdminUser.create(
         {
           email: Email.generate('email3@email.com'),
         },
@@ -58,7 +58,7 @@ describe('AdminUserController (e2e)', () => {
 
       await repository.saveUser(mbEntity.right).toPromise();
 
-      const mbToken = await AdminUserParser.generateToken(
+      const mbToken = await PrivateAdminUser.generateToken(
         mbEntity.right,
       ).toPromise();
 
@@ -159,7 +159,7 @@ describe('AdminUserController (e2e)', () => {
           .expect(201)
           .send({ code: loginCode });
 
-        const isTokenValid = await AdminUserParser.verifyToken(
+        const isTokenValid = await PrivateAdminUser.verifyToken(
           body.token,
           mbUser.right.value,
         ).toPromise();

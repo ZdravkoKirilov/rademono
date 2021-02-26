@@ -1,3 +1,5 @@
+/* GameGroups can be school subjects, or more granular. They are just a grouping
+mechanism + might have different permissions/editors */
 import { Expose } from 'class-transformer';
 import { IsOptional, IsUUID, MaxLength, MinLength } from 'class-validator';
 import { map } from 'rxjs/operators';
@@ -5,9 +7,14 @@ import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 
 import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
-import { parseAndValidateObject, transformToClass } from '../parsers';
+import {
+  parseAndValidateObject,
+  parseAndValidateUnknown,
+  transformToClass,
+} from '../parsers';
 import { OrganizationId } from './Organization';
 import { GameId } from '../game-entities';
+import { ProfileGroupId } from './ProfileGroup';
 
 export type GameGroupId = Tagged<'GameGroupId', UUIDv4>;
 
@@ -30,6 +37,10 @@ class BaseFields {
   @Expose()
   @IsUUID('4', { each: true })
   games: Set<GameId>;
+
+  @Expose()
+  @IsUUID('4')
+  admin_group: ProfileGroupId;
 }
 
 export class GameGroup extends BaseFields {
@@ -60,6 +71,21 @@ export class PrivateGameGroup extends BaseFields {
         return result;
       }),
     );
+  }
+
+  static toPrivateEntity(data: unknown) {
+    return parseAndValidateUnknown(data, PrivateGameGroup);
+  }
+
+  static toPublicEntity(source: PrivateGameGroup): GameGroup {
+    return {
+      id: source.public_id,
+      organization: source.organization,
+      name: source.name,
+      description: source.description,
+      games: source.games,
+      admin_group: source.admin_group,
+    };
   }
 }
 
