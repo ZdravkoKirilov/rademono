@@ -276,7 +276,7 @@ describe(OrganizationRepository.name, () => {
       });
     });
 
-    it('handles unexpected errors', async (done) => {
+    it('handles repo errors', async (done) => {
       const { service } = await createTestingModule({
         findOne: () => Promise.reject(),
       });
