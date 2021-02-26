@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { parseAndValidateUnknown, transformToClass } from '../parsers';
 import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
 import { ProfileGroupId } from './ProfileGroup';
+import { OrganizationId } from './Organization';
 
 /* contains libraries, game groups; could be used as "Campus" */
 
@@ -26,6 +27,10 @@ class BasicFields {
 }
 
 class ValidationBase extends BasicFields {
+  @Expose()
+  @IsUUID('4')
+  organization: OrganizationId;
+
   @Expose()
   @IsUUID('4')
   @IsOptional()
@@ -78,6 +83,7 @@ export class PrivateCollection extends ValidationBase {
       admin_group: source.admin_group,
       description: source.description,
       parent: source.parent,
+      organization: source.organization,
     };
   }
 }
