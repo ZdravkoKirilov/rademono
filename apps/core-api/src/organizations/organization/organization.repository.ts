@@ -50,8 +50,29 @@ export class OrganizationRepository {
   ) {}
 
   createOrganization(
-    updatedOrganization: InitialOrganization,
+    organization: InitialOrganization,
   ): Observable<e.Either<UnexpectedError, InitialOrganization>> {
+    try {
+      return from(this.repo.insert(organization)).pipe(
+        switchMap(() => {
+          return toRightObs(organization);
+        }),
+        catchError((err) => {
+          return toLeftObs(
+            new UnexpectedError('Failed to create the organization', err),
+          );
+        }),
+      );
+    } catch (err) {
+      return toLeftObs(
+        new UnexpectedError('Failed to create the organization', err),
+      );
+    }
+  }
+
+  saveOrganization(
+    updatedOrganization: PrivateOrganization,
+  ): Observable<e.Either<UnexpectedError, PrivateOrganization>> {
     try {
       return from(this.repo.save(updatedOrganization)).pipe(
         switchMap(() => {
@@ -70,34 +91,25 @@ export class OrganizationRepository {
     }
   }
 
-  saveOrganization(
-    updatedOrganization: PrivateOrganization,
-  ): Observable<e.Either<UnexpectedError, PrivateOrganization>> {
-    return from(this.repo.save(updatedOrganization)).pipe(
-      switchMap(() => {
-        return toRightObs(updatedOrganization);
-      }),
-      catchError((err) => {
-        return toLeftObs(
-          new UnexpectedError('Failed to save the organization', err),
-        );
-      }),
-    );
-  }
-
   organizationExists(
     matcher: FindOneMatcher,
   ): Observable<e.Either<UnexpectedError, boolean>> {
-    return from(this.repo.count({ where: matcher })).pipe(
-      switchMap((count) => {
-        return toRightObs(count > 0);
-      }),
-      catchError((err) => {
-        return toLeftObs(
-          new UnexpectedError('Failed to find the organization', err),
-        );
-      }),
-    );
+    try {
+      return from(this.repo.count({ where: matcher })).pipe(
+        switchMap((count) => {
+          return toRightObs(count > 0);
+        }),
+        catchError((err) => {
+          return toLeftObs(
+            new UnexpectedError('Failed to find the organization', err),
+          );
+        }),
+      );
+    } catch (err) {
+      return toLeftObs(
+        new UnexpectedError('Failed to find the organization', err),
+      );
+    }
   }
 
   getOrganization(
@@ -105,26 +117,32 @@ export class OrganizationRepository {
   ): Observable<
     e.Either<UnexpectedError | ParsingError, o.Option<PrivateOrganization>>
   > {
-    return from(this.repo.find({ where: matcher })).pipe(
-      switchMap((res) => {
-        if (isUndefined(res)) {
-          return toRightObs(o.none);
-        }
+    try {
+      return from(this.repo.findOne({ where: matcher })).pipe(
+        switchMap((res) => {
+          if (isUndefined(res)) {
+            return toRightObs(o.none);
+          }
 
-        return PrivateOrganization.toPrivateEntity(res).pipe(
-          map((parsed) => {
-            if (e.isRight(parsed)) {
-              return e.right(o.some(parsed.right));
-            }
-            return parsed;
-          }),
-        );
-      }),
-      catchError((err) => {
-        return toLeftObs(
-          new UnexpectedError('Failed to find the organization', err),
-        );
-      }),
-    );
+          return PrivateOrganization.toPrivateEntity(res).pipe(
+            map((parsed) => {
+              if (e.isRight(parsed)) {
+                return e.right(o.some(parsed.right));
+              }
+              return parsed;
+            }),
+          );
+        }),
+        catchError((err) => {
+          return toLeftObs(
+            new UnexpectedError('Failed to find the organization', err),
+          );
+        }),
+      );
+    } catch (err) {
+      return toLeftObs(
+        new UnexpectedError('Failed to find the organization', err),
+      );
+    }
   }
 }
