@@ -101,13 +101,19 @@ export class OrganizationRepository {
         }),
         catchError((err) => {
           return toLeftObs(
-            new UnexpectedError('Failed to find the organization', err),
+            new UnexpectedError(
+              'Failed to find whether the organization exists',
+              err,
+            ),
           );
         }),
       );
     } catch (err) {
       return toLeftObs(
-        new UnexpectedError('Failed to find the organization', err),
+        new UnexpectedError(
+          'Failed to find whether the organization exists',
+          err,
+        ),
       );
     }
   }

@@ -23,7 +23,7 @@ class ValidationBase {
   @IsOptional()
   @MinLength(1)
   @MaxLength(5000)
-  description: StringOfLength<1, 5000>;
+  description?: StringOfLength<1, 5000>;
 }
 
 export class ProfileGroup extends ValidationBase {

@@ -50,17 +50,23 @@ export class AdminProfileRepository {
 
   saveProfile(
     adminProfile: PrivateAdminProfile,
-  ): Observable<e.Either<UnexpectedError, undefined>> {
-    return from(this.repo.save(adminProfile)).pipe(
-      switchMap(() => {
-        return toRightObs(undefined);
-      }),
-      catchError((err) => {
-        return toLeftObs(
-          new UnexpectedError('Failed to save the admin profile', err),
-        );
-      }),
-    );
+  ): Observable<e.Either<UnexpectedError, PrivateAdminProfile>> {
+    try {
+      return from(this.repo.save(adminProfile)).pipe(
+        switchMap(() => {
+          return toRightObs(adminProfile);
+        }),
+        catchError((err) => {
+          return toLeftObs(
+            new UnexpectedError('Failed to save the admin profile', err),
+          );
+        }),
+      );
+    } catch (err) {
+      return toLeftObs(
+        new UnexpectedError('Failed to save the admin profile', err),
+      );
+    }
   }
 
   getProfile(
@@ -68,26 +74,54 @@ export class AdminProfileRepository {
   ): Observable<
     e.Either<UnexpectedError | ParsingError, o.Option<PrivateAdminProfile>>
   > {
-    return from(this.repo.find({ where: matcher })).pipe(
-      switchMap((res) => {
-        if (isUndefined(res)) {
-          return toRightObs(o.none);
-        }
+    try {
+      return from(this.repo.findOne({ where: matcher })).pipe(
+        switchMap((res) => {
+          if (isUndefined(res)) {
+            return toRightObs(o.none);
+          }
 
-        return PrivateAdminProfile.toPrivateEntity(res).pipe(
-          map((parsed) => {
-            if (e.isRight(parsed)) {
-              return e.right(o.some(parsed.right));
-            }
-            return parsed;
-          }),
-        );
-      }),
-      catchError((err) => {
-        return toLeftObs(
-          new UnexpectedError('Failed to find the profile', err),
-        );
-      }),
-    );
+          return PrivateAdminProfile.toPrivateEntity(res).pipe(
+            map((parsed) => {
+              if (e.isRight(parsed)) {
+                return e.right(o.some(parsed.right));
+              }
+              return parsed;
+            }),
+          );
+        }),
+        catchError((err) => {
+          return toLeftObs(
+            new UnexpectedError('Failed to find the profile', err),
+          );
+        }),
+      );
+    } catch (err) {
+      return toLeftObs(new UnexpectedError('Failed to find the profile', err));
+    }
+  }
+
+  profileExists(
+    matcher: FindOneMatcher,
+  ): Observable<e.Either<UnexpectedError, boolean>> {
+    try {
+      return from(this.repo.count({ where: matcher })).pipe(
+        switchMap((count) => {
+          return toRightObs(count > 0);
+        }),
+        catchError((err) => {
+          return toLeftObs(
+            new UnexpectedError(
+              'Failed to find whether the profile exists',
+              err,
+            ),
+          );
+        }),
+      );
+    } catch (err) {
+      return toLeftObs(
+        new UnexpectedError('Failed to find whether the profile exists', err),
+      );
+    }
   }
 }

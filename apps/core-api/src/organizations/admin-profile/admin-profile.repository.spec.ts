@@ -6,113 +6,51 @@ import * as o from 'fp-ts/lib/Option';
 import { omit } from 'lodash/fp';
 
 import {
-  InitialOrganization,
   UUIDv4,
   breakTest,
   UnexpectedError,
   ParsingError,
-  PrivateOrganization,
+  PrivateAdminProfile,
 } from '@end/global';
-
 import {
-  OrganizationDBModel,
-  OrganizationRepository,
-} from './organization.repository';
+  AdminProfileDBModel,
+  AdminProfileRepository,
+} from './admin-profile.repository';
 
 const createTestingModule = async (
-  repoMock: Partial<Repository<OrganizationDBModel>> = {},
+  repoMock: Partial<Repository<AdminProfileDBModel>> = {},
 ) => {
   const module: TestingModule = await Test.createTestingModule({
     imports: [],
     providers: [
-      OrganizationRepository,
+      AdminProfileRepository,
       {
-        provide: getRepositoryToken(OrganizationDBModel),
+        provide: getRepositoryToken(AdminProfileDBModel),
         useValue: repoMock,
       },
     ],
   }).compile();
 
-  const service = module.get<OrganizationRepository>(OrganizationRepository);
+  const service = module.get<AdminProfileRepository>(AdminProfileRepository);
 
   return { service };
 };
 
-describe(OrganizationRepository.name, () => {
-  describe(OrganizationRepository.prototype.createOrganization.name, () => {
+describe(AdminProfileRepository.name, () => {
+  describe(AdminProfileRepository.prototype.saveProfile.name, () => {
     it('succeeds with enough data', async (done) => {
       const data = {
         name: 'Name',
         public_id: UUIDv4.generate(),
-      } as InitialOrganization;
+        user: UUIDv4.generate(),
+        group: UUIDv4.generate(),
+      } as PrivateAdminProfile;
 
-      const { service } = await createTestingModule({
-        insert: () => Promise.resolve({} as any),
-      });
-
-      service.createOrganization(data).subscribe((res) => {
-        if (e.isLeft(res)) {
-          return breakTest();
-        }
-        expect(res.right).toEqual(data);
-        done();
-      });
-    });
-
-    it('handles unexpected errors', async (done) => {
-      const { service } = await createTestingModule({
-        insert: () => {
-          throw new Error('Whoops');
-        },
-      });
-
-      const data = {
-        name: 'Name',
-        public_id: UUIDv4.generate(),
-      } as InitialOrganization;
-
-      service.createOrganization(data).subscribe((res) => {
-        if (e.isRight(res)) {
-          return breakTest();
-        }
-        expect(res.left).toBeInstanceOf(UnexpectedError);
-        done();
-      });
-    });
-
-    it('handles repo errors', async (done) => {
-      const { service } = await createTestingModule({
-        insert: () => Promise.reject(),
-      });
-
-      const data = {
-        name: 'Name',
-        public_id: UUIDv4.generate(),
-      } as InitialOrganization;
-
-      service.createOrganization(data).subscribe((res) => {
-        if (e.isRight(res)) {
-          return breakTest();
-        }
-        expect(res.left).toBeInstanceOf(UnexpectedError);
-        done();
-      });
-    });
-  });
-
-  describe(OrganizationRepository.prototype.saveOrganization.name, () => {
-    it('succeeds with enough data', async (done) => {
       const { service } = await createTestingModule({
         save: () => Promise.resolve([]),
       });
 
-      const data = {
-        name: 'Name',
-        public_id: UUIDv4.generate(),
-        admin_group: UUIDv4.generate(),
-      } as PrivateOrganization;
-
-      service.saveOrganization(data).subscribe((res) => {
+      service.saveProfile(data).subscribe((res) => {
         if (e.isLeft(res)) {
           return breakTest();
         }
@@ -124,17 +62,18 @@ describe(OrganizationRepository.name, () => {
     it('handles unexpected errors', async (done) => {
       const { service } = await createTestingModule({
         save: () => {
-          throw new Error('oops');
+          throw new Error('Whoops');
         },
       });
 
       const data = {
         name: 'Name',
         public_id: UUIDv4.generate(),
-        admin_group: UUIDv4.generate(),
-      } as PrivateOrganization;
+        user: UUIDv4.generate(),
+        group: UUIDv4.generate(),
+      } as PrivateAdminProfile;
 
-      service.saveOrganization(data).subscribe((res) => {
+      service.saveProfile(data).subscribe((res) => {
         if (e.isRight(res)) {
           return breakTest();
         }
@@ -151,10 +90,11 @@ describe(OrganizationRepository.name, () => {
       const data = {
         name: 'Name',
         public_id: UUIDv4.generate(),
-        admin_group: UUIDv4.generate(),
-      } as PrivateOrganization;
+        user: UUIDv4.generate(),
+        group: UUIDv4.generate(),
+      } as PrivateAdminProfile;
 
-      service.saveOrganization(data).subscribe((res) => {
+      service.saveProfile(data).subscribe((res) => {
         if (e.isRight(res)) {
           return breakTest();
         }
@@ -164,19 +104,21 @@ describe(OrganizationRepository.name, () => {
     });
   });
 
-  describe(OrganizationRepository.prototype.organizationExists.name, () => {
+  describe(AdminProfileRepository.prototype.profileExists.name, () => {
     it('returns true if there is at least 1 match', async (done) => {
       const { service } = await createTestingModule({
         count: () => Promise.resolve(1),
       });
 
-      service.organizationExists({ name: 'Whatever' }).subscribe((res) => {
-        if (e.isLeft(res)) {
-          return breakTest();
-        }
-        expect(res.right).toBe(true);
-        done();
-      });
+      service
+        .profileExists({ public_id: UUIDv4.generate() })
+        .subscribe((res) => {
+          if (e.isLeft(res)) {
+            return breakTest();
+          }
+          expect(res.right).toBe(true);
+          done();
+        });
     });
 
     it('returns false if there are 0 matches', async (done) => {
@@ -184,13 +126,15 @@ describe(OrganizationRepository.name, () => {
         count: () => Promise.resolve(0),
       });
 
-      service.organizationExists({ name: 'Whatever' }).subscribe((res) => {
-        if (e.isLeft(res)) {
-          return breakTest();
-        }
-        expect(res.right).toBe(false);
-        done();
-      });
+      service
+        .profileExists({ public_id: UUIDv4.generate() })
+        .subscribe((res) => {
+          if (e.isLeft(res)) {
+            return breakTest();
+          }
+          expect(res.right).toBe(false);
+          done();
+        });
     });
 
     it('handles unexpected errors', async (done) => {
@@ -200,13 +144,15 @@ describe(OrganizationRepository.name, () => {
         },
       });
 
-      service.organizationExists({ name: 'Whatever' }).subscribe((res) => {
-        if (e.isRight(res)) {
-          return breakTest();
-        }
-        expect(res.left).toBeInstanceOf(UnexpectedError);
-        done();
-      });
+      service
+        .profileExists({ public_id: UUIDv4.generate() })
+        .subscribe((res) => {
+          if (e.isRight(res)) {
+            return breakTest();
+          }
+          expect(res.left).toBeInstanceOf(UnexpectedError);
+          done();
+        });
     });
 
     it('handles repo errors', async (done) => {
@@ -214,30 +160,33 @@ describe(OrganizationRepository.name, () => {
         count: () => Promise.reject(),
       });
 
-      service.organizationExists({ name: 'Whatever' }).subscribe((res) => {
-        if (e.isRight(res)) {
-          return breakTest();
-        }
-        expect(res.left).toBeInstanceOf(UnexpectedError);
-        done();
-      });
+      service
+        .profileExists({ public_id: UUIDv4.generate() })
+        .subscribe((res) => {
+          if (e.isRight(res)) {
+            return breakTest();
+          }
+          expect(res.left).toBeInstanceOf(UnexpectedError);
+          done();
+        });
     });
   });
 
-  describe(OrganizationRepository.prototype.getOrganization.name, () => {
-    it('returns an organization', async (done) => {
+  describe(AdminProfileRepository.prototype.getProfile.name, () => {
+    it('returns an admin profile', async (done) => {
       const data = {
         id: 1,
         name: 'Name',
+        user: UUIDv4.generate(),
+        group: UUIDv4.generate(),
         public_id: UUIDv4.generate(),
-        admin_group: UUIDv4.generate(),
       };
 
       const { service } = await createTestingModule({
         findOne: () => Promise.resolve(data),
       });
 
-      service.getOrganization({ name: 'Name' }).subscribe((res) => {
+      service.getProfile({ public_id: data.public_id }).subscribe((res) => {
         if (e.isLeft(res)) {
           return breakTest();
         }
@@ -246,12 +195,12 @@ describe(OrganizationRepository.name, () => {
       });
     });
 
-    it('returns no organization', async (done) => {
+    it('returns no admin profile', async (done) => {
       const { service } = await createTestingModule({
         findOne: () => Promise.resolve(undefined),
       });
 
-      service.getOrganization({ name: 'Name' }).subscribe((res) => {
+      service.getProfile({ public_id: UUIDv4.generate() }).subscribe((res) => {
         if (e.isLeft(res)) {
           return breakTest();
         }
@@ -267,7 +216,7 @@ describe(OrganizationRepository.name, () => {
         },
       });
 
-      service.getOrganization({ name: 'Name' }).subscribe((res) => {
+      service.getProfile({ public_id: UUIDv4.generate() }).subscribe((res) => {
         if (e.isRight(res)) {
           return breakTest();
         }
@@ -281,7 +230,7 @@ describe(OrganizationRepository.name, () => {
         findOne: () => Promise.reject(),
       });
 
-      service.getOrganization({ name: 'Name' }).subscribe((res) => {
+      service.getProfile({ public_id: UUIDv4.generate() }).subscribe((res) => {
         if (e.isRight(res)) {
           return breakTest();
         }
@@ -295,14 +244,15 @@ describe(OrganizationRepository.name, () => {
         id: 1,
         name: 'Name',
         public_id: 'Invalid',
-        admin_group: UUIDv4.generate(),
+        user: UUIDv4.generate(),
+        group: UUIDv4.generate(),
       };
 
       const { service } = await createTestingModule({
         findOne: () => Promise.resolve(data),
       });
 
-      service.getOrganization({ name: 'Name' }).subscribe((res) => {
+      service.getProfile({ public_id: UUIDv4.generate() }).subscribe((res) => {
         if (e.isRight(res)) {
           return breakTest();
         }
