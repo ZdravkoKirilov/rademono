@@ -4,20 +4,24 @@ import * as e from 'fp-ts/lib/Either';
 import { Observable } from 'rxjs';
 
 import {
+  AdminProfile,
   AdminUserId,
   DomainError,
   InitialOrganization,
   Organization,
   ParsingError,
   PrivateOrganization,
+  ProfileGroup,
   toLeftObs,
   UnexpectedError,
   UUIDv4,
 } from '@end/global';
+
+import { PUBLIC_ID_GENERATOR } from '@app/shared';
+
 import { OrganizationRepository } from './organization.repository';
 import { ProfileGroupService } from '../profile-group';
 import { AdminProfileService } from '../admin-profile';
-import { PUBLIC_ID_GENERATOR } from '@app/shared';
 
 @Injectable()
 export class OrganizationService {
@@ -31,7 +35,14 @@ export class OrganizationService {
     payload: unknown,
     userId: AdminUserId,
   ): Observable<
-    e.Either<UnexpectedError | DomainError | ParsingError, Organization>
+    e.Either<
+      UnexpectedError | DomainError | ParsingError,
+      {
+        organization: Organization;
+        group: ProfileGroup;
+        profile: AdminProfile;
+      }
+    >
   > {
     return PrivateOrganization.create(payload, this.createId).pipe(
       switchMap(
@@ -80,7 +91,7 @@ export class OrganizationService {
               return this.adminProfileService
                 .create({
                   user: userId,
-                  group: mbGroup.right.public_id,
+                  group: mbGroup.right.id,
                   name: 'Admin',
                 })
                 .pipe(
@@ -88,24 +99,33 @@ export class OrganizationService {
                     if (e.isLeft(mbProfile)) {
                       return toLeftObs(mbProfile.left);
                     }
-                    return this.repo.saveOrganization(
-                      PrivateOrganization.setAdminGroup(
-                        mbSaved.right,
-                        mbGroup.right.public_id,
-                      ),
-                    );
+                    return this.repo
+                      .saveOrganization(
+                        PrivateOrganization.setAdminGroup(
+                          mbSaved.right,
+                          mbGroup.right.id,
+                        ),
+                      )
+                      .pipe(
+                        map((mbUpdatedOrganization) => {
+                          if (e.isLeft(mbUpdatedOrganization)) {
+                            return mbUpdatedOrganization;
+                          }
+
+                          const organization = PrivateOrganization.toPublicEntity(
+                            mbUpdatedOrganization.right,
+                          );
+                          return e.right({
+                            organization,
+                            group: mbGroup.right,
+                            profile: mbProfile.right,
+                          });
+                        }),
+                      );
                   }),
                 );
             }),
           );
-      }),
-      map((mbUpdatedOrganization) => {
-        if (e.isLeft(mbUpdatedOrganization)) {
-          return mbUpdatedOrganization;
-        }
-        return e.right(
-          PrivateOrganization.toPublicEntity(mbUpdatedOrganization.right),
-        );
       }),
       catchError((err) =>
         toLeftObs(

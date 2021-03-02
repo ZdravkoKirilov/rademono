@@ -5,6 +5,7 @@ import * as o from 'fp-ts/lib/Option';
 import { Observable } from 'rxjs';
 
 import {
+  AdminProfile,
   DomainError,
   ParsingError,
   PrivateAdminProfile,
@@ -25,7 +26,7 @@ export class AdminProfileService {
   create(
     payload: unknown,
   ): Observable<
-    e.Either<UnexpectedError | ParsingError | DomainError, PrivateAdminProfile>
+    e.Either<UnexpectedError | ParsingError | DomainError, AdminProfile>
   > {
     return PrivateAdminProfile.create(payload, this.createId).pipe(
       switchMap((mbProfile) => {
@@ -59,8 +60,12 @@ export class AdminProfileService {
           );
         }
         return this.repo.saveProfile(mbExisting.right.parsed).pipe(
-          map((saved) => {
-            return e.isRight(saved) ? e.right(mbExisting.right.parsed) : saved;
+          map((mbSaved) => {
+            return e.isRight(mbSaved)
+              ? e.right(
+                  PrivateAdminProfile.toPublicEntity(mbExisting.right.parsed),
+                )
+              : mbSaved;
           }),
         );
       }),

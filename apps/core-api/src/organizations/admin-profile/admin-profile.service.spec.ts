@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as e from 'fp-ts/lib/Either';
 import { of } from 'rxjs';
 import * as o from 'fp-ts/lib/Option';
+import { omit } from 'lodash/fp';
 
 import {
   UUIDv4,
@@ -54,7 +55,10 @@ describe('AdminProfileService', () => {
         if (e.isLeft(dto)) {
           return throwError();
         }
-        expect(dto.right).toEqual(payload);
+        expect(dto.right).toEqual({
+          ...omit('public_id', payload),
+          id: payload.public_id,
+        });
         done();
       });
     });

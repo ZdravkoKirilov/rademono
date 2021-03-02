@@ -8,6 +8,7 @@ import {
   DomainError,
   ParsingError,
   PrivateProfileGroup,
+  ProfileGroup,
   toLeftObs,
   toRightObs,
   UnexpectedError,
@@ -27,7 +28,7 @@ export class ProfileGroupService {
   create(
     payload: unknown,
   ): Observable<
-    e.Either<UnexpectedError | ParsingError | DomainError, PrivateProfileGroup>
+    e.Either<UnexpectedError | ParsingError | DomainError, ProfileGroup>
   > {
     return PrivateProfileGroup.create(payload, this.createId).pipe(
       switchMap((mbGroup) => {
@@ -47,7 +48,7 @@ export class ProfileGroupService {
               ): Observable<
                 e.Either<
                   DomainError | ParsingError | UnexpectedError,
-                  undefined
+                  PrivateProfileGroup
                 >
               > => {
                 if (e.isLeft(retrieved)) {
@@ -69,7 +70,9 @@ export class ProfileGroupService {
               if (e.isLeft(saveResult)) {
                 return toLeftObs(saveResult.left);
               }
-              return toRightObs(mbGroup.right);
+              return toRightObs(
+                PrivateProfileGroup.toPublicEntity(mbGroup.right),
+              );
             }),
           );
       }),
