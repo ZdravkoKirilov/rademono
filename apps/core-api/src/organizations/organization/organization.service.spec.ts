@@ -2,7 +2,11 @@ import { PUBLIC_ID_GENERATOR } from '@app/shared';
 import {
   AdminUserId,
   breakTest,
+  DomainError,
+  ParsingError,
+  toLeftObs,
   toRightObs,
+  UnexpectedError,
   UnknownRecord,
   UUIDv4,
 } from '@end/global';
@@ -88,6 +92,129 @@ describe('OrganizationService', () => {
           name: 'Admin',
         },
       });
+
+      done();
+    });
+  });
+
+  it('fails when the name is missing', async (done) => {
+    const data = {};
+
+    const public_id = UUIDv4.generate();
+    const userId = UUIDv4.generate<AdminUserId>();
+
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [],
+      providers: [
+        OrganizationService,
+        {
+          provide: OrganizationRepository,
+          useValue: {},
+        },
+        {
+          provide: ProfileGroupService,
+          useValue: {},
+        },
+        {
+          provide: AdminProfileService,
+          useValue: {},
+        },
+        { provide: PUBLIC_ID_GENERATOR, useValue: () => public_id },
+      ],
+    }).compile();
+
+    service = module.get<OrganizationService>(OrganizationService);
+
+    service.create(data, userId).subscribe((res) => {
+      if (e.isRight(res)) {
+        return breakTest();
+      }
+      expect(res.left).toBeInstanceOf(ParsingError);
+
+      done();
+    });
+  });
+
+  it('fails when the name is taken', async (done) => {
+    const data = {
+      name: 'Name',
+    };
+
+    const public_id = UUIDv4.generate();
+    const userId = UUIDv4.generate<AdminUserId>();
+
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [],
+      providers: [
+        OrganizationService,
+        {
+          provide: OrganizationRepository,
+          useValue: {
+            organizationExists: () => toRightObs(true),
+          },
+        },
+        {
+          provide: ProfileGroupService,
+          useValue: {},
+        },
+        {
+          provide: AdminProfileService,
+          useValue: {},
+        },
+        { provide: PUBLIC_ID_GENERATOR, useValue: () => public_id },
+      ],
+    }).compile();
+
+    service = module.get<OrganizationService>(OrganizationService);
+
+    service.create(data, userId).subscribe((res) => {
+      if (e.isRight(res)) {
+        return breakTest();
+      }
+      expect(res.left).toBeInstanceOf(DomainError);
+
+      done();
+    });
+  });
+
+  it('fails when repo.create fails', async (done) => {
+    const data = {
+      name: 'Name',
+    };
+
+    const public_id = UUIDv4.generate();
+    const userId = UUIDv4.generate<AdminUserId>();
+
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [],
+      providers: [
+        OrganizationService,
+        {
+          provide: OrganizationRepository,
+          useValue: {
+            organizationExists: () => toRightObs(false),
+            createOrganization: () => toLeftObs({}),
+          },
+        },
+        {
+          provide: ProfileGroupService,
+          useValue: {},
+        },
+        {
+          provide: AdminProfileService,
+          useValue: {},
+        },
+        { provide: PUBLIC_ID_GENERATOR, useValue: () => public_id },
+      ],
+    }).compile();
+
+    service = module.get<OrganizationService>(OrganizationService);
+
+    service.create(data, userId).subscribe((res) => {
+      if (e.isRight(res)) {
+        return breakTest();
+      }
+      expect(res.left).toBeInstanceOf(UnexpectedError);
 
       done();
     });
