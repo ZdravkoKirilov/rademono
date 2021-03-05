@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { of } from 'rxjs';
 
 import { toRightObs } from '@end/global';
 
