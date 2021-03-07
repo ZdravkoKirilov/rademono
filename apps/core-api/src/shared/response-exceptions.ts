@@ -6,7 +6,7 @@ import {
 
 import { HttpApiError } from '@end/global';
 
-const KnownErrors = {
+export const KnownErrors = {
   BadRequestException,
   ForbiddenException,
   InternalServerErrorException,

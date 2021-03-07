@@ -78,6 +78,7 @@ export class AdminUsersController {
         throw toUnexpectedError({
           message: 'Unexpected error',
           name: UnexpectedError.prototype.name,
+          originalError: err,
         });
       }),
     );

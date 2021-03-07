@@ -1,11 +1,16 @@
 import { PrivateAdminUser, UnexpectedError } from '@end/global';
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { map, catchError } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 
-import { toBadRequest, toForbiddenError, toUnexpectedError } from '@app/shared';
+import {
+  isKnownError,
+  toBadRequest,
+  toForbiddenError,
+  toUnexpectedError,
+} from '@app/shared';
 
-import { WithUser } from '../../users/admin-users';
+import { AuthGuard, WithUser } from '../../users/admin-users';
 import { OrganizationService } from './organization.service';
 
 @Controller('organization')
@@ -13,6 +18,7 @@ export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   create(@Body() payload: unknown, @WithUser() user: PrivateAdminUser) {
     return this.organizationService.create(payload, user.public_id).pipe(
       map((result) => {
@@ -42,6 +48,7 @@ export class OrganizationController {
               throw toUnexpectedError({
                 message: 'Unexpected error',
                 name: UnexpectedError.prototype.name,
+                originalError: result.left,
               });
             }
           }
@@ -50,7 +57,15 @@ export class OrganizationController {
         return result.right;
       }),
       catchError((err) => {
-        throw new UnexpectedError('Unexpected error', err);
+        if (isKnownError(err)) {
+          throw err;
+        }
+
+        throw toUnexpectedError({
+          message: 'Unexpected error',
+          name: UnexpectedError.prototype.name,
+          originalError: err,
+        });
       }),
     );
   }
