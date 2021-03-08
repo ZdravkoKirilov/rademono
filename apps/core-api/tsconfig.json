@@ -5,7 +5,9 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "@app/shared": ["src/shared/index"]
+      "@app/shared": ["src/shared/index"],
+      "@app/test": ["test/index"],
+      "@app/admin-users": ["src/users/admin-users/index"]
     }
   }
 }

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SharedModule } from '@app/shared';
+import { AdminUsersModule } from '@app/admin-users';
 
 import { OrganizationService } from './organization.service';
 import { OrganizationController } from './organization.controller';
@@ -18,6 +19,7 @@ import { ProfileGroupModule } from '../profile-group';
   imports: [
     TypeOrmModule.forFeature([OrganizationDBModel]),
     SharedModule,
+    AdminUsersModule,
     AdminProfileModule,
     ProfileGroupModule,
   ],

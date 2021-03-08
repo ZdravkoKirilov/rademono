@@ -7,6 +7,7 @@
     "^.+\\.(t)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "@app/shared": "<rootDir>/shared/index"
+    "@app/shared": "<rootDir>/shared/index",
+    "@app/admin-users": "<rootDir>/users/admin-users/index"
   }
 }

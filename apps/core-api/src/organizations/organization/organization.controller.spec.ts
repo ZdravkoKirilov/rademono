@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import {
+  DomainError,
+  ParsingError,
   PrivateAdminUser,
   toLeftObs,
   toRightObs,
@@ -54,7 +56,47 @@ describe(OrganizationController.name, () => {
       });
     });
 
-    it('fails when OrganizationService.create fails with Unexpected error', async (done) => {
+    it('fails when OrganizationService.create randomly throws', async (done) => {
+      const user = {
+        public_id: UUIDv4.generate(),
+      } as PrivateAdminUser;
+
+      const data = {
+        name: 'Monster inc',
+      };
+
+      const module: TestingModule = await Test.createTestingModule({
+        controllers: [OrganizationController],
+        providers: [
+          {
+            provide: OrganizationService,
+            useValue: {
+              create: () => {
+                throw new UnexpectedError('oops');
+              },
+            },
+          },
+        ],
+      })
+        .overrideGuard(AuthGuard)
+        .useValue({
+          canActivate: async () => true,
+        })
+        .compile();
+
+      controller = module.get<OrganizationController>(OrganizationController);
+
+      try {
+        await controller.create(data, user).toPromise();
+      } catch (err) {
+        expect(err).toBeInstanceOf(KnownErrors.InternalServerErrorException);
+        expect(err.message).toBe('Unexpected error');
+        expect(err.response.originalError.message).toBe('oops');
+        done();
+      }
+    });
+
+    it('fails when OrganizationService.create returns an UnexpectedError', async (done) => {
       const user = {
         public_id: UUIDv4.generate(),
       } as PrivateAdminUser;
@@ -86,6 +128,80 @@ describe(OrganizationController.name, () => {
         await controller.create(data, user).toPromise();
       } catch (err) {
         expect(err).toBeInstanceOf(KnownErrors.InternalServerErrorException);
+        expect(err.message).toBe('oops');
+        done();
+      }
+    });
+
+    it('fails when OrganizationService.create returns a DomainError', async (done) => {
+      const user = {
+        public_id: UUIDv4.generate(),
+      } as PrivateAdminUser;
+
+      const data = {
+        name: 'Monster inc',
+      };
+
+      const module: TestingModule = await Test.createTestingModule({
+        controllers: [OrganizationController],
+        providers: [
+          {
+            provide: OrganizationService,
+            useValue: {
+              create: () => toLeftObs(new DomainError('oops')),
+            },
+          },
+        ],
+      })
+        .overrideGuard(AuthGuard)
+        .useValue({
+          canActivate: async () => true,
+        })
+        .compile();
+
+      controller = module.get<OrganizationController>(OrganizationController);
+
+      try {
+        await controller.create(data, user).toPromise();
+      } catch (err) {
+        expect(err).toBeInstanceOf(KnownErrors.ForbiddenException);
+        expect(err.message).toBe('oops');
+        done();
+      }
+    });
+
+    it('fails when OrganizationService.create returns a ParsingError', async (done) => {
+      const user = {
+        public_id: UUIDv4.generate(),
+      } as PrivateAdminUser;
+
+      const data = {
+        name: 'Monster inc',
+      };
+
+      const module: TestingModule = await Test.createTestingModule({
+        controllers: [OrganizationController],
+        providers: [
+          {
+            provide: OrganizationService,
+            useValue: {
+              create: () => toLeftObs(new ParsingError('oops')),
+            },
+          },
+        ],
+      })
+        .overrideGuard(AuthGuard)
+        .useValue({
+          canActivate: async () => true,
+        })
+        .compile();
+
+      controller = module.get<OrganizationController>(OrganizationController);
+
+      try {
+        await controller.create(data, user).toPromise();
+      } catch (err) {
+        expect(err).toBeInstanceOf(KnownErrors.BadRequestException);
         expect(err.message).toBe('oops');
         done();
       }

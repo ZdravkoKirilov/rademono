@@ -27,8 +27,8 @@ import { AppConfigModule, AppConfigService } from '../config';
       }),
     }),
     GameEditorModule,
-    OrganizationsModule,
     UsersModule,
+    OrganizationsModule,
   ],
   exports: [TypeOrmModule],
   providers: [

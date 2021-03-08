@@ -4,13 +4,12 @@ import path from 'path';
 
 import { AppConfigService } from './providers';
 
+const url = path.resolve(__dirname, `../../../.env.${process.env.NODE_ENV}`);
+
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: path.resolve(
-        __dirname,
-        `../../.env.${process.env.NODE_ENV}`,
-      ),
+      envFilePath: url,
       isGlobal: true,
     }),
   ],

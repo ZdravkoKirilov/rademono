@@ -12,5 +12,6 @@ import {
   controllers: [AdminUsersController],
   providers: [AdminUsersService, AdminUserRepository],
   imports: [TypeOrmModule.forFeature([AdminUserDBModel])],
+  exports: [AdminUserRepository],
 })
 export class AdminUsersModule {}
