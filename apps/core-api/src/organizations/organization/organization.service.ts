@@ -72,7 +72,14 @@ export class OrganizationService {
                 .createOrganization(mbDto.right)
                 .pipe(
                   map((res) =>
-                    e.isLeft(res) ? e.left(new UnexpectedError('')) : res,
+                    e.isLeft(res)
+                      ? e.left(
+                          new UnexpectedError(
+                            'repo.createOrganization failed.',
+                            res.left,
+                          ),
+                        )
+                      : res,
                   ),
                 );
             }),

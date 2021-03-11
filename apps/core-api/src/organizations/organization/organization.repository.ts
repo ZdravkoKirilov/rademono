@@ -31,7 +31,7 @@ export class OrganizationDBModel {
   @Column('uuid')
   public_id: string;
 
-  @Column('uuid')
+  @Column('uuid', { nullable: true })
   admin_group?: string;
 
   @Column('text')
@@ -54,7 +54,7 @@ export class OrganizationRepository {
   ): Observable<e.Either<UnexpectedError, InitialOrganization>> {
     try {
       return from(this.repo.insert(organization)).pipe(
-        switchMap(() => {
+        switchMap((res) => {
           return toRightObs(organization);
         }),
         catchError((err) => {

@@ -36,9 +36,11 @@ describe('Organization endpoints (e2e)', () => {
         .post('/organization')
         .set('Authorization', token)
         .send({ name: 'Monster inc' })
-        .expect(200);
+        .expect(201);
 
-      expect(body).toEqual({});
+      expect(body.group).toMatchObject({ name: 'Admins' });
+      expect(body.profile).toMatchObject({ name: 'Admin' });
+      expect(body.organization).toMatchObject({ name: 'Monster inc' });
 
       done();
     });

@@ -1,13 +1,14 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": "../src",
+  "rootDir": "../",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "@app/shared": "<rootDir>/shared/index",
-    "@app/admin-users": "<rootDir>/users/admin-users/index"
+    "@app/shared": "<rootDir>/src/shared/index",
+    "@app/test": "<rootDir>/test/index",
+    "@app/admin-users": "<rootDir>/src/users/admin-users/index"
   }
 }
