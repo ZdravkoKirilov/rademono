@@ -7,14 +7,14 @@ import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 
 import { AdminUserRepository } from './admin-users.repository';
-import { isKnownError, toForbiddenError } from '@app/shared';
+import { isKnownError, toUnauthorizedError } from '@app/shared';
 
 export type RequestWithUser = Request & { user: PrivateAdminUser };
 
 const forbid = () => {
-  throw toForbiddenError({
-    name: 'Forbidden',
-    message: 'Forbidden resource',
+  throw toUnauthorizedError({
+    name: 'Unauthorized',
+    message: 'Unauthorized to view this resource',
   });
 };
 

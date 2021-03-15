@@ -25,6 +25,10 @@ describe('AdminUserController (e2e)', () => {
     throw new Error('This shouldn`t be reached');
   };
 
+  beforeEach(async () => {
+    await connection.synchronize(true);
+  });
+
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -86,11 +90,11 @@ describe('AdminUserController (e2e)', () => {
       const { body } = await request(app.getHttpServer())
         .get('/admin-users/current')
         .set('Authorization', 'whatever')
-        .expect(403);
+        .expect(401);
 
       expect(body).toEqual({
-        message: 'Forbidden resource',
-        name: 'Forbidden',
+        message: 'Unauthorized to view this resource',
+        name: 'Unauthorized',
       });
 
       done();
