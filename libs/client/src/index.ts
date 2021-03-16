@@ -1,1 +1,1 @@
-export * from './render-kit';
+export const client = 11;

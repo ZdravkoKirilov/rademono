@@ -1,20 +1,18 @@
-import { flatten, isArray, isNull } from "lodash";
+import { flatten, isArray, isNull } from 'lodash';
 
-import { Omit } from '@app/shared';
-import { RzElementProps, RzElement, RzElementType } from "../internal";
-import { isRzElement, isRzElementType, RzRenderedNode } from "../models";
+import { RzElementProps, RzElement, RzElementType } from '../internal';
+import { isRzElement, isRzElementType, RzRenderedNode } from '../models';
 
-export type CustomProps = { [prop: string]: unknown; };
+export type CustomProps = { [prop: string]: unknown };
 
 export type IntrinsicProps = Omit<RzElementProps, 'children'>;
 type ReturnedProps = IntrinsicProps & { children: RzRenderedNode };
 
-export const createElement = <T extends IntrinsicProps & CustomProps = {}>(
+export const createElement = <T extends IntrinsicProps & CustomProps>(
   type: RzElementType,
   props?: (Omit<T, 'children'> & IntrinsicProps) | null,
   ...children: RzRenderedNode[]
 ): RzElement<T & ReturnedProps> => {
-
   if (!isRzElementType(type)) {
     throw new TypeError('Invalid type passed to createElement: ' + type);
   }
@@ -36,12 +34,11 @@ export const createElement = <T extends IntrinsicProps & CustomProps = {}>(
     } else {
       throw new Error('Unrecognized child element: ' + firstChild);
     }
-
   } else {
     computedChildren = flatten(children);
   }
 
-  const newProps = { ...props || {} } as T & ReturnedProps;
+  const newProps = { ...(props || {}) } as T & ReturnedProps;
 
   newProps['children'] = computedChildren;
   Object.freeze(props); // props are immutable

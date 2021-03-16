@@ -1,17 +1,22 @@
-import { get, isArray, isFunction, isObject } from "lodash";
+import { get, isArray, isFunction, isObject } from 'lodash';
 
 import {
-  AbstractRenderEngine, GenericEventHandler, Component,
-  ContextManager, AssetManager, PRIMS, RzEventTypes, CustomComponent
-} from "../internal";
-import { ComponentConstructor } from "./Component";
+  AbstractRenderEngine,
+  GenericEventHandler,
+  Component,
+  ContextManager,
+  AssetManager,
+  PRIMS,
+  RzEventTypes,
+  CustomComponent,
+} from '../internal';
+import { ComponentConstructor } from './Component';
 
 export type RzElement<T extends Partial<RzElementProps> = {}> = {
   type: RzElementType;
   props: Readonly<T>;
   children: RzElementChildren;
 };
-
 
 /* It's always an array
 1. Could be an array of RzElement or null
@@ -23,12 +28,12 @@ type RzElementChildren = Array<RzElement | null | Array<RzElement | null>>;
 /* a component could render either a null, a single RzElement or an array of the former */
 export type RzRenderedNode = null | RzElement | Array<RzElement | null>;
 
-export type RzElementPrimitiveProps = Partial<DefaultEvents> & RzElementProps & {
-  styles?: Partial<RzStyles>;
-};
+export type RzElementPrimitiveProps = Partial<DefaultEvents> &
+  RzElementProps & {
+    styles?: Partial<RzStyles>;
+  };
 
 export type RzElementProps = {
-
   id?: string | number;
   name?: string;
   points?: Points;
@@ -40,11 +45,13 @@ export type RzElementProps = {
 export type RzElementType<T = any> = PrimitiveType | ComponentConstructor<T>;
 
 export const isOfPrimitiveType = (type: any): type is PrimitiveType => {
-  return new Set(Object.values(PRIMS)).has(type as any)
+  return new Set(Object.values(PRIMS)).has(type);
 };
 
 export const isCustomType = (type: any): type is CustomComponent => {
-  return isFunction(type) && get(type.prototype, '__custom_component__') === true;
+  return (
+    isFunction(type) && get(type.prototype, '__custom_component__') === true
+  );
 };
 
 export const isRzElementType = (type: any): type is RzElementType => {
@@ -69,9 +76,9 @@ export type RzStyles = {
   y: number;
   z: number;
 
-  rotation: number;  // degrees
+  rotation: number; // degrees
   skew: string; // "xValue yValue"
-  pivot: string;  // "xValue yValue"
+  pivot: string; // "xValue yValue"
   anchor: string; // "xValue yValue"
   scale: string; // "xValue yValue"
 
@@ -91,7 +98,19 @@ export type RzStyles = {
   font_style: FontStyle;
 };
 
-export type RzTextStyles = Partial<Pick<RzStyles, 'stroke_color' | 'stroke_thickness' | 'fill' | 'font_family' | 'font_size' | 'font_style' | 'x' | 'y'>>
+export type RzTextStyles = Partial<
+  Pick<
+    RzStyles,
+    | 'stroke_color'
+    | 'stroke_thickness'
+    | 'fill'
+    | 'font_family'
+    | 'font_size'
+    | 'font_style'
+    | 'x'
+    | 'y'
+  >
+>;
 
 export const FONT_STYLES = {
   bold: 'bold',
@@ -102,8 +121,8 @@ export const FONT_STYLES = {
 type FontStyle = keyof typeof FONT_STYLES;
 
 export type Points = Array<[number, number]>;
-export type RzPoint = { x: number, y: number };
-export type RzSize = { width: number, height: number };
+export type RzPoint = { x: number; y: number };
+export type RzSize = { width: number; height: number };
 
 export type MetaProps = {
   engine: AbstractRenderEngine;

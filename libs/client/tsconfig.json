@@ -1,18 +1,9 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "incremental": true,
-    "target": "es2019",
-    "module": "commonjs",
-    "declaration": true,
-    "sourceMap": true,
     "composite": true,
-    "strict": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
     "rootDir": "src",
-    "outDir": "lib"
+    "outDir": "lib",
+    "baseUrl": "./"
   }
 }
