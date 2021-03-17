@@ -1,17 +1,13 @@
-import { WithSubscriptions, GenericSubscription, SubscribableBase } from "@app/shared";
+import { CustomComponent, SubscribableBase, Callback } from '../../../internal';
 
-import { CustomComponent } from "../../../internal";
-
-type Props<T = any> = {
+type Props<T = unknown> = {
   value: T;
 };
 
-export interface ContextSubscription extends GenericSubscription { };
-
-@WithSubscriptions
-export class ContextProvider<T = {}> extends CustomComponent<Props<T>> implements SubscribableBase<T> {
-
-  callbacks = new Set<(data: T) => void>();
+export class ContextProvider<T = unknown>
+  extends CustomComponent<Props<T>>
+  implements SubscribableBase<T> {
+  callbacks = new Set<Callback<T>>();
 
   provideValueToSubscribers() {
     return this.props.value;
@@ -22,12 +18,26 @@ export class ContextProvider<T = {}> extends CustomComponent<Props<T>> implement
   }
 
   willReceiveProps(nextProps: Props) {
-
     if (nextProps.value !== this.props.value) {
-      this.callbacks.forEach((cb: (value: T) => void) => cb(nextProps.value));
+      this.callbacks.forEach((cb: (value: T) => void) =>
+        cb(nextProps.value as T),
+      );
     }
-
   }
+
+  subscribe = (callback: Callback<unknown>) => {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
+    this.callbacks.add(callback);
+
+    callback(this.provideValueToSubscribers());
+
+    return {
+      unsubscribe() {
+        self.callbacks.delete(callback);
+      },
+    };
+  };
 
   render() {
     return this.props.children;

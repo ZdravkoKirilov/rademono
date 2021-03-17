@@ -1,15 +1,26 @@
-import { get, isArray, isUndefined } from "lodash";
-
-import { toDictionary } from "@app/shared";
+import { get, isArray, isUndefined, keyBy } from 'lodash';
 
 import {
-  RzElement, Component,
-  createComponent, mountComponent, unmountComponent,
-  isPrimitiveComponent, isCustomComponent, AbstractContainer, callWithErrorPropagation
-} from "../internal";
-import { RzRenderedNode, isRzElement, RzElementPrimitiveProps } from "../models";
+  RzElement,
+  Component,
+  createComponent,
+  mountComponent,
+  unmountComponent,
+  isPrimitiveComponent,
+  isCustomComponent,
+  AbstractContainer,
+  callWithErrorPropagation,
+} from '../internal';
+import {
+  RzRenderedNode,
+  isRzElement,
+  RzElementPrimitiveProps,
+} from '../models';
 
-export const updateComponent = (component: Component, rendered: RzRenderedNode) => {
+export const updateComponent = (
+  component: Component,
+  rendered: RzRenderedNode,
+) => {
   if (isPrimitiveComponent(component)) {
     component.update();
   } else {
@@ -17,23 +28,25 @@ export const updateComponent = (component: Component, rendered: RzRenderedNode) 
   }
 };
 
-export const updateContainer = (newChildren: RzRenderedNode, component: Component, container: AbstractContainer) => {
+export const updateContainer = (
+  newChildren: RzRenderedNode,
+  component: Component,
+  container: AbstractContainer,
+) => {
   const currentChildren = component._children;
 
   if (Array.isArray(newChildren)) {
-
     component._children = newChildren.reduce((acc, item, index) => {
-
       if (isArray(item)) {
-
         const existing = currentChildren[index] as Array<Component | null>;
-        acc = [...acc, updateKeyedChildren(item, existing, component, container)];
+        acc = [
+          ...acc,
+          updateKeyedChildren(item, existing, component, container),
+        ];
 
         return acc;
       } else {
-
         if (isRzElement(item)) {
-
           const existing = currentChildren[index] as Component | null;
           acc = [...acc, updateChild(existing, item, component, container)];
 
@@ -42,15 +55,13 @@ export const updateContainer = (newChildren: RzRenderedNode, component: Componen
 
         acc = [...acc, null];
         return acc;
-
       }
-
     }, [] as Array<Component | null | Array<Component | null>>);
-
   } else {
-    
     const existing = currentChildren[0] as Component | null;
-    component._children = [updateChild(existing, newChildren, component, container)];
+    component._children = [
+      updateChild(existing, newChildren, component, container),
+    ];
   }
 };
 
@@ -60,13 +71,14 @@ export const updateKeyedChildren = (
   component: Component,
   mountTo: AbstractContainer,
 ): Array<Component | null> => {
-
-  const result = newChildren.map(newChildElement => {
+  const result = newChildren.map((newChildElement) => {
     if (isRzElement(newChildElement)) {
       const key = get(newChildElement.props, 'key');
 
       if (!key) {
-        throw new Error('Each element in a keyed collection must have a "key" prop. Shame.');
+        throw new Error(
+          'Each element in a keyed collection must have a "key" prop. Shame.',
+        );
       }
 
       const childWithSameKey = currentChildren[key];
@@ -75,7 +87,12 @@ export const updateKeyedChildren = (
         updateComponentPropsByType(childWithSameKey, newChildElement);
         return childWithSameKey;
       } else {
-        const newChild = createComponent(newChildElement, component.meta.engine.factory, component.meta, component);
+        const newChild = createComponent(
+          newChildElement,
+          component.meta.engine.factory,
+          component.meta,
+          component,
+        );
         mountComponent(newChild, mountTo);
         updateComponentPropsByType(newChild, newChildElement);
         return newChild;
@@ -84,7 +101,7 @@ export const updateKeyedChildren = (
     return null;
   });
 
-  const indexedNewChildren = toDictionary(component.children, 'props.key');
+  const indexedNewChildren = keyBy(component.children, 'props.key');
 
   Object.entries(currentChildren).map(([key, component]) => {
     if (isUndefined(indexedNewChildren[key]) && component) {
@@ -93,24 +110,26 @@ export const updateKeyedChildren = (
   });
 
   return result;
-
 };
 
 const updateChild = (
   currentChild: Component | null,
   incomingChild: RzElement | null,
   component: Component,
-  container: AbstractContainer
+  container: AbstractContainer,
 ): Component | null => {
-
   if (currentChild && incomingChild) {
-
     const sameType = currentChild.type === incomingChild.type;
     if (sameType) {
       updateComponentPropsByType(currentChild, incomingChild);
       return currentChild;
     } else {
-      const newInstance = createComponent(incomingChild, component.meta.engine.factory, component.meta, component);
+      const newInstance = createComponent(
+        incomingChild,
+        component.meta.engine.factory,
+        component.meta,
+        component,
+      );
       mountComponent(newInstance, container);
       unmountComponent(currentChild);
       return newInstance;
@@ -123,7 +142,12 @@ const updateChild = (
   }
 
   if (!currentChild && incomingChild) {
-    const newInstance = createComponent(incomingChild, component.meta.engine.factory, component.meta, component);
+    const newInstance = createComponent(
+      incomingChild,
+      component.meta.engine.factory,
+      component.meta,
+      component,
+    );
     mountComponent(newInstance, container);
     return newInstance;
   }
@@ -132,9 +156,10 @@ const updateChild = (
 };
 
 const updateComponentPropsByType = (target: Component, updated: RzElement) => {
-
   if (isCustomComponent(target)) {
-    callWithErrorPropagation(target.parent, () => target.updateProps(updated.props));
+    callWithErrorPropagation(target.parent, () =>
+      target.updateProps(updated.props),
+    );
   }
 
   if (isPrimitiveComponent(target)) {
@@ -142,8 +167,4 @@ const updateComponentPropsByType = (target: Component, updated: RzElement) => {
   }
 
   throw new Error('Unrecognized component child: ' + JSON.stringify(target));
-
 };
-
-
-

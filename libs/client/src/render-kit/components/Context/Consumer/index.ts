@@ -1,26 +1,32 @@
-import { WithSubscribe } from "@app/shared";
-import { isFunction } from "lodash";
+import { isFunction } from 'lodash';
+
+import { GenericSubscription } from '@end/global';
 
 import {
-  CustomComponent, MetaProps, RzElement, ComponentConstructor, ContextSubscription, findContextProvider,
-} from "../../../internal";
-import { ContextProvider } from "../Provider";
+  CustomComponent,
+  MetaProps,
+  RzElement,
+  ComponentConstructor,
+  findContextProvider,
+} from '../../../internal';
+import { ContextProvider } from '../Provider';
 
 type RenderCallback<T> = (data: T) => RzElement;
 
-type ContextConsumerProps<T = any> = {
+type ContextConsumerProps<T = unknown> = {
   value: T;
   render: RenderCallback<T>;
   parentName?: string;
-}
+};
 
-type State<T = any> = { value: T };
+type State<T = unknown> = { value: T };
 
-export class ContextConsumer<T = any> extends CustomComponent<ContextConsumerProps<T>> {
-
+export class ContextConsumer<T = unknown> extends CustomComponent<
+  ContextConsumerProps<T>
+> {
   state: State = {} as State;
   key: ComponentConstructor;
-  sub: ContextSubscription;
+  sub: GenericSubscription;
 
   constructor(props: ContextConsumerProps<T>, meta: MetaProps) {
     super(props, meta);
@@ -31,11 +37,23 @@ export class ContextConsumer<T = any> extends CustomComponent<ContextConsumerPro
   }
 
   didMount() {
-    const providerContext = findContextProvider(this, this.props.parentName, this.key) as ContextProvider & WithSubscribe<T>;
+    const providerContext = findContextProvider(
+      this,
+      this.props.parentName,
+      this.key,
+    ) as ContextProvider<T>;
+
     if (providerContext && isFunction(providerContext.subscribe)) {
-      providerContext.subscribe((newValue: T) => this.setState({ value: newValue }));
+      providerContext.subscribe((newValue) =>
+        this.setState({ value: newValue }),
+      );
     } else {
-      throw new Error('ContextConsumer couldn`t find corresponding ContextProvider: ParentName: ' + this.props.parentName + '; Key:  ' + this.key);
+      throw new Error(
+        'ContextConsumer couldn`t find corresponding ContextProvider: ParentName: ' +
+          this.props.parentName +
+          '; Key:  ' +
+          this.key,
+      );
     }
   }
 
@@ -44,6 +62,6 @@ export class ContextConsumer<T = any> extends CustomComponent<ContextConsumerPro
   }
 
   render() {
-    return this.state.value ? this.props.render(this.state.value) : null;
+    return this.state.value ? this.props.render(this.state.value as T) : null;
   }
 }

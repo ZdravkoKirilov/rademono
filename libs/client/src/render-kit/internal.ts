@@ -4,6 +4,6 @@ export * from './helpers';
 export * from './models';
 export * from './interfaces';
 export * from './components';
-export * from './animations';
 export * from './sound';
 export * from './services';
+export * from './types';

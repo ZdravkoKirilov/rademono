@@ -8,7 +8,6 @@ import {
   AbstractFactory,
   BasicComponent,
   CustomComponent,
-  getRealType,
   callWithErrorPropagation,
 } from '../internal';
 import { ComponentConstructor, RzRenderedNode, isRzElement } from '../models';
@@ -23,67 +22,47 @@ export const createComponent = (
     throw new TypeError('Invalid RzElement: ' + JSON.stringify(element));
   }
 
-  if (typeof element.type === 'string') {
-    const { type } = element;
+  if (isOfPrimitiveType(element.type)) {
+    const component = createPrimitiveComponent(element, factory, meta);
 
-    if (isOfPrimitiveType(element.type)) {
-      const component = createPrimitiveComponent(element, factory, meta);
+    const type = element.type;
 
-      const type = element.type;
+    component.parent = parent;
+    component.type = type;
 
-      component.parent = parent;
-      component.type = type;
-
-      const children = element.children.map((child) => {
-        if (isRzElement(child)) {
-          const comp = createComponent(child, factory, meta, component);
-          comp.parent = component;
-          return comp;
-        }
-
-        if (isArray(child)) {
-          return child.map((nestedChild) => {
-            if (isRzElement(nestedChild)) {
-              const comp = createComponent(
-                nestedChild,
-                factory,
-                meta,
-                component,
-              );
-              comp.parent = component;
-              return comp;
-            }
-            return nestedChild;
-          });
-        }
-
-        if (isNull(child)) {
-          return child;
-        }
-
-        throw new Error(
-          'Invalid child in component. ' + component + ': ' + child,
-        );
-      });
-
-      if (component.graphic) {
-        component.graphic.component = component;
+    const children = element.children.map((child) => {
+      if (isRzElement(child)) {
+        const comp = createComponent(child, factory, meta, component);
+        comp.parent = component;
+        return comp;
       }
 
-      component._children = children;
-      return component;
-    } else {
-      let realType = getRealType(factory, type);
-
-      if (realType) {
-        return createComponent(
-          { ...element, type: realType },
-          factory,
-          meta,
-          parent,
-        );
+      if (isArray(child)) {
+        return child.map((nestedChild) => {
+          if (isRzElement(nestedChild)) {
+            const comp = createComponent(nestedChild, factory, meta, component);
+            comp.parent = component;
+            return comp;
+          }
+          return nestedChild;
+        });
       }
+
+      if (isNull(child)) {
+        return child;
+      }
+
+      throw new Error(
+        'Invalid child in component. ' + component + ': ' + child,
+      );
+    });
+
+    if (component.graphic) {
+      component.graphic.component = component;
     }
+
+    component._children = children;
+    return component;
   }
 
   if (isCustomType(element.type)) {

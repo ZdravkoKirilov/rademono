@@ -1,7 +1,7 @@
-import { Subject } from "rxjs";
+import { Subject } from 'rxjs';
 import { Howl } from 'howler';
 
-import { RuntimeSonata, SONATA_PLAY_TYPE } from "@app/game-mechanics";
+import { RuntimeSonata, SONATA_PLAY_TYPE } from '@end/global';
 
 export class SoundPlayer {
   done$: Subject<unknown> = new Subject();
@@ -28,7 +28,7 @@ export class SoundPlayer {
 
   private playInSequence = () => {
     let currentHowl = 0;
-    this.active = this.sonata.steps.map(step => {
+    this.active = this.sonata.steps.map((step) => {
       const sound = step.sound;
       const howl = new Howl({
         src: [sound.file],
@@ -59,11 +59,11 @@ export class SoundPlayer {
         });
       }
     }
-  }
+  };
 
   private playInParallel = () => {
     let pending = this.sonata.steps.length;
-    this.active = this.sonata.steps.map(step => {
+    this.active = this.sonata.steps.map((step) => {
       const sound = step.sound;
       const howl = new Howl({
         src: [sound.file],
@@ -82,16 +82,16 @@ export class SoundPlayer {
 
       return howl;
     });
-  }
+  };
 
   onDone = () => {
     this.stop();
     this.done$.next();
-  }
+  };
 
   stop() {
     this.playing = false;
-    this.active.forEach(howl => howl.stop());
+    this.active.forEach((howl) => howl.stop());
     this.active = [];
   }
 }
