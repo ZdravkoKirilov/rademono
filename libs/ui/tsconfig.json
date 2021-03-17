@@ -6,6 +6,7 @@
     "moduleResolution": "node",
     "module": "es2020",
     "lib": ["es2018", "dom"],
+    "composite": true,
     "paths": {
       "main": ["dist/main/main", "dist/main"]
     }
