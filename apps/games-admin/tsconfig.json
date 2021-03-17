@@ -3,12 +3,16 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
+    "outDir": "./dist/out-tsc"
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "references": [{ "path": "../../libs/client" }, { "path": "../../libs/global" }]
+  "references": [
+    { "path": "../../libs/client" },
+    { "path": "../../libs/global" },
+    { "path": "../../libs/ui" }
+  ]
 }
