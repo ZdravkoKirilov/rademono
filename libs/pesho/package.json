@@ -1,0 +1,39 @@
+{
+  "name": "@end/pesho",
+  "version": "1.0.0",
+  "description": "desc",
+  "author": "Zdravko",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json"
+  },
+  "private": true,
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@angular/common": "~11.0.5",
+    "@angular/core": "~11.0.5"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "ng-packagr": "^11.2.4"
+  }
+}
