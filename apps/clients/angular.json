@@ -1,0 +1,239 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "ae721bd4-ffed-41a2-b295-5f9e53c44ef9"
+  },
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "games-admin": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/games-admin",
+      "sourceRoot": "projects/games-admin/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/games-admin",
+            "index": "projects/games-admin/src/index.html",
+            "main": "projects/games-admin/src/main.ts",
+            "polyfills": "projects/games-admin/src/polyfills.ts",
+            "tsConfig": "projects/games-admin/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/games-admin/src/favicon.ico",
+              "projects/games-admin/src/assets"
+            ],
+            "styles": ["projects/games-admin/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/games-admin/src/environments/environment.ts",
+                  "with": "projects/games-admin/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "games-admin:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "games-admin:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "games-admin:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/games-admin/tsconfig.app.json",
+              "projects/games-admin/tsconfig.spec.json",
+              "projects/games-admin/e2e/tsconfig.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/games-admin/e2e/protractor.conf.js",
+            "devServerTarget": "games-admin:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "games-admin:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "showcases": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/showcases",
+      "sourceRoot": "projects/showcases/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/showcases",
+            "index": "projects/showcases/src/index.html",
+            "main": "projects/showcases/src/main.ts",
+            "polyfills": "projects/showcases/src/polyfills.ts",
+            "tsConfig": "projects/showcases/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/showcases/src/favicon.ico",
+              "projects/showcases/src/assets"
+            ],
+            "styles": ["projects/showcases/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/showcases/src/environments/environment.ts",
+                  "with": "projects/showcases/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "showcases:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "showcases:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "showcases:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/showcases/tsconfig.app.json",
+              "projects/showcases/tsconfig.spec.json",
+              "projects/showcases/e2e/tsconfig.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/showcases/e2e/protractor.conf.js",
+            "devServerTarget": "showcases:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "showcases:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "ui": {
+      "projectType": "library",
+      "root": "projects/ui",
+      "sourceRoot": "projects/ui/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/ui/tsconfig.lib.json",
+            "project": "projects/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ui/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ui/tsconfig.lib.json",
+              "projects/ui/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "games-admin"
+}

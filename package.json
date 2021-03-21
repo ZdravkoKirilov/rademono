@@ -7,7 +7,7 @@
   "workspaces": [
     "libs/client",
     "libs/global",
-    "libs/ui/dist/main"
+    "libs/ui/dist"
   ],
   "version": "1.0.0",
   "scripts": {
