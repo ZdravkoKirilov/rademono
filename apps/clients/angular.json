@@ -208,7 +208,7 @@
       "projectType": "library",
       "root": "projects/ui",
       "sourceRoot": "projects/ui/src",
-      "prefix": "lib",
+      "prefix": "ui",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
