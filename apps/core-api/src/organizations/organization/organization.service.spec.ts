@@ -7,7 +7,7 @@ import {
   toLeftObs,
   toRightObs,
   UnexpectedError,
-  UnknownRecord,
+  Dictionary,
   UUIDv4,
 } from '@end/global';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -46,7 +46,7 @@ describe('OrganizationService', () => {
         {
           provide: ProfileGroupService,
           useValue: {
-            create: (data: UnknownRecord) =>
+            create: (data: Dictionary) =>
               toRightObs({
                 ...data,
                 id: adminGroupId,
@@ -56,7 +56,7 @@ describe('OrganizationService', () => {
         {
           provide: AdminProfileService,
           useValue: {
-            create: (data: UnknownRecord) =>
+            create: (data: Dictionary) =>
               toRightObs({
                 ...data,
                 id: profileId,
