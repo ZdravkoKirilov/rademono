@@ -10,7 +10,8 @@
     "module": "es2020",
     "lib": ["es2018", "dom"],
     "paths": {
-      "@app/ui": ["dist/ui/ui", "dist/ui"]
+      "@libs/ui": ["dist/ui/ui", "dist/ui"],
+      "@games-admin/*": ["projects/games-admin/src/*"]
     }
   },
   "angularCompilerOptions": {

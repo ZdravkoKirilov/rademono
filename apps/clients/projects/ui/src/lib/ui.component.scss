@@ -1,19 +1,62 @@
 html {
   font-size: var(--text-base);
-  height: 100vh;
 }
 
-body,
+html,
+body {
+  min-height: 100vh;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 app-root,
 lib-ui {
   display: block;
+  height: 100vh;
+}
+
+.full-container {
+  display: block;
   height: 100%;
+}
+
+.centered-container {
+  & > * {
+    margin: 0 auto;
+  }
+}
+
+.centered-content {
+  padding: var(--space-3);
+  width: 1024px;
+
+  & > * {
+    margin: 0 auto;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  & > * {
+    margin-bottom: var(--space-2);
+  }
 }
 
 @mixin cta {
   cursor: pointer;
   border: none;
-  padding: 10px 15px;
+  padding: var(--space-1) var(--space-2);
+
   outline: none;
   font-weight: bold;
 
@@ -53,5 +96,34 @@ button[cta='outlined'] {
     background-color: var(--primary-main);
     color: var(--on-primary-main);
     box-shadow: 0 0 0 4px var(--primary-transparent);
+  }
+}
+
+input {
+  background-color: transparent;
+  border: 1px solid var(--primary-main);
+  padding: var(--space-1);
+  outline: none;
+  border-radius: 10%/50%;
+
+  &:focus,
+  &:hover {
+    box-shadow: 0 0 0 2px var(--primary-transparent);
+  }
+
+  &::placeholder {
+    color: var(--primary-main);
+    font-style: italic;
+    opacity: 1; /* Firefox */
+  }
+
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: var(--primary-main);
+  }
+
+  &::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: var(--primary-main);
   }
 }

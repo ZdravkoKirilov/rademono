@@ -17,6 +17,13 @@ export const colorPalette = {
   'color-primary-transparent-500': 'rgba(106, 27, 154, 0.4)',
   'color-primary-transparent-600': 'rgba(106, 27, 154, 0.48)',
 
+  'color-secondary-dark': '#2a1b9a',
+  'color-secondary-main': '#5549ae',
+  'color-secondary-light': '#d4d1eb',
+
+  'color-tertiary': '#9a1b8b',
+  'color-tertiary-light': '#cd8dc5',
+
   'color-success-100': '#F0F9CA',
   'color-success-200': '#E0F497',
   'color-success-300': '#BFDF5F',
@@ -123,9 +130,9 @@ export const lightTheme: Theme = {
     '--primary-light': colorPalette['color-primary-200'],
     '--on-primary-light': colorPalette['color-text-dark'],
 
-    '--space-1': '.5em',
-    '--space-2': '1em',
-    '--space-3': '1.5em',
+    '--space-1': '1em',
+    '--space-2': '1.5em',
+    '--space-3': '2em',
 
     '--text-base': '16px',
     '--text-1': '.5em',
