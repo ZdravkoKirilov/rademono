@@ -1,0 +1,57 @@
+html {
+  font-size: var(--text-base);
+  height: 100vh;
+}
+
+body,
+app-root,
+lib-ui {
+  display: block;
+  height: 100%;
+}
+
+@mixin cta {
+  cursor: pointer;
+  border: none;
+  padding: 10px 15px;
+  outline: none;
+  font-weight: bold;
+
+  border-radius: 20px;
+
+  transition: all 0.1s ease-in-out;
+}
+
+button[cta='primary'] {
+  @include cta;
+
+  background-color: var(--primary-main);
+  color: var(--on-primary-main);
+
+  &:hover {
+    background-color: var(--primary-main-1);
+  }
+
+  &:focus {
+    background-color: var(--primary-main);
+    box-shadow: 0 0 0 4px var(--primary-transparent);
+  }
+}
+
+button[cta='outlined'] {
+  @include cta;
+  background-color: transparent;
+  color: var(--primary-main);
+  box-shadow: 0 0 0 1px var(--primary-main);
+
+  &:hover {
+    color: var(--on-primary-main);
+    background-color: var(--primary-main);
+  }
+
+  &:focus {
+    background-color: var(--primary-main);
+    color: var(--on-primary-main);
+    box-shadow: 0 0 0 4px var(--primary-transparent);
+  }
+}
