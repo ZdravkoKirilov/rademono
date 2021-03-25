@@ -2,9 +2,12 @@
   "extends": "../../tsconfig.json",
   "references": [{ "path": "../global" }],
   "compilerOptions": {
+    "module": "es2020",
+    "moduleResolution": "node",
     "composite": true,
     "rootDir": "src",
     "outDir": "dist",
     "baseUrl": "./"
-  }
+  },
+  "exclude": ["render-kit", "dist"]
 }

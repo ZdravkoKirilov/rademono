@@ -15,5 +15,5 @@
     "importHelpers": true,
     "skipLibCheck": true,
     "esModuleInterop": true
-  },
+  }
 }
