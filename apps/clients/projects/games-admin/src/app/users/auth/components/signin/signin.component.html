@@ -1,5 +1,5 @@
 <article class="centered-content">
-  <form>
+  <form (submit)="submit($event)">
     <legend>Send signin code</legend>
 
     <input
@@ -10,6 +10,8 @@
       [(ngModel)]="email"
     />
 
-    <button cta="primary" type="submit">send code</button>
+    <span *ngIf="error">{{ error }}</span>
+
+    <button cta="primary" type="submit" [disabled]="!dto">send code</button>
   </form>
 </article>

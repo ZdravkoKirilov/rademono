@@ -4,12 +4,12 @@ export interface PropChange<T> {
   currentValue: T;
   isFirstChange: () => boolean;
 }
-export function OnChange<T = any>(
-  callback: (value: T, simpleChange?: PropChange<T>) => void,
+export function OnChange<T, Self>(
+  callback: (value: T, self: Self, simpleChange?: PropChange<T>) => void,
 ) {
   let _cachedValue: T;
   let _isFirstChange = true;
-  return (target: any, key: PropertyKey) => {
+  return (target: Self, key: PropertyKey) => {
     Object.defineProperty(target, key, {
       set: function (value) {
         // No operation if new value is same as old value
@@ -25,7 +25,7 @@ export function OnChange<T = any>(
           isFirstChange: () => _isFirstChange,
         };
         _isFirstChange = false;
-        callback.call(this, _cachedValue, simpleChange);
+        callback.call(this, _cachedValue, this, simpleChange);
       },
       get: function () {
         return _cachedValue;

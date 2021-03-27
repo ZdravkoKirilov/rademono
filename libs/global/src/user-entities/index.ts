@@ -3,6 +3,7 @@ export {
   PrivateAdminUser,
   AdminUserTypes,
   TokenDto,
+  SendCodeDto,
   AdminUserId,
 } from './AdminUser';
 export * from './Consumer';

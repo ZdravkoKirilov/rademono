@@ -15,7 +15,8 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@libs/ui": ["dist/ui/ui", "dist/ui"],
-      "@games-admin/*": ["projects/games-admin/src/*"],
+      "@games-admin/*": ["projects/games-admin/src/app/*"],
+      "@env": ["projects/games-admin/src/environments/environment.ts"],
       "buffer": ["shims/buffer.js"],
       "util": ["shims/util.js"]
     }

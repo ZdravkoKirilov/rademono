@@ -44,10 +44,6 @@ export class AdminUser {
   id: AdminUserId;
   email: Email;
   type: AdminUserTypes;
-
-  static isValidEmail(email: unknown) {
-    return isEmail(email);
-  }
 }
 
 export class PrivateAdminUser {

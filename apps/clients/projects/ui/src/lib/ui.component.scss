@@ -52,6 +52,14 @@ form {
   }
 }
 
+nav {
+  display: flex;
+  & > * {
+    margin-right: var(--space-1);
+    padding: var(--space-2);
+  }
+}
+
 @mixin cta {
   cursor: pointer;
   border: none;
