@@ -1,18 +1,16 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SharedModule } from '@app/shared';
 
 import { AdminProfileController } from './admin-profile.controller';
-import {
-  AdminProfileDBModel,
-  AdminProfileRepository,
-} from './admin-profile.repository';
+import { AdminProfileRepository } from './admin-profile.repository';
 import { AdminProfileService } from './admin-profile.service';
+import { DatabaseModule } from '@app/database';
+import { ADMINPROFILE_COLLECTION } from './constants';
 
 @Module({
   providers: [AdminProfileRepository, AdminProfileService],
-  imports: [TypeOrmModule.forFeature([AdminProfileDBModel]), SharedModule],
+  imports: [SharedModule, DatabaseModule.forFeature(ADMINPROFILE_COLLECTION)],
   controllers: [AdminProfileController],
   exports: [AdminProfileRepository, AdminProfileService],
 })

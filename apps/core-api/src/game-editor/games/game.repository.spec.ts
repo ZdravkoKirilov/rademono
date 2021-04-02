@@ -1,11 +1,10 @@
-import { FullGame } from '@end/global';
-import { UUIDv4 } from '@end/global/src/types';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { isLeft } from 'fp-ts/lib/Either';
-import { omit } from 'lodash';
 
-import { GameDBModel, GameRepository } from './game.repository';
+import { DbentityService } from '@app/database';
+import { FullGame, toRightObs, UUIDv4 } from '@end/global';
+
+import { GameRepository } from './game.repository';
 
 const throwError = () => {
   throw new Error('Unexpected code');
@@ -25,17 +24,17 @@ describe('GamesService', () => {
     it('saves a new entity and exposes "public_id" ', async () => {
       const module: TestingModule = await Test.createTestingModule({
         providers: [
-          GameRepository,
           {
-            provide: getRepositoryToken(GameDBModel),
+            provide: DbentityService,
             useValue: {
-              save: (payload: any) =>
-                Promise.resolve({
+              insert: (payload: any) =>
+                toRightObs({
                   ...payload,
                   id: 1,
                 }),
             },
           },
+          GameRepository,
         ],
       }).compile();
 

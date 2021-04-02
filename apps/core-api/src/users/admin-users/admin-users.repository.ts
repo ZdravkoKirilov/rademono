@@ -1,14 +1,6 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  Index,
-  Repository,
-} from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { from, Observable, of } from 'rxjs';
-import { switchMap, map, catchError } from 'rxjs/operators';
-import { isUndefined } from 'lodash/fp';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { isNil } from 'lodash/fp';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 
@@ -20,35 +12,21 @@ import {
   ParsingError,
   UnexpectedError,
   toLeftObs,
-  toRightObs,
+  switchMapEither,
+  mapEither,
 } from '@end/global';
+import { DbentityService } from '@app/database';
+import { Injectable } from '@nestjs/common';
 
-@Entity()
-export class AdminUserDBModel {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Index()
-  @Column('uuid')
+type AdminUserDBModel = {
+  id?: number;
   public_id: string;
-
-  @Column('text')
-  email: string;
-
-  @Column('text', { nullable: true })
-  loginCode: string;
-
-  @Column('timestamp', {
-    nullable: true,
-  })
-  loginCodeExpiration: Date;
-
-  @Column('timestamp', { nullable: true })
-  lastLogin: Date;
-
-  @Column('text')
-  type: string;
-}
+  email?: string;
+  loginCode?: string;
+  loginCodeExpiration?: Date;
+  lastLogin?: Date;
+  type?: string;
+};
 
 type UpdateOneMatcher = { public_id: UUIDv4 };
 
@@ -57,19 +35,20 @@ type FindOneMatcher =
   | { loginCode: NanoId }
   | { public_id: UUIDv4 };
 
+@Injectable()
 export class AdminUserRepository {
-  constructor(
-    @InjectRepository(AdminUserDBModel)
-    public repo: Repository<AdminUserDBModel>,
-  ) {}
+  constructor(private repo: DbentityService<AdminUserDBModel>) {}
 
   saveUser(
     updatedUser: PrivateAdminUser,
   ): Observable<e.Either<UnexpectedError, undefined>> {
-    return from(this.repo.save(updatedUser)).pipe(
-      switchMap(() => {
-        return toRightObs(undefined);
-      }),
+    return this.repo.save(updatedUser).pipe(
+      mapEither(
+        (err) => e.left(new UnexpectedError('Failed to save the user', err)),
+        () => {
+          return e.right(undefined);
+        },
+      ),
       catchError((err) => {
         return toLeftObs(new UnexpectedError('Failed to save the user', err));
       }),
@@ -81,24 +60,34 @@ export class AdminUserRepository {
   ): Observable<
     e.Either<UnexpectedError | ParsingError, o.Option<PrivateAdminUser>>
   > {
-    return from(this.repo.findOne({ where: criteria })).pipe(
-      switchMap((res) => {
-        if (isUndefined(res)) {
-          return of(e.right(o.none));
-        }
-
-        return PrivateAdminUser.toPrivateEntity(res).pipe(
-          map((res) => {
-            if (e.isRight(res)) {
-              return e.right(o.some(res.right));
-            }
-            return res;
-          }),
-        );
-      }),
+    return this.repo.findOne(criteria).pipe(
+      switchMapEither(
+        (err) => toLeftObs(new UnexpectedError('Failed to find the user', err)),
+        (res) => {
+          if (isNil(res)) {
+            return of(e.right(o.none));
+          }
+          return PrivateAdminUser.toPrivateEntity(res).pipe(
+            map((res) => {
+              if (e.isRight(res)) {
+                return e.right(o.some(res.right));
+              }
+              return res;
+            }),
+          );
+        },
+      ),
       catchError((err) =>
         toLeftObs(new UnexpectedError('Failed to find the user', err)),
       ),
     );
+  }
+
+  findAll() {
+    return this.repo.findAll();
+  }
+
+  deleteAll() {
+    return this.repo.deleteAll();
   }
 }

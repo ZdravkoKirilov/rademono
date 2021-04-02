@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
-import { Connection } from 'typeorm';
+import { Connection, DATABASE_CONNECTION } from '@app/database';
 
 import {
   PrivateAdminUser,
@@ -15,6 +15,7 @@ import {
 
 import { AppModule } from '../../app.module';
 import { AdminUserRepository } from './admin-users.repository';
+import { ADMIN_USERS_COLLECTION } from './constants';
 
 describe('AdminUserController (e2e)', () => {
   let app: INestApplication;
@@ -25,8 +26,8 @@ describe('AdminUserController (e2e)', () => {
     throw new Error('This shouldn`t be reached');
   };
 
-  beforeEach(async () => {
-    await connection.synchronize(true);
+  afterEach(async () => {
+    await connection.collection(ADMIN_USERS_COLLECTION).deleteMany({});
   });
 
   beforeAll(async () => {
@@ -34,15 +35,14 @@ describe('AdminUserController (e2e)', () => {
       imports: [AppModule],
     }).compile();
     app = moduleFixture.createNestApplication();
-    connection = app.get(Connection);
-    await connection.synchronize(true);
+    connection = app.get(DATABASE_CONNECTION);
+    await connection.collection(ADMIN_USERS_COLLECTION).deleteMany({});
     await app.init();
     repository = moduleFixture.get(AdminUserRepository);
   });
 
   afterAll(async () => {
     await app.close();
-    await connection.close();
   });
 
   describe('/admin-users/current (GET)', () => {

@@ -1,27 +1,25 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SharedModule } from '@app/shared';
-import { AdminUsersModule } from '@app/admin-users';
+import { AdminUsersModule } from '@app/users/admin-users';
 
 import { OrganizationService } from './organization.service';
 import { OrganizationController } from './organization.controller';
-import {
-  OrganizationDBModel,
-  OrganizationRepository,
-} from './organization.repository';
+import { OrganizationRepository } from './organization.repository';
 import { AdminProfileModule } from '../admin-profile';
 import { ProfileGroupModule } from '../profile-group';
+import { DatabaseModule } from '@app/database';
+import { ORGANIZATIONS_COLLECTION } from './constants';
 
 @Module({
   controllers: [OrganizationController],
   providers: [OrganizationService, OrganizationRepository],
   imports: [
-    TypeOrmModule.forFeature([OrganizationDBModel]),
     SharedModule,
     AdminUsersModule,
     AdminProfileModule,
     ProfileGroupModule,
+    DatabaseModule.forFeature(ORGANIZATIONS_COLLECTION),
   ],
 })
 export class OrganizationModule {}

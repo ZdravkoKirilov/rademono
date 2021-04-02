@@ -1,19 +1,17 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SharedModule } from '@app/shared';
 
 import { ProfileGroupController } from './profile-group.controller';
-import {
-  ProfileGroupDBModel,
-  ProfileGroupRepository,
-} from './profile-group.repository';
+import { ProfileGroupRepository } from './profile-group.repository';
 import { ProfileGroupService } from './profile-group.service';
+import { DatabaseModule } from '@app/database';
+import { PROFILEGROUP_COLLECTION } from './constants';
 
 @Module({
   controllers: [ProfileGroupController],
   providers: [ProfileGroupService, ProfileGroupRepository],
-  imports: [TypeOrmModule.forFeature([ProfileGroupDBModel]), SharedModule],
+  imports: [SharedModule, DatabaseModule.forFeature(PROFILEGROUP_COLLECTION)],
   exports: [ProfileGroupService, ProfileGroupRepository],
 })
 export class ProfileGroupModule {}

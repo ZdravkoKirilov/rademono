@@ -1,16 +1,9 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  Index,
-  Repository,
-} from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { switchMap, catchError, map } from 'rxjs/operators';
+import { Injectable } from '@nestjs/common';
+import { catchError, map } from 'rxjs/operators';
 import { from, Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
-import { isUndefined } from 'lodash/fp';
+import { isNil } from 'lodash/fp';
 
 import {
   UUIDv4,
@@ -19,54 +12,40 @@ import {
   UnexpectedError,
   toRightObs,
   ParsingError,
+  mapEither,
+  switchMapEither,
 } from '@end/global';
+import { DbentityService } from '@app/database';
 
-@Entity()
-export class AdminProfileDBModel {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Index()
-  @Column('uuid')
+type AdminProfileDBModel = {
+  id?: number;
   public_id: string;
-
-  @Column('uuid')
-  user: string;
-
-  @Column('uuid')
-  group: string;
-
-  @Column('text')
-  name: string;
-}
+  user?: string;
+  group?: string;
+  name?: string;
+};
 
 type FindOneMatcher = { public_id: UUIDv4 } | { user: string; group: string };
 
+@Injectable()
 export class AdminProfileRepository {
-  constructor(
-    @InjectRepository(AdminProfileDBModel)
-    public repo: Repository<AdminProfileDBModel>,
-  ) {}
+  constructor(public repo: DbentityService<AdminProfileDBModel>) {}
 
   saveProfile(
     adminProfile: PrivateAdminProfile,
   ): Observable<e.Either<UnexpectedError, PrivateAdminProfile>> {
-    try {
-      return from(this.repo.save(adminProfile)).pipe(
-        switchMap(() => {
-          return toRightObs(adminProfile);
-        }),
-        catchError((err) => {
-          return toLeftObs(
-            new UnexpectedError('Failed to save the admin profile', err),
-          );
-        }),
-      );
-    } catch (err) {
-      return toLeftObs(
-        new UnexpectedError('Failed to save the admin profile', err),
-      );
-    }
+    return this.repo.save(adminProfile).pipe(
+      mapEither(
+        (err) =>
+          e.left(new UnexpectedError('Failed to save the admin profile', err)),
+        () => e.right(adminProfile),
+      ),
+      catchError((err) => {
+        return toLeftObs(
+          new UnexpectedError('Failed to save the admin profile', err),
+        );
+      }),
+    );
   }
 
   getProfile(
@@ -74,10 +53,12 @@ export class AdminProfileRepository {
   ): Observable<
     e.Either<UnexpectedError | ParsingError, o.Option<PrivateAdminProfile>>
   > {
-    try {
-      return from(this.repo.findOne({ where: matcher })).pipe(
-        switchMap((res) => {
-          if (isUndefined(res)) {
+    return from(this.repo.findOne(matcher)).pipe(
+      switchMapEither(
+        (err) =>
+          toLeftObs(new UnexpectedError('Failed to find the profile', err)),
+        (res) => {
+          if (isNil(res)) {
             return toRightObs(o.none);
           }
 
@@ -89,39 +70,37 @@ export class AdminProfileRepository {
               return parsed;
             }),
           );
-        }),
-        catchError((err) => {
-          return toLeftObs(
-            new UnexpectedError('Failed to find the profile', err),
-          );
-        }),
-      );
-    } catch (err) {
-      return toLeftObs(new UnexpectedError('Failed to find the profile', err));
-    }
+        },
+      ),
+      catchError((err) => {
+        return toLeftObs(
+          new UnexpectedError('Failed to find the profile', err),
+        );
+      }),
+    );
   }
 
   profileExists(
     matcher: FindOneMatcher,
   ): Observable<e.Either<UnexpectedError, boolean>> {
-    try {
-      return from(this.repo.count({ where: matcher })).pipe(
-        switchMap((count) => {
-          return toRightObs(count > 0);
-        }),
-        catchError((err) => {
-          return toLeftObs(
-            new UnexpectedError(
-              'Failed to find whether the profile exists',
-              err,
-            ),
-          );
-        }),
-      );
-    } catch (err) {
-      return toLeftObs(
-        new UnexpectedError('Failed to find whether the profile exists', err),
-      );
-    }
+    return this.repo.count(matcher).pipe(
+      mapEither(
+        (err) => {
+          return e.left(err);
+        },
+        (res) => {
+          return e.right(res > 0);
+        },
+      ),
+      catchError((err) => {
+        return toLeftObs(
+          new UnexpectedError('Failed to find whether the profile exists', err),
+        );
+      }),
+    );
+  }
+
+  deleteAll() {
+    return this.repo.deleteAll();
   }
 }

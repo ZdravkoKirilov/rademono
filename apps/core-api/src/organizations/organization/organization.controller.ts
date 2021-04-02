@@ -10,7 +10,7 @@ import {
   toUnexpectedError,
 } from '@app/shared';
 
-import { AuthGuard, WithUser } from '@app/admin-users';
+import { AuthGuard, WithUser } from '@app/users/admin-users';
 import { OrganizationService } from './organization.service';
 
 @Controller('organization')

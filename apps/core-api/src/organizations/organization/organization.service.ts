@@ -68,20 +68,21 @@ export class OrganizationService {
                 );
               }
 
-              return this.repo
-                .createOrganization(mbDto.right)
-                .pipe(
-                  map((res) =>
-                    e.isLeft(res)
-                      ? e.left(
-                          new UnexpectedError(
-                            'repo.createOrganization failed.',
-                            res.left,
-                          ),
-                        )
-                      : res,
-                  ),
-                );
+              return this.repo.createOrganization(mbDto.right).pipe(
+                map((res) =>
+                  e.isLeft(res)
+                    ? e.left(
+                        new UnexpectedError(
+                          'repo.createOrganization failed.',
+                          res.left,
+                        ),
+                      )
+                    : res,
+                ),
+                catchError((err) => {
+                  return toLeftObs(err as any);
+                }),
+              );
             }),
           );
         },

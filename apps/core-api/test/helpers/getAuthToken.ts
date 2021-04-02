@@ -1,3 +1,5 @@
+import * as e from 'fp-ts/lib/Either';
+
 import {
   AdminUserId,
   breakTest,
@@ -5,14 +7,21 @@ import {
   PrivateAdminUser,
   UUIDv4,
 } from '@end/global';
-import * as e from 'fp-ts/lib/Either';
 
 import { AdminUserRepository } from '../../src/users/admin-users/admin-users.repository';
+import { INestApplication } from '@nestjs/common';
 
 export const createTestUser = async (
-  repository: AdminUserRepository,
+  module: INestApplication,
   email: string,
+  deleteAll = true,
 ) => {
+  const repository = module.get(AdminUserRepository);
+
+  if (deleteAll) {
+    await repository.deleteAll();
+  }
+
   const userId = UUIDv4.generate<AdminUserId>();
 
   const mbEntity = await PrivateAdminUser.create(

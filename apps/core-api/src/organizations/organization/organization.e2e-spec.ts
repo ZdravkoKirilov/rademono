@@ -1,41 +1,43 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { Connection } from 'typeorm';
 
 import { AppModule } from '../../app.module';
-import { createTestUser } from '@app/test';
-import { AdminUserRepository } from '../../users/admin-users/admin-users.repository';
+import { createTestUser, cleanRepositories } from '@app/test';
+import { OrganizationRepository } from './organization.repository';
+import { ProfileGroupRepository } from '../profile-group/profile-group.repository';
+import { AdminProfileRepository } from '../admin-profile/admin-profile.repository';
 
 describe('Organization endpoints (e2e)', () => {
   let app: INestApplication;
-  let userRepository: AdminUserRepository;
-  let connection: Connection;
-
-  beforeEach(async () => {
-    await connection.synchronize(true);
-  });
+  const repos = [
+    OrganizationRepository,
+    ProfileGroupRepository,
+    AdminProfileRepository,
+  ];
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
     app = moduleFixture.createNestApplication();
-    connection = app.get(Connection);
-    await connection.synchronize(true);
+
+    await cleanRepositories(app, repos);
+
     await app.init();
-    userRepository = moduleFixture.get(AdminUserRepository);
-    await connection.synchronize(true);
   });
 
   afterAll(async () => {
     await app.close();
-    await connection.close();
+  });
+
+  afterEach(async () => {
+    await cleanRepositories(app, repos);
   });
 
   describe('/organization (POST)', () => {
     it('passes with correct data', async (done) => {
-      const { token } = await createTestUser(userRepository, 'email@email.com');
+      const { token } = await createTestUser(app, 'email11@email.com');
 
       const { body } = await request(app.getHttpServer())
         .post('/organization')
@@ -65,7 +67,7 @@ describe('Organization endpoints (e2e)', () => {
     });
 
     it('fails with invalid data', async (done) => {
-      const { token } = await createTestUser(userRepository, 'email@email.com');
+      const { token } = await createTestUser(app, 'email12@email.com');
 
       const { body } = await request(app.getHttpServer())
         .post('/organization')
@@ -90,7 +92,7 @@ describe('Organization endpoints (e2e)', () => {
     });
 
     it('fails when organization with that name exists', async (done) => {
-      const { token } = await createTestUser(userRepository, 'email@email.com');
+      const { token } = await createTestUser(app, 'email13@email.com');
 
       await request(app.getHttpServer())
         .post('/organization')

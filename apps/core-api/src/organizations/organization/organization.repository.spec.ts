@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 import { omit } from 'lodash/fp';
@@ -12,7 +10,11 @@ import {
   UnexpectedError,
   ParsingError,
   PrivateOrganization,
+  toRightObs,
+  toLeftObs,
 } from '@end/global';
+
+import { DbentityService } from '@app/database';
 
 import {
   OrganizationDBModel,
@@ -20,16 +22,16 @@ import {
 } from './organization.repository';
 
 const createTestingModule = async (
-  repoMock: Partial<Repository<OrganizationDBModel>> = {},
+  repoMock: Partial<DbentityService<OrganizationDBModel>> = {},
 ) => {
   const module: TestingModule = await Test.createTestingModule({
     imports: [],
     providers: [
-      OrganizationRepository,
       {
-        provide: getRepositoryToken(OrganizationDBModel),
+        provide: DbentityService,
         useValue: repoMock,
       },
+      OrganizationRepository,
     ],
   }).compile();
 
@@ -47,7 +49,7 @@ describe(OrganizationRepository.name, () => {
       } as InitialOrganization;
 
       const { service } = await createTestingModule({
-        insert: () => Promise.resolve({} as any),
+        insert: (data) => toRightObs(data),
       });
 
       service.createOrganization(data).subscribe((res) => {
@@ -59,30 +61,9 @@ describe(OrganizationRepository.name, () => {
       });
     });
 
-    it('handles unexpected errors', async (done) => {
-      const { service } = await createTestingModule({
-        insert: () => {
-          throw new Error('Whoops');
-        },
-      });
-
-      const data = {
-        name: 'Name',
-        public_id: UUIDv4.generate(),
-      } as InitialOrganization;
-
-      service.createOrganization(data).subscribe((res) => {
-        if (e.isRight(res)) {
-          return breakTest();
-        }
-        expect(res.left).toBeInstanceOf(UnexpectedError);
-        done();
-      });
-    });
-
     it('handles repo errors', async (done) => {
       const { service } = await createTestingModule({
-        insert: () => Promise.reject(),
+        insert: () => toLeftObs(new UnexpectedError()),
       });
 
       const data = {
@@ -103,7 +84,7 @@ describe(OrganizationRepository.name, () => {
   describe(OrganizationRepository.prototype.saveOrganization.name, () => {
     it('succeeds with enough data', async (done) => {
       const { service } = await createTestingModule({
-        save: () => Promise.resolve([]),
+        save: () => toRightObs(1),
       });
 
       const data = {
@@ -121,31 +102,9 @@ describe(OrganizationRepository.name, () => {
       });
     });
 
-    it('handles unexpected errors', async (done) => {
-      const { service } = await createTestingModule({
-        save: () => {
-          throw new Error('oops');
-        },
-      });
-
-      const data = {
-        name: 'Name',
-        public_id: UUIDv4.generate(),
-        admin_group: UUIDv4.generate(),
-      } as PrivateOrganization;
-
-      service.saveOrganization(data).subscribe((res) => {
-        if (e.isRight(res)) {
-          return breakTest();
-        }
-        expect(res.left).toBeInstanceOf(UnexpectedError);
-        done();
-      });
-    });
-
     it('handles repo errors', async (done) => {
       const { service } = await createTestingModule({
-        save: () => Promise.reject(),
+        save: () => toLeftObs(new UnexpectedError()),
       });
 
       const data = {
@@ -167,7 +126,7 @@ describe(OrganizationRepository.name, () => {
   describe(OrganizationRepository.prototype.organizationExists.name, () => {
     it('returns true if there is at least 1 match', async (done) => {
       const { service } = await createTestingModule({
-        count: () => Promise.resolve(1),
+        count: () => toRightObs(1),
       });
 
       service.organizationExists({ name: 'Whatever' }).subscribe((res) => {
@@ -181,7 +140,7 @@ describe(OrganizationRepository.name, () => {
 
     it('returns false if there are 0 matches', async (done) => {
       const { service } = await createTestingModule({
-        count: () => Promise.resolve(0),
+        count: () => toRightObs(0),
       });
 
       service.organizationExists({ name: 'Whatever' }).subscribe((res) => {
@@ -211,7 +170,7 @@ describe(OrganizationRepository.name, () => {
 
     it('handles repo errors', async (done) => {
       const { service } = await createTestingModule({
-        count: () => Promise.reject(),
+        count: () => toLeftObs(new UnexpectedError()),
       });
 
       service.organizationExists({ name: 'Whatever' }).subscribe((res) => {
@@ -234,7 +193,7 @@ describe(OrganizationRepository.name, () => {
       };
 
       const { service } = await createTestingModule({
-        findOne: () => Promise.resolve(data),
+        findOne: () => toRightObs(data),
       });
 
       service.getOrganization({ name: 'Name' }).subscribe((res) => {
@@ -248,7 +207,7 @@ describe(OrganizationRepository.name, () => {
 
     it('returns no organization', async (done) => {
       const { service } = await createTestingModule({
-        findOne: () => Promise.resolve(undefined),
+        findOne: () => toRightObs(undefined),
       });
 
       service.getOrganization({ name: 'Name' }).subscribe((res) => {
@@ -260,25 +219,9 @@ describe(OrganizationRepository.name, () => {
       });
     });
 
-    it('handles unexpected errors', async (done) => {
-      const { service } = await createTestingModule({
-        findOne: () => {
-          throw new Error('oops');
-        },
-      });
-
-      service.getOrganization({ name: 'Name' }).subscribe((res) => {
-        if (e.isRight(res)) {
-          return breakTest();
-        }
-        expect(res.left).toBeInstanceOf(UnexpectedError);
-        done();
-      });
-    });
-
     it('handles repo errors', async (done) => {
       const { service } = await createTestingModule({
-        findOne: () => Promise.reject(),
+        findOne: () => toLeftObs(new UnexpectedError()),
       });
 
       service.getOrganization({ name: 'Name' }).subscribe((res) => {
@@ -299,7 +242,7 @@ describe(OrganizationRepository.name, () => {
       };
 
       const { service } = await createTestingModule({
-        findOne: () => Promise.resolve(data),
+        findOne: () => toRightObs(data),
       });
 
       service.getOrganization({ name: 'Name' }).subscribe((res) => {

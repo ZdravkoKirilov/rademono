@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 import { omit } from 'lodash/fp';
@@ -11,23 +9,21 @@ import {
   UnexpectedError,
   ParsingError,
   PrivateAdminProfile,
+  toRightObs,
+  toLeftObs,
 } from '@end/global';
-import {
-  AdminProfileDBModel,
-  AdminProfileRepository,
-} from './admin-profile.repository';
+import { AdminProfileRepository } from './admin-profile.repository';
+import { DbentityService } from '@app/database';
 
-const createTestingModule = async (
-  repoMock: Partial<Repository<AdminProfileDBModel>> = {},
-) => {
+const createTestingModule = async (repoMock: Partial<DbentityService> = {}) => {
   const module: TestingModule = await Test.createTestingModule({
     imports: [],
     providers: [
-      AdminProfileRepository,
       {
-        provide: getRepositoryToken(AdminProfileDBModel),
+        provide: DbentityService,
         useValue: repoMock,
       },
+      AdminProfileRepository,
     ],
   }).compile();
 
@@ -47,7 +43,7 @@ describe(AdminProfileRepository.name, () => {
       } as PrivateAdminProfile;
 
       const { service } = await createTestingModule({
-        save: () => Promise.resolve([]),
+        save: () => toRightObs(1),
       });
 
       service.saveProfile(data).subscribe((res) => {
@@ -59,32 +55,9 @@ describe(AdminProfileRepository.name, () => {
       });
     });
 
-    it('handles unexpected errors', async (done) => {
-      const { service } = await createTestingModule({
-        save: () => {
-          throw new Error('Whoops');
-        },
-      });
-
-      const data = {
-        name: 'Name',
-        public_id: UUIDv4.generate(),
-        user: UUIDv4.generate(),
-        group: UUIDv4.generate(),
-      } as PrivateAdminProfile;
-
-      service.saveProfile(data).subscribe((res) => {
-        if (e.isRight(res)) {
-          return breakTest();
-        }
-        expect(res.left).toBeInstanceOf(UnexpectedError);
-        done();
-      });
-    });
-
     it('handles repo errors', async (done) => {
       const { service } = await createTestingModule({
-        save: () => Promise.reject(),
+        save: () => toLeftObs(new UnexpectedError('')),
       });
 
       const data = {
@@ -107,7 +80,7 @@ describe(AdminProfileRepository.name, () => {
   describe(AdminProfileRepository.prototype.profileExists.name, () => {
     it('returns true if there is at least 1 match', async (done) => {
       const { service } = await createTestingModule({
-        count: () => Promise.resolve(1),
+        count: () => toRightObs(1),
       });
 
       service
@@ -123,7 +96,7 @@ describe(AdminProfileRepository.name, () => {
 
     it('returns false if there are 0 matches', async (done) => {
       const { service } = await createTestingModule({
-        count: () => Promise.resolve(0),
+        count: () => toRightObs(0),
       });
 
       service
@@ -137,27 +110,9 @@ describe(AdminProfileRepository.name, () => {
         });
     });
 
-    it('handles unexpected errors', async (done) => {
-      const { service } = await createTestingModule({
-        count: () => {
-          throw new Error('oops');
-        },
-      });
-
-      service
-        .profileExists({ public_id: UUIDv4.generate() })
-        .subscribe((res) => {
-          if (e.isRight(res)) {
-            return breakTest();
-          }
-          expect(res.left).toBeInstanceOf(UnexpectedError);
-          done();
-        });
-    });
-
     it('handles repo errors', async (done) => {
       const { service } = await createTestingModule({
-        count: () => Promise.reject(),
+        count: () => toLeftObs(new UnexpectedError('')),
       });
 
       service
@@ -183,7 +138,7 @@ describe(AdminProfileRepository.name, () => {
       };
 
       const { service } = await createTestingModule({
-        findOne: () => Promise.resolve(data),
+        findOne: () => toRightObs(data),
       });
 
       service.getProfile({ public_id: data.public_id }).subscribe((res) => {
@@ -197,7 +152,7 @@ describe(AdminProfileRepository.name, () => {
 
     it('returns no admin profile', async (done) => {
       const { service } = await createTestingModule({
-        findOne: () => Promise.resolve(undefined),
+        findOne: () => toRightObs(undefined),
       });
 
       service.getProfile({ public_id: UUIDv4.generate() }).subscribe((res) => {
@@ -209,25 +164,9 @@ describe(AdminProfileRepository.name, () => {
       });
     });
 
-    it('handles unexpected errors', async (done) => {
-      const { service } = await createTestingModule({
-        findOne: () => {
-          throw new Error('oops');
-        },
-      });
-
-      service.getProfile({ public_id: UUIDv4.generate() }).subscribe((res) => {
-        if (e.isRight(res)) {
-          return breakTest();
-        }
-        expect(res.left).toBeInstanceOf(UnexpectedError);
-        done();
-      });
-    });
-
     it('handles repo errors', async (done) => {
       const { service } = await createTestingModule({
-        findOne: () => Promise.reject(),
+        findOne: () => toLeftObs(new UnexpectedError('')),
       });
 
       service.getProfile({ public_id: UUIDv4.generate() }).subscribe((res) => {
@@ -249,7 +188,7 @@ describe(AdminProfileRepository.name, () => {
       };
 
       const { service } = await createTestingModule({
-        findOne: () => Promise.resolve(data),
+        findOne: () => toRightObs(data as any),
       });
 
       service.getProfile({ public_id: UUIDv4.generate() }).subscribe((res) => {

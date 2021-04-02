@@ -1,58 +1,46 @@
-import { from, Observable, of } from 'rxjs';
+import { Injectable } from '@nestjs/common';
+import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  Index,
-  Repository,
-} from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 
 import {
   CreateGameDto,
   FullGame,
   GameParser,
   ParsingError,
+  toLeftObs,
   UnexpectedError,
 } from '@end/global';
+import { DbentityService } from '@app/database';
 
-@Entity()
-export class GameDBModel {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Index()
-  @Column('uuid')
+type GameDBModel = {
+  id?: number;
   public_id: string;
-
-  @Column({ length: 500 })
-  title: string;
-
-  @Column('text')
+  title?: string;
   description?: string;
-
-  @Column('text')
   image?: string;
-}
+};
+
+@Injectable()
 export class GameRepository {
-  constructor(
-    @InjectRepository(GameDBModel) private repo: Repository<GameDBModel>,
-  ) {}
+  constructor(private repo: DbentityService<GameDBModel>) {}
 
   createNew(
     dto: CreateGameDto,
   ): Observable<e.Either<UnexpectedError | ParsingError, FullGame>> {
-    return from(this.repo.save(dto)).pipe(
+    return this.repo.insert(dto as any /* TODO: PrivateGame */).pipe(
       switchMap((res) => {
+        if (e.isLeft(res)) {
+          return toLeftObs(new UnexpectedError('DB save failed', res.left));
+        }
+
         return GameParser.toFullEntity({
-          ...res,
-          id: res.public_id,
+          ...res.right,
+          id: res.right.public_id,
         });
       }),
       catchError((err) =>
-        of(e.left(new UnexpectedError('DB save failed', err))),
+        toLeftObs(new UnexpectedError('DB save failed', err)),
       ),
     );
   }
