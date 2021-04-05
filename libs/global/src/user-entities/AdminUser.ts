@@ -1,6 +1,5 @@
 import {
   IsDate,
-  isEmail,
   IsEmail,
   IsIn,
   IsJWT,

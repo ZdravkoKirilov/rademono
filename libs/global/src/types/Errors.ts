@@ -25,6 +25,14 @@ export class DomainError extends Error {
   }
 }
 
+export class RepositoryError extends Error {
+  readonly name = 'RepositoryError';
+
+  constructor(public message: string, public error?: Error) {
+    super();
+  }
+}
+
 export class ParsingError extends Error {
   readonly name = 'ParsingError';
   errors: FieldError[];
@@ -35,7 +43,7 @@ export class ParsingError extends Error {
   }
 }
 
-export class UnexpectedError<Error = unknown> extends Error {
+export class UnexpectedError extends Error {
   readonly name = 'UnexpectedError';
 
   constructor(public message = 'Something went wrong', public error?: Error) {

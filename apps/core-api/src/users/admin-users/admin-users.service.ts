@@ -7,6 +7,7 @@ import {
   DomainError,
   AdminUser,
   PrivateAdminUser,
+  switchMapWithErrorForwarding,
 } from '@end/global';
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
@@ -15,10 +16,14 @@ import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 
 import { AdminUserRepository } from './admin-users.repository';
+import { EmailService } from '@app/emails';
 
 @Injectable()
 export class AdminUsersService {
-  constructor(private readonly repo: AdminUserRepository) {}
+  constructor(
+    private readonly repo: AdminUserRepository,
+    private readonly emailService: EmailService,
+  ) {}
 
   getCurrentUser(
     token: unknown,
@@ -128,16 +133,40 @@ export class AdminUsersService {
         }
 
         const userWithLoginToken = PrivateAdminUser.addLoginCode(mbUser.right);
-        return this.repo.saveUser(userWithLoginToken).pipe(
+        return this.repo
+          .saveUser(userWithLoginToken)
+          .pipe(map(() => e.right(userWithLoginToken)));
+      }),
+      switchMapWithErrorForwarding<
+        PrivateAdminUser,
+        UnexpectedError | ParsingError,
+        e.Either<UnexpectedError, undefined>
+      >((user) => {
+        return this.emailService.createLoginCodeEmail(user.email).pipe(
           map((mbSaved) => {
             return e.isLeft(mbSaved)
               ? e.left(
-                  new UnexpectedError('Failed to save the user', mbSaved.left),
+                  new UnexpectedError('Failed to send an email', mbSaved.left),
                 )
               : e.right(undefined);
           }),
         );
       }),
+      /* switchMap((mbSaved) => {
+        if (e.isLeft(mbSaved)) {
+          return toLeftObs(mbSaved.left);
+        }
+
+        return this.emailService.createLoginCodeEmail(mbSaved.right.email).pipe(
+          map((mbSaved) => {
+            return e.isLeft(mbSaved)
+              ? e.left(
+                  new UnexpectedError('Failed to send an email', mbSaved.left),
+                )
+              : e.right(undefined);
+          }),
+        );
+      }), */
       catchError((err) => {
         return toLeftObs(new UnexpectedError('Caught an error', err));
       }),

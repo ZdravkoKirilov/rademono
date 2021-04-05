@@ -10,10 +10,42 @@ export const toRightObs = <T>(input: T) => {
   return of(e.right(input));
 };
 
-export const mapRight = pipe(
-  filter(e.isRight),
-  map((confirmedAsRight) => confirmedAsRight.right),
-);
+export const switchMapWithErrorForwarding = <Value, Error, Next>(
+  next: (value: Value) => Observable<Next>,
+) => (source$: Observable<e.Either<Error, Value>>) => {
+  return source$.pipe(
+    switchMap((mbNext) => {
+      if (e.isLeft(mbNext)) {
+        return of(mbNext);
+      }
+
+      return next(mbNext.right);
+    }),
+  );
+};
+
+export const mapRight = <Value, Error>() => (
+  source$: Observable<e.Either<Error, Value>>,
+) => {
+  return new Observable<Value>((observer) => {
+    return source$.subscribe({
+      next(x) {
+        if (e.isLeft(x)) {
+          observer.next(x as any);
+          observer.complete();
+          return;
+        }
+        return observer.next(x.right);
+      },
+      error(error) {
+        observer.error(error);
+      },
+      complete() {
+        observer.complete();
+      },
+    });
+  });
+};
 
 export const mapLeft = pipe(
   filter(e.isLeft),

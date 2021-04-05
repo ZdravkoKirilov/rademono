@@ -20,13 +20,9 @@ import { DbentityService } from '@app/database';
 
 export class OrganizationDBModel {
   id?: number;
-
   public_id: string;
-
   admin_group?: string;
-
   name: string;
-
   description?: string;
 }
 

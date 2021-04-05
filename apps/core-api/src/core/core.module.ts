@@ -7,6 +7,7 @@ import { OrganizationsModule } from '../organizations';
 import { GameEditorModule } from '../game-editor';
 import { UsersModule } from '../users';
 import { AppConfigModule } from '../config';
+import { EmailsModule } from '../emails';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AppConfigModule } from '../config';
     GameEditorModule,
     UsersModule,
     OrganizationsModule,
+    EmailsModule,
   ],
   exports: [],
   providers: [
