@@ -3,7 +3,7 @@ import { DATABASE_COLLECTION, DATABASE_CONNECTION } from '../constants';
 import { DbentityService } from './dbentity.service';
 
 describe('DbentityService', () => {
-  let service: DbentityService;
+  let service: DbentityService<any>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,7 +20,7 @@ describe('DbentityService', () => {
       ],
     }).compile();
 
-    service = module.get<DbentityService>(DbentityService);
+    service = module.get<DbentityService<any>>(DbentityService);
   });
 
   it('should be defined', () => {

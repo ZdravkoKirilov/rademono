@@ -45,7 +45,7 @@ describe('AdminUserController (e2e)', () => {
     await app.close();
   });
 
-  describe('/admin-users/current (GET)', () => {
+  /*   describe('/admin-users/current (GET)', () => {
     it('returns the current user given a valid auth token', async (done) => {
       const userId = UUIDv4.generate<AdminUserId>();
 
@@ -132,7 +132,7 @@ describe('AdminUserController (e2e)', () => {
       });
       done();
     });
-  });
+  }); */
 
   describe('/admin-users/token (POST)', () => {
     it('returns a token given a valid login code', async (done) => {

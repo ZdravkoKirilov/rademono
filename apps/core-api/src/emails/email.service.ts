@@ -38,8 +38,11 @@ export class EmailService {
 
     return PrivateEmailEntity.create(data, this.createId).pipe(
       switchMapEither(
-        (err) =>
-          toLeftObs(new UnexpectedError('Failed to create an email', err)),
+        (err) => {
+          return toLeftObs(
+            new UnexpectedError('Failed to create an email', err),
+          );
+        },
         (res) =>
           this.repo.createEmail(res).pipe(
             switchMapEither(

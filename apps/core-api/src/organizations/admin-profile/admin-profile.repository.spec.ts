@@ -15,7 +15,9 @@ import {
 import { AdminProfileRepository } from './admin-profile.repository';
 import { DbentityService } from '@app/database';
 
-const createTestingModule = async (repoMock: Partial<DbentityService> = {}) => {
+const createTestingModule = async (
+  repoMock: Partial<DbentityService<any>> = {},
+) => {
   const module: TestingModule = await Test.createTestingModule({
     imports: [],
     providers: [

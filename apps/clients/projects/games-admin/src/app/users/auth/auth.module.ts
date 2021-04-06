@@ -4,21 +4,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { SigninComponent } from './components/signin/signin.component';
-import { RedeemCodeComponent } from './components/redeem-code/redeem-code.component';
 import { AuthService } from './services/auth.service';
 
 const routes: Routes = [
   {
     path: '',
-    children: [
-      { path: 'signin', component: SigninComponent },
-      { path: 'redeem', component: RedeemCodeComponent },
-    ],
+    children: [{ path: 'signin', component: SigninComponent }],
   },
 ];
 
 @NgModule({
-  declarations: [SigninComponent, RedeemCodeComponent],
+  declarations: [SigninComponent],
   imports: [CommonModule, RouterModule.forChild(routes), FormsModule],
   exports: [RouterModule],
   providers: [AuthService],

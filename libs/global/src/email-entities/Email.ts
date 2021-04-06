@@ -86,15 +86,16 @@ export class PrivateEmailEntity extends EmailBase {
     payload: Primitive<EmailBase>,
     createId: typeof UUIDv4.generate,
   ): Observable<e.Either<ParsingError, PrivateEmailEntity>> {
-    return parseAndValidateUnknown(payload, PrivateEmailEntity).pipe(
+    return parseAndValidateUnknown(
+      {
+        ...payload,
+        public_id: createId(),
+      },
+      PrivateEmailEntity,
+    ).pipe(
       map((result) => {
         if (e.isRight(result)) {
-          const plain: PrivateEmailEntity = {
-            ...result.right,
-            public_id: createId(),
-          };
-
-          return e.right(transformToClass(PrivateEmailEntity, plain));
+          return e.right(transformToClass(PrivateEmailEntity, result.right));
         }
         return result;
       }),

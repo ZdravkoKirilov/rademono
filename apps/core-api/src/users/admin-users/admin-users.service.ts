@@ -7,7 +7,7 @@ import {
   DomainError,
   AdminUser,
   PrivateAdminUser,
-  switchMapWithErrorForwarding,
+  switchMapRight,
 } from '@end/global';
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
@@ -137,7 +137,7 @@ export class AdminUsersService {
           .saveUser(userWithLoginToken)
           .pipe(map(() => e.right(userWithLoginToken)));
       }),
-      switchMapWithErrorForwarding<
+      switchMapRight<
         PrivateAdminUser,
         UnexpectedError | ParsingError,
         e.Either<UnexpectedError, undefined>
@@ -152,21 +152,6 @@ export class AdminUsersService {
           }),
         );
       }),
-      /* switchMap((mbSaved) => {
-        if (e.isLeft(mbSaved)) {
-          return toLeftObs(mbSaved.left);
-        }
-
-        return this.emailService.createLoginCodeEmail(mbSaved.right.email).pipe(
-          map((mbSaved) => {
-            return e.isLeft(mbSaved)
-              ? e.left(
-                  new UnexpectedError('Failed to send an email', mbSaved.left),
-                )
-              : e.right(undefined);
-          }),
-        );
-      }), */
       catchError((err) => {
         return toLeftObs(new UnexpectedError('Caught an error', err));
       }),

@@ -1,6 +1,6 @@
 import * as e from 'fp-ts/lib/Either';
-import { Observable, of, pipe } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 export const toLeftObs = <T>(input: T) => {
   return of(e.left(input));
@@ -10,7 +10,7 @@ export const toRightObs = <T>(input: T) => {
   return of(e.right(input));
 };
 
-export const switchMapWithErrorForwarding = <Value, Error, Next>(
+export const switchMapRight = <Value, Error, Next>(
   next: (value: Value) => Observable<Next>,
 ) => (source$: Observable<e.Either<Error, Value>>) => {
   return source$.pipe(
@@ -23,34 +23,6 @@ export const switchMapWithErrorForwarding = <Value, Error, Next>(
     }),
   );
 };
-
-export const mapRight = <Value, Error>() => (
-  source$: Observable<e.Either<Error, Value>>,
-) => {
-  return new Observable<Value>((observer) => {
-    return source$.subscribe({
-      next(x) {
-        if (e.isLeft(x)) {
-          observer.next(x as any);
-          observer.complete();
-          return;
-        }
-        return observer.next(x.right);
-      },
-      error(error) {
-        observer.error(error);
-      },
-      complete() {
-        observer.complete();
-      },
-    });
-  });
-};
-
-export const mapLeft = pipe(
-  filter(e.isLeft),
-  map((confirmedAsRight) => confirmedAsRight.left),
-);
 
 export const mapEither = <Value, Error, E, V>(
   onError: (error: Error) => E,
