@@ -4,6 +4,7 @@ export {
   AdminUserTypes,
   TokenDto,
   SendCodeDto,
+  SignInDto,
   AdminUserId,
 } from './AdminUser';
 export * from './Consumer';

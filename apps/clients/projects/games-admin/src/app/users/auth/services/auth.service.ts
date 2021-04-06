@@ -1,15 +1,55 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { tap } from 'rxjs/operators';
 
-import { SendCodeDto } from '@end/global';
+import { JWT, SendCodeDto, SignInDto, TokenDto } from '@end/global';
 
-import { endpoints } from '@games-admin/shared/constants';
+import {
+  BaseHttpService,
+  LocalStorageService,
+  endpoints,
+  useQuery,
+  QueryStatus,
+} from '@games-admin/shared';
 
 @Injectable()
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private storage: LocalStorageService,
+    private http: BaseHttpService,
+  ) {}
 
-  requestLoginCode(dto: SendCodeDto) {
-    return this.http.post(endpoints.requestAuthCode, dto);
+  private saveToken(token: JWT) {
+    this.storage.set('token', token);
+  }
+
+  public requestLoginCode(dto: SendCodeDto) {
+    return useQuery(() =>
+      this.http.post({
+        url: endpoints.requestAuthCode,
+        data: dto,
+        withAuthentication: false,
+      }),
+    );
+  }
+
+  public requestToken(dto: SignInDto) {
+    return useQuery<TokenDto, unknown>(() =>
+      this.http.post({
+        url: endpoints.requestAuthToken,
+        data: dto,
+        withAuthentication: false,
+      }),
+    ).pipe(
+      tap((result) => {
+        if (result.status === QueryStatus.loaded) {
+          this.saveToken(result.data.token);
+        }
+        return result;
+      }),
+    );
+  }
+
+  public getToken() {
+    return this.storage.get('token');
   }
 }
