@@ -40,12 +40,6 @@ export class BaseHttpService {
     return headers;
   }
 
-  post<Value>(params: { url: Url; data: unknown }): Observable<Value>;
-  post<Value>(params: {
-    url: Url;
-    data: unknown;
-    responseShape: ClassType<Value>;
-  }): Observable<ClassType<Value>>;
   post<Value>(params: ParamsWithPayload<Value>): Observable<Value> {
     const headers = this.createDefaultHeaders();
 
