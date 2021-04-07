@@ -42,7 +42,7 @@ export const useQuery = <Value, ErrorResponse>(
   });
 };
 
-type CachedQueryParams<Value, InternalValue> = {
+export type CachedQueryParams<Value, InternalValue> = {
   query: () => Observable<Value>;
   cache: BehaviorSubject<InternalValue>;
   toInternal: (data: unknown) => Observable<InternalValue>;

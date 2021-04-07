@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
-import { JWT, SendCodeDto, SignInDto, TokenDto } from '@end/global';
+import { SendCodeDto, SignInDto, TokenDto } from '@end/global';
 
 import {
   BaseHttpService,
@@ -18,16 +18,11 @@ export class AuthService {
     private http: BaseHttpService,
   ) {}
 
-  private saveToken(token: JWT) {
-    this.storage.set('token', token);
-  }
-
   public requestLoginCode(dto: SendCodeDto) {
     return useQuery(() =>
       this.http.post({
         url: endpoints.requestAuthCode,
         data: dto,
-        withAuthentication: false,
       }),
     );
   }
@@ -37,19 +32,14 @@ export class AuthService {
       this.http.post({
         url: endpoints.requestAuthToken,
         data: dto,
-        withAuthentication: false,
       }),
     ).pipe(
       tap((result) => {
         if (result.status === QueryStatus.loaded) {
-          this.saveToken(result.data.token);
+          this.storage.saveToken(result.data.token);
         }
         return result;
       }),
     );
-  }
-
-  public getToken() {
-    return this.storage.get('token');
   }
 }

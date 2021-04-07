@@ -3,7 +3,7 @@ import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { QueryResponse, useQuery } from './useQuery';
 
-type MutateParams<ReturnValue, Cache, MutateError> = {
+export type MutateParams<ReturnValue, Cache, MutateError> = {
   operation: () => Observable<ReturnValue>;
   cache: BehaviorSubject<Cache>;
   after: (
@@ -13,7 +13,7 @@ type MutateParams<ReturnValue, Cache, MutateError> = {
   before?: (cache: Cache) => Observable<Cache>;
 };
 
-export const useMutation = <ReturnValue, ErrorResponse, InternalValue>(
+export const useMutation = <ReturnValue, InternalValue, ErrorResponse>(
   params: MutateParams<ReturnValue, InternalValue, ErrorResponse>,
 ): Observable<QueryResponse<ReturnValue, ErrorResponse>> => {
   return new Observable<QueryResponse<ReturnValue, ErrorResponse>>(

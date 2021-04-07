@@ -1,23 +1,26 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, switchMap } from 'rxjs/operators';
-import { throwError, of } from 'rxjs';
-import * as e from 'fp-ts/lib/Either';
+import { throwError, Observable, of } from 'rxjs';
 
 import {
   ClassType,
-  mapEither,
   parseAndValidateUnknown,
+  switchMapEither,
+  toRightObs,
   Url,
 } from '@end/global';
 
-type BaseParams = {
+type BaseParams<Value> = {
   url: Url;
-  responseShape?: ClassType<any>;
-  withAuthentication?: boolean;
+  responseShape?: ClassType<Value>;
 };
 
-type ParamsWithPayload = BaseParams & {
+type ParamsWithPayload<Value> = BaseParams<Value> & {
   data: unknown;
 };
 
@@ -27,41 +30,41 @@ type ParamsWithPayload = BaseParams & {
 export class BaseHttpService {
   constructor(private http: HttpClient) {}
 
-  get(params: BaseParams) {
-    return this.http.get(params.url).pipe(
-      switchMap((value) =>
-        params.responseShape
-          ? parseAndValidateUnknown(value, params.responseShape)
-          : of(e.right(value)),
-      ),
-      mapEither(
-        (err) => throwError(err),
-        (value) => value,
-      ),
-      catchError((err: HttpErrorResponse) => {
-        return throwError(err);
-      }),
-    );
+  private createDefaultHeaders(overrides: Record<string, string> = {}) {
+    const headers = new HttpHeaders();
+
+    Object.entries(overrides).forEach(([key, value]) => {
+      headers.set(key, value);
+    });
+
+    return headers;
   }
 
-  put() {}
+  post<Value>(params: { url: Url; data: unknown }): Observable<Value>;
+  post<Value>(params: {
+    url: Url;
+    data: unknown;
+    responseShape: ClassType<Value>;
+  }): Observable<ClassType<Value>>;
+  post<Value>(params: ParamsWithPayload<Value>): Observable<Value> {
+    const headers = this.createDefaultHeaders();
 
-  post(params: ParamsWithPayload) {
-    return this.http.post(params.url, params.data).pipe(
-      switchMap((value) =>
-        params.responseShape
-          ? parseAndValidateUnknown(value, params.responseShape)
-          : of(e.right(value)),
-      ),
-      mapEither(
-        (err) => throwError(err),
-        (value) => value,
-      ),
-      catchError((err: HttpErrorResponse) => {
-        return throwError(err);
-      }),
-    );
+    return this.http
+      .post<Value>(params.url, params.data, { headers })
+      .pipe(
+        switchMap((value) => {
+          if (params.responseShape) {
+            return parseAndValidateUnknown(value, params.responseShape);
+          }
+          return toRightObs(value);
+        }),
+        switchMapEither(
+          (err) => throwError(err),
+          (value) => of(value),
+        ),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(err);
+        }),
+      );
   }
-
-  delete() {}
 }
