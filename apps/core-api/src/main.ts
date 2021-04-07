@@ -5,6 +5,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
 
   const options = new DocumentBuilder()
     .setTitle('Game administration')
@@ -12,7 +13,9 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('api/swagger', app, document);
+
+  app.enableCors({ origin: ['http://localhost:4000'] });
 
   await app.listen(3000);
 }

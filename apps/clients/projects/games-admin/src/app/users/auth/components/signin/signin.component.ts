@@ -1,18 +1,28 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { PrivateAdminUser, SendCodeDto, mapEither } from '@end/global';
 import { OnChange } from '@end/client';
+
+import { AuthService } from '../../services/auth.service';
+import { AutoUnsubscribe, QueryResponse } from '@games-admin/shared';
 
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'full-container centered-container' },
 })
+@AutoUnsubscribe()
 export class SigninComponent {
   error?: string;
   dto?: SendCodeDto;
+
+  constructor(private authService: AuthService) {}
+
+  requestLoginCode$: Subscription;
+  codeQuery: QueryResponse<void, unknown>;
 
   @OnChange<unknown, SigninComponent>(function (value, self) {
     PrivateAdminUser.toSendCodeDto({ email: value })
@@ -34,6 +44,16 @@ export class SigninComponent {
 
   submit(event: Event) {
     event.preventDefault();
-    console.log(this.dto);
+
+    if (this.dto) {
+      this.requestLoginCode$ = this.authService
+        .requestLoginCode(this.dto)
+        .pipe(
+          tap((res) => {
+            this.codeQuery = res;
+          }),
+        )
+        .subscribe();
+    }
   }
 }

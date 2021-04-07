@@ -12,6 +12,19 @@
 
     <span *ngIf="error">{{ error }}</span>
 
-    <button cta="primary" type="submit" [disabled]="!dto">send code</button>
+    <button cta="primary" type="submit" [disabled]="!dto">
+      <ng-container *ngIf="codeQuery?.status !== 'loading'"
+        >Send code</ng-container
+      >
+      <ng-container *ngIf="codeQuery?.status === 'loading'">
+        Sending code...
+      </ng-container>
+    </button>
+
+    <span *ngIf="codeQuery?.status === 'loaded'"> Code sent! </span>
+
+    <span *ngIf="codeQuery?.status === 'error'">
+      Error while sending code
+    </span>
   </form>
 </article>

@@ -19,7 +19,7 @@ export class AuthService {
   ) {}
 
   public requestLoginCode(dto: SendCodeDto) {
-    return useQuery(() =>
+    return useQuery<void, unknown>(() =>
       this.http.post({
         url: endpoints.requestAuthCode,
         data: dto,
