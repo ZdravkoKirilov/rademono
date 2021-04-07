@@ -7,7 +7,7 @@ export enum QueryStatus {
   loaded = 'loaded',
 }
 
-type QueryResponse<Value = unknown, Error = unknown> =
+export type QueryResponse<Value = unknown, Error = unknown> =
   | Readonly<{ status: QueryStatus.loading }>
   | Readonly<{ status: QueryStatus.error; error: Error }>
   | Readonly<{ status: QueryStatus.loaded; data: Value }>;
