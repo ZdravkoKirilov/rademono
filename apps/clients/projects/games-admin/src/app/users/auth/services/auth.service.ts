@@ -27,6 +27,18 @@ export class AuthService {
     );
   }
 
+  /*   this.doGosho(data) {
+    return this.data$.pipe(
+      take(1),
+      tap(currentCache => {
+        this.data$.next(data); // optimistic update
+        return this.useEffect(() => this.pesho(data)).pipe(
+          revertOnFail({ cache$: this.data$, fn: (cache) => {this.data$.next(currentCache)}}) // revert optimistic update
+        );
+      })
+    )
+  } */
+
   public requestToken(dto: SignInDto) {
     return useQuery<TokenDto, unknown>(() =>
       this.http.post({

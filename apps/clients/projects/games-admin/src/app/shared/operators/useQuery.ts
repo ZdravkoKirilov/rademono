@@ -1,93 +1,120 @@
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, map, filter, switchMap } from 'rxjs/operators';
-import { isNil } from 'lodash/fp';
+import {
+  BehaviorSubject,
+  Observable,
+  of,
+  asyncScheduler,
+  EMPTY,
+  concat,
+  Subject,
+} from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  delay,
+  map,
+  startWith,
+  switchMap,
+  takeUntil,
+  throttleTime,
+  timeout,
+} from 'rxjs/operators';
+import { noop } from 'lodash/fp';
 
 export enum QueryStatus {
+  idle = 'idle',
   loading = 'loading',
   error = 'error',
   loaded = 'loaded',
 }
 
+export enum QueryOrigin {
+  initial = 'initial',
+  retry = 'retry',
+  refresh = 'refresh',
+  cache = 'cache',
+  undo = 'undo',
+}
+
 export type QueryResponse<Value = unknown, ErrorResponse = unknown> =
-  | Readonly<{ status: QueryStatus.loading }>
-  | Readonly<{ status: QueryStatus.error; error: ErrorResponse }>
-  | Readonly<{ status: QueryStatus.loaded; data: Value }>;
+  | { status: QueryStatus.loading; origin: QueryOrigin; cancel: () => void }
+  | { status: QueryStatus.idle; origin: QueryOrigin; cancel: () => void }
+  | {
+      status: QueryStatus.error;
+      error: ErrorResponse;
+      origin: QueryOrigin;
+      retry: () => void;
+    }
+  | {
+      status: QueryStatus.loaded;
+      data: Value;
+      origin: QueryOrigin;
+      refresh: () => void;
+      undo: () => void;
+    };
 
 export const useQuery = <Value, ErrorResponse>(
   fn: () => Observable<Value>,
+  undo?: () => Observable<Value>,
+  options = {
+    timeout: 10000,
+    delay: 1000,
+  },
 ): Observable<QueryResponse<Value, ErrorResponse>> => {
-  return new Observable((subscriber) => {
-    subscriber.next({
-      status: QueryStatus.loading,
-    });
+  const refire$ = new BehaviorSubject<QueryOrigin>(QueryOrigin.initial);
+  const cancel$ = new Subject();
 
-    return fn()
-      .pipe(
+  return refire$.pipe(
+    switchMap((origin) => {
+      const query$ = (origin === 'undo' && undo ? undo() : fn()).pipe(
+        timeout(options.timeout),
         map((result) => {
-          subscriber.next({
+          return {
             status: QueryStatus.loaded,
             data: result,
-          });
-          return result;
+            origin,
+            refresh: () => refire$.next(QueryOrigin.refresh),
+            undo: () => (undo ? refire$.next(QueryOrigin.undo) : noop),
+          } as const;
         }),
         catchError((err: ErrorResponse) => {
-          subscriber.next({
+          return of({
             status: QueryStatus.error,
             error: err,
-          });
-          return of(null);
+            origin,
+            retry: () => refire$.next(QueryOrigin.retry),
+          } as const);
         }),
-      )
-      .subscribe();
-  });
-};
+      );
 
-export type CachedQueryParams<Value, InternalValue> = {
-  query: () => Observable<Value>;
-  cache: BehaviorSubject<InternalValue>;
-  toInternal: (data: unknown) => Observable<InternalValue>;
-  toExternal: (data: unknown) => Observable<Value>;
-};
-
-export const useCachedQuery = <Value, InternalValue, ErrorResponse>(
-  params: CachedQueryParams<Value, InternalValue>,
-): Observable<QueryResponse<Value, ErrorResponse>> => {
-  return new Observable<QueryResponse<Value, ErrorResponse>>((subscriber) => {
-    return params.cache
-      .pipe(
-        switchMap((cache) => {
-          /* cache first approach */
-          if (cache) {
-            return params.toExternal(cache).pipe(
-              map((reformatted) => {
-                subscriber.next({
-                  status: QueryStatus.loaded,
-                  data: reformatted,
-                });
-                return reformatted;
-              }),
-            );
-          }
-          return of(null);
+      return of(
+        {
+          origin,
+          status: QueryStatus.idle,
+          cancel: () => cancel$.next(),
+        } as QueryResponse<Value, ErrorResponse>,
+        {
+          origin,
+          status: QueryStatus.loading,
+          cancel: () => cancel$.next(),
+        } as QueryResponse<Value, ErrorResponse>,
+      ).pipe(
+        takeUntil(cancel$),
+        // include the query result after the showLoader true line
+        () => concat(query$),
+        // throttle emissions so that we do not get loader appearing
+        // if data arrives within 1 second
+        throttleTime(options.delay, asyncScheduler, {
+          leading: true,
+          trailing: true,
         }),
-        /* only continue if value was not found in the cache */
-        filter(isNil),
-        switchMap(() => useQuery<Value, ErrorResponse>(() => params.query())),
-        switchMap((response) => {
-          if (response.status === QueryStatus.loaded) {
-            return params.toInternal(response.data).pipe(
-              map((reformatted) => {
-                /* will refire the chain and take the value from the cache and
-                notify the consumer about the change */
-                params.cache.next(reformatted);
-              }),
-            );
-          }
-          /* notify the consumer that it's loading / has errored out */
-          subscriber.next(response);
-          return of(null);
-        }),
-      )
-      .subscribe();
-  });
+        // this hack keeps loader up at least 1 second if data arrives
+        // right after loader goes up
+        concatMap((x: QueryResponse<Value, ErrorResponse>) =>
+          x.status === QueryStatus.loading
+            ? EMPTY.pipe(delay(options.delay), startWith(x))
+            : of(x),
+        ),
+      );
+    }),
+  );
 };

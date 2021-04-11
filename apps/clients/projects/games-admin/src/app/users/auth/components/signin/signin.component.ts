@@ -42,6 +42,10 @@ export class SigninComponent {
   })
   email: string;
 
+  /*   onClick() {
+    this.pesho$ = useConfirm(this.peshoService.dostuff);
+  } */
+
   submit(event: Event) {
     event.preventDefault();
 
