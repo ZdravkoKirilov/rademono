@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { UiModule, ThemingModule } from '@libs/ui';
 import { UsersModule } from '../users';
+import { TranslationModule } from '../translation';
 
 @NgModule({
   declarations: [],
@@ -13,7 +14,8 @@ import { UsersModule } from '../users';
     ThemingModule.forRoot(),
     UsersModule,
     HttpClientModule,
+    TranslationModule,
   ],
-  exports: [UiModule, ThemingModule, UsersModule],
+  exports: [UiModule, ThemingModule, UsersModule, TranslationModule],
 })
 export class CoreModule {}

@@ -1,0 +1,9 @@
+{
+  "users": {
+    "auth": {
+      "signIn": "Sign in",
+      "sendCode": "Send code",
+      "sendindCode": "Sending code..."
+    }
+  }
+}

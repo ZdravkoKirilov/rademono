@@ -13,11 +13,11 @@
     <span *ngIf="error">{{ error }}</span>
 
     <button cta="primary" type="submit" [disabled]="!dto">
-      <ng-container *ngIf="codeQuery?.status !== 'loading'"
-        >Send code</ng-container
-      >
+      <ng-container *ngIf="codeQuery?.status !== 'loading'">
+        <span translate>users.auth.sendCode</span>
+      </ng-container>
       <ng-container *ngIf="codeQuery?.status === 'loading'">
-        Sending code...
+        <span translate> users.auth.sendingCode </span>
       </ng-container>
     </button>
 
