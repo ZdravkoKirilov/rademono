@@ -35,20 +35,18 @@ export type Theme = {
     '--space-3': string;
 
     '--text-base': string;
-    '--text-1': string;
-    '--text-2': string;
-    '--text-3': string;
-    '--text-4': string;
-    '--heading-1': string;
-    '--heading-2': string;
-    '--heading-3': string;
+    '--text-xs': string;
+    '--text-s': string;
+    '--text-m': string;
+    '--text-l': string;
+    '--text-xl': string;
 
     '--font-1': string;
     '--font-2': string;
     '--font-3': string;
-    '--font-weight-1': number;
-    '--font-weight-2': number;
-    '--font-weight-3': number;
+    '--font-weight-s': number;
+    '--font-weight-m': number;
+    '--font-weight-l': number;
 
     '--border-1': string;
     '--border-2': string;

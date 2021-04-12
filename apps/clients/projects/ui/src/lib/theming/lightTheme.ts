@@ -1,4 +1,4 @@
-import { Theme } from './theme';
+import { Theme } from './theme.model';
 
 export const colorPalette = {
   'color-primary-100': '#F4D0F9',
@@ -135,22 +135,19 @@ export const lightTheme: Theme = {
     '--space-3': '1.5em',
 
     '--text-base': '16px',
-    '--text-1': '1.2em',
-    '--text-2': '1em',
-    '--text-3': '.8em',
-    '--text-4': '.6em',
-
-    '--heading-1': '2.5em',
-    '--heading-2': '2em',
-    '--heading-3': '1.7em',
+    '--text-xl': '1.4em',
+    '--text-l': '1.2em',
+    '--text-m': '1em',
+    '--text-s': '.8em',
+    '--text-xs': '.6em',
 
     '--font-1': 'Brush Script MT',
     '--font-2': 'Garamond',
     '--font-3': 'Tahoma',
 
-    '--font-weight-1': 500,
-    '--font-weight-2': 650,
-    '--font-weight-3': 800,
+    '--font-weight-s': 400,
+    '--font-weight-m': 500,
+    '--font-weight-l': 700,
 
     '--screen-size-1': '40em',
     '--screen-size-2': '52em',

@@ -8,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 
-import { Theme } from './theme';
+import { Theme } from './theme.model';
 
 export const THEMES = new InjectionToken('THEMES');
 

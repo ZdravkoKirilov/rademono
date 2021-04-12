@@ -1,7 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Theme } from './theme';
+import { Theme } from './theme.model';
 import { lightTheme } from './lightTheme';
 import { THEMES, ThemeDirective } from './theme.directive';
 
