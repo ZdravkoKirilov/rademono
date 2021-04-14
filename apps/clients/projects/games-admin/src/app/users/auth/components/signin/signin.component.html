@@ -21,6 +21,10 @@
       </ng-container>
     </button>
 
+    <div>
+      <a routerLink="code" translate>users.auth.alreadyHaveCode</a>
+    </div>
+
     <span *ngIf="codeQuery?.status === 'loaded'"> Code sent! </span>
 
     <span *ngIf="codeQuery?.status === 'error'">

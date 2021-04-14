@@ -1,0 +1,18 @@
+$sizes: 4;
+$margins: 'mb', 'mt', 'ml', 'mr';
+
+@each $marginType in $margins {
+  @for $i from 1 through $sizes {
+    .#{$marginType}-#{$i} {
+      @if ($marginType == 'mb') {
+        margin-bottom: var(--space-#{$i});
+      } @else if ($marginType == 'mt') {
+        margin-top: var(--space-#{$i});
+      } @else if ($marginType == 'mr') {
+        margin-right: var(--space-#{$i});
+      } @else if ($marginType == 'ml') {
+        margin-left: var(--space-#{$i});
+      }
+    }
+  }
+}

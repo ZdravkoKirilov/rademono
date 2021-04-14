@@ -3,7 +3,12 @@
     "auth": {
       "signIn": "Sign in",
       "sendCode": "Send code",
-      "sendindCode": "Sending code..."
+      "sendindCode": "Sending code...",
+      "alreadyHaveCode": "I already have the code",
+      "sendCodeAgain": "Send new code",
+      "signInWithCode": "Sign in with code",
+      "signingIn": "Signing in...",
+      "code": "Code"
     }
   }
 }

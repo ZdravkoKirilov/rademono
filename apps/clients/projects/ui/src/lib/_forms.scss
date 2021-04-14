@@ -1,0 +1,39 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  & > * {
+    margin-bottom: var(--space-2);
+  }
+}
+
+input {
+  background-color: transparent;
+  border: 1px solid var(--primary-main);
+  padding: var(--space-1);
+  outline: none;
+  border-radius: 10%/50%;
+
+  &:focus,
+  &:hover {
+    box-shadow: 0 0 0 2px var(--primary-transparent);
+  }
+
+  &::placeholder {
+    color: var(--primary-main);
+    font-style: italic;
+    opacity: 1; /* Firefox */
+  }
+
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: var(--primary-main);
+  }
+
+  &::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: var(--primary-main);
+  }
+}

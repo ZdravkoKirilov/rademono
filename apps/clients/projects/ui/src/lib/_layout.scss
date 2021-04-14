@@ -1,0 +1,19 @@
+.full-container {
+  display: block;
+  height: 100%;
+}
+
+.centered-container {
+  & > * {
+    margin: 0 auto;
+  }
+}
+
+.centered-content {
+  padding: var(--space-3);
+  width: 1024px;
+
+  & > * {
+    margin: 0 auto;
+  }
+}

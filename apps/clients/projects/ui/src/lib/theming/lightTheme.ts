@@ -130,9 +130,10 @@ export const lightTheme: Theme = {
     '--primary-light': colorPalette['color-primary-200'],
     '--on-primary-light': colorPalette['color-text-dark'],
 
-    '--space-1': '0.5em',
+    '--space-1': '.5em',
     '--space-2': '1em',
-    '--space-3': '1.5em',
+    '--space-3': '2em',
+    '--space-4': '3em',
 
     '--text-base': '16px',
     '--text-xl': '1.4em',
