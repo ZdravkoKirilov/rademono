@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { UiComponent } from './ui.component';
+import { UiProviderComponent } from './ui-provider.component';
 
 @NgModule({
-  declarations: [UiComponent],
+  declarations: [UiProviderComponent],
   imports: [],
-  exports: [UiComponent],
+  exports: [UiProviderComponent],
 })
 export class UiModule {}

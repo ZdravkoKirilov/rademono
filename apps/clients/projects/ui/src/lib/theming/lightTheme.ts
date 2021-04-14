@@ -130,17 +130,17 @@ export const lightTheme: Theme = {
     '--primary-light': colorPalette['color-primary-200'],
     '--on-primary-light': colorPalette['color-text-dark'],
 
-    '--space-1': '.5em',
-    '--space-2': '1em',
-    '--space-3': '2em',
-    '--space-4': '3em',
+    '--space-1': '8px',
+    '--space-2': '16px',
+    '--space-3': '24px',
+    '--space-4': '32px',
 
-    '--text-base': '16px',
-    '--text-xl': '1.4em',
-    '--text-l': '1.2em',
-    '--text-m': '1em',
-    '--text-s': '.8em',
-    '--text-xs': '.6em',
+    '--text-base': '1em',
+    '--text-xl': '1.4rem',
+    '--text-l': '1.2rem',
+    '--text-m': '1rem',
+    '--text-s': '.8rem',
+    '--text-xs': '.6rem',
 
     '--font-1': 'Brush Script MT',
     '--font-2': 'Garamond',
@@ -149,10 +149,6 @@ export const lightTheme: Theme = {
     '--font-weight-s': 400,
     '--font-weight-m': 500,
     '--font-weight-l': 700,
-
-    '--screen-size-1': '40em',
-    '--screen-size-2': '52em',
-    '--screen-size-3': '64em',
 
     '--border-1': '1px',
     '--border-2': '2px',

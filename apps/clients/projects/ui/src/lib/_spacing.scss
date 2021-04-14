@@ -1,5 +1,6 @@
 $sizes: 4;
-$margins: 'mb', 'mt', 'ml', 'mr';
+$margins: 'mb', 'mt', 'ml', 'mr', 'm';
+$paddings: 'pb', 'pt', 'pl', 'pr', 'p';
 
 @each $marginType in $margins {
   @for $i from 1 through $sizes {
@@ -12,6 +13,26 @@ $margins: 'mb', 'mt', 'ml', 'mr';
         margin-right: var(--space-#{$i});
       } @else if ($marginType == 'ml') {
         margin-left: var(--space-#{$i});
+      } @else if ($marginType == 'm') {
+        margin: var(--space-#{$i});
+      }
+    }
+  }
+}
+
+@each $paddingType in $paddings {
+  @for $i from 1 through $sizes {
+    .#{$paddingType}-#{$i} {
+      @if ($paddingType == 'pb') {
+        padding-bottom: var(--space-#{$i});
+      } @else if ($paddingType == 'pt') {
+        padding-top: var(--space-#{$i});
+      } @else if ($paddingType == 'pr') {
+        padding-right: var(--space-#{$i});
+      } @else if ($paddingType == 'pl') {
+        padding-left: var(--space-#{$i});
+      } @else if ($paddingType == 'p') {
+        padding: var(--space-#{$i});
       }
     }
   }

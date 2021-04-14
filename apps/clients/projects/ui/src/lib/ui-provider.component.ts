@@ -1,9 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector: 'lib-ui',
+  selector: 'lib-ui-provider',
   template: `<ng-content></ng-content>`,
-  styleUrls: ['./ui.component.scss'],
+  styleUrls: ['./ui-provider.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class UiComponent {}
+export class UiProviderComponent {}

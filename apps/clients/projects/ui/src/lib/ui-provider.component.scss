@@ -1,4 +1,5 @@
-@import './cta.scss', './layout.scss', './forms.scss', './spacing';
+@import './cta.scss', './layout.scss', './forms.scss', './spacing',
+  './media_queries', './sizings';
 
 html {
   font-size: var(--text-base);

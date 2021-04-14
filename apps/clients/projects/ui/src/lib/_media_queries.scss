@@ -1,0 +1,38 @@
+@import './sizings';
+
+@mixin above_phone {
+  @media (min-width: $screen-size1) {
+    @content;
+  }
+}
+
+@mixin above_tablet {
+  @media (min-width: $screen-size2) {
+    @content;
+  }
+}
+
+@mixin above_landscape_tablet {
+  @media (min-width: $screen-size3) {
+    @content;
+  }
+}
+
+@mixin above_small_laptop {
+  @media (min-width: $screen-size4) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $screen-size-5) {
+    @content;
+  }
+}
+
+// Custom devices
+@mixin custom-size($screen) {
+  @media (min-width: $screen) {
+    @content;
+  }
+}

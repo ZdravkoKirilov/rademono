@@ -1,3 +1,5 @@
+@import './media_queries';
+
 .full-container {
   display: block;
   height: 100%;
@@ -10,8 +12,11 @@
 }
 
 .centered-content {
-  padding: var(--space-3);
-  width: 1024px;
+  width: 100%;
+
+  @include above_landscape_tablet {
+    width: $screen-size3;
+  }
 
   & > * {
     margin: 0 auto;

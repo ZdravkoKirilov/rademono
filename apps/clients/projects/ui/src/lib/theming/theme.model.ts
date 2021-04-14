@@ -52,10 +52,6 @@ export type Theme = {
     '--border-1': string;
     '--border-2': string;
 
-    '--screen-size-1': string;
-    '--screen-size-2': string;
-    '--screen-size-3': string;
-
     '--border-radius-1': string;
     '--border-radius-2': string;
   };
