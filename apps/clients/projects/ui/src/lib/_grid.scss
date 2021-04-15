@@ -1,0 +1,42 @@
+@import './media_queries';
+
+$grid-columns: 12;
+
+@for $i from 1 through $grid-columns {
+  .width-#{$i} {
+    width: ($i / 12) * 100%;
+  }
+}
+
+@include above_phone {
+  @for $i from 1 through $grid-columns {
+    .width-ap-#{$i} {
+      width: ($i / 12) * 100%;
+    }
+  }
+}
+
+@include above_tablet {
+  @for $i from 1 through $grid-columns {
+    .width-at-#{$i} {
+      width: ($i / 12) * 100%;
+    }
+  }
+}
+
+.block {
+  display: block;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
