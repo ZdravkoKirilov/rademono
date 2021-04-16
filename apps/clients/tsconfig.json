@@ -18,7 +18,7 @@
       "@games-admin/*": ["projects/games-admin/src/app/*"],
       "@env": ["projects/games-admin/src/environments/environment.ts"],
       "buffer": ["shims/buffer.js"],
-      "util": ["shims/util.js"]
+      "util": ["shims/util.js"],
     }
   },
   "angularCompilerOptions": {

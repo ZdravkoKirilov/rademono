@@ -10,7 +10,7 @@ $grid-columns: 12;
 
 @include above_phone {
   @for $i from 1 through $grid-columns {
-    .width-ap-#{$i} {
+    .width-xs-#{$i} {
       width: ($i / 12) * 100%;
     }
   }
@@ -18,7 +18,23 @@ $grid-columns: 12;
 
 @include above_tablet {
   @for $i from 1 through $grid-columns {
-    .width-at-#{$i} {
+    .width-s-#{$i} {
+      width: ($i / 12) * 100%;
+    }
+  }
+}
+
+@include above_landscape_tablet {
+  @for $i from 1 through $grid-columns {
+    .width-m-#{$i} {
+      width: ($i / 12) * 100%;
+    }
+  }
+}
+
+@include above_small_laptop {
+  @for $i from 1 through $grid-columns {
+    .width-l-#{$i} {
       width: ($i / 12) * 100%;
     }
   }
