@@ -22,15 +22,14 @@
     </button>
 
     <div>
-      <svg-icon key="success"></svg-icon>
-      <svg-icon key="warning"></svg-icon>
       <a routerLink="code" translate>users.auth.alreadyHaveCode</a>
     </div>
+    <ui-success [inactive]="codeQuery?.status !== 'loaded'">
+      <span translate>users.auth.codeSent</span>
+    </ui-success>
 
-    <span *ngIf="codeQuery?.status === 'loaded'"> Code sent! </span>
-
-    <span *ngIf="codeQuery?.status === 'error'">
-      Error while sending code
-    </span>
+    <ui-error [inactive]="codeQuery?.status !== 'error'"
+      >Error while sending code</ui-error
+    >
   </form>
 </article>

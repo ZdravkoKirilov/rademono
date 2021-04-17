@@ -4,6 +4,7 @@ import { SvgIconComponent, SvgIconsModule } from '@ngneat/svg-icon';
 
 import { appSuccessIcon } from '../../generated-icons/success';
 import { appWarningIcon } from '../../generated-icons/warning';
+import { appErrorIcon } from '../../generated-icons/error';
 
 @NgModule({
   declarations: [],
@@ -19,7 +20,7 @@ import { appWarningIcon } from '../../generated-icons/warning';
         xxl: '60px',
       },
       defaultSize: 'md',
-      icons: [appSuccessIcon, appWarningIcon],
+      icons: [appSuccessIcon, appWarningIcon, appErrorIcon],
     }),
   ],
   exports: [SvgIconsModule, SvgIconComponent],

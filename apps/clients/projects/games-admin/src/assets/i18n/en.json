@@ -3,6 +3,7 @@
     "auth": {
       "signIn": "Sign in",
       "sendCode": "Send code",
+      "codeSent": "Code sent",
       "sendindCode": "Sending code...",
       "alreadyHaveCode": "I already have the code",
       "sendCodeAgain": "Send new code",

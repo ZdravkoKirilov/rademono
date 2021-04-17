@@ -19,16 +19,16 @@ export type Theme = {
     '--on-primary-light': string;
 
     '--success': string;
-    '--on-success': string;
+    '--success-light': string;
 
     '--info': string;
     '--on-info': string;
 
     '--warning': string;
-    '--on-warning': string;
+    '--warning-light': string;
 
-    '--danger': string;
-    '--on-danger': string;
+    '--error': string;
+    '--error-light': string;
 
     '--space-1': string;
     '--space-2': string;

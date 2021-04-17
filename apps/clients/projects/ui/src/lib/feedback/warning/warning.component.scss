@@ -1,0 +1,9 @@
+:host {
+  padding: var(--space-3);
+  border: var(--border-2) solid var(--warning);
+  background-color: var(--warning-light);
+  svg-icon {
+    color: var(--warning);
+    margin-right: var(--space-1);
+  }
+}

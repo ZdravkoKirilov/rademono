@@ -107,17 +107,17 @@ export const lightTheme: Theme = {
     '--border-radius-1': '.5em',
     '--border-radius-2': '1em',
 
-    '--danger': colorPalette['color-danger-500'],
-    '--on-danger': colorPalette['color-text-light'],
+    '--error': colorPalette['color-danger-500'],
+    '--error-light': colorPalette['color-danger-transparent-100'],
 
     '--info': colorPalette['color-info-500'],
     '--on-info': colorPalette['color-text-light'],
 
     '--success': colorPalette['color-success-500'],
-    '--on-success': colorPalette['color-text-light'],
+    '--success-light': colorPalette['color-success-transparent-100'],
 
     '--warning': colorPalette['color-warning-500'],
-    '--on-warning': colorPalette['color-text-light'],
+    '--warning-light': colorPalette['color-warning-transparent-100'],
 
     '--primary-dark': colorPalette['color-primary-800'],
     '--on-primary-dark': colorPalette['color-text-light'],
