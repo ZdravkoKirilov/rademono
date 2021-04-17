@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { PrivateAdminUser, SendCodeDto, mapEither } from '@end/global';
-import { OnChange } from '@end/client';
+import { OnChange } from '@libs/render-kit';
+import { AutoUnsubscribe, QueryResponse } from '@games-admin/shared';
 
 import { AuthService } from '../../services/auth.service';
-import { AutoUnsubscribe, QueryResponse } from '@games-admin/shared';
 
 @Component({
   selector: 'app-signin',

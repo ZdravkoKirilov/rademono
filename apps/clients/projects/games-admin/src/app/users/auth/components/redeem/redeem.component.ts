@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { OnChange } from '@end/client';
+import { OnChange } from '@libs/render-kit';
 import { mapEither, PrivateAdminUser, SignInDto, TokenDto } from '@end/global';
 import { QueryResponse } from '@games-admin/shared';
 import { AuthService } from '../../services/auth.service';

@@ -13,6 +13,7 @@
     "start:apps": "npm run start:games-admin & npm run start:showcases",
     "build:ui:watch": "ng build --project=ui --watch",
     "build:ui": "ng build --project=ui",
+    "build:render-kit:watch": "ng build --project=render-kit --watch",
     "start": "run-s build:ui start:apps",
     "generate-icons": "svg-generator"
   },

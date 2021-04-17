@@ -5,7 +5,6 @@
     "node": "15.3.0"
   },
   "workspaces": [
-    "libs/client",
     "libs/global"
   ],
   "version": "1.0.0",

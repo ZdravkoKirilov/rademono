@@ -1,10 +1,7 @@
 {
   "compileOnSave": false,
   "extends": "../../tsconfig.json",
-  "references": [
-    { "path": "../../libs/global" },
-    { "path": "../../libs/client" }
-  ],
+  "references": [{ "path": "../../libs/global" }],
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
@@ -15,10 +12,11 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@libs/ui": ["dist/ui/ui", "dist/ui"],
+      "@libs/render-kit": ["dist/render-kit/render-kit", "dist/render-kit"],
       "@games-admin/*": ["projects/games-admin/src/app/*"],
       "@env": ["projects/games-admin/src/environments/environment.ts"],
       "buffer": ["shims/buffer.js"],
-      "util": ["shims/util.js"],
+      "util": ["shims/util.js"]
     }
   },
   "angularCompilerOptions": {
