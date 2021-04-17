@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { UiModule, ThemingModule } from '@libs/ui';
-import { UsersModule } from '../users';
+import { UnauthorizedInterceptor } from '@games-admin/users/auth';
+
 import { TranslationModule } from '../translation';
 
 @NgModule({
@@ -12,10 +13,16 @@ import { TranslationModule } from '../translation';
     CommonModule,
     UiModule,
     ThemingModule.forRoot(),
-    UsersModule,
     HttpClientModule,
     TranslationModule,
   ],
-  exports: [UiModule, ThemingModule, UsersModule, TranslationModule],
+  exports: [UiModule, ThemingModule, TranslationModule],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
+      multi: true,
+    },
+  ],
 })
 export class CoreModule {}

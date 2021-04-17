@@ -1,6 +1,6 @@
 <article class="centered-content">
   <form (submit)="submit($event)">
-    <legend translate class="mb-3 pr-2">users.auth.signInWithCode</legend>
+    <legend translate class="mb-3">users.auth.signInWithCode</legend>
 
     <input
       [attr.placeholder]="'code' | translate"
@@ -10,8 +10,6 @@
       [(ngModel)]="code"
     />
 
-    <span *ngIf="error">{{ error }}</span>
-
     <button cta="primary" type="submit" [disabled]="!dto">
       <ng-container *ngIf="sendCodeQuery?.status !== 'loading'">
         <span translate>users.auth.signIn</span>
@@ -20,19 +18,15 @@
         <span translate> users.auth.signingIn </span>
       </ng-container>
     </button>
-
-    <span *ngIf="sendCodeQuery && sendCodeQuery.status === 'loaded'">
-      {{ sendCodeQuery?.data?.token }}
-    </span>
-
-    <span *ngIf="sendCodeQuery?.status === 'error'">
-      <div>Error while signing in</div>
-
-      <div>
-        <a routerLink="../" translate>
-          <span translate>users.auth.sendCodeAgain </span></a
-        >
-      </div>
-    </span>
   </form>
+
+  <ui-error [inactive]="sendCodeQuery?.status !== 'error'"
+    >Error while signing in</ui-error
+  >
+
+  <div *ngIf="sendCodeQuery?.status === 'error'">
+    <a routerLink="../" translate>
+      <span translate>users.auth.sendCodeAgain </span></a
+    >
+  </div>
 </article>

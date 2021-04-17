@@ -24,4 +24,8 @@ export class LocalStorageService {
   getToken(): JWT | null {
     return localStorage.getItem('token') as JWT;
   }
+
+  removeToken() {
+    localStorage.removeItem('token');
+  }
 }

@@ -11,5 +11,8 @@
       "signingIn": "Signing in...",
       "code": "Code"
     }
+  },
+  "home": {
+    "link": "Home"
   }
 }

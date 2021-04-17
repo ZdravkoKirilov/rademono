@@ -4,7 +4,11 @@ import { tap } from 'rxjs/operators';
 
 import { OnChange } from '@libs/render-kit';
 import { mapEither, PrivateAdminUser, SignInDto, TokenDto } from '@end/global';
-import { QueryResponse } from '@games-admin/shared';
+import {
+  AppRouterService,
+  QueryResponse,
+  QueryStatus,
+} from '@games-admin/shared';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -14,10 +18,12 @@ import { AuthService } from '../../services/auth.service';
   host: { class: 'full-container centered-container' },
 })
 export class RedeemComponent {
-  error?: string;
   dto?: SignInDto;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private appRouter: AppRouterService,
+  ) {}
 
   sendCode$: Subscription;
   sendCodeQuery: QueryResponse<TokenDto, unknown>;
@@ -28,10 +34,8 @@ export class RedeemComponent {
         mapEither(
           () => {
             self.dto = undefined;
-            self.error = 'Invalid code';
           },
           (value) => {
-            self.error = undefined;
             self.dto = value;
           },
         ),
@@ -49,6 +53,10 @@ export class RedeemComponent {
         .pipe(
           tap((res) => {
             this.sendCodeQuery = res;
+
+            if (res.status === QueryStatus.loaded) {
+              this.appRouter.goToHome();
+            }
           }),
         )
         .subscribe();

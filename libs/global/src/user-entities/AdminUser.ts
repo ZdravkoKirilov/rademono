@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsIn,
   IsJWT,
+  IsNotEmpty,
   IsOptional,
   IsUUID,
 } from 'class-validator';
@@ -40,8 +41,19 @@ export enum AdminUserTypes {
 }
 
 export class AdminUser {
+  @Expose()
+  @IsNotEmpty()
+  @IsUUID('4')
   id: AdminUserId;
+
+  @Expose()
+  @IsNotEmpty()
+  @IsEmail()
   email: Email;
+
+  @Expose()
+  @IsNotEmpty()
+  @IsIn(Object.values(AdminUserTypes))
   type: AdminUserTypes;
 }
 

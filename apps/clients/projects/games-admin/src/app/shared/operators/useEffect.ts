@@ -69,6 +69,16 @@ export function useConfirm<Value, Err>(
   );
 }
 
+export const valueToQueryResponse = <T>(data: T, refresh = noop) => {
+  return of({
+    status: QueryStatus.loaded,
+    data,
+    origin: QueryOrigin.cache,
+    refresh: refresh,
+    undo: noop,
+  } as QueryResponse<T>);
+};
+
 export const revertOnFail = <Value, Err, Cache>({
   cache$,
   fn,

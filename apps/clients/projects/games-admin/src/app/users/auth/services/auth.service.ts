@@ -1,22 +1,12 @@
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs/operators';
 
 import { SendCodeDto, SignInDto, TokenDto } from '@end/global';
 
-import {
-  BaseHttpService,
-  LocalStorageService,
-  endpoints,
-  useQuery,
-  QueryStatus,
-} from '@games-admin/shared';
+import { BaseHttpService, endpoints, useQuery } from '@games-admin/shared';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private storage: LocalStorageService,
-    private http: BaseHttpService,
-  ) {}
+  constructor(private http: BaseHttpService) {}
 
   public requestLoginCode(dto: SendCodeDto) {
     return useQuery<void, unknown>(() =>
@@ -44,13 +34,6 @@ export class AuthService {
       this.http.post({
         url: endpoints.requestAuthToken,
         data: dto,
-      }),
-    ).pipe(
-      tap((result) => {
-        if (result.status === QueryStatus.loaded) {
-          this.storage.saveToken(result.data.token);
-        }
-        return result;
       }),
     );
   }
