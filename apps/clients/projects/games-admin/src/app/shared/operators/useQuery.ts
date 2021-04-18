@@ -1,27 +1,10 @@
-import {
-  BehaviorSubject,
-  Observable,
-  of,
-  asyncScheduler,
-  EMPTY,
-  concat,
-  Subject,
-} from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  delay,
-  map,
-  startWith,
-  switchMap,
-  takeUntil,
-  throttleTime,
-  timeout,
-} from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { catchError, map, switchMap, takeUntil, timeout } from 'rxjs/operators';
 import { noop } from 'lodash/fp';
 
+import { RequestError } from '@libs/render-kit';
+
 export enum QueryStatus {
-  idle = 'idle',
   loading = 'loading',
   error = 'error',
   loaded = 'loaded',
@@ -35,9 +18,8 @@ export enum QueryOrigin {
   undo = 'undo',
 }
 
-export type QueryResponse<Value = unknown, ErrorResponse = unknown> =
+export type QueryResponse<Value = unknown, ErrorResponse = RequestError> =
   | { status: QueryStatus.loading; origin: QueryOrigin; cancel: () => void }
-  | { status: QueryStatus.idle; origin: QueryOrigin; cancel: () => void }
   | {
       status: QueryStatus.error;
       error: ErrorResponse;
@@ -53,6 +35,54 @@ export type QueryResponse<Value = unknown, ErrorResponse = unknown> =
     };
 
 export const useQuery = <Value, ErrorResponse>(
+  fn: () => Observable<Value>,
+  undo?: () => Observable<Value>,
+  options = {
+    timeout: 10000,
+  },
+): Observable<QueryResponse<Value, ErrorResponse>> => {
+  const refire$ = new BehaviorSubject<QueryOrigin>(QueryOrigin.initial);
+  const cancel$ = new Subject();
+
+  return new Observable((observer) => {
+    observer.next({
+      status: QueryStatus.loading,
+      origin: QueryOrigin.initial,
+      cancel: () => cancel$.next(),
+    });
+
+    return refire$
+      .pipe(
+        switchMap((origin) => {
+          return (origin === 'undo' && undo ? undo() : fn()).pipe(
+            takeUntil(cancel$),
+            timeout(options.timeout),
+            map((result) => {
+              observer.next({
+                status: QueryStatus.loaded,
+                data: result,
+                origin,
+                refresh: () => refire$.next(QueryOrigin.refresh),
+                undo: () => (undo ? refire$.next(QueryOrigin.undo) : noop),
+              } as const);
+            }),
+            catchError((err: ErrorResponse) => {
+              observer.next({
+                status: QueryStatus.error,
+                error: err,
+                origin,
+                retry: () => refire$.next(QueryOrigin.retry),
+              } as const);
+              return of(null);
+            }),
+          );
+        }),
+      )
+      .subscribe();
+  });
+};
+
+/* export const useQuery = <Value, ErrorResponse>(
   fn: () => Observable<Value>,
   undo?: () => Observable<Value>,
   options = {
@@ -117,4 +147,4 @@ export const useQuery = <Value, ErrorResponse>(
       );
     }),
   );
-};
+}; */

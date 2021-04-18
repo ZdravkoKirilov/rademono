@@ -24,7 +24,8 @@
     >Error while signing in</ui-error
   >
 
-  <div *ngIf="sendCodeQuery?.status === 'error'">
+  <div *ngIf="sendCodeQuery && sendCodeQuery.status === 'error'">
+    {{ sendCodeQuery.error | json }}
     <a routerLink="../" translate>
       <span translate>users.auth.sendCodeAgain </span></a
     >

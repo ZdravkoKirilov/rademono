@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
-import { AdminUser, SignInDto } from '@end/global';
+import { AdminUser, SendCodeDto, SignInDto, TokenDto } from '@end/global';
 import {
   AppRouterService,
   BaseHttpService,
@@ -10,15 +10,15 @@ import {
   LocalStorageService,
   QueryStatus,
   useQuery,
+  valueToQueryResponse,
 } from '@games-admin/shared';
-import { AuthService } from '../auth/services/auth.service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
   constructor(
     private http: BaseHttpService,
-    private authService: AuthService,
     private router: AppRouterService,
     private storage: LocalStorageService,
   ) {}
@@ -27,7 +27,25 @@ export class UsersService {
 
   user$ = this._user$.asObservable();
 
-  fetchUser() {
+  getOrFetchUser() {
+    return this.user$.pipe(
+      switchMap((user) => {
+        const token = this.storage.getToken();
+
+        if (user) {
+          return valueToQueryResponse(user);
+        }
+
+        if (token) {
+          return valueToQueryResponse(null);
+        }
+
+        return this.fetchUser();
+      }),
+    );
+  }
+
+  private fetchUser() {
     return useQuery(() =>
       this.http.get({
         url: endpoints.getCurrentUser,
@@ -43,10 +61,11 @@ export class UsersService {
   }
 
   login(dto: SignInDto) {
-    return this.authService.requestToken(dto).pipe(
+    return this.requestToken(dto).pipe(
       switchMap((res) => {
         if (res.status === QueryStatus.loaded) {
           this.storage.saveToken(res.data.token);
+          console.log('token saved!');
           return this.fetchUser();
         }
         return of(res);
@@ -56,6 +75,25 @@ export class UsersService {
 
   logout(invalidateToken = false) {
     this.storage.removeToken();
+    this._user$.next(null);
     this.router.goToLogin();
+  }
+
+  requestLoginCode(dto: SendCodeDto) {
+    return useQuery<void, unknown>(() =>
+      this.http.post({
+        url: endpoints.requestAuthCode,
+        data: dto,
+      }),
+    );
+  }
+
+  requestToken(dto: SignInDto) {
+    return useQuery<TokenDto, unknown>(() =>
+      this.http.post({
+        url: endpoints.requestAuthToken,
+        data: dto,
+      }),
+    );
   }
 }

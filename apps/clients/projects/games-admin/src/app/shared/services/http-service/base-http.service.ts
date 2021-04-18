@@ -32,16 +32,15 @@ export class BaseHttpService {
   constructor(private http: HttpClient, private storage: LocalStorageService) {}
 
   private createDefaultHeaders(overrides: Record<string, string> = {}) {
-    const headers = new HttpHeaders();
-
+    let headers = new HttpHeaders();
     const token = this.storage.getToken();
 
     if (token) {
-      headers.set('Authorization', token);
+      headers = headers.append('Authorization', token);
     }
 
     Object.entries(overrides).forEach(([key, value]) => {
-      headers.set(key, value);
+      headers = headers.append(key, value);
     });
 
     return headers;

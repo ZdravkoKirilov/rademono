@@ -5,8 +5,7 @@ import { tap } from 'rxjs/operators';
 import { PrivateAdminUser, SendCodeDto, mapEither } from '@end/global';
 import { OnChange } from '@libs/render-kit';
 import { AutoUnsubscribe, QueryResponse } from '@games-admin/shared';
-
-import { AuthService } from '../../services/auth.service';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
   selector: 'app-signin',
@@ -19,7 +18,7 @@ export class SigninComponent {
   error?: string;
   dto?: SendCodeDto;
 
-  constructor(private authService: AuthService) {}
+  constructor(private userService: UsersService) {}
 
   requestLoginCode$: Subscription;
   codeQuery: QueryResponse<void, unknown>;
@@ -42,15 +41,11 @@ export class SigninComponent {
   })
   email: string;
 
-  /*   onClick() {
-    this.pesho$ = useConfirm(this.peshoService.dostuff);
-  } */
-
   submit(event: Event) {
     event.preventDefault();
 
     if (this.dto) {
-      this.requestLoginCode$ = this.authService
+      this.requestLoginCode$ = this.userService
         .requestLoginCode(this.dto)
         .pipe(
           tap((res) => {

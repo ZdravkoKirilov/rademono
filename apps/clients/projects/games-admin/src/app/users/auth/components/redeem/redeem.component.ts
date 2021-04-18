@@ -3,13 +3,13 @@ import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { OnChange } from '@libs/render-kit';
-import { mapEither, PrivateAdminUser, SignInDto, TokenDto } from '@end/global';
+import { AdminUser, mapEither, PrivateAdminUser, SignInDto } from '@end/global';
 import {
   AppRouterService,
   QueryResponse,
   QueryStatus,
 } from '@games-admin/shared';
-import { AuthService } from '../../services/auth.service';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
   selector: 'app-redeem',
@@ -21,12 +21,12 @@ export class RedeemComponent {
   dto?: SignInDto;
 
   constructor(
-    private authService: AuthService,
+    private usersService: UsersService,
     private appRouter: AppRouterService,
   ) {}
 
   sendCode$: Subscription;
-  sendCodeQuery: QueryResponse<TokenDto, unknown>;
+  sendCodeQuery: QueryResponse<AdminUser, unknown>;
 
   @OnChange<unknown, RedeemComponent>(function (value, self) {
     PrivateAdminUser.toSignInDto({ code: value })
@@ -48,8 +48,8 @@ export class RedeemComponent {
     event.preventDefault();
 
     if (this.dto) {
-      this.sendCode$ = this.authService
-        .requestToken(this.dto)
+      this.sendCode$ = this.usersService
+        .login(this.dto)
         .pipe(
           tap((res) => {
             this.sendCodeQuery = res;
