@@ -6,13 +6,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '@games-admin/shared';
 import { SigninComponent } from './components/signin/signin.component';
 import { RedeemComponent } from './components/redeem/redeem.component';
+import { WithoutAuthGuard } from './guards';
 
 const routes: Routes = [
   {
     path: '',
     children: [
-      { path: 'signin', component: SigninComponent },
-      { path: 'signin/code', component: RedeemComponent },
+      {
+        path: 'signin',
+        component: SigninComponent,
+        canActivate: [WithoutAuthGuard],
+      },
+      {
+        path: 'signin/code',
+        component: RedeemComponent,
+        canActivate: [WithoutAuthGuard],
+      },
     ],
   },
 ];
@@ -26,6 +35,6 @@ const routes: Routes = [
     FormsModule,
   ],
   exports: [RouterModule],
-  providers: [],
+  providers: [WithoutAuthGuard],
 })
 export class AuthModule {}

@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomeDashboardComponent } from './components/home-dashboard/home-dashboard.component';
+import { WithAuthGuard } from '@games-admin/users/auth';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeDashboardComponent,
+    canActivate: [WithAuthGuard],
   },
 ];
 
@@ -15,5 +17,6 @@ const routes: Routes = [
   declarations: [HomeDashboardComponent],
   imports: [CommonModule, RouterModule.forChild(routes)],
   exports: [RouterModule],
+  providers: [WithAuthGuard],
 })
 export class HomeModule {}

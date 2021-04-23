@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
 import { AdminUser, SendCodeDto, SignInDto, TokenDto } from '@end/global';
@@ -8,10 +8,12 @@ import {
   BaseHttpService,
   endpoints,
   LocalStorageService,
+  QueryResponse,
   QueryStatus,
   useQuery,
   valueToQueryResponse,
 } from '@games-admin/shared';
+import { RequestError } from '@libs/render-kit';
 
 @Injectable({
   providedIn: 'root',
@@ -27,26 +29,32 @@ export class UsersService {
 
   user$ = this._user$.asObservable();
 
-  getOrFetchUser() {
-    return this.user$.pipe(
-      switchMap((user) => {
-        const token = this.storage.getToken();
+  userQuery$: Observable<QueryResponse<AdminUser | null, RequestError>> | null;
 
-        if (user) {
-          return valueToQueryResponse(user);
-        }
+  getOrFetchUser(): Observable<QueryResponse<AdminUser | null, RequestError>> {
+    this.userQuery$ =
+      this.userQuery$ ||
+      this.user$.pipe(
+        switchMap((user) => {
+          const token = this.storage.getToken();
 
-        if (token) {
+          if (user) {
+            return valueToQueryResponse(user);
+          }
+
+          if (token) {
+            return this.fetchUser();
+          }
+
           return valueToQueryResponse(null);
-        }
+        }),
+      );
 
-        return this.fetchUser();
-      }),
-    );
+    return this.userQuery$;
   }
 
   private fetchUser() {
-    return useQuery(() =>
+    return useQuery<AdminUser, RequestError>(() =>
       this.http.get({
         url: endpoints.getCurrentUser,
         responseShape: AdminUser,
@@ -76,11 +84,12 @@ export class UsersService {
   logout(invalidateToken = false) {
     this.storage.removeToken();
     this._user$.next(null);
+    this.userQuery$ = null;
     this.router.goToLogin();
   }
 
   requestLoginCode(dto: SendCodeDto) {
-    return useQuery<void, unknown>(() =>
+    return useQuery<void, RequestError>(() =>
       this.http.post({
         url: endpoints.requestAuthCode,
         data: dto,
@@ -89,7 +98,7 @@ export class UsersService {
   }
 
   requestToken(dto: SignInDto) {
-    return useQuery<TokenDto, unknown>(() =>
+    return useQuery<TokenDto, RequestError>(() =>
       this.http.post({
         url: endpoints.requestAuthToken,
         data: dto,

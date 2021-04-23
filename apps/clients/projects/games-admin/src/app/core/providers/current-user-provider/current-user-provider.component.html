@@ -1,1 +1,6 @@
-<ng-content></ng-content>
+<ng-container *ngIf="user$ | async as userQuery">
+  <span *ngIf="userQuery.status === 'loading'"> Loading user... </span>
+  <ng-container *ngIf="userQuery.status === 'loaded'">
+    <ng-content></ng-content>
+  </ng-container>
+</ng-container>
