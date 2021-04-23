@@ -29,7 +29,9 @@ export class UsersService {
 
   user$ = this._user$.asObservable();
 
-  userQuery$: Observable<QueryResponse<AdminUser | null, RequestError>> | null;
+  private userQuery$: Observable<
+    QueryResponse<AdminUser | null, RequestError>
+  > | null;
 
   getOrFetchUser(): Observable<QueryResponse<AdminUser | null, RequestError>> {
     this.userQuery$ =
@@ -84,7 +86,7 @@ export class UsersService {
   logout(invalidateToken = false) {
     this.storage.removeToken();
     this._user$.next(null);
-    this.userQuery$ = null;
+
     this.router.goToLogin();
   }
 
