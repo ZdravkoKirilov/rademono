@@ -24,14 +24,6 @@ lib-ui {
   height: 100vh;
 }
 
-nav {
-  display: flex;
-  & > * {
-    margin-right: var(--space-1);
-    padding: var(--space-2);
-  }
-}
-
 .visually-hidden {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);

@@ -1,0 +1,15 @@
+:host {
+  display: block;
+
+  nav {
+    padding: var(--space-3);
+    background-color: var(--primary-light);
+
+    ::ng-deep {
+      a,
+      button {
+        color: var(--on-primary-light);
+      }
+    }
+  }
+}

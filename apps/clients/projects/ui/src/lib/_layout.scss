@@ -5,20 +5,21 @@
   height: 100%;
 }
 
+.centered {
+  margin: 0 auto;
+}
+
 .centered-container {
   & > * {
-    margin: 0 auto;
+    @extend .centered;
   }
 }
 
 .centered-content {
   width: 100%;
+  @extend .centered;
 
   @include above_landscape_tablet {
     width: $screen-size3;
-  }
-
-  & > * {
-    margin: 0 auto;
   }
 }

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HomeDashboardComponent } from './components/home-dashboard/home-dashboard.component';
 import { WithAuthGuard } from '@games-admin/users/auth';
+import { SharedModule } from '@games-admin/shared';
 
 const routes: Routes = [
   {
@@ -15,7 +16,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [HomeDashboardComponent],
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  imports: [CommonModule, RouterModule.forChild(routes), SharedModule],
   exports: [RouterModule],
   providers: [WithAuthGuard],
 })

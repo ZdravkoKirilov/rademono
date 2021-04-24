@@ -9,7 +9,8 @@
       "sendCodeAgain": "Send new code",
       "signInWithCode": "Sign in with code",
       "signingIn": "Signing in...",
-      "code": "Code"
+      "code": "Code",
+      "logout": "Logout"
     }
   },
   "home": {
