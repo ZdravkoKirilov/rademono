@@ -15,7 +15,7 @@ import { UsersService } from '../../../services/users.service';
   selector: 'app-redeem',
   templateUrl: './redeem.component.html',
   styleUrls: ['./redeem.component.scss'],
-  host: { class: 'full-container centered-container' },
+  host: { class: 'full-container' },
 })
 export class RedeemComponent {
   dto?: SignInDto;

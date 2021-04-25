@@ -9,17 +9,19 @@
   margin: 0 auto;
 }
 
-.centered-container {
-  & > * {
-    @extend .centered;
-  }
-}
-
 .centered-content {
   width: 100%;
   @extend .centered;
 
   @include above_landscape_tablet {
     width: $screen-size3;
+  }
+}
+
+.padded-content {
+  padding: var(--space-2);
+
+  @include above_landscape_tablet {
+    padding: var(--space-2) 0;
   }
 }

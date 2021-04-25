@@ -52,19 +52,23 @@ $grid-columns: 12;
   align-self: flex-end;
 }
 
-.flex-column {
+.column {
   display: flex;
   flex-direction: column;
 }
 
-.flex-wrap {
+.wrap {
   flex-wrap: wrap;
 }
 
-.flex-align-center {
+.align-center {
   align-items: center;
 }
 
-.flex-justify-center {
+.justify-center {
   justify-content: center;
+}
+
+.space-between {
+  justify-content: space-between;
 }

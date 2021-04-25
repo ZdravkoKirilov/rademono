@@ -29,7 +29,6 @@
   >
 
   <div *ngIf="sendCodeQuery && sendCodeQuery.status === 'error'">
-    {{ sendCodeQuery.error | json }}
     <a routerLink="../" translate>
       <span translate>users.auth.sendCodeAgain </span></a
     >

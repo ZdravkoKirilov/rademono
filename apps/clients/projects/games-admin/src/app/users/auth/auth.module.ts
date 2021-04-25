@@ -6,7 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '@games-admin/shared';
 import { SigninComponent } from './components/signin/signin.component';
 import { RedeemComponent } from './components/redeem/redeem.component';
-import { WithoutAuthGuard } from './guards';
+import { WithAuthGuard, WithoutAuthGuard } from './guards';
+import { LogoutComponent } from './components/logout/logout.component';
 
 const routes: Routes = [
   {
@@ -22,12 +23,17 @@ const routes: Routes = [
         component: RedeemComponent,
         canActivate: [WithoutAuthGuard],
       },
+      {
+        path: 'logout',
+        component: LogoutComponent,
+        canActivate: [WithAuthGuard],
+      },
     ],
   },
 ];
 
 @NgModule({
-  declarations: [SigninComponent, RedeemComponent],
+  declarations: [SigninComponent, RedeemComponent, LogoutComponent],
   imports: [
     HttpClientModule,
     SharedModule,

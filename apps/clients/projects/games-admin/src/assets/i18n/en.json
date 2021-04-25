@@ -10,10 +10,12 @@
       "signInWithCode": "Sign in with code",
       "signingIn": "Signing in...",
       "code": "Code",
-      "logout": "Logout"
+      "logout": "Logout",
+      "loggingOut": "Logging out..."
     }
   },
   "home": {
-    "link": "Home"
+    "link": "Home",
+    "createOrganization": "Create new organization"
   }
 }

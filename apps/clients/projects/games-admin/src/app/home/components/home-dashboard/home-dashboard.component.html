@@ -1,16 +1,29 @@
 <app-navbar>
   <div class="centered-content">
-    <div class="flex">
-      <button
+    <div class="flex space-between align-center">
+      <span>
+        <a translate routerLink="/home">home.link</a>
+      </span>
+      <a
         translate
         cta="outlined"
         class="align-self-end"
-        (click)="handleLogout()"
+        routerLink="/users/auth/logout"
       >
         users.auth.logout
-      </button>
+      </a>
     </div>
   </div>
 </app-navbar>
 
-<article class="centered-content">home component</article>
+<article class="centered-content flex-column">
+  <section>
+    <app-organizations></app-organizations>
+  </section>
+  <section>
+    <app-stats></app-stats>
+  </section>
+  <section>
+    <app-feed></app-feed>
+  </section>
+</article>

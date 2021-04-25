@@ -1,18 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-
-import { UsersService } from '@games-admin/users';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-home-dashboard',
   templateUrl: './home-dashboard.component.html',
   styleUrls: ['./home-dashboard.component.scss'],
-  host: { class: 'full-container centered-container' },
+  host: { class: 'full-container' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeDashboardComponent {
-  constructor(private userService: UsersService) {}
-
-  handleLogout() {
-    this.userService.logout();
-  }
-}
+export class HomeDashboardComponent {}

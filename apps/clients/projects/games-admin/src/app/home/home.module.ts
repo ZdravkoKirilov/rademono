@@ -5,6 +5,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeDashboardComponent } from './components/home-dashboard/home-dashboard.component';
 import { WithAuthGuard } from '@games-admin/users/auth';
 import { SharedModule } from '@games-admin/shared';
+import { OrganizationsComponent } from './components/organizations/organizations.component';
+import { FeedComponent } from './components/feed/feed.component';
+import { StatsComponent } from './components/stats/stats.component';
 
 const routes: Routes = [
   {
@@ -15,7 +18,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [HomeDashboardComponent],
+  declarations: [
+    HomeDashboardComponent,
+    OrganizationsComponent,
+    FeedComponent,
+    StatsComponent,
+  ],
   imports: [CommonModule, RouterModule.forChild(routes), SharedModule],
   exports: [RouterModule],
   providers: [WithAuthGuard],

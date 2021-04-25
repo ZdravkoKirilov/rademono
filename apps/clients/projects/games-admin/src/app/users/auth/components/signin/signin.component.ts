@@ -11,7 +11,7 @@ import { UsersService } from '../../../services/users.service';
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss'],
-  host: { class: 'full-container centered-container' },
+  host: { class: 'full-container' },
 })
 @AutoUnsubscribe()
 export class SigninComponent {
