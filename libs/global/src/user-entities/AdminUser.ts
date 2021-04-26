@@ -9,8 +9,7 @@ import {
 } from 'class-validator';
 import add from 'date-fns/add';
 import isAfter from 'date-fns/isAfter';
-import { map, switchMap } from 'rxjs/operators';
-import * as o from 'fp-ts/lib/Option';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 import { omit } from 'lodash/fp';
 import { Observable } from 'rxjs';
@@ -151,47 +150,33 @@ export class PrivateAdminUser {
 
   static generateToken(
     entity: PrivateAdminUser,
-    createToken = JWT.generate,
+    generate: (data: unknown) => JWT,
   ): Observable<e.Either<ParsingError, TokenDto>> {
     return parseAndValidateObject(
       {
-        token: createToken({ email: entity.email }),
+        token: generate({ email: entity.email }),
       },
       TokenDto,
     );
   }
 
   static decodeToken(
-    token: JWT,
+    token: unknown,
+    decode: (token: string) => Observable<DecodedJWT>,
   ): Observable<e.Either<DomainError | ParsingError, DecodedJWT>> {
     return parseAndValidateObject({ token }, TokenDto).pipe(
       switchMap((mbToken) => {
         if (e.isLeft(mbToken)) {
           return toLeftObs(new DomainError('Invalid jwt token'));
         }
-        return JWT.verify(mbToken.right.token).pipe(
-          map((mbDecoded) => {
-            if (o.isNone(mbDecoded)) {
-              return e.left(new DomainError('Invalid jwt token'));
-            }
-            return e.right(mbDecoded.value);
+        return decode(mbToken.right.token).pipe(
+          map((decoded) => {
+            return e.right(decoded);
+          }),
+          catchError((err) => {
+            return toLeftObs(new DomainError('Invalid jwt token', [err]));
           }),
         );
-      }),
-    );
-  }
-
-  static verifyToken(
-    token: JWT,
-    entity: PrivateAdminUser,
-    verify = JWT.verify,
-  ): Observable<boolean> {
-    return verify(token, 'secret').pipe(
-      map((result) => {
-        if (o.isNone(result)) {
-          return false;
-        }
-        return result.value.email === entity.email ? true : false;
       }),
     );
   }

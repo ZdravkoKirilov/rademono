@@ -1,1 +1,31 @@
-<p>create-organization works!</p>
+<app-navbar>
+  <div class="centered-content">
+    <div class="flex space-between align-center">
+      <span>
+        <a translate routerLink="/home">home.link</a>
+      </span>
+      <a
+        translate
+        cta="outlined"
+        class="align-self-end"
+        routerLink="/users/auth/logout"
+      >
+        users.auth.logout
+      </a>
+    </div>
+  </div>
+</app-navbar>
+
+<article class="centered-content flex-column">
+  <form>
+    <div>
+      <label>Name</label>
+      <input />
+    </div>
+
+    <div>
+      <label>Description</label>
+      <textarea></textarea>
+    </div>
+  </form>
+</article>

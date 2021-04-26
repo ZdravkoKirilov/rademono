@@ -2,19 +2,14 @@ import * as e from 'fp-ts/lib/Either';
 import { get } from 'lodash/fp';
 import { add, sub } from 'date-fns';
 
-import { Email, JWT, NanoId, ParsingError, UUIDv4 } from '../types';
+import { Email, NanoId, ParsingError, UUIDv4 } from '../types';
 import {
   AdminUserId,
   AdminUserTypes,
   PrivateAdminUser,
-  TokenDto,
   SendCodeDto,
   SignInDto,
 } from './AdminUser';
-
-const throwError = () => {
-  throw new Error('Unexpected');
-};
 
 describe(PrivateAdminUser.name, () => {
   describe(PrivateAdminUser.create.name, () => {
@@ -324,95 +319,6 @@ describe(PrivateAdminUser.name, () => {
     });
   });
 
-  describe(PrivateAdminUser.generateToken.name, () => {
-    it('produces a token', (done) => {
-      const publicId = UUIDv4.generate<AdminUserId>();
-
-      const payload: PrivateAdminUser = {
-        email: Email.generate('email@gmail.com'),
-        type: AdminUserTypes.standard,
-        public_id: publicId,
-      };
-
-      const token = JWT.generate({ email: payload.email });
-      const createToken = () => token;
-
-      PrivateAdminUser.generateToken(payload, createToken).subscribe(
-        (value) => {
-          if (e.isLeft(value)) {
-            return throwError();
-          }
-
-          expect(value.right).toBeInstanceOf(TokenDto);
-          expect(value.right).toEqual({ token });
-          done();
-        },
-      );
-    });
-
-    it('fails if the produced token is invalid', (done) => {
-      const publicId = UUIDv4.generate<AdminUserId>();
-
-      const payload: PrivateAdminUser = {
-        email: Email.generate('this is not an email'),
-        type: AdminUserTypes.standard,
-        public_id: publicId,
-      };
-
-      const token = 'not a token' as JWT;
-      const createToken = () => token;
-
-      PrivateAdminUser.generateToken(payload, createToken).subscribe(
-        (value) => {
-          if (e.isRight(value)) {
-            return throwError();
-          }
-
-          expect(value.left).toBeInstanceOf(ParsingError);
-          expect(value.left.errors[0].property).toEqual('token');
-          done();
-        },
-      );
-    });
-  });
-
-  describe(PrivateAdminUser.verifyToken.name, () => {
-    it('passes with a valid token', (done) => {
-      const publicId = UUIDv4.generate<AdminUserId>();
-
-      const payload: PrivateAdminUser = {
-        email: Email.generate('email@email.com'),
-        type: AdminUserTypes.standard,
-        public_id: publicId,
-      };
-
-      const tokenData = { email: payload.email };
-      const token = JWT.generate(tokenData);
-
-      PrivateAdminUser.verifyToken(token, payload).subscribe((response) => {
-        expect(response).toBe(true);
-        done();
-      });
-    });
-
-    it('fails with invalid token', (done) => {
-      const publicId = UUIDv4.generate<AdminUserId>();
-
-      const payload: PrivateAdminUser = {
-        email: Email.generate('email@email.com'),
-        type: AdminUserTypes.standard,
-        public_id: publicId,
-      };
-
-      const token = 'invalidToken' as JWT;
-
-      PrivateAdminUser.verifyToken(token, payload).subscribe((response) => {
-        expect(response).toBe(false);
-        done();
-      });
-    });
-  });
-
   describe(PrivateAdminUser.signIn.name, () => {
     it('modifies the user entity', () => {
       const publicId = UUIDv4.generate<AdminUserId>();
@@ -466,53 +372,6 @@ describe(PrivateAdminUser.name, () => {
 
       const isValid = PrivateAdminUser.verifyLoginCode(entity, now);
       expect(isValid).toBe(false);
-    });
-  });
-
-  describe(PrivateAdminUser.decodeToken.name, () => {
-    it('passes with valid token', (done) => {
-      const tokenData = {
-        email: Email.generate('email@email.com'),
-      };
-
-      const token = JWT.generate(tokenData);
-
-      PrivateAdminUser.decodeToken(token).subscribe((result) => {
-        if (e.isLeft(result)) {
-          return throwError();
-        }
-        expect(result.right).toEqual(tokenData);
-        done();
-      });
-    });
-
-    it('fails with undefined token', (done) => {
-      PrivateAdminUser.decodeToken(undefined as any).subscribe((result) => {
-        if (e.isRight(result)) {
-          return throwError();
-        }
-        expect(e.isLeft(result)).toBe(true);
-        done();
-      });
-    });
-
-    it('fails with expired token', (done) => {
-      const token = JWT.generate(
-        {
-          email: Email.generate('email@email.com'),
-          exp: sub(new Date(), { hours: 1 }).getTime() / 1000,
-        },
-        {},
-        'secret',
-      );
-
-      PrivateAdminUser.decodeToken(token).subscribe((result) => {
-        if (e.isRight(result)) {
-          return throwError();
-        }
-        expect(e.isLeft(result)).toBe(true);
-        done();
-      });
     });
   });
 });

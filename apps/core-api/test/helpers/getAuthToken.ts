@@ -1,15 +1,17 @@
 import * as e from 'fp-ts/lib/Either';
+import jwt from 'jsonwebtoken';
+import { INestApplication } from '@nestjs/common';
 
 import {
   AdminUserId,
   breakTest,
   Email,
+  JWT,
   PrivateAdminUser,
   UUIDv4,
 } from '@end/global';
 
 import { AdminUserRepository } from '../../src/users/admin-users/admin-users.repository';
-import { INestApplication } from '@nestjs/common';
 
 export const createTestUser = async (
   module: INestApplication,
@@ -39,6 +41,7 @@ export const createTestUser = async (
 
   const mbToken = await PrivateAdminUser.generateToken(
     mbEntity.right,
+    () => jwt.sign({ email: mbEntity.right.email }, 'secret') as JWT,
   ).toPromise();
 
   if (e.isLeft(mbToken)) {

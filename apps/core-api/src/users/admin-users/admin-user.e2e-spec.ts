@@ -163,12 +163,11 @@ describe('AdminUserController (e2e)', () => {
           .expect(201)
           .send({ code: loginCode });
 
-        const isTokenValid = await PrivateAdminUser.verifyToken(
+        const decoded = await PrivateAdminUser.decodeToken(
           body.token,
-          mbUser.right.value,
         ).toPromise();
 
-        expect(isTokenValid).toBe(true);
+        expect(decoded).toBe(true);
         done();
       }
     });
