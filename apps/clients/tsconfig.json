@@ -14,9 +14,7 @@
       "@libs/ui": ["dist/ui/ui", "dist/ui"],
       "@libs/render-kit": ["dist/render-kit/render-kit", "dist/render-kit"],
       "@games-admin/*": ["projects/games-admin/src/app/*"],
-      "@env": ["projects/games-admin/src/environments/environment.ts"],
-      "buffer": ["shims/buffer.js"],
-      "util": ["shims/util.js"]
+      "@env": ["projects/games-admin/src/environments/environment.ts"]
     }
   },
   "angularCompilerOptions": {

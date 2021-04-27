@@ -3,8 +3,9 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
-import { Connection, DATABASE_CONNECTION } from '@app/database';
+import jwt from 'jsonwebtoken';
 
+import { Connection, DATABASE_CONNECTION } from '@app/database';
 import {
   PrivateAdminUser,
   AdminUserTypes,
@@ -45,7 +46,7 @@ describe('AdminUserController (e2e)', () => {
     await app.close();
   });
 
-  /*   describe('/admin-users/current (GET)', () => {
+  describe('/admin-users/current (GET)', () => {
     it('returns the current user given a valid auth token', async (done) => {
       const userId = UUIDv4.generate<AdminUserId>();
 
@@ -64,6 +65,7 @@ describe('AdminUserController (e2e)', () => {
 
       const mbToken = await PrivateAdminUser.generateToken(
         mbEntity.right,
+        jwt.sign,
       ).toPromise();
 
       if (e.isLeft(mbToken)) {
@@ -132,7 +134,7 @@ describe('AdminUserController (e2e)', () => {
       });
       done();
     });
-  }); */
+  });
 
   describe('/admin-users/token (POST)', () => {
     it('returns a token given a valid login code', async (done) => {
@@ -165,9 +167,13 @@ describe('AdminUserController (e2e)', () => {
 
         const decoded = await PrivateAdminUser.decodeToken(
           body.token,
+          jwt.verify,
         ).toPromise();
 
-        expect(decoded).toBe(true);
+        expect(decoded).toEqual({
+          _tag: 'Right',
+          right: { email: 'email2@email.com' },
+        });
         done();
       }
     });

@@ -54,10 +54,6 @@
     "tslint": "~6.1.0",
     "typescript": "~4.1.5"
   },
-  "browser": {
-    "crypto": false,
-    "stream": false
-  },
   "svgGenerator": {
     "outputPath": "./projects/ui/src/generated-icons",
     "prefix": "app",

@@ -19,7 +19,6 @@ import { DATABASE_COLLECTION, DATABASE_CONNECTION } from './constants';
               useUnifiedTopology: true,
             },
           );
-
           return client.db(configService.get('DB_NAME'));
         } catch (e) {
           throw e;

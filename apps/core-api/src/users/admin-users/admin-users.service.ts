@@ -9,6 +9,7 @@ import {
   PrivateAdminUser,
   switchMapRight,
 } from '@end/global';
+import jwt from 'jsonwebtoken';
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { switchMap, catchError, map } from 'rxjs/operators';
@@ -36,7 +37,7 @@ export class AdminUsersService {
           return toLeftObs(mbDto.left);
         }
 
-        return PrivateAdminUser.decodeToken(mbDto.right.token);
+        return PrivateAdminUser.decodeToken(mbDto.right.token, jwt.verify);
       }),
       switchMap(
         (
@@ -97,7 +98,7 @@ export class AdminUsersService {
           return toLeftObs(new DomainError('Login code is invalid'));
         }
 
-        return PrivateAdminUser.generateToken(data.right.value);
+        return PrivateAdminUser.generateToken(data.right.value, jwt.sign);
       }),
       catchError((err) =>
         toLeftObs(new UnexpectedError('Something went wrong', err)),

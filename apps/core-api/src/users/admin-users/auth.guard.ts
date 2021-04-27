@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
+import jwt from 'jsonwebtoken';
 
 import { AdminUserRepository } from './admin-users.repository';
 import { isKnownError, toUnauthorizedError } from '@app/shared';
@@ -39,7 +40,7 @@ export class AuthGuard implements CanActivate {
               return toLeftObs(false);
             }
 
-            return PrivateAdminUser.decodeToken(mbDto.right.token);
+            return PrivateAdminUser.decodeToken(mbDto.right.token, jwt.verify);
           },
         ),
         switchMap(

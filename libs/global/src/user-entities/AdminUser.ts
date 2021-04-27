@@ -12,7 +12,7 @@ import isAfter from 'date-fns/isAfter';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 import { omit } from 'lodash/fp';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Expose } from 'class-transformer';
 
 import {
@@ -30,6 +30,7 @@ import {
   ParsingError,
   DomainError,
   DecodedJWT,
+  Dictionary,
 } from '../types';
 
 export type AdminUserId = Tagged<'AdminUserId', UUIDv4>;
@@ -150,11 +151,17 @@ export class PrivateAdminUser {
 
   static generateToken(
     entity: PrivateAdminUser,
-    generate: (data: unknown) => JWT,
+    generate: (
+      data: Dictionary,
+      secret: string,
+      options: { expiresIn: string },
+    ) => string,
+    options: { expiresIn: string } = { expiresIn: '24h' },
+    secret = 'secret',
   ): Observable<e.Either<ParsingError, TokenDto>> {
     return parseAndValidateObject(
       {
-        token: generate({ email: entity.email }),
+        token: generate({ email: entity.email }, secret, options),
       },
       TokenDto,
     );
@@ -162,21 +169,25 @@ export class PrivateAdminUser {
 
   static decodeToken(
     token: unknown,
-    decode: (token: string) => Observable<DecodedJWT>,
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    decode: (token: string, secret: string) => string | object,
+    secret = 'secret',
   ): Observable<e.Either<DomainError | ParsingError, DecodedJWT>> {
     return parseAndValidateObject({ token }, TokenDto).pipe(
       switchMap((mbToken) => {
         if (e.isLeft(mbToken)) {
           return toLeftObs(new DomainError('Invalid jwt token'));
         }
-        return decode(mbToken.right.token).pipe(
-          map((decoded) => {
-            return e.right(decoded);
-          }),
-          catchError((err) => {
-            return toLeftObs(new DomainError('Invalid jwt token', [err]));
-          }),
-        );
+        try {
+          return of(decode(mbToken.right.token, secret)).pipe(
+            switchMap((res) => parseAndValidateUnknown(res, DecodedJWT)),
+            catchError((err) => {
+              return toLeftObs(new DomainError('Invalid jwt token', [err]));
+            }),
+          );
+        } catch (err) {
+          return toLeftObs(new DomainError('Invalid jwt token', [err]));
+        }
       }),
     );
   }
