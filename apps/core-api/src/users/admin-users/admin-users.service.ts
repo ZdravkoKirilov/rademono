@@ -11,7 +11,7 @@ import {
 } from '@end/global';
 import jwt from 'jsonwebtoken';
 import { Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 import { switchMap, catchError, map } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
@@ -98,7 +98,14 @@ export class AdminUsersService {
           return toLeftObs(new DomainError('Login code is invalid'));
         }
 
-        return PrivateAdminUser.generateToken(data.right.value, jwt.sign);
+        return zip(
+          PrivateAdminUser.generateToken(data.right.value, jwt.sign),
+          this.repo.saveUser(PrivateAdminUser.signIn(data.right.value)),
+        ).pipe(
+          map(([mbTokenDto]) => {
+            return mbTokenDto;
+          }),
+        );
       }),
       catchError((err) =>
         toLeftObs(new UnexpectedError('Something went wrong', err)),

@@ -194,7 +194,9 @@ export class PrivateAdminUser {
 
   static signIn(entity: PrivateAdminUser, now = new Date()): PrivateAdminUser {
     return {
-      ...omit(['loginCode', 'loginCodeExpiration'], entity),
+      ...entity,
+      loginCode: undefined,
+      loginCodeExpiration: undefined,
       lastLogin: now,
     };
   }
