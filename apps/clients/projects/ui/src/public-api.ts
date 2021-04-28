@@ -4,6 +4,7 @@
 
 export * from './lib/ui-provider.component';
 export * from './lib/ui.module';
+export * from './lib/text-editor';
 
 export * from './lib/theming';
 export * from './lib/icons';
