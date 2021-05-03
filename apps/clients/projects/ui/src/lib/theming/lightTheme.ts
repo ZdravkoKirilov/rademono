@@ -104,9 +104,6 @@ export const lightTheme: Theme = {
     '--background-light': colorPalette['color-background-light'],
     '--on-background-light': colorPalette['color-text-dark'],
 
-    '--border-radius-1': '.5em',
-    '--border-radius-2': '1em',
-
     '--error': colorPalette['color-danger-500'],
     '--error-light': colorPalette['color-danger-transparent-100'],
 
@@ -136,19 +133,6 @@ export const lightTheme: Theme = {
     '--space-4': '32px',
 
     '--text-base': '1em',
-    '--text-xl': '1.4rem',
-    '--text-l': '1.2rem',
-    '--text-m': '1rem',
-    '--text-s': '.8rem',
-    '--text-xs': '.6rem',
-
-    '--font-1': 'Brush Script MT',
-    '--font-2': 'Garamond',
-    '--font-3': 'Tahoma',
-
-    '--font-weight-s': 400,
-    '--font-weight-m': 500,
-    '--font-weight-l': 700,
 
     '--border-1': '1px',
     '--border-2': '2px',

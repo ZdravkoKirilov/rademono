@@ -11,6 +11,7 @@
       name="email"
       autocomplete="email"
       [(ngModel)]="email"
+      class="small-text"
     />
 
     <span *ngIf="error">{{ error }}</span>
@@ -25,7 +26,9 @@
     </button>
 
     <div>
-      <a routerLink="code" translate>users.auth.alreadyHaveCode</a>
+      <a routerLink="code" translate class="small-text"
+        >users.auth.alreadyHaveCode</a
+      >
     </div>
     <ui-success [inactive]="codeQuery?.status !== 'loaded'">
       <span translate>users.auth.codeSent</span>

@@ -36,23 +36,8 @@ export type Theme = {
     '--space-4': string;
 
     '--text-base': string;
-    '--text-xs': string;
-    '--text-s': string;
-    '--text-m': string;
-    '--text-l': string;
-    '--text-xl': string;
-
-    '--font-1': string;
-    '--font-2': string;
-    '--font-3': string;
-    '--font-weight-s': number;
-    '--font-weight-m': number;
-    '--font-weight-l': number;
 
     '--border-1': string;
     '--border-2': string;
-
-    '--border-radius-1': string;
-    '--border-radius-2': string;
   };
 };
