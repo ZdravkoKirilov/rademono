@@ -16,7 +16,7 @@
 
     <span *ngIf="error">{{ error }}</span>
 
-    <button cta="primary" type="submit" [disabled]="!dto">
+    <button cta="primary" type="submit">
       <ng-container *ngIf="codeQuery?.status !== 'loading'">
         <span translate>users.auth.sendCode</span>
       </ng-container>

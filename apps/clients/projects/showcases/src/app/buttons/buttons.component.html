@@ -1,3 +1,55 @@
-<button cta="primary">I'm a primary button</button>
+<section>
+  <h1>Simple buttons</h1>
+  <button cta="primary">I'm a primary button</button>
 
-<button cta="outlined">I'm a secondary button</button>
+  <button cta="outlined">I'm a secondary button</button>
+</section>
+
+<br />
+
+<section>
+  <h1>State buttons</h1>
+
+  <section>
+    <h4>Loading</h4>
+    <ui-state-button state="loading" loadingText="Loading...!"
+      >Action 1</ui-state-button
+    >
+  </section>
+
+  <section>
+    <h4>Success</h4>
+    <ui-state-button state="success" successText="Success!"
+      >Action 2</ui-state-button
+    >
+  </section>
+
+  <section>
+    <h4>Error</h4>
+    <ui-state-button state="error" errorText="Error!!"
+      >Action 3</ui-state-button
+    >
+  </section>
+
+  <section>
+    <h4>Loading - Success</h4>
+    <ui-state-button
+      [state]="state1"
+      successText="Done!"
+      loadingText="Fetching..."
+      (click)="fetch1()"
+      >Fetch</ui-state-button
+    >
+  </section>
+
+  <section>
+    <h4>Loading - Error</h4>
+    <ui-state-button
+      [state]="state2"
+      errorText="Failed. Click to retry"
+      loadingText="Fetching..."
+      (click)="fetch2()"
+      >Fetch</ui-state-button
+    >
+  </section>
+</section>

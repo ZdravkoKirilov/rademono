@@ -5,11 +5,11 @@
 
   outline: none;
   text-decoration: none;
-  font-weight: bold;
-
-  border-radius: 20px;
-
+  border-radius: 3em;
   transition: all 0.1s ease-in-out;
+
+  min-width: 200px;
+  min-height: 3em;
 }
 
 button[cta='primary'],

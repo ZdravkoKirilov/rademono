@@ -1,0 +1,20 @@
+<button cta="primary" [ngSwitch]="state" aria-live="polite">
+  <ng-container *ngSwitchCase="'loading'">
+    <div class="loader small"></div>
+    {{ loadingText }}
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'success'">
+    <svg-icon key="success"></svg-icon>
+    {{ successText }}
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'error'">
+    <svg-icon key="cross" fontSize="1.2em"></svg-icon>
+    {{ errorText }}
+  </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    <ng-content></ng-content>
+  </ng-container>
+</button>

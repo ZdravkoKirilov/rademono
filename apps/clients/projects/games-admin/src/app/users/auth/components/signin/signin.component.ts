@@ -29,7 +29,7 @@ export class SigninComponent {
         mapEither(
           () => {
             self.dto = undefined;
-            self.error = 'Invalid email';
+            self.error = value ? 'Invalid email' : '';
           },
           (value) => {
             self.error = undefined;

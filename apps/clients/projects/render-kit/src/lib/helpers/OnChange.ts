@@ -33,3 +33,5 @@ export function OnChange<T, Self>(
     });
   };
 }
+
+export function NgOnChange() {}

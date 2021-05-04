@@ -1,5 +1,5 @@
 @import './cta.scss', './layout.scss', './forms.scss', './spacing',
-  './media_queries', './sizings', './grid', './typography';
+  './media_queries', './sizings', './grid', './typography', './loaders';
 
 html,
 body {
@@ -7,7 +7,6 @@ body {
   height: auto;
   padding: 0;
   margin: 0;
-  overflow: hidden;
 }
 
 * {
