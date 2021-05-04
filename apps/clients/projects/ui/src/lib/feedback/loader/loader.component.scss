@@ -1,0 +1,44 @@
+:host {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &.global {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    .loader {
+      width: 100px;
+      height: 100px;
+      position: fixed;
+      z-index: 999;
+      overflow: visible;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      border: 10px solid var(--background-dark);
+      border-top: 10px solid var(--primary-main);
+    }
+    .msg {
+      z-index: 999;
+      margin-top: 150px;
+    }
+
+    .overlay {
+      content: '';
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+}
