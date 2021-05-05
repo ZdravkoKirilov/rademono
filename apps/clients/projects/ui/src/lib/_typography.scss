@@ -10,39 +10,61 @@ html {
 body {
   line-height: 2;
   font-weight: var(--font-weight-small);
+  font-family: 'Poppins', sans-serif;
 }
 
 p {
   margin-bottom: 1em;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5 {
+@mixin heading-base {
   font-weight: var(--font-weight-big);
   line-height: 1.3;
 }
 
-h1 {
+.h1 {
+  @include heading-base;
   font-size: 3.052em;
 }
 
-h2 {
+.h2 {
+  @include heading-base;
   font-size: 2.441em;
 }
 
-h3 {
+.h3 {
+  @include heading-base;
   font-size: 1.953em;
 }
 
-h4 {
+.h4 {
+  @include heading-base;
   font-size: 1.563em;
 }
 
-h5 {
+.h5 {
+  @include heading-base;
   font-size: 1.25em;
+}
+
+h1 {
+  @extend .h1;
+}
+
+h2 {
+  @extend .h2;
+}
+
+h3 {
+  @extend .h3;
+}
+
+h4 {
+  @extend .h4;
+}
+
+h5 {
+  @extend .h5;
 }
 
 small,

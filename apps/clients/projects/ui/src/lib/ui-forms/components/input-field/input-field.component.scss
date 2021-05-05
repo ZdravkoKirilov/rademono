@@ -1,0 +1,34 @@
+@import '../../../typography';
+
+:host {
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+
+  input {
+    z-index: 2;
+  }
+
+  input:focus ~ .label {
+    margin-top: -2.7em;
+    @extend .small-text;
+    text-decoration: underline;
+    color: var(--primary-main);
+    text-underline-offset: 2px;
+    font-weight: bold;
+  }
+
+  .label {
+    position: absolute;
+    padding: var(--space-1) var(--space-2);
+    transition: all 0.1s ease-out;
+  }
+
+  .inline-loader {
+    display: flex;
+    align-items: center;
+    .loader {
+      margin-right: var(--space-1);
+    }
+  }
+}

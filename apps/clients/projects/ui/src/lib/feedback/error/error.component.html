@@ -1,3 +1,7 @@
-<ng-container *ngIf="!inactive">
+<div
+  *ngIf="!inactive"
+  class="wrapper"
+  [ngClass]="{ small: variation === 'form' }"
+>
   <svg-icon key="cross"></svg-icon> <span><ng-content></ng-content></span>
-</ng-container>
+</div>

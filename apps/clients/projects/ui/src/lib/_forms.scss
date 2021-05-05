@@ -3,6 +3,7 @@ form {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-size: var(--text-base);
 
   & > * {
     margin-bottom: var(--space-2);
@@ -12,13 +13,16 @@ form {
 input {
   background-color: transparent;
   border: 1px solid var(--primary-main);
-  padding: var(--space-1);
+  padding: var(--space-2);
   outline: none;
-  border-radius: 10%/50%;
+  border-radius: calc(var(--space-2) + var(--space-2) * 2);
 
-  &:focus,
   &:hover {
-    box-shadow: 0 0 0 2px var(--primary-transparent);
+    box-shadow: 0 0 0 1px var(--primary-transparent);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 3px var(--primary-transparent);
   }
 
   &::placeholder {

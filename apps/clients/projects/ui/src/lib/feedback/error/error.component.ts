@@ -5,10 +5,12 @@ import { Component, HostBinding, Input } from '@angular/core';
   templateUrl: './error.component.html',
   styleUrls: ['./error.component.scss'],
   host: {
-    class: 'flex flex-align-center flex-justify-center width-12 width-m-6',
+    class: 'block',
     'aria-role': 'status',
   },
 })
 export class ErrorComponent {
   @HostBinding('class.visually-hidden') @Input() inactive = true;
+
+  @Input() variation: 'standard' | 'form' = 'standard';
 }

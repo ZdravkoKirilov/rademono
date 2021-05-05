@@ -1,0 +1,24 @@
+<input [attr.aria-busy]="state === 'loading'" />
+
+<label class="label">
+  <ng-content></ng-content>
+</label>
+
+<span class="feedback mt-1">
+  <ui-error [inactive]="state !== 'error'" variation="form">
+    <small>{{ feedbackTxt }}</small>
+  </ui-error>
+
+  <ui-success [inactive]="state !== 'success'" variation="form">
+    <small>{{ feedbackTxt }}</small>
+  </ui-success>
+
+  <span
+    [ngClass]="{ 'visually-hidden': state !== 'loading' }"
+    class="inline-loader"
+    aria-role="status"
+  >
+    <div class="loader small"></div>
+    <small>{{ feedbackTxt }}</small>
+  </span>
+</span>

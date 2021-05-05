@@ -6,7 +6,7 @@ export * from './lib/ui-provider.component';
 export * from './lib/ui.module';
 export * from './lib/text-editor';
 export * from './lib/buttons';
-
+export * from './lib/ui-forms';
 export * from './lib/theming';
 export * from './lib/icons';
 export * from './lib/feedback';

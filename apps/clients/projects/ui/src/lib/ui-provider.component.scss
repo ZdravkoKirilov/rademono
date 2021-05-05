@@ -1,3 +1,5 @@
+@import '~normalize.css/normalize';
+
 @import './cta.scss', './layout.scss', './forms.scss', './spacing',
   './media_queries', './sizings', './grid', './typography', './loaders';
 
@@ -17,8 +19,6 @@ app-root,
 lib-ui {
   display: block;
   height: 100vh;
-
-  font-family: 'Poppins', sans-serif;
 }
 
 .visually-hidden {
