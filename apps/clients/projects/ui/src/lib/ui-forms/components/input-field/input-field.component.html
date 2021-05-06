@@ -1,6 +1,13 @@
-<input [attr.aria-busy]="state === 'loading'" />
+<input
+  [attr.aria-busy]="state === 'loading'"
+  [type]="inputType"
+  [name]="name"
+  [id]="name"
+  [(ngModel)]="value"
+  [attr.aria-disabled]="disabled"
+/>
 
-<label class="label">
+<label class="label" [class.floated]="value" [for]="name">
   <ng-content></ng-content>
 </label>
 

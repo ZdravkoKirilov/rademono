@@ -7,7 +7,7 @@
       <a
         translate
         cta="outlined"
-        class="align-self-end"
+        class="align-self-end center"
         routerLink="/users/auth/logout"
       >
         users.auth.logout
@@ -16,16 +16,23 @@
   </div>
 </app-navbar>
 
-<article class="centered-content flex-column">
-  <form>
+<article class="centered-content flex-column padded-content pt-4">
+  <form #form="ngForm">
+    <legend>
+      <h1 translate>organizations.forms.createNewOrganization</h1>
+    </legend>
     <div>
-      <label>Name</label>
-      <input />
+      <ui-input-field [(ngModel)]="draft.name" name="name"
+        ><span translate>organizations.forms.name </span>
+      </ui-input-field>
     </div>
 
     <div>
-      <label>Description</label>
-      <ui-text-editor></ui-text-editor>
+      <label translate for="description">organizations.forms.description</label>
+      <ui-text-editor
+        [(ngModel)]="draft.description"
+        name="description"
+      ></ui-text-editor>
     </div>
   </form>
 </article>

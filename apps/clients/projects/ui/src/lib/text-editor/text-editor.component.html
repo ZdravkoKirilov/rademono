@@ -1,1 +1,7 @@
-<quill-editor [modules]="config"></quill-editor>
+<quill-editor
+  [modules]="config"
+  [(ngModel)]="value"
+  [readOnly]="disabled"
+  [name]="name"
+  (onContentChanged)="handleChange($event)"
+></quill-editor>

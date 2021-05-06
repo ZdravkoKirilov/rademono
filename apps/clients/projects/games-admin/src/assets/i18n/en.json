@@ -17,5 +17,12 @@
   "home": {
     "link": "Home",
     "createOrganization": "Create new organization"
+  },
+  "organizations": {
+    "forms": {
+      "name": "Name",
+      "description": "Description",
+      "createNewOrganization": "Create new organization"
+    }
   }
 }
