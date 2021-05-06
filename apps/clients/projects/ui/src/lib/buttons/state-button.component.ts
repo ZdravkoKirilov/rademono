@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
 
-import { OnChange } from '@libs/render-kit';
-
 type State = 'loading' | 'error' | 'success' | '';
 
 @Component({
@@ -10,13 +8,6 @@ type State = 'loading' | 'error' | 'success' | '';
   styleUrls: ['./state-button.component.scss'],
 })
 export class StateButtonComponent {
-  /*   @OnChange<State, StateButtonComponent>((value, self) => {
-    if (value === 'success') {
-      setTimeout(() => {
-        self.state = '';
-      }, 2000);
-    }
-  }) */
   @Input()
   state: State;
 

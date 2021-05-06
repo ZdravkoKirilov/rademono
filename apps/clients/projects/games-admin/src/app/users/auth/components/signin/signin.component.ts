@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { PrivateAdminUser, SendCodeDto, mapEither } from '@end/global';
-import { OnChange } from '@libs/render-kit';
+import { OnChange } from '@libs/ui';
 import { AutoUnsubscribe, QueryResponse } from '@games-admin/shared';
 import { UsersService } from '../../../services/users.service';
 

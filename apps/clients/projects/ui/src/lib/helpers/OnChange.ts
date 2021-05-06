@@ -4,6 +4,7 @@ export interface PropChange<T> {
   currentValue: T;
   isFirstChange: () => boolean;
 }
+
 export function OnChange<T, Self>(
   callback: (value: T, self: Self, simpleChange?: PropChange<T>) => void,
 ) {

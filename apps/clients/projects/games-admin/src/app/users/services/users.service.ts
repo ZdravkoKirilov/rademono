@@ -13,7 +13,7 @@ import {
   useQuery,
   valueToQueryResponse,
 } from '@games-admin/shared';
-import { RequestError } from '@libs/render-kit';
+import { RequestError } from '@libs/ui';
 
 @Injectable({
   providedIn: 'root',

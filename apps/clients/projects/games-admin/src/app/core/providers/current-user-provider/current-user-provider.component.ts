@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AdminUser } from '@end/global';
 import { QueryResponse } from '@games-admin/shared';
 import { UsersService } from '@games-admin/users';
-import { RequestError } from '@libs/render-kit';
+import { RequestError } from '@libs/ui';
 
 @Component({
   selector: 'app-current-user-provider',

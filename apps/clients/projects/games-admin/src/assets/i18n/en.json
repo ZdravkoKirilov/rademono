@@ -24,5 +24,10 @@
       "description": "Description",
       "createNewOrganization": "Create new organization"
     }
+  },
+  "common": {
+    "forms": {
+      "required": "{{field}} is required."
+    }
   }
 }

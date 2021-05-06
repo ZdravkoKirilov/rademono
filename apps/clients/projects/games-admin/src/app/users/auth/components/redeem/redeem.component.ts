@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { OnChange } from '@libs/render-kit';
+import { OnChange } from '@libs/ui';
 import { AdminUser, mapEither, PrivateAdminUser, SignInDto } from '@end/global';
 import {
   AppRouterService,

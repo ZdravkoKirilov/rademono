@@ -2,7 +2,7 @@ import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, map, switchMap, takeUntil, timeout } from 'rxjs/operators';
 import { noop } from 'lodash/fp';
 
-import { RequestError } from '@libs/render-kit';
+import { RequestError } from '@libs/ui';
 
 export enum QueryStatus {
   loading = 'loading',

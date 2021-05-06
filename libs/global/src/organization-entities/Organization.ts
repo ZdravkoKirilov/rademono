@@ -5,7 +5,13 @@
 */
 
 import { Expose } from 'class-transformer';
-import { IsOptional, IsUUID, MaxLength, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsUUID,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
@@ -22,6 +28,7 @@ export type OrganizationId = Tagged<'OrganizationId', UUIDv4>;
 
 class BasicFields {
   @Expose()
+  @IsNotEmpty()
   @MinLength(1)
   @MaxLength(100)
   name: StringOfLength<1, 100>;
@@ -48,7 +55,7 @@ export class Organization extends ValidationBase {
   }
 }
 
-class CreateOrganizationDto extends BasicFields {}
+export class CreateOrganizationDto extends BasicFields {}
 
 export class PrivateOrganization extends ValidationBase {
   @Expose()

@@ -17,12 +17,19 @@
 </app-navbar>
 
 <article class="centered-content flex-column padded-content pt-4">
-  <form #form="ngForm">
+  <form #createForm="ngForm">
     <legend>
       <h1 translate>organizations.forms.createNewOrganization</h1>
     </legend>
     <div>
-      <ui-input-field [(ngModel)]="draft.name" name="name"
+      <ui-input-field
+        [(ngModel)]="createForm.value.name"
+        name="name"
+        [state]="error && createForm.dirty ? 'error' : ''"
+        [feedbackTxt]="
+          'common.forms.required'
+            | translate: { field: 'organizations.forms.name' | translate }
+        "
         ><span translate>organizations.forms.name </span>
       </ui-input-field>
     </div>
@@ -30,7 +37,7 @@
     <div>
       <label translate for="description">organizations.forms.description</label>
       <ui-text-editor
-        [(ngModel)]="draft.description"
+        [(ngModel)]="createForm.value.description"
         name="description"
       ></ui-text-editor>
     </div>
