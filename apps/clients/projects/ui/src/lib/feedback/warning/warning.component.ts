@@ -5,7 +5,7 @@ import { Component, HostBinding, Input } from '@angular/core';
   templateUrl: './warning.component.html',
   styleUrls: ['./warning.component.scss'],
   host: {
-    class: 'flex flex-align-center flex-justify-center width-12 width-m-6',
+    class: 'block',
     'aria-role': 'status',
   },
 })

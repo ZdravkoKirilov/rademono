@@ -2,6 +2,8 @@
   padding: var(--space-3);
   border: var(--border-2) solid var(--warning);
   background-color: var(--warning-light);
+  border-radius: 10px;
+
   svg-icon {
     color: var(--warning);
     margin-right: var(--space-2);
