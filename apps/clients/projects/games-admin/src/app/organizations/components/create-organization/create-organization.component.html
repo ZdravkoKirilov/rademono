@@ -17,7 +17,7 @@
 </app-navbar>
 
 <article class="centered-content flex-column padded-content pt-4">
-  <form #createForm="ngForm">
+  <form #createForm="ngForm" (ngSubmit)="submit($event)">
     <legend>
       <h1 translate>organizations.forms.createNewOrganization</h1>
     </legend>
@@ -41,5 +41,9 @@
         name="description"
       ></ui-text-editor>
     </div>
+
+    <ui-state-button class="mt-4">
+      <span translate>common.forms.submit</span>
+    </ui-state-button>
   </form>
 </article>

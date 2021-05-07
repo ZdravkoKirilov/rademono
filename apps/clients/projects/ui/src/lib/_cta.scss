@@ -53,3 +53,43 @@ a[cta='outlined'] {
     box-shadow: 0 0 0 4px var(--primary-transparent);
   }
 }
+
+button[cta='tertiary'],
+a[cta='tertiary'] {
+  cursor: pointer;
+  border: none;
+  padding: var(--space-1) var(--space-2);
+  outline: none;
+  text-decoration: none;
+  color: var(--primary-main);
+  border-radius: 3em;
+  background: none;
+  min-height: 3em;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: transparent;
+    transition: all 0.1s ease-out;
+  }
+
+  &:hover {
+    position: relative;
+    &::after {
+      background-color: var(--primary-main);
+      width: 100%;
+    }
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px var(--primary-transparent);
+    &::after {
+      width: 0;
+    }
+  }
+}

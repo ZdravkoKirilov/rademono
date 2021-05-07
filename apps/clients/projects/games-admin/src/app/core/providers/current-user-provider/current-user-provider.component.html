@@ -3,4 +3,5 @@
   <ng-container *ngIf="userQuery.status === 'loaded'">
     <ng-content></ng-content>
   </ng-container>
+  <span *ngIf="userQuery.status === 'error'">Failed to load user</span>
 </ng-container>

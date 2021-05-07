@@ -28,9 +28,9 @@ export type OrganizationId = Tagged<'OrganizationId', UUIDv4>;
 
 class BasicFields {
   @Expose()
-  @IsNotEmpty()
   @MinLength(1)
   @MaxLength(100)
+  @IsNotEmpty()
   name: StringOfLength<1, 100>;
 
   @Expose()
@@ -50,8 +50,8 @@ export class Organization extends ValidationBase {
   @IsUUID('4')
   readonly id: OrganizationId;
 
-  static fromUnknown(payload: unknown) {
-    return parseAndValidateUnknown(payload, Organization);
+  static create(payload: unknown) {
+    return parseAndValidateUnknown(payload, CreateOrganizationDto);
   }
 }
 

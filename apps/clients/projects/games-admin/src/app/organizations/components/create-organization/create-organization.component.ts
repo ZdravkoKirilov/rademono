@@ -4,8 +4,7 @@ import {
   CreateOrganizationDto,
   mapEither,
   ParsingError,
-  PrivateOrganization,
-  UUIDv4,
+  Organization,
 } from '@end/global';
 
 @Component({
@@ -14,27 +13,33 @@ import {
   styleUrls: ['./create-organization.component.scss'],
 })
 export class CreateOrganizationComponent implements AfterViewInit {
-  draft: CreateOrganizationDto;
-  error: ParsingError;
+  draft?: CreateOrganizationDto;
+  error?: ParsingError;
 
   @ViewChild('createForm', { static: true }) form: NgForm;
 
   ngAfterViewInit() {
     this.form.valueChanges?.subscribe((data) => {
-      PrivateOrganization.create(data, UUIDv4.generate)
+      Organization.create(data)
         .pipe(
           mapEither(
             (err) => {
               // TODO map errors to FE-friendly format
+              this.draft = undefined;
               this.error = err;
-              console.log(err);
             },
             (org) => {
-              console.log(org);
+              this.error = undefined;
+              this.draft = org;
             },
           ),
         )
         .subscribe();
     });
+  }
+
+  submit(event: Event) {
+    event.preventDefault();
+    console.log(this.draft);
   }
 }

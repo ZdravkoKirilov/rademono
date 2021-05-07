@@ -27,7 +27,8 @@
   },
   "common": {
     "forms": {
-      "required": "{{field}} is required."
+      "required": "{{field}} is required.",
+      "submit": "Submit"
     }
   }
 }
