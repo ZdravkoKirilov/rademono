@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 
 import { NgOnChange } from '../helpers/OnChange';
 
-type State = 'loading' | 'error' | 'success' | '';
+type State = 'loading' | 'error' | 'loaded' | '' | string | undefined;
 
 @Component({
   selector: 'ui-state-button',
@@ -11,7 +11,8 @@ type State = 'loading' | 'error' | 'success' | '';
 })
 export class StateButtonComponent {
   @NgOnChange<State, StateButtonComponent>((value, self) => {
-    if (value === 'success') {
+    console.log(value);
+    if (value === 'loaded') {
       setTimeout(() => {
         self.state = '';
       }, 2000);

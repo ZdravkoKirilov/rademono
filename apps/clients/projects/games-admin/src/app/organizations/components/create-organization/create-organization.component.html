@@ -19,7 +19,7 @@
 <article class="centered-content flex-column padded-content pt-4">
   <form #createForm="ngForm" (ngSubmit)="submit($event)">
     <legend>
-      <h1 translate>organizations.forms.createNewOrganization</h1>
+      <h1 translate class="h2">organizations.forms.createNewOrganization</h1>
     </legend>
     <div>
       <ui-input-field
@@ -42,7 +42,7 @@
       ></ui-text-editor>
     </div>
 
-    <ui-state-button class="mt-4">
+    <ui-state-button class="mt-4" [state]="(createQuery$ | async)?.status">
       <span translate>common.forms.submit</span>
     </ui-state-button>
   </form>

@@ -75,7 +75,6 @@ export class UsersService {
       switchMap((res) => {
         if (res.status === QueryStatus.loaded) {
           this.storage.saveToken(res.data.token);
-          console.log('token saved!');
           return this.fetchUser();
         }
         return of(res);

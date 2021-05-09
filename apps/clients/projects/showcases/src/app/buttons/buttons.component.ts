@@ -13,7 +13,7 @@ export class ButtonsComponent {
     this.state1 = 'loading';
 
     setTimeout(() => {
-      this.state1 = 'success';
+      this.state1 = 'loaded';
     }, 2000);
   }
 

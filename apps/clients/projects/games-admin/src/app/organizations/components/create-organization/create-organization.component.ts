@@ -1,11 +1,17 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
+
 import {
   CreateOrganizationDto,
   mapEither,
   ParsingError,
   Organization,
+  CreateOrganizationResponse,
 } from '@end/global';
+import { OrganizationService } from '@games-admin/organizations/services/organization.service';
+import { QueryResponse, useQuery } from '@games-admin/shared';
+import { RequestError } from '@libs/ui';
 
 @Component({
   selector: 'app-create-organization',
@@ -15,6 +21,12 @@ import {
 export class CreateOrganizationComponent implements AfterViewInit {
   draft?: CreateOrganizationDto;
   error?: ParsingError;
+
+  constructor(private orgService: OrganizationService) {}
+
+  createQuery$: Observable<
+    QueryResponse<CreateOrganizationResponse, RequestError>
+  >;
 
   @ViewChild('createForm', { static: true }) form: NgForm;
 
@@ -40,6 +52,12 @@ export class CreateOrganizationComponent implements AfterViewInit {
 
   submit(event: Event) {
     event.preventDefault();
-    console.log(this.draft);
+    const data = this.draft;
+
+    if (data) {
+      this.createQuery$ = useQuery(() =>
+        this.orgService.createOrganization(data),
+      );
+    }
   }
 }

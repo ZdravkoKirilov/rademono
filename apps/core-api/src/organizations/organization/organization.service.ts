@@ -4,14 +4,12 @@ import * as e from 'fp-ts/lib/Either';
 import { Observable } from 'rxjs';
 
 import {
-  AdminProfile,
   AdminUserId,
+  CreateOrganizationResponse,
   DomainError,
   InitialOrganization,
-  Organization,
   ParsingError,
   PrivateOrganization,
-  ProfileGroup,
   toLeftObs,
   UnexpectedError,
   UUIDv4,
@@ -37,11 +35,7 @@ export class OrganizationService {
   ): Observable<
     e.Either<
       UnexpectedError | DomainError | ParsingError,
-      {
-        organization: Organization;
-        group: ProfileGroup;
-        profile: AdminProfile;
-      }
+      CreateOrganizationResponse
     >
   > {
     return PrivateOrganization.create(payload, this.createId).pipe(

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CreateOrganizationDto } from '@end/global';
+import { CreateOrganizationDto, CreateOrganizationResponse } from '@end/global';
 
 import { BaseHttpService, endpoints } from '@games-admin/shared';
 
@@ -13,6 +13,7 @@ export class OrganizationService {
     return this.http.post({
       url: endpoints.organization,
       data: dto,
+      responseShape: CreateOrganizationResponse,
     });
   }
 }
