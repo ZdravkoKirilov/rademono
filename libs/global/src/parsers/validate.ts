@@ -82,6 +82,35 @@ export const parseAndValidateUnknown = <
   );
 };
 
+export const parseAndValidateManyUnknown = <
+  Subject = UnknownObject,
+  Target = UnknownObject
+>(
+  data: Subject[],
+  targetClass: ClassType<Target>,
+  options: {
+    validationOptions: ValidatorOptions;
+  } = { validationOptions: { whitelist: true } },
+): Observable<e.Either<ParsingError, Target[]>> => {
+  return parseToClass(data, targetClass).pipe(
+    switchMap((opt) => {
+      if (o.isNone(opt)) {
+        return of(e.left(new ParsingError('Payload is not an object')));
+      }
+      return validateObject(opt.value, options.validationOptions).pipe(
+        map((errors) => {
+          const wihoutBlankFields = ((opt.value as unknown) as any[]).map(
+            (elem) => stripUndefinedFields(elem) as Target,
+          );
+          return errors.length
+            ? e.left(new ParsingError('', errors))
+            : e.right(wihoutBlankFields);
+        }),
+      );
+    }),
+  );
+};
+
 export const parseAndValidateObject = <
   Subject = UnknownObject,
   Target = UnknownObject

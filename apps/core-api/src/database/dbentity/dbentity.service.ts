@@ -108,6 +108,10 @@ export class DbentityService<T extends UnspecifiedEntity> {
     return this.collection.find().toArray();
   }
 
+  query<T>(cb: (conn: Db) => Observable<T>) {
+    return cb(this.connection);
+  }
+
   deleteAll() {
     return this.collection.deleteMany({});
   }

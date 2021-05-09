@@ -15,8 +15,10 @@ import {
   ParsingError,
   switchMapEither,
   mapEither,
+  parseAndValidateManyUnknown,
 } from '@end/global';
 import { DbentityService } from '@app/database';
+import { from } from 'rxjs';
 
 export class OrganizationDBModel {
   id?: number;
@@ -33,7 +35,51 @@ export class OrganizationRepository {
   constructor(private repo: DbentityService<OrganizationDBModel>) {}
 
   getOrganizations() {
-    return this.repo.findAll();
+    return this.repo
+      .query<PrivateOrganization[]>((connection) => {
+        return from(
+          connection
+            .collection('admin-profiles')
+            .aggregate([
+              {
+                $match: { user: '02ac427f-bb95-4e79-9944-e8caabac5a98' },
+              },
+              {
+                $lookup: {
+                  from: 'profile-groups',
+                  localField: 'group',
+                  foreignField: 'public_id',
+                  as: 'groups',
+                },
+              },
+              { $unwind: '$groups' },
+              {
+                $lookup: {
+                  from: 'organizations',
+                  as: 'organizations',
+                  localField: 'groups.organization',
+                  foreignField: 'public_id',
+                },
+              },
+              {
+                $replaceRoot: {
+                  newRoot: { $arrayElemAt: ['$organizations', 0] },
+                },
+              },
+            ])
+            .toArray(),
+        );
+      })
+      .pipe(
+        switchMap((res) => {
+          return parseAndValidateManyUnknown(res, PrivateOrganization);
+        }),
+        catchError((err) => {
+          return toLeftObs(
+            new UnexpectedError('Failed to retrieve organizations', err),
+          );
+        }),
+      );
   }
 
   createOrganization(
