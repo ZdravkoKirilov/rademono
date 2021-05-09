@@ -29,6 +29,7 @@ export class OrganizationService {
     private adminProfileService: AdminProfileService,
     @Inject(PUBLIC_ID_GENERATOR) private createId: typeof UUIDv4.generate,
   ) {}
+
   create(
     payload: unknown,
     userId: AdminUserId,
@@ -145,4 +146,6 @@ export class OrganizationService {
       ),
     );
   }
+
+  getAllForUser(userId: AdminUserId) {}
 }

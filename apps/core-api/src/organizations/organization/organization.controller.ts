@@ -1,5 +1,5 @@
 import { PrivateAdminUser, UnexpectedError } from '@end/global';
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { map, catchError } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 
@@ -75,5 +75,11 @@ export class OrganizationController {
         originalError: err,
       });
     }
+  }
+
+  @Get()
+  @UseGuards(AuthGuard)
+  getAllForUser(@WithUser() user: PrivateAdminUser) {
+    return [];
   }
 }

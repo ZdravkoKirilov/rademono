@@ -32,6 +32,10 @@ type FindOneMatcher = { public_id: UUIDv4 } | { name: string };
 export class OrganizationRepository {
   constructor(private repo: DbentityService<OrganizationDBModel>) {}
 
+  getOrganizations() {
+    return this.repo.findAll();
+  }
+
   createOrganization(
     organization: InitialOrganization,
   ): Observable<e.Either<UnexpectedError, InitialOrganization>> {
