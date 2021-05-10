@@ -4,7 +4,6 @@ import * as o from 'fp-ts/lib/Option';
 import { omit } from 'lodash/fp';
 
 import {
-  InitialOrganization,
   UUIDv4,
   breakTest,
   UnexpectedError,
@@ -12,6 +11,9 @@ import {
   PrivateOrganization,
   toRightObs,
   toLeftObs,
+  PrivateAdminGroup,
+  OrganizationId,
+  StringOfLength,
 } from '@end/global';
 
 import { DbentityService } from '@app/database';
@@ -46,7 +48,7 @@ describe(OrganizationRepository.name, () => {
       const data = {
         name: 'Name',
         public_id: UUIDv4.generate(),
-      } as InitialOrganization;
+      } as PrivateOrganization;
 
       const { service } = await createTestingModule({
         insert: (data) => toRightObs(data),
@@ -69,7 +71,7 @@ describe(OrganizationRepository.name, () => {
       const data = {
         name: 'Name',
         public_id: UUIDv4.generate(),
-      } as InitialOrganization;
+      } as PrivateOrganization;
 
       service.createOrganization(data).subscribe((res) => {
         if (e.isRight(res)) {
@@ -90,7 +92,13 @@ describe(OrganizationRepository.name, () => {
       const data = {
         name: 'Name',
         public_id: UUIDv4.generate(),
-        admin_group: UUIDv4.generate(),
+        admin_group: PrivateAdminGroup.createFromDto(
+          {
+            name: 'Whatever' as StringOfLength<1, 100>,
+            organization: UUIDv4.generate(),
+          },
+          UUIDv4.generate,
+        ),
       } as PrivateOrganization;
 
       service.saveOrganization(data).subscribe((res) => {
@@ -106,11 +114,15 @@ describe(OrganizationRepository.name, () => {
       const { service } = await createTestingModule({
         save: () => toLeftObs(new UnexpectedError()),
       });
+      const orgId = UUIDv4.generate<OrganizationId>();
 
       const data = {
         name: 'Name',
-        public_id: UUIDv4.generate(),
-        admin_group: UUIDv4.generate(),
+        public_id: orgId,
+        admin_group: PrivateAdminGroup.createFromDto(
+          { name: 'Whatever' as StringOfLength<1, 100>, organization: orgId },
+          UUIDv4.generate,
+        ),
       } as PrivateOrganization;
 
       service.saveOrganization(data).subscribe((res) => {
@@ -189,7 +201,13 @@ describe(OrganizationRepository.name, () => {
         id: 1,
         name: 'Name',
         public_id: UUIDv4.generate(),
-        admin_group: UUIDv4.generate(),
+        admin_group: PrivateAdminGroup.createFromDto(
+          {
+            name: 'Whatever' as StringOfLength<1, 100>,
+            organization: UUIDv4.generate(),
+          },
+          UUIDv4.generate,
+        ),
       };
 
       const { service } = await createTestingModule({
@@ -238,7 +256,13 @@ describe(OrganizationRepository.name, () => {
         id: 1,
         name: 'Name',
         public_id: 'Invalid',
-        admin_group: UUIDv4.generate(),
+        admin_group: PrivateAdminGroup.createFromDto(
+          {
+            name: 'Whatever' as StringOfLength<1, 100>,
+            organization: UUIDv4.generate(),
+          },
+          UUIDv4.generate,
+        ),
       };
 
       const { service } = await createTestingModule({

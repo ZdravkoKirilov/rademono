@@ -16,6 +16,7 @@ import {
   mapEither,
   parseAndValidateManyUnknown,
   PrivateAdminGroup,
+  AdminUserId,
 } from '@end/global';
 import { from } from 'rxjs';
 
@@ -35,7 +36,11 @@ type FindOneMatcher = { public_id: UUIDv4 } | { name: string };
 export class OrganizationRepository {
   constructor(private repo: DbentityService<OrganizationDBModel>) {}
 
-  getOrganizations() {
+  getOrganizations(
+    userId: AdminUserId,
+  ): Observable<
+    e.Either<ParsingError | UnexpectedError, PrivateOrganization[]>
+  > {
     return this.repo
       .query<PrivateOrganization[]>((connection) => {
         return from(
@@ -43,7 +48,7 @@ export class OrganizationRepository {
             .collection('admin-profiles')
             .aggregate([
               {
-                $match: { user: '02ac427f-bb95-4e79-9944-e8caabac5a98' },
+                $match: { user: userId },
               },
               {
                 $lookup: {

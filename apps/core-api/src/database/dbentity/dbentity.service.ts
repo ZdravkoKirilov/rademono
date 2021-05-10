@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Db, FilterQuery } from 'mongodb';
-import { from, Observable } from 'rxjs';
+import { from, Observable, throwError } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 
@@ -109,7 +109,16 @@ export class DbentityService<T extends UnspecifiedEntity> {
   }
 
   query<T>(cb: (conn: Db) => Observable<T>) {
-    return cb(this.connection);
+    try {
+      return cb(this.connection);
+    } catch (err) {
+      return throwError(
+        new UnexpectedError(
+          'Failed to execute query: ' + JSON.stringify(cb),
+          err,
+        ),
+      );
+    }
   }
 
   deleteAll() {
