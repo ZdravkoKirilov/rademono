@@ -11,19 +11,20 @@ import {
   toLeftObs,
   UnexpectedError,
   toRightObs,
-  InitialOrganization,
   ParsingError,
   switchMapEither,
   mapEither,
   parseAndValidateManyUnknown,
+  PrivateAdminGroup,
 } from '@end/global';
-import { DbentityService } from '@app/database';
 import { from } from 'rxjs';
+
+import { DbentityService } from '@app/database';
 
 export class OrganizationDBModel {
   id?: number;
   public_id: string;
-  admin_group?: string;
+  admin_group: PrivateAdminGroup;
   name: string;
   description?: string;
 }
@@ -83,8 +84,8 @@ export class OrganizationRepository {
   }
 
   createOrganization(
-    organization: InitialOrganization,
-  ): Observable<e.Either<UnexpectedError, InitialOrganization>> {
+    organization: PrivateOrganization,
+  ): Observable<e.Either<UnexpectedError, PrivateOrganization>> {
     try {
       return this.repo.insert(organization).pipe(
         mapEither(

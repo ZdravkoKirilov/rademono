@@ -1,16 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import {
   AdminUserId,
   CreateOrganizationResponse,
   DomainError,
-  InitialOrganization,
   ParsingError,
   PrivateOrganization,
   toLeftObs,
+  toRightObs,
   UnexpectedError,
   UUIDv4,
 } from '@end/global';
@@ -29,6 +29,49 @@ export class OrganizationService {
     private adminProfileService: AdminProfileService,
     @Inject(PUBLIC_ID_GENERATOR) private createId: typeof UUIDv4.generate,
   ) {}
+
+  create2(
+    payload: unknown,
+    userId: AdminUserId,
+  ): Observable<
+    e.Either<UnexpectedError | DomainError | ParsingError, PrivateOrganization>
+  > {
+    return PrivateOrganization.create(payload, this.createId, userId).pipe(
+      switchMap((mbDto) => {
+        if (e.isLeft(mbDto)) {
+          return of(mbDto);
+        }
+
+        return this.repo.organizationExists({ name: mbDto.right.name }).pipe(
+          map((res) => {
+            if (e.isLeft(res)) {
+              return res;
+            }
+            if (res.right) {
+              return e.left(
+                new DomainError('Organization with that name already exists'),
+              );
+            }
+            return mbDto;
+          }),
+        );
+      }),
+      switchMap((payload) => {
+        if ('left' in payload) {
+          return toLeftObs(payload.left);
+        }
+
+        return this.repo.createOrganization(payload.right);
+      }),
+      switchMap((mbCreated) => {
+        if ('left' in mbCreated) {
+          return toLeftObs(mbCreated.left);
+        }
+
+        return toRightObs(mbCreated.right);
+      }),
+    );
+  }
 
   create(
     payload: unknown,

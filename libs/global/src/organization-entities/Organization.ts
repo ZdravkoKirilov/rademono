@@ -25,7 +25,14 @@ import {
   toLeftObs,
   transformToClass,
 } from '../parsers';
-import { AdminGroup, PrivateAdminGroup } from './AdminGroup';
+import {
+  AdminGroup,
+  AdminGroupId,
+  CreateAdminGroupDto,
+  PrivateAdminGroup,
+} from './AdminGroup';
+import { AdminUserId } from 'src/user-entities';
+import { CreateAdminProfileDto, PrivateAdminProfile } from './AdminProfile';
 
 export type OrganizationId = Tagged<'OrganizationId', UUIDv4>;
 
@@ -74,35 +81,42 @@ export class PrivateOrganization extends BasicFields {
   static create(
     payload: unknown,
     createId: typeof UUIDv4.generate,
+    userId: AdminUserId,
   ): Observable<e.Either<ParsingError, PrivateOrganization>> {
     const organizationId = createId<OrganizationId>();
 
-    return PrivateAdminGroup.create(
-      {
+    const group = PrivateAdminGroup.createFromDto(
+      transformToClass(CreateAdminGroupDto, {
         name: 'Admins',
         organization: organizationId,
-      },
+      }),
       createId,
-    ).pipe(
-      switchMapEither(
-        (err) => toLeftObs(err),
-        (group) => {
-          return parseAndValidateUnknown(payload, CreateOrganizationDto).pipe(
-            map((result) => {
-              if (e.isRight(result)) {
-                const plain = {
-                  ...result.right,
-                  public_id: organizationId,
-                  admin_group: group,
-                };
+    );
 
-                return e.right(transformToClass(PrivateOrganization, plain));
-              }
-              return result;
-            }),
-          );
-        },
-      ),
+    const adminProfile = PrivateAdminProfile.createFromDto(
+      transformToClass(CreateAdminProfileDto, {
+        user: userId,
+        name: 'Admin',
+        group: group.public_id,
+      }),
+      createId,
+    );
+
+    const groupWithProfile = PrivateAdminGroup.addProfile(group, adminProfile);
+
+    return parseAndValidateUnknown(payload, CreateOrganizationDto).pipe(
+      map((result) => {
+        if (e.isRight(result)) {
+          const plain = {
+            ...result.right,
+            public_id: organizationId,
+            admin_group: groupWithProfile,
+          };
+
+          return e.right(transformToClass(PrivateOrganization, plain));
+        }
+        return result;
+      }),
     );
   }
 
