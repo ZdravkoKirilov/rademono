@@ -4,7 +4,11 @@ import { get, omit } from 'lodash/fp';
 import { transformToClass } from '../parsers';
 import { breakTest } from '../test';
 import { ParsingError, StringOfLength, UUIDv4 } from '../types';
-import { PrivateAdminGroup, AdminGroupId } from './AdminGroup';
+import {
+  PrivateAdminGroup,
+  AdminGroupId,
+  CreateAdminGroupDto,
+} from './AdminGroup';
 import { PrivateAdminProfile } from './AdminProfile';
 
 describe('AdminGroup entity', () => {
@@ -220,6 +224,60 @@ describe('AdminGroup entity', () => {
           expect(res.left.errors[0].property).toBe('profiles');
           done();
         });
+      });
+    });
+
+    describe(PrivateAdminGroup.createFromDto.name, () => {
+      it('creates an AdminGroup', (done) => {
+        const id = UUIDv4.generate<AdminGroupId>();
+
+        const data = transformToClass(CreateAdminGroupDto, {
+          name: 'Name',
+          organization: UUIDv4.generate(),
+          description: 'Desc',
+        });
+
+        const result = PrivateAdminGroup.createFromDto(data, () => id);
+        expect(result).toBeInstanceOf(PrivateAdminGroup);
+        expect(result).toEqual({
+          ...data,
+          public_id: id,
+          profiles: [],
+        });
+        done();
+      });
+    });
+
+    describe(PrivateAdminGroup.addProfile.name, () => {
+      it('adds new profile', (done) => {
+        const id = UUIDv4.generate<AdminGroupId>();
+
+        const groupData = transformToClass(CreateAdminGroupDto, {
+          name: 'Name',
+          organization: UUIDv4.generate(),
+          description: 'Desc',
+        });
+
+        const profileData = transformToClass(PrivateAdminProfile, {
+          name: 'George',
+          user: UUIDv4.generate(),
+          group: UUIDv4.generate(),
+        });
+
+        const group = PrivateAdminGroup.createFromDto(groupData, () => id);
+        const profile = PrivateAdminProfile.createFromDto(
+          profileData,
+          UUIDv4.generate,
+        );
+
+        const withProfile = PrivateAdminGroup.addProfile(group, profile);
+
+        expect(withProfile).toBeInstanceOf(PrivateAdminGroup);
+        expect(withProfile).toEqual({
+          ...group,
+          profiles: [profile],
+        });
+        done();
       });
     });
 

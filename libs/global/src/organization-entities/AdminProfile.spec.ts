@@ -3,7 +3,11 @@ import * as e from 'fp-ts/lib/Either';
 import { transformToClass } from '../parsers';
 import { breakTest } from '../test';
 import { ParsingError, UUIDv4 } from '../types';
-import { AdminProfileId, PrivateAdminProfile } from './AdminProfile';
+import {
+  AdminProfileId,
+  CreateAdminProfileDto,
+  PrivateAdminProfile,
+} from './AdminProfile';
 
 describe('AdminProfile entity', () => {
   describe(PrivateAdminProfile.name, () => {
@@ -149,6 +153,63 @@ describe('AdminProfile entity', () => {
           expect(res.left).toBeInstanceOf(ParsingError);
           expect(res.left.errors).toHaveLength(1);
           expect(res.left.errors[0].property).toBe('user');
+          done();
+        });
+      });
+    });
+
+    describe(PrivateAdminProfile.createFromDto, () => {
+      it('creates an AdminProfile', (done) => {
+        const id = UUIDv4.generate<AdminProfileId>();
+
+        const data = transformToClass(CreateAdminProfileDto, {
+          user: UUIDv4.generate(),
+          group: UUIDv4.generate(),
+          name: 'Admins',
+        });
+
+        const profile = PrivateAdminProfile.createFromDto(data, () => id);
+        expect(profile).toBeInstanceOf(PrivateAdminProfile);
+        expect(profile).toEqual({
+          ...data,
+          public_id: id,
+        });
+        done();
+      });
+
+      it('fails without a public_id', (done) => {
+        const data = {
+          user: UUIDv4.generate(),
+          group: UUIDv4.generate(),
+          name: 'Admins',
+        };
+
+        PrivateAdminProfile.toPrivateEntity(data).subscribe((res) => {
+          if (e.isRight(res)) {
+            return breakTest();
+          }
+          expect(res.left).toBeInstanceOf(ParsingError);
+          expect(res.left.errors).toHaveLength(1);
+          expect(res.left.errors[0].property).toBe('public_id');
+          done();
+        });
+      });
+
+      it('fails with invalid public_id', (done) => {
+        const data = {
+          user: UUIDv4.generate(),
+          group: UUIDv4.generate(),
+          name: 'Admins',
+          public_id: 'Invalid id',
+        };
+
+        PrivateAdminProfile.toPrivateEntity(data).subscribe((res) => {
+          if (e.isRight(res)) {
+            return breakTest();
+          }
+          expect(res.left).toBeInstanceOf(ParsingError);
+          expect(res.left.errors).toHaveLength(1);
+          expect(res.left.errors[0].property).toBe('public_id');
           done();
         });
       });

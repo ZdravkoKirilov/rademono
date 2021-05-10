@@ -1,14 +1,26 @@
 import * as e from 'fp-ts/lib/Either';
-import { get } from 'lodash/fp';
 
 import { transformToClass } from '../parsers';
 import { breakTest } from '../test';
 import { ParsingError, StringOfLength, UUIDv4 } from '../types';
 import { PrivateAdminGroup } from './AdminGroup';
-import { OrganizationId, PrivateOrganization } from './Organization';
+import {
+  CreateOrganizationDto,
+  Organization,
+  OrganizationId,
+  PrivateOrganization,
+} from './Organization';
 
 describe('Organization entity', () => {
   describe(PrivateOrganization.name, () => {
+    const adminGroup = PrivateAdminGroup.createFromDto(
+      {
+        name: 'The doors' as StringOfLength<1, 100>,
+        organization: UUIDv4.generate(),
+      },
+      UUIDv4.generate,
+    );
+
     describe(PrivateOrganization.create.name, () => {
       it('passes with enough data', (done) => {
         const id = UUIDv4.generate<OrganizationId>();
@@ -88,15 +100,11 @@ describe('Organization entity', () => {
     describe(PrivateOrganization.toPrivateEntity.name, () => {
       it('passes with enough data', async (done) => {
         const public_id = UUIDv4.generate();
-        const admin_group = await PrivateAdminGroup.create(
-          { name: 'The doors', organization: public_id },
-          UUIDv4.generate,
-        ).toPromise();
 
         const data = {
           name: 'name',
           public_id,
-          admin_group: get('right', admin_group),
+          admin_group: adminGroup,
         };
 
         PrivateOrganization.toPrivateEntity(data).subscribe((res) => {
@@ -109,14 +117,9 @@ describe('Organization entity', () => {
       });
 
       it('fails when the public_id is missing', async (done) => {
-        const admin_group = await PrivateAdminGroup.create(
-          { name: 'The doors', organization: UUIDv4.generate() },
-          UUIDv4.generate,
-        ).toPromise();
-
         const data = {
           name: 'name',
-          admin_group: get('right', admin_group),
+          admin_group: adminGroup,
         };
 
         PrivateOrganization.toPrivateEntity(data).subscribe((res) => {
@@ -171,15 +174,11 @@ describe('Organization entity', () => {
 
       it('fails when the "name" is too long', async (done) => {
         const public_id = UUIDv4.generate();
-        const admin_group = await PrivateAdminGroup.create(
-          { name: 'The doors', organization: UUIDv4.generate() },
-          UUIDv4.generate,
-        ).toPromise();
 
         const data = {
           name: new Array(102).join('b'),
           public_id,
-          admin_group: get('right', admin_group),
+          admin_group: adminGroup,
         };
 
         PrivateOrganization.toPrivateEntity(data).subscribe((res) => {
@@ -195,16 +194,12 @@ describe('Organization entity', () => {
 
       it('fails when the "description" is too long', async (done) => {
         const public_id = UUIDv4.generate();
-        const admin_group = await PrivateAdminGroup.create(
-          { name: 'The doors', organization: UUIDv4.generate() },
-          UUIDv4.generate,
-        ).toPromise();
 
         const data = {
           name: 'Name',
           description: new Array(5002).join('c'),
           public_id,
-          admin_group: get('right', admin_group),
+          admin_group: adminGroup,
         };
 
         PrivateOrganization.toPrivateEntity(data).subscribe((res) => {
@@ -221,14 +216,6 @@ describe('Organization entity', () => {
 
     describe(PrivateOrganization.toPublicEntity.name, () => {
       it('correctly transforms from private to public fields', () => {
-        const adminGroup = PrivateAdminGroup.createFromDto(
-          {
-            name: 'The doors' as StringOfLength<1, 100>,
-            organization: UUIDv4.generate(),
-          },
-          UUIDv4.generate,
-        );
-
         const publicId = UUIDv4.generate();
 
         const data = {
@@ -247,6 +234,23 @@ describe('Organization entity', () => {
           description: 'Desc',
           admin_group: PrivateAdminGroup.toPublicEntity(data.admin_group),
           id: publicId,
+        });
+      });
+    });
+  });
+
+  describe(Organization.name, () => {
+    describe(Organization.create.name, () => {
+      it('passes with enough data', (done) => {
+        const data = { name: 'Name' };
+
+        Organization.create(data).subscribe((result) => {
+          if (e.isLeft(result)) {
+            return breakTest();
+          }
+          expect(result.right).toBeInstanceOf(CreateOrganizationDto);
+          expect(result.right).toEqual(data);
+          done();
         });
       });
     });
