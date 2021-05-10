@@ -14,14 +14,15 @@ import * as e from 'fp-ts/lib/Either';
 
 import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
 import { parseAndValidateUnknown, transformToClass } from '../parsers';
-import { PrivateAdminProfile } from './AdminProfile';
+import { AdminProfile, PrivateAdminProfile } from './AdminProfile';
+import { OrganizationId } from './Organization';
 
 export type AdminGroupId = Tagged<'AdminGroupId', UUIDv4>;
 
 class ValidationBase {
   @Expose()
   @IsUUID('4')
-  organization: AdminGroupId;
+  organization: OrganizationId;
 
   @Expose()
   @MinLength(1)
@@ -33,23 +34,32 @@ class ValidationBase {
   @MinLength(1)
   @MaxLength(5000)
   description?: StringOfLength<1, 5000>;
-
-  @Expose()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => PrivateAdminProfile)
-  profiles: PrivateAdminProfile[];
 }
 
 export class AdminGroup extends ValidationBase {
   @Expose()
+  @IsUUID('4')
   id: AdminGroupId;
+
+  @Expose()
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AdminProfile)
+  profiles: AdminProfile[];
 }
 
 export class PrivateAdminGroup extends ValidationBase {
   @Expose()
   @IsUUID('4')
   public_id: AdminGroupId;
+
+  @Expose()
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PrivateAdminProfile)
+  profiles: PrivateAdminProfile[];
 
   static create(
     payload: unknown,
@@ -60,6 +70,7 @@ export class PrivateAdminGroup extends ValidationBase {
         if (e.isRight(result)) {
           const plain: PrivateAdminGroup = {
             ...result.right,
+            profiles: [],
             public_id: createId(),
           };
 
@@ -68,6 +79,20 @@ export class PrivateAdminGroup extends ValidationBase {
         return result;
       }),
     );
+  }
+
+  static addProfile(
+    group: PrivateAdminGroup,
+    profile: PrivateAdminProfile,
+  ): PrivateAdminGroup {
+    const currentProfiles = group.profiles || [];
+
+    const data = {
+      ...group,
+      profiles: [...currentProfiles, profile],
+    };
+
+    return transformToClass(PrivateAdminGroup, data);
   }
 
   static toPrivateEntity(data: unknown) {
@@ -80,7 +105,9 @@ export class PrivateAdminGroup extends ValidationBase {
       name: data.name,
       description: data.description,
       organization: data.organization,
-      profiles: data.profiles,
+      profiles: data.profiles?.map((elem) =>
+        PrivateAdminProfile.toPublicEntity(elem),
+      ),
     };
   }
 }

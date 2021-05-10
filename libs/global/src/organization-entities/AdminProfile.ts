@@ -56,6 +56,17 @@ export class PrivateAdminProfile extends ValidationBase {
     );
   }
 
+  static createFromDto(
+    payload: ValidationBase,
+    createId: typeof UUIDv4.generate,
+  ) {
+    const data = {
+      ...payload,
+      public_id: createId(),
+    };
+    return transformToClass(PrivateAdminProfile, data);
+  }
+
   static toPrivateEntity(data: unknown) {
     return parseAndValidateUnknown(data, PrivateAdminProfile);
   }

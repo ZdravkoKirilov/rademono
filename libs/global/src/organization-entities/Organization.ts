@@ -4,13 +4,15 @@
 3. has game groups // school subjects
 */
 
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import {
   IsNotEmpty,
+  IsObject,
   IsOptional,
   IsUUID,
   MaxLength,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -19,10 +21,11 @@ import * as e from 'fp-ts/lib/Either';
 import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
 import {
   parseAndValidateUnknown,
+  switchMapEither,
+  toLeftObs,
   transformToClass,
-  transformToPlain,
 } from '../parsers';
-import { ProfileGroupId } from './ProfileGroup';
+import { AdminGroup, PrivateAdminGroup } from './AdminGroup';
 
 export type OrganizationId = Tagged<'OrganizationId', UUIDv4>;
 
@@ -40,15 +43,15 @@ class BasicFields {
   description?: StringOfLength<1, 5000>;
 }
 
-class ValidationBase extends BasicFields {
-  @Expose()
-  @IsUUID('4')
-  admin_group: ProfileGroupId;
-}
-export class Organization extends ValidationBase {
+export class Organization extends BasicFields {
   @Expose()
   @IsUUID('4')
   readonly id: OrganizationId;
+
+  @Expose()
+  @ValidateNested()
+  @Type(() => AdminGroup)
+  admin_group: AdminGroup;
 
   static create(payload: unknown) {
     return parseAndValidateUnknown(payload, CreateOrganizationDto);
@@ -57,38 +60,50 @@ export class Organization extends ValidationBase {
 
 export class CreateOrganizationDto extends BasicFields {}
 
-export class PrivateOrganization extends ValidationBase {
+export class PrivateOrganization extends BasicFields {
   @Expose()
   @IsUUID('4')
   readonly public_id: OrganizationId;
 
+  @Expose()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => PrivateAdminGroup)
+  admin_group: PrivateAdminGroup;
+
   static create(
     payload: unknown,
     createId: typeof UUIDv4.generate,
-  ): Observable<e.Either<ParsingError, InitialOrganization>> {
-    return parseAndValidateUnknown(payload, CreateOrganizationDto).pipe(
-      map((result) => {
-        if (e.isRight(result)) {
-          const plain: InitialOrganization = {
-            ...result.right,
-            public_id: createId(),
-          };
+  ): Observable<e.Either<ParsingError, PrivateOrganization>> {
+    const organizationId = createId<OrganizationId>();
 
-          return e.right(transformToClass(PrivateOrganization, plain));
-        }
-        return result;
-      }),
+    return PrivateAdminGroup.create(
+      {
+        name: 'Admins',
+        organization: organizationId,
+      },
+      createId,
+    ).pipe(
+      switchMapEither(
+        (err) => toLeftObs(err),
+        (group) => {
+          return parseAndValidateUnknown(payload, CreateOrganizationDto).pipe(
+            map((result) => {
+              if (e.isRight(result)) {
+                const plain = {
+                  ...result.right,
+                  public_id: organizationId,
+                  admin_group: group,
+                };
+
+                return e.right(transformToClass(PrivateOrganization, plain));
+              }
+              return result;
+            }),
+          );
+        },
+      ),
     );
-  }
-
-  static setAdminGroup(
-    entity: InitialOrganization,
-    adminGroupId: ProfileGroupId,
-  ): PrivateOrganization {
-    return transformToClass(PrivateOrganization, {
-      ...transformToPlain(entity),
-      admin_group: adminGroupId,
-    });
   }
 
   static toPrivateEntity(data: unknown) {
@@ -99,10 +114,8 @@ export class PrivateOrganization extends ValidationBase {
     return {
       id: source.public_id,
       name: source.name,
-      admin_group: source.admin_group,
+      admin_group: PrivateAdminGroup.toPublicEntity(source.admin_group),
       description: source.description,
     };
   }
 }
-
-export type InitialOrganization = Omit<PrivateOrganization, 'admin_group'>;

@@ -17,60 +17,28 @@ describe('AdminGroup entity', () => {
         const data = {
           name: 'Admins',
           organization: UUIDv4.generate(),
+        };
+
+        PrivateAdminGroup.create(data, createId).subscribe((res) => {
+          if (e.isLeft(res)) {
+            return breakTest();
+          }
+          expect(res.right).toEqual({
+            ...data,
+            public_id: publicId,
+            profiles: [],
+          });
+          done();
+        });
+      });
+
+      it('breaks without a name', (done) => {
+        const publicId = UUIDv4.generate<AdminGroupId>();
+        const createId = () => publicId;
+
+        const data = {
+          organization: UUIDv4.generate(),
           profiles: [],
-        };
-
-        PrivateAdminGroup.create(data, createId).subscribe((res) => {
-          if (e.isLeft(res)) {
-            return breakTest();
-          }
-          expect(res.right).toEqual({
-            ...data,
-            public_id: publicId,
-          });
-          done();
-        });
-      });
-
-      it('passes with nested profiles', async (done) => {
-        const publicId = UUIDv4.generate<AdminGroupId>();
-        const createId = () => publicId;
-
-        const profile = await PrivateAdminProfile.create(
-          {
-            name: 'John Doe',
-            user: UUIDv4.generate(),
-            group: UUIDv4.generate(),
-          },
-          UUIDv4.generate,
-        ).toPromise();
-
-        const data = {
-          name: 'Admins',
-          organization: UUIDv4.generate(),
-          profiles: [get('right', profile)],
-        };
-
-        PrivateAdminGroup.create(data, createId).subscribe((res) => {
-          if (e.isLeft(res)) {
-            return breakTest();
-          }
-          expect(res.right).toEqual({
-            ...data,
-            description: undefined,
-            public_id: publicId,
-            profiles: [get('right', profile)],
-          });
-          done();
-        });
-      });
-
-      /*       it('breaks without a name', (done) => {
-        const publicId = UUIDv4.generate<AdminGroupId>();
-        const createId = () => publicId;
-
-        const data = {
-          organization: UUIDv4.generate(),
         };
 
         PrivateAdminGroup.create(data, createId).subscribe((res) => {
@@ -82,9 +50,9 @@ describe('AdminGroup entity', () => {
           expect(res.left.errors[0].property).toBe('name');
           done();
         });
-      }); */
+      });
 
-      /*       it('breaks without an organization', (done) => {
+      it('breaks without an organization', (done) => {
         const publicId = UUIDv4.generate<AdminGroupId>();
         const createId = () => publicId;
 
@@ -101,9 +69,9 @@ describe('AdminGroup entity', () => {
           expect(res.left.errors[0].property).toBe('organization');
           done();
         });
-      }); */
+      });
 
-      /*       it('breaks with too long description', (done) => {
+      it('breaks with too long description', (done) => {
         const publicId = UUIDv4.generate<AdminGroupId>();
         const createId = () => publicId;
 
@@ -122,9 +90,9 @@ describe('AdminGroup entity', () => {
           expect(res.left.errors[0].property).toBe('description');
           done();
         });
-      }); */
+      });
 
-      /*       it('breaks with too long name', (done) => {
+      it('breaks with too long name', (done) => {
         const publicId = UUIDv4.generate<AdminGroupId>();
         const createId = () => publicId;
 
@@ -143,10 +111,10 @@ describe('AdminGroup entity', () => {
           expect(res.left.errors[0].property).toBe('name');
           done();
         });
-      }); */
+      });
     });
 
-    /*     describe(PrivateAdminGroup.toPrivateEntity.name, () => {
+    describe(PrivateAdminGroup.toPrivateEntity.name, () => {
       it('passes with enough data', (done) => {
         const data = {
           name: 'Name',
@@ -200,15 +168,69 @@ describe('AdminGroup entity', () => {
           done();
         });
       });
-    }); */
 
-    /*     describe(PrivateAdminGroup.toPublicEntity.name, () => {
+      it('passes with nested profiles', async (done) => {
+        const publicId = UUIDv4.generate<AdminGroupId>();
+
+        const profile = await PrivateAdminProfile.create(
+          {
+            name: 'John Doe',
+            user: UUIDv4.generate(),
+            group: UUIDv4.generate(),
+          },
+          UUIDv4.generate,
+        ).toPromise();
+
+        const data = {
+          name: 'Admins',
+          public_id: publicId,
+          organization: UUIDv4.generate(),
+          profiles: [get('right', profile)],
+        };
+
+        PrivateAdminGroup.toPrivateEntity(data).subscribe((res) => {
+          if (e.isLeft(res)) {
+            return breakTest();
+          }
+          expect(res.right).toEqual({
+            ...data,
+            description: undefined,
+            public_id: publicId,
+            profiles: [get('right', profile)],
+          });
+          done();
+        });
+      });
+
+      it('fails with invalid profile', async (done) => {
+        const publicId = UUIDv4.generate<AdminGroupId>();
+
+        const data = {
+          name: 'Admins',
+          organization: UUIDv4.generate(),
+          profiles: [{}],
+          public_id: publicId,
+        };
+
+        PrivateAdminGroup.toPrivateEntity(data).subscribe((res) => {
+          if (e.isRight(res)) {
+            return breakTest();
+          }
+          expect(res.left.errors).toHaveLength(1);
+          expect(res.left.errors[0].property).toBe('profiles');
+          done();
+        });
+      });
+    });
+
+    describe(PrivateAdminGroup.toPublicEntity.name, () => {
       it('transforms data', (done) => {
         const data = transformToClass(PrivateAdminGroup, {
           public_id: UUIDv4.generate(),
           name: 'Name',
           description: 'Desc',
           organization: UUIDv4.generate(),
+          profiles: [],
         });
 
         const result = PrivateAdminGroup.toPublicEntity(data);
@@ -218,6 +240,6 @@ describe('AdminGroup entity', () => {
         });
         done();
       });
-    }); */
+    });
   });
 });
