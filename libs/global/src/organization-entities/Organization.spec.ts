@@ -3,7 +3,7 @@ import { get } from 'lodash/fp';
 
 import { transformToClass } from '../parsers';
 import { breakTest } from '../test';
-import { ParsingError, UUIDv4 } from '../types';
+import { ParsingError, StringOfLength, UUIDv4 } from '../types';
 import { PrivateAdminGroup } from './AdminGroup';
 import { OrganizationId, PrivateOrganization } from './Organization';
 
@@ -220,18 +220,21 @@ describe('Organization entity', () => {
     });
 
     describe(PrivateOrganization.toPublicEntity.name, () => {
-      it('correctly transforms from private to public fields', async () => {
-        const adminGroup = await PrivateAdminGroup.create(
-          { name: 'The doors', organization: UUIDv4.generate() },
+      it('correctly transforms from private to public fields', () => {
+        const adminGroup = PrivateAdminGroup.createFromDto(
+          {
+            name: 'The doors' as StringOfLength<1, 100>,
+            organization: UUIDv4.generate(),
+          },
           UUIDv4.generate,
-        ).toPromise();
+        );
 
         const publicId = UUIDv4.generate();
 
         const data = {
           name: 'Private',
           description: 'Desc',
-          admin_group: get('right', adminGroup),
+          admin_group: adminGroup,
           public_id: publicId,
         };
 

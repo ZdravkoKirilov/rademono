@@ -81,6 +81,17 @@ export class PrivateAdminGroup extends ValidationBase {
     );
   }
 
+  static createFromDto(
+    payload: CreateAdminGroupDto,
+    createId: typeof UUIDv4.generate,
+  ) {
+    return transformToClass(PrivateAdminGroup, {
+      ...payload,
+      profiles: [],
+      public_id: createId(),
+    });
+  }
+
   static addProfile(
     group: PrivateAdminGroup,
     profile: PrivateAdminProfile,

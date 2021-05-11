@@ -3,7 +3,7 @@ import { get, omit } from 'lodash/fp';
 
 import { transformToClass } from '../parsers';
 import { breakTest } from '../test';
-import { ParsingError, UUIDv4 } from '../types';
+import { ParsingError, StringOfLength, UUIDv4 } from '../types';
 import { PrivateAdminGroup, AdminGroupId } from './AdminGroup';
 import { PrivateAdminProfile } from './AdminProfile';
 
@@ -172,14 +172,14 @@ describe('AdminGroup entity', () => {
       it('passes with nested profiles', async (done) => {
         const publicId = UUIDv4.generate<AdminGroupId>();
 
-        const profile = await PrivateAdminProfile.create(
+        const profile = PrivateAdminProfile.createFromDto(
           {
-            name: 'John Doe',
+            name: 'John Doe' as StringOfLength<1, 100>,
             user: UUIDv4.generate(),
             group: UUIDv4.generate(),
           },
           UUIDv4.generate,
-        ).toPromise();
+        );
 
         const data = {
           name: 'Admins',
