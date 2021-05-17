@@ -1,8 +1,9 @@
 import { ValidationError } from 'class-validator';
-import { isArray } from 'lodash/fp';
+import { get } from 'lodash/fp';
 
 type FieldError = Pick<ValidationError, 'property' | 'constraints'> & {
   name: string;
+  errors?: FieldError[];
 };
 
 type AnyError = {
@@ -10,18 +11,24 @@ type AnyError = {
   message: string;
 };
 
-const containsParsingErrors = (
-  source: ParsingError[] | ValidationError[],
-): source is Array<ParsingError> => {
-  return source[0] instanceof ParsingError;
-};
-
-const toFieldErrors = (source: ValidationError[]): FieldError[] => {
-  return source.map((error) => ({
-    property: error.property,
-    constraints: error.constraints,
-    name: error?.contexts?.name, // localize key
-  }));
+const toFieldErrors = (
+  source: ValidationError[] | ParsingError[] | FieldError[],
+): FieldError[] => {
+  return source.map((error: ValidationError | ParsingError | FieldError) => {
+    if (error instanceof ParsingError) {
+      return {
+        property: error.message,
+        constraints: {},
+        name: ParsingError.prototype.name,
+        errors: error.errors,
+      };
+    }
+    return {
+      property: error.property,
+      constraints: error.constraints,
+      name: get('contexts.name', error) || get('name', error), // localize key
+    };
+  });
 };
 
 export class DomainError extends Error {
@@ -42,23 +49,15 @@ export class RepositoryError extends Error {
 
 export class ParsingError extends Error {
   readonly name = 'ParsingError';
-  errors: FieldError[] | ParsingError[];
+  errors: FieldError[];
 
   constructor(
     public message: string,
-    errors?: ValidationError[] | ParsingError[],
+    errors: ValidationError[] | ParsingError[] | FieldError[] = [],
+    public context: { index?: number } = {},
   ) {
     super();
-
-    if (isArray(errors)) {
-      if (containsParsingErrors(errors)) {
-        this.errors = errors;
-      } else {
-        this.errors = toFieldErrors(errors);
-      }
-    } else {
-      this.errors = [];
-    }
+    this.errors = errors ? toFieldErrors(errors) : [];
   }
 }
 
@@ -73,6 +72,6 @@ export class UnexpectedError extends Error {
 export type HttpApiError = {
   message: string;
   name: string; // localization key
-  errors?: FieldError[] | AnyError[];
+  errors?: FieldError[] | AnyError[] | ParsingError;
   originalError?: unknown;
 };

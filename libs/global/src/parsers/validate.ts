@@ -1,6 +1,7 @@
 import { validate, ValidatorOptions } from 'class-validator';
 import { classToPlain, plainToClass } from 'class-transformer';
-import { from, Observable, of } from 'rxjs';
+import { forkJoin, from, Observable, of } from 'rxjs';
+import { isUndefined } from 'lodash/fp';
 import { switchMap, map } from 'rxjs/operators';
 import { isNil, isObject, get } from 'lodash';
 import * as o from 'fp-ts/lib/Option';
@@ -92,20 +93,28 @@ export const parseAndValidateManyUnknown = <
     validationOptions: ValidatorOptions;
   } = { validationOptions: { whitelist: true } },
 ): Observable<e.Either<ParsingError, Target[]>> => {
-  return parseToClass(data, targetClass).pipe(
-    switchMap((opt) => {
-      if (o.isNone(opt)) {
-        return of(e.left(new ParsingError('Payload is not an object')));
+  return forkJoin(
+    data.map((elem) => {
+      return parseAndValidateUnknown(elem, targetClass, options);
+    }),
+  ).pipe(
+    map((results) => {
+      if (results.every(e.isRight)) {
+        return e.right(results.map((elem) => elem.right));
       }
-      return validateObject(opt.value, options.validationOptions).pipe(
-        map((errors) => {
-          const wihoutBlankFields = ((opt.value as unknown) as any[]).map(
-            (elem) => stripUndefinedFields(elem) as Target,
-          );
-          return errors.length
-            ? e.left(new ParsingError('', errors))
-            : e.right(wihoutBlankFields);
-        }),
+      const remappedErrors = results
+        .map((elem, index) => {
+          if (e.isLeft(elem)) {
+            return new ParsingError(elem.left.message, elem.left.errors, {
+              index,
+            });
+          }
+          return undefined;
+        })
+        .filter((elem) => !isUndefined(elem)) as ParsingError[];
+
+      return e.left(
+        new ParsingError('Parse error in collection', remappedErrors),
       );
     }),
   );
