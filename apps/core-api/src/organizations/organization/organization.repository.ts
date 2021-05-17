@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { switchMap, catchError, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 import * as o from 'fp-ts/lib/Option';
 import { isNil } from 'lodash/fp';
@@ -37,6 +37,49 @@ export class OrganizationRepository {
   constructor(private repo: DbentityService<OrganizationDBModel>) {}
 
   getOrganizations(
+    userId: AdminUserId,
+  ): Observable<
+    e.Either<ParsingError | UnexpectedError, PrivateOrganization[]>
+  > {
+    const query = { 'admin_group.profiles': { $elemMatch: { user: userId } } };
+
+    return this.repo.findAll(query).pipe(
+      switchMapEither(
+        (error) => {
+          return toLeftObs(
+            new UnexpectedError('Failed to find the organizations', error),
+          );
+        },
+        (result) => {
+          if (!result || result.length < 1) {
+            return toRightObs([]);
+          }
+          return forkJoin(
+            result.map((elem) => PrivateOrganization.toPrivateEntity(elem)),
+          ).pipe(
+            map((results) => {
+              if (results.every(e.isRight)) {
+                return e.right(results.map((elem) => elem.right));
+              }
+              return e.left(
+                new ParsingError(
+                  'Failed to parse organizations',
+                  results.filter(e.isLeft).map((elem) => elem.left),
+                ),
+              );
+            }),
+          );
+        },
+      ),
+      catchError((err) => {
+        return toLeftObs(
+          new UnexpectedError('Failed to find the organizations', err),
+        );
+      }),
+    );
+  }
+
+  getOrganization2(
     userId: AdminUserId,
   ): Observable<
     e.Either<ParsingError | UnexpectedError, PrivateOrganization[]>

@@ -10,3 +10,4 @@ export * from './Email';
 export * from './NanoId';
 export * from './JWT';
 export * from './Primitive';
+export * from './misc-dto';

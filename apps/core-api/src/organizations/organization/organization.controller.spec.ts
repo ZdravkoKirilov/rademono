@@ -207,4 +207,101 @@ describe(OrganizationController.name, () => {
       }
     });
   });
+
+  describe(OrganizationController.prototype.getAllForUser.name, () => {
+    it('passes when the service passes', async (done) => {
+      const user = {
+        public_id: UUIDv4.generate(),
+      } as PrivateAdminUser;
+
+      const module: TestingModule = await Test.createTestingModule({
+        controllers: [OrganizationController],
+        providers: [
+          {
+            provide: OrganizationService,
+            useValue: {
+              getAllForUser: () => toRightObs([]),
+            },
+          },
+        ],
+      })
+        .overrideGuard(AuthGuard)
+        .useValue({
+          canActivate: async () => true,
+        })
+        .compile();
+
+      controller = module.get<OrganizationController>(OrganizationController);
+
+      controller.getAllForUser(user.public_id).subscribe((res) => {
+        expect(res).toEqual([]);
+        done();
+      });
+    });
+
+    it('fails when the service returns an UnexpectedError', async (done) => {
+      const user = {
+        public_id: UUIDv4.generate(),
+      } as PrivateAdminUser;
+
+      const module: TestingModule = await Test.createTestingModule({
+        controllers: [OrganizationController],
+        providers: [
+          {
+            provide: OrganizationService,
+            useValue: {
+              getAllForUser: () => toLeftObs(new UnexpectedError('oops')),
+            },
+          },
+        ],
+      })
+        .overrideGuard(AuthGuard)
+        .useValue({
+          canActivate: async () => true,
+        })
+        .compile();
+
+      controller = module.get<OrganizationController>(OrganizationController);
+
+      try {
+        await controller.getAllForUser(user.public_id).toPromise();
+      } catch (err) {
+        expect(err).toBeInstanceOf(KnownErrors.InternalServerErrorException);
+        done();
+      }
+    });
+
+    it('fails when the service returns a ParsingError', async (done) => {
+      const user = {
+        public_id: UUIDv4.generate(),
+      } as PrivateAdminUser;
+
+      const module: TestingModule = await Test.createTestingModule({
+        controllers: [OrganizationController],
+        providers: [
+          {
+            provide: OrganizationService,
+            useValue: {
+              getAllForUser: () => toLeftObs(new ParsingError('oops')),
+            },
+          },
+        ],
+      })
+        .overrideGuard(AuthGuard)
+        .useValue({
+          canActivate: async () => true,
+        })
+        .compile();
+
+      controller = module.get<OrganizationController>(OrganizationController);
+
+      try {
+        await controller.getAllForUser(user.public_id).toPromise();
+      } catch (err) {
+        expect(err).toBeInstanceOf(KnownErrors.BadRequestException);
+        expect(err.message).toBe('oops');
+        done();
+      }
+    });
+  });
 });

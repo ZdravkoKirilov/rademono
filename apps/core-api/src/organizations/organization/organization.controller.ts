@@ -80,6 +80,45 @@ export class OrganizationController {
   @Get()
   @UseGuards(AuthGuard)
   getAllForUser(@WithUser() user: PrivateAdminUser) {
-    return [];
+    return this.organizationService.getAllForUser(user.public_id).pipe(
+      map((result) => {
+        if (e.isLeft(result)) {
+          switch (result.left.name) {
+            case 'ParsingError': {
+              throw toBadRequest({
+                message: result.left.message,
+                name: result.left.name,
+                errors: result.left.errors,
+              });
+            }
+            case 'UnexpectedError': {
+              throw toUnexpectedError({
+                message: result.left.message,
+                name: result.left.name,
+              });
+            }
+            default: {
+              throw toUnexpectedError({
+                message: 'Unexpected error',
+                name: UnexpectedError.prototype.name,
+                originalError: result.left,
+              });
+            }
+          }
+        }
+        return result.right;
+      }),
+      catchError((err) => {
+        if (isKnownError(err)) {
+          throw err;
+        }
+
+        throw toUnexpectedError({
+          message: 'Unexpected error',
+          name: UnexpectedError.prototype.name,
+          originalError: err,
+        });
+      }),
+    );
   }
 }

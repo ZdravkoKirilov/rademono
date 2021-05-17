@@ -1,4 +1,5 @@
 import { ValidationError } from 'class-validator';
+import { isArray } from 'lodash/fp';
 
 type FieldError = Pick<ValidationError, 'property' | 'constraints'> & {
   name: string;
@@ -7,6 +8,12 @@ type FieldError = Pick<ValidationError, 'property' | 'constraints'> & {
 type AnyError = {
   name: string;
   message: string;
+};
+
+const containsParsingErrors = (
+  source: ParsingError[] | ValidationError[],
+): source is Array<ParsingError> => {
+  return source[0] instanceof ParsingError;
 };
 
 const toFieldErrors = (source: ValidationError[]): FieldError[] => {
@@ -35,11 +42,23 @@ export class RepositoryError extends Error {
 
 export class ParsingError extends Error {
   readonly name = 'ParsingError';
-  errors: FieldError[];
+  errors: FieldError[] | ParsingError[];
 
-  constructor(public message: string, errors?: ValidationError[]) {
+  constructor(
+    public message: string,
+    errors?: ValidationError[] | ParsingError[],
+  ) {
     super();
-    this.errors = errors ? toFieldErrors(errors) : [];
+
+    if (isArray(errors)) {
+      if (containsParsingErrors(errors)) {
+        this.errors = errors;
+      } else {
+        this.errors = toFieldErrors(errors);
+      }
+    } else {
+      this.errors = [];
+    }
   }
 }
 

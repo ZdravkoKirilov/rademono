@@ -4,6 +4,8 @@ import {
   breakTest,
   DomainError,
   ParsingError,
+  PrivateAdminGroup,
+  StringOfLength,
   toLeftObs,
   toRightObs,
   UnexpectedError,
@@ -161,6 +163,49 @@ describe(OrganizationService.name, () => {
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
 
+        done();
+      });
+    });
+  });
+
+  describe(OrganizationService.prototype.getAllForUser.name, () => {
+    it('returns all organizations', async (done) => {
+      const userId = UUIDv4.generate<AdminUserId>();
+
+      const adminGroup = PrivateAdminGroup.createFromDto(
+        {
+          name: 'The doors' as StringOfLength<1, 100>,
+          organization: UUIDv4.generate(),
+        },
+        UUIDv4.generate,
+      );
+
+      const organizations = [
+        { name: 'One', admin_group: adminGroup },
+        { name: 'Two', admin_group: adminGroup },
+      ];
+
+      const module: TestingModule = await Test.createTestingModule({
+        imports: [],
+        providers: [
+          OrganizationService,
+          {
+            provide: OrganizationRepository,
+            useValue: {
+              getOrganizations: () => toRightObs(organizations),
+            },
+          },
+          { provide: PUBLIC_ID_GENERATOR, useValue: UUIDv4.generate },
+        ],
+      }).compile();
+
+      service = module.get<OrganizationService>(OrganizationService);
+
+      service.getAllForUser(userId).subscribe((result) => {
+        if (e.isLeft(result)) {
+          return breakTest();
+        }
+        expect(result.right).toHaveLength(2);
         done();
       });
     });

@@ -7,8 +7,9 @@ import { createTestUser, cleanRepositories } from '@app/test';
 import { OrganizationRepository } from './organization.repository';
 import { ProfileGroupRepository } from '../profile-group/profile-group.repository';
 import { AdminProfileRepository } from '../admin-profile/admin-profile.repository';
+import { OrganizationController } from './organization.controller';
 
-describe('Organization endpoints (e2e)', () => {
+describe(OrganizationController.name, () => {
   let app: INestApplication;
   const repos = [
     OrganizationRepository,
@@ -35,7 +36,7 @@ describe('Organization endpoints (e2e)', () => {
     await cleanRepositories(app, repos);
   });
 
-  describe('/organization (POST)', () => {
+  describe(OrganizationController.prototype.create, () => {
     it('passes with correct data', async (done) => {
       const { token } = await createTestUser(app, 'email11@email.com');
 
@@ -45,9 +46,10 @@ describe('Organization endpoints (e2e)', () => {
         .send({ name: 'Monster inc' })
         .expect(201);
 
-      expect(body.group).toMatchObject({ name: 'Admins' });
-      expect(body.profile).toMatchObject({ name: 'Admin' });
-      expect(body.organization).toMatchObject({ name: 'Monster inc' });
+      expect(body).toMatchObject({
+        name: 'Monster inc',
+        admin_group: { name: 'Admins', profiles: [{ name: 'Admin' }] },
+      });
 
       done();
     });
@@ -79,6 +81,7 @@ describe('Organization endpoints (e2e)', () => {
         errors: [
           {
             constraints: {
+              isNotEmpty: 'name should not be empty',
               maxLength: 'name must be shorter than or equal to 100 characters',
               minLength: 'name must be longer than or equal to 1 characters',
             },
@@ -110,6 +113,54 @@ describe('Organization endpoints (e2e)', () => {
         message: 'Organization with that name already exists',
         name: 'DomainError',
       });
+
+      done();
+    });
+  });
+
+  describe(OrganizationController.prototype.getAllForUser, () => {
+    it('returns all organizations for the user', async (done) => {
+      const { token: token1 } = await createTestUser(
+        app,
+        'email1@email.com',
+        false,
+      );
+      const { token: token2 } = await createTestUser(
+        app,
+        'email2@email.com',
+        false,
+      );
+
+      await request(app.getHttpServer())
+        .post('/organization')
+        .set('Authorization', token1)
+        .send({ name: 'Org 1' })
+        .expect(201);
+
+      await request(app.getHttpServer())
+        .post('/organization')
+        .set('Authorization', token2)
+        .send({ name: 'Org 2' })
+        .expect(201);
+
+      await request(app.getHttpServer())
+        .post('/organization')
+        .set('Authorization', token1)
+        .send({ name: 'Org 3' })
+        .expect(201);
+
+      const { body: body1 } = await request(app.getHttpServer())
+        .get('/organization')
+        .set('Authorization', token1)
+        .expect(200);
+
+      const { body: body2 } = await request(app.getHttpServer())
+        .get('/organization')
+        .set('Authorization', token2)
+        .expect(200);
+
+      expect(body1).toHaveLength(2);
+      expect(body2).toHaveLength(1);
 
       done();
     });

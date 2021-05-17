@@ -70,6 +70,15 @@ export class OrganizationService {
   }
 
   getAllForUser(userId: AdminUserId) {
-    return this.repo.getOrganizations(userId);
+    return this.repo.getOrganizations(userId).pipe(
+      map((mbOrgs) => {
+        if (e.isRight(mbOrgs)) {
+          return e.right(
+            mbOrgs.right.map((org) => PrivateOrganization.toPublicEntity(org)),
+          );
+        }
+        return mbOrgs;
+      }),
+    );
   }
 }

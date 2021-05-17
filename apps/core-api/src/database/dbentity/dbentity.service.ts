@@ -1,10 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Db, FilterQuery } from 'mongodb';
-import { from, Observable, throwError } from 'rxjs';
+import { from, Observable, throwError, of } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
 
-import { toLeftObs, toRightObs, UnexpectedError } from '@end/global';
+import {
+  Dictionary,
+  toLeftObs,
+  toRightObs,
+  UnexpectedError,
+} from '@end/global';
 
 import { DATABASE_COLLECTION, DATABASE_CONNECTION } from '../constants';
 
@@ -54,7 +59,7 @@ export class DbentityService<T extends UnspecifiedEntity> {
 
   count(query?: FilterQuery<T>): Observable<e.Either<UnexpectedError, number>> {
     try {
-      return from(this.collection.count(query)).pipe(
+      return from(this.collection.countDocuments(query)).pipe(
         switchMap((res) => {
           return toRightObs(res);
         }),
@@ -104,8 +109,23 @@ export class DbentityService<T extends UnspecifiedEntity> {
     }
   }
 
-  findAll() {
-    return this.collection.find().toArray();
+  findAll(query: Dictionary = {}): Observable<e.Either<UnexpectedError, T[]>> {
+    return of(this.collection.find(query)).pipe(
+      switchMap((res) => {
+        return from(res.toArray());
+      }),
+      switchMap((asArray) => {
+        return toRightObs(asArray);
+      }),
+      catchError((err) => {
+        return toLeftObs(
+          new UnexpectedError(
+            'Failed to find all documents in collection: ' + this._collection,
+            err,
+          ),
+        );
+      }),
+    );
   }
 
   query<T>(cb: (conn: Db) => Observable<T>) {

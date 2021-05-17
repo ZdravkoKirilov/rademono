@@ -1,4 +1,5 @@
 import * as e from 'fp-ts/lib/Either';
+import { AdminUserId } from 'src/user-entities';
 
 import { transformToClass } from '../parsers';
 import { breakTest } from '../test';
@@ -25,75 +26,98 @@ describe('Organization entity', () => {
       it('passes with enough data', (done) => {
         const id = UUIDv4.generate<OrganizationId>();
         const createId = () => id;
+        const userId = UUIDv4.generate<AdminUserId>();
+
         const payload = { name: 'Name' };
 
-        PrivateOrganization.create(payload, createId).subscribe((res) => {
-          if (e.isLeft(res)) {
-            return breakTest();
-          }
-          expect(res.right).toEqual({
-            ...payload,
-            public_id: id,
-            admin_group: {
-              name: 'Admins',
-              organization: id,
+        PrivateOrganization.create(payload, createId, userId).subscribe(
+          (res) => {
+            if (e.isLeft(res)) {
+              return breakTest();
+            }
+            expect(res.right).toEqual({
+              ...payload,
               public_id: id,
-              profiles: [],
-            },
-          });
-          done();
-        });
+              admin_group: {
+                name: 'Admins',
+                organization: id,
+                public_id: id,
+                profiles: [
+                  {
+                    group: id,
+                    name: 'Admin',
+                    public_id: id,
+                    user: userId,
+                  },
+                ],
+              },
+            });
+            done();
+          },
+        );
       });
 
       it('fails if the "name" field is missing', (done) => {
         const id = UUIDv4.generate<OrganizationId>();
         const createId = () => id;
+        const userId = UUIDv4.generate<AdminUserId>();
+
         const payload = { description: 'whatever' };
 
-        PrivateOrganization.create(payload, createId).subscribe((res) => {
-          if (e.isRight(res)) {
-            return breakTest();
-          }
-          expect(res.left).toBeInstanceOf(ParsingError);
-          expect(res.left.errors[0].property).toBe('name');
-          done();
-        });
+        PrivateOrganization.create(payload, createId, userId).subscribe(
+          (res) => {
+            if (e.isRight(res)) {
+              return breakTest();
+            }
+            expect(res.left).toBeInstanceOf(ParsingError);
+            expect(res.left.errors[0].property).toBe('name');
+            done();
+          },
+        );
       });
 
       it('fails if the "name" field is too long', (done) => {
         const id = UUIDv4.generate<OrganizationId>();
         const createId = () => id;
+        const userId = UUIDv4.generate<AdminUserId>();
+
         const payload = {
           description: 'whatever',
           name: new Array(102).join('a'),
         };
 
-        PrivateOrganization.create(payload, createId).subscribe((res) => {
-          if (e.isRight(res)) {
-            return breakTest();
-          }
-          expect(res.left).toBeInstanceOf(ParsingError);
-          expect(res.left.errors[0].property).toBe('name');
-          done();
-        });
+        PrivateOrganization.create(payload, createId, userId).subscribe(
+          (res) => {
+            if (e.isRight(res)) {
+              return breakTest();
+            }
+            expect(res.left).toBeInstanceOf(ParsingError);
+            expect(res.left.errors[0].property).toBe('name');
+            done();
+          },
+        );
       });
 
       it('fails if the "description" field is too long', (done) => {
         const id = UUIDv4.generate<OrganizationId>();
+        const userId = UUIDv4.generate<AdminUserId>();
+
         const createId = () => id;
         const payload = {
           description: new Array(5002).join('a'),
           name: 'whatever',
         };
 
-        PrivateOrganization.create(payload, createId).subscribe((res) => {
-          if (e.isRight(res)) {
-            return breakTest();
-          }
-          expect(res.left).toBeInstanceOf(ParsingError);
-          expect(res.left.errors[0].property).toBe('description');
-          done();
-        });
+        PrivateOrganization.create(payload, createId, userId).subscribe(
+          (res) => {
+            if (e.isRight(res)) {
+              return breakTest();
+            }
+            expect(res.left).toBeInstanceOf(ParsingError);
+            expect(res.left.errors[0].property).toBe('description');
+            done();
+          },
+        );
       });
     });
 
