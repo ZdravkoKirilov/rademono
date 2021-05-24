@@ -1,4 +1,8 @@
-<a cta="primary" routerLink="/organizations/create" translate
+<a
+  cta="primary"
+  routerLink="/organizations/create"
+  translate
+  class="inline-block mb-2"
   >home.createOrganization</a
 >
 
@@ -11,7 +15,10 @@
       <h2 class="h5">{{ org.name }}</h2>
 
       <p>
-        <a cta="tertiary" [routerLink]="['../', 'organizations', org.id]">
+        <a
+          cta="tertiary"
+          [routerLink]="['../', 'organizations', org.name.toLowerCase()]"
+        >
           <span translate> home.openOrganization </span>
         </a>
       </p>
@@ -33,5 +40,19 @@
       <div class="img"></div>
       <p></p>
     </div>
+  </div>
+
+  <div *ngIf="orgQuery.status === 'error'" class="mt-2">
+    <ui-error [inactive]="false">
+      <span translate>home.failedToLoadOrganizations</span>
+      .
+      <button
+        cta="tertiary"
+        (click)="orgQuery.retry ? orgQuery.retry() : null"
+        translate
+      >
+        common.retry
+      </button>
+    </ui-error>
   </div>
 </div>

@@ -17,7 +17,8 @@
   "home": {
     "link": "Home",
     "createOrganization": "Create new organization",
-    "openOrganization": "Open organization"
+    "openOrganization": "Open organization",
+    "failedToLoadOrganizations": "Failed to load organizations"
   },
   "organizations": {
     "forms": {
@@ -30,6 +31,7 @@
     "forms": {
       "required": "{{field}} is required.",
       "submit": "Submit"
-    }
+    },
+    "retry": "Retry"
   }
 }
