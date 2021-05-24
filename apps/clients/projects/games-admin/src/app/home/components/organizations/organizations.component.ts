@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { OrganizationService } from '@games-admin/organizations/services/organization.service';
+import { Organization } from '@end/global';
+import { Observable } from 'rxjs';
+
+import { OrganizationService } from '@games-admin/organizations';
+import { QueryResponse, useQuery } from '@games-admin/shared';
 
 @Component({
   selector: 'app-organizations',
@@ -11,7 +15,11 @@ import { OrganizationService } from '@games-admin/organizations/services/organiz
 export class OrganizationsComponent implements OnInit {
   constructor(private orgService: OrganizationService) {}
 
+  organizations$: Observable<QueryResponse<Organization[]>>;
+
   ngOnInit(): void {
-    this.orgService;
+    this.organizations$ = useQuery(() =>
+      this.orgService.getOrganizationsForUser(),
+    );
   }
 }

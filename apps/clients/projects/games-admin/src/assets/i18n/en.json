@@ -16,7 +16,8 @@
   },
   "home": {
     "link": "Home",
-    "createOrganization": "Create new organization"
+    "createOrganization": "Create new organization",
+    "openOrganization": "Open organization"
   },
   "organizations": {
     "forms": {

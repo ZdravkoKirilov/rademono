@@ -58,7 +58,7 @@ button[cta='tertiary'],
 a[cta='tertiary'] {
   cursor: pointer;
   border: none;
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-1) 0;
   outline: none;
   text-decoration: none;
   color: var(--primary-main);

@@ -20,6 +20,7 @@ p {
 @mixin heading-base {
   font-weight: var(--font-weight-big);
   line-height: 1.3;
+  margin: 0;
 }
 
 .h1 {

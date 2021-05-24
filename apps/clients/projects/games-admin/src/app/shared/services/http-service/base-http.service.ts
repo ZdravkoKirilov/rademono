@@ -9,6 +9,7 @@ import { throwError, Observable, of } from 'rxjs';
 
 import {
   ClassType,
+  parseAndValidateManyUnknown,
   parseAndValidateUnknown,
   switchMapEither,
   toRightObs,
@@ -77,6 +78,28 @@ export class BaseHttpService {
         switchMap((value) => {
           if (params.responseShape) {
             return parseAndValidateUnknown(value, params.responseShape);
+          }
+          return toRightObs(value);
+        }),
+        switchMapEither(
+          (err) => throwError(err),
+          (value) => of(value),
+        ),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(err);
+        }),
+      );
+  }
+
+  getMany<Value>(params: BaseParams<Value>): Observable<Value[]> {
+    const headers = this.createDefaultHeaders();
+
+    return this.http
+      .get<Value[]>(params.url, { headers })
+      .pipe(
+        switchMap((value) => {
+          if (params.responseShape) {
+            return parseAndValidateManyUnknown(value, params.responseShape);
           }
           return toRightObs(value);
         }),

@@ -7,7 +7,6 @@ import {
   mapEither,
   ParsingError,
   Organization,
-  CreateOrganizationResponse,
 } from '@end/global';
 import { OrganizationService } from '@games-admin/organizations/services/organization.service';
 import { QueryResponse, useQuery } from '@games-admin/shared';
@@ -24,9 +23,7 @@ export class CreateOrganizationComponent implements AfterViewInit {
 
   constructor(private orgService: OrganizationService) {}
 
-  createQuery$: Observable<
-    QueryResponse<CreateOrganizationResponse, RequestError>
-  >;
+  createQuery$: Observable<QueryResponse<Organization, RequestError>>;
 
   @ViewChild('createForm', { static: true }) form: NgForm;
 
