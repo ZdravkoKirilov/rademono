@@ -1,1 +1,33 @@
-<p>organization-dashboard works!</p>
+<app-navbar>
+  <div class="centered-content">
+    <div class="flex space-between align-center">
+      <span>
+        <a translate routerLink="/home" cta="tertiary">home.link</a>
+      </span>
+      <a
+        translate
+        cta="outlined"
+        class="align-self-end center"
+        routerLink="/users/auth/logout"
+      >
+        users.auth.logout
+      </a>
+    </div>
+  </div>
+</app-navbar>
+
+<div class="centered-content flex-column padded-content pt-4">
+  <nav class="flex wrap gap-4">
+    <a cta="tertiary" routerLink="collections">Collections</a>
+    <a cta="tertiary">Assets</a>
+    <a cta="tertiary">Game groups</a>
+    <a cta="tertiary">Admin groups</a>
+    <a cta="tertiary">Profile groups</a>
+    <a cta="tertiary">General settings</a>
+    <a cta="tertiary">Stats</a>
+  </nav>
+
+  <main class="mt-4">
+    <router-outlet></router-outlet>
+  </main>
+</div>

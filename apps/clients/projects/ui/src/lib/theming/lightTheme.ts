@@ -131,6 +131,7 @@ export const lightTheme: Theme = {
     '--space-2': '16px',
     '--space-3': '24px',
     '--space-4': '32px',
+    '--space-5': '64px',
 
     '--text-base': '1em',
 

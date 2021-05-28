@@ -34,6 +34,7 @@ export type Theme = {
     '--space-2': string;
     '--space-3': string;
     '--space-4': string;
+    '--space-5': string;
 
     '--text-base': string;
 

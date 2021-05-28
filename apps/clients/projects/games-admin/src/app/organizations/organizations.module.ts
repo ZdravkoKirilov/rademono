@@ -15,6 +15,20 @@ const routes: Routes = [
   {
     path: ':name',
     component: OrganizationDashboardComponent,
+    children: [
+      {
+        path: 'collections',
+        component: CreateOrganizationComponent,
+      },
+      {
+        path: '',
+        redirectTo: 'collections',
+      },
+      {
+        path: '*',
+        redirectTo: 'collections',
+      },
+    ],
   },
 ];
 

@@ -17,7 +17,11 @@
       <p>
         <a
           cta="tertiary"
-          [routerLink]="['../', 'organizations', org.name.toLowerCase()]"
+          [routerLink]="[
+            '../',
+            'organizations',
+            org.name.toLowerCase(),
+          ]"
         >
           <span translate> home.openOrganization </span>
         </a>

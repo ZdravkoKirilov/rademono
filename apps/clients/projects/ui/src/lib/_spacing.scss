@@ -1,4 +1,4 @@
-$sizes: 4;
+$sizes: 5;
 $margins: 'mb', 'mt', 'ml', 'mr', 'm';
 $paddings: 'pb', 'pt', 'pl', 'pr', 'p';
 
@@ -35,5 +35,11 @@ $paddings: 'pb', 'pt', 'pl', 'pr', 'p';
         padding: var(--space-#{$i});
       }
     }
+  }
+}
+
+@for $i from 1 through $sizes {
+  .gap-#{$i} {
+    gap: var(--space-#{$i});
   }
 }
