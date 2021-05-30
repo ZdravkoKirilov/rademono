@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
+import { AppRoutes, SharedModule } from '@games-admin/shared';
+
 import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
-import { SharedModule } from '@games-admin/shared';
 import { OrganizationDashboardComponent } from './components/organization-dashboard/organization-dashboard.component';
 import { OrganizationSettingsComponent } from './components/organization-settings/organization-settings.component';
 import { OrganizationStatsComponent } from './components/organization-stats/organization-stats.component';
 
-const routes: Routes = [
+const routes: AppRoutes = [
   {
     path: 'create',
     component: CreateOrganizationComponent,
@@ -21,14 +22,24 @@ const routes: Routes = [
       {
         path: 'settings',
         component: OrganizationSettingsComponent,
+        data: {
+          key: 'org-settings',
+        },
       },
       {
         path: 'stats',
         component: OrganizationStatsComponent,
+        data: {
+          key: 'org-stats',
+        },
       },
       {
         path: 'collections',
-        component: CreateOrganizationComponent,
+        data: {
+          key: 'collections',
+        },
+        loadChildren: () =>
+          import('../collections').then((m) => m.CollectionsModule),
       },
       {
         path: '',

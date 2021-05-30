@@ -2,7 +2,7 @@
   <a routerLink="/about">About</a>
 </app-navbar>
 <article class="centered-content">
-  <form (submit)="submit($event)" class="width-12 width-ap-8 width-at-6">
+  <form (submit)="submit($event)" class="width-12 width-ap-8 width-at-6 form">
     <legend>Send signin code</legend>
 
     <input
@@ -11,7 +11,7 @@
       name="email"
       autocomplete="email"
       [(ngModel)]="email"
-      class="small-text"
+      class="small-text input"
     />
 
     <span *ngIf="error">{{ error }}</span>

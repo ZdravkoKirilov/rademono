@@ -3,7 +3,7 @@
 </app-navbar>
 
 <article class="centered-content">
-  <form (submit)="submit($event)">
+  <form (submit)="submit($event)" class="form">
     <legend translate class="mb-3">users.auth.signInWithCode</legend>
 
     <input
@@ -12,6 +12,7 @@
       name="code"
       autocomplete="off"
       [(ngModel)]="code"
+      class="input"
     />
 
     <button cta="primary" type="submit" [disabled]="!dto">

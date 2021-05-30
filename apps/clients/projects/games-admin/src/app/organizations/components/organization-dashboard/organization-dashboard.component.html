@@ -18,13 +18,28 @@
 
 <div class="centered-content flex-column padded-content pt-4">
   <nav class="flex wrap gap-4">
-    <a cta="tertiary" routerLink="collections">Collections</a>
+    <a
+      cta="tertiary"
+      routerLink="collections"
+      [ngClass]="{ active: appRouter.isRouteActive('collections') }"
+      >Collections</a
+    >
     <a cta="tertiary">Assets</a>
     <a cta="tertiary">Game groups</a>
     <a cta="tertiary">Admin groups</a>
     <a cta="tertiary">Profile groups</a>
-    <a cta="tertiary" routerLink="settings">General settings</a>
-    <a cta="tertiary" routerLink="stats">Stats</a>
+    <a
+      cta="tertiary"
+      routerLink="settings"
+      [ngClass]="{ active: appRouter.isRouteActive('org-settings') }"
+      >General settings</a
+    >
+    <a
+      cta="tertiary"
+      routerLink="stats"
+      [ngClass]="{ active: appRouter.isRouteActive('org-stats') }"
+      >Stats</a
+    >
   </nav>
 
   <main class="mt-4">
