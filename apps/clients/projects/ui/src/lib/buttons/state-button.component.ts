@@ -11,7 +11,6 @@ type State = 'loading' | 'error' | 'loaded' | '' | string | undefined;
 })
 export class StateButtonComponent {
   @NgOnChange<State, StateButtonComponent>((value, self) => {
-    console.log(value);
     if (value === 'loaded') {
       setTimeout(() => {
         self.state = '';

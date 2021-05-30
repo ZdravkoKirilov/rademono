@@ -16,8 +16,7 @@
   }
 }
 
-button[cta='primary'],
-a[cta='primary'] {
+[cta='primary'] {
   @include cta;
 
   background-color: var(--primary-main);
@@ -28,7 +27,8 @@ a[cta='primary'] {
     color: var(--on-primary-dark);
   }
 
-  &:focus {
+  &:focus,
+  &.active {
     background-color: var(--primary-main);
     color: var(--on-primary-dark);
     box-shadow: 0 0 0 4px var(--primary-transparent);
@@ -47,15 +47,15 @@ a[cta='outlined'] {
     background-color: var(--primary-main);
   }
 
-  &:focus {
+  &:focus,
+  &.active {
     background-color: var(--primary-main);
     color: var(--on-primary-dark);
     box-shadow: 0 0 0 4px var(--primary-transparent);
   }
 }
 
-button[cta='tertiary'],
-a[cta='tertiary'] {
+[cta='tertiary'] {
   cursor: pointer;
   border: none;
   padding: var(--space-1) 0;
@@ -86,7 +86,8 @@ a[cta='tertiary'] {
     }
   }
 
-  &:focus {
+  &:focus,
+  &.active {
     box-shadow: 0 0 0 2px var(--primary-transparent);
     &::after {
       width: 0;
