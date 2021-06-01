@@ -18,6 +18,9 @@ export type Theme = {
     '--primary-light': string;
     '--on-primary-light': string;
 
+    '--secondary': string;
+    '--tertiary': string;
+
     '--success': string;
     '--success-light': string;
 

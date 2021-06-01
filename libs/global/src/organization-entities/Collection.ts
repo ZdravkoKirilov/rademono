@@ -1,6 +1,7 @@
-/* Collections are campuses, departments, school classes and so on. All game groups
-under it use the same customer profile to login. Might have different permissions and
-editors */
+/* Collections are campuses, departments, school classes and so on.
+   1. It either uses the organization's admin_group or its own override
+   2. Contains game_groups, profile_groups, libraries ( if LMS )
+ */
 import { Expose } from 'class-transformer';
 import { IsOptional, IsUUID, MaxLength, MinLength } from 'class-validator';
 import { Observable } from 'rxjs';
@@ -9,10 +10,8 @@ import { map } from 'rxjs/operators';
 
 import { parseAndValidateUnknown, transformToClass } from '../parsers';
 import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
-import { ProfileGroupId } from './ProfileGroup';
 import { OrganizationId } from './Organization';
-
-/* contains libraries, game groups; could be used as "Campus" */
+import { PrivateAdminGroup } from './AdminGroup';
 
 export type CollectionId = Tagged<'CollectionId', UUIDv4>;
 
@@ -33,15 +32,6 @@ class ValidationBase extends BasicFields {
   @Expose()
   @IsUUID('4')
   organization: OrganizationId;
-
-  @Expose()
-  @IsUUID('4')
-  @IsOptional()
-  parent?: CollectionId;
-
-  @Expose()
-  @IsUUID('4')
-  admin_group: ProfileGroupId;
 }
 
 export class CreateCollectionDto extends ValidationBase {}
@@ -55,6 +45,8 @@ export class PrivateCollection extends ValidationBase {
   @Expose()
   @IsUUID('4')
   public_id: CollectionId;
+
+  admin_group: PrivateAdminGroup;
 
   static create(
     payload: unknown,

@@ -127,6 +127,9 @@ export const lightTheme: Theme = {
     '--primary-light': colorPalette['color-primary-200'],
     '--on-primary-light': colorPalette['color-text-dark'],
 
+    '--secondary': '#E87E20',
+    '--tertiary': '#DB4553',
+
     '--space-1': '8px',
     '--space-2': '16px',
     '--space-3': '24px',

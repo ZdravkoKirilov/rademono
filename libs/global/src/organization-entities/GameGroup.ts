@@ -14,7 +14,7 @@ import {
 } from '../parsers';
 import { OrganizationId } from './Organization';
 import { GameId } from '../game-entities';
-import { ProfileGroupId } from './ProfileGroup';
+import { PrivateAdminGroup } from './AdminGroup';
 
 export type GameGroupId = Tagged<'GameGroupId', UUIDv4>;
 
@@ -40,7 +40,7 @@ class BaseFields {
 
   @Expose()
   @IsUUID('4')
-  admin_group: ProfileGroupId;
+  admin_group: PrivateAdminGroup;
 }
 
 export class GameGroup extends BaseFields {
