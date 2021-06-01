@@ -17,7 +17,6 @@ describe('Organization entity', () => {
     const adminGroup = PrivateAdminGroup.createFromDto(
       {
         name: 'The doors' as StringOfLength<1, 100>,
-        organization: UUIDv4.generate(),
       },
       UUIDv4.generate,
     );

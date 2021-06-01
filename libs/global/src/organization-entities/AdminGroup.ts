@@ -15,15 +15,10 @@ import * as e from 'fp-ts/lib/Either';
 import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
 import { parseAndValidateUnknown, transformToClass } from '../parsers';
 import { AdminProfile, PrivateAdminProfile } from './AdminProfile';
-import { OrganizationId } from './Organization';
 
 export type AdminGroupId = Tagged<'AdminGroupId', UUIDv4>;
 
 class ValidationBase {
-  @Expose()
-  @IsUUID('4')
-  organization: OrganizationId;
-
   @Expose()
   @MinLength(1)
   @MaxLength(100)
@@ -115,7 +110,6 @@ export class PrivateAdminGroup extends ValidationBase {
       id: data.public_id,
       name: data.name,
       description: data.description,
-      organization: data.organization,
       profiles: data.profiles?.map((elem) =>
         PrivateAdminProfile.toPublicEntity(elem),
       ),

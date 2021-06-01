@@ -1,6 +1,3 @@
-/* both AdminProfile and CustomerProfile could point to it , therefore they
-are not embedded */
-
 import { Expose } from 'class-transformer';
 import { IsOptional, IsUUID, MaxLength, MinLength } from 'class-validator';
 import { map } from 'rxjs/operators';
