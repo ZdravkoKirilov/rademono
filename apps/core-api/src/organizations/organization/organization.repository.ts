@@ -79,7 +79,7 @@ export class OrganizationRepository {
     );
   }
 
-  getOrganization2(
+  /*   getOrganization2(
     userId: AdminUserId,
   ): Observable<
     e.Either<ParsingError | UnexpectedError, PrivateOrganization[]>
@@ -129,7 +129,7 @@ export class OrganizationRepository {
           );
         }),
       );
-  }
+  } */
 
   createOrganization(
     organization: PrivateOrganization,

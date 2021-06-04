@@ -95,7 +95,6 @@ describe(OrganizationRepository.name, () => {
         admin_group: PrivateAdminGroup.createFromDto(
           {
             name: 'Whatever' as StringOfLength<1, 100>,
-            organization: UUIDv4.generate(),
           },
           UUIDv4.generate,
         ),
@@ -120,7 +119,7 @@ describe(OrganizationRepository.name, () => {
         name: 'Name',
         public_id: orgId,
         admin_group: PrivateAdminGroup.createFromDto(
-          { name: 'Whatever' as StringOfLength<1, 100>, organization: orgId },
+          { name: 'Whatever' as StringOfLength<1, 100> },
           UUIDv4.generate,
         ),
       } as PrivateOrganization;
@@ -204,7 +203,6 @@ describe(OrganizationRepository.name, () => {
         admin_group: PrivateAdminGroup.createFromDto(
           {
             name: 'Whatever' as StringOfLength<1, 100>,
-            organization: UUIDv4.generate(),
           },
           UUIDv4.generate,
         ),
@@ -259,7 +257,6 @@ describe(OrganizationRepository.name, () => {
         admin_group: PrivateAdminGroup.createFromDto(
           {
             name: 'Whatever' as StringOfLength<1, 100>,
-            organization: UUIDv4.generate(),
           },
           UUIDv4.generate,
         ),

@@ -56,7 +56,6 @@ describe(OrganizationService.name, () => {
           id: public_id,
           admin_group: {
             id: public_id,
-            organization: public_id,
             name: 'Admins',
             profiles: [
               { id: public_id, name: 'Admin', group: public_id, user: userId },
@@ -175,7 +174,6 @@ describe(OrganizationService.name, () => {
       const adminGroup = PrivateAdminGroup.createFromDto(
         {
           name: 'The doors' as StringOfLength<1, 100>,
-          organization: UUIDv4.generate(),
         },
         UUIDv4.generate,
       );
