@@ -8,8 +8,14 @@
       This helps LMS systems where collections can be school classes
    5. Collections can use other collections as template 
  */
-import { Expose } from 'class-transformer';
-import { IsOptional, IsUUID, MaxLength, MinLength } from 'class-validator';
+import { Expose, Type } from 'class-transformer';
+import {
+  IsOptional,
+  IsUUID,
+  MaxLength,
+  MinLength,
+  ValidateNested,
+} from 'class-validator';
 import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 import { map } from 'rxjs/operators';
@@ -42,21 +48,33 @@ class ValidationBase extends BasicFields {
   organization: OrganizationId;
 
   @Expose()
+  @IsOptional()
   @IsUUID('4', { each: true })
   games?: GameId[];
 
   @Expose()
+  @IsOptional()
   @IsUUID('4', { each: true })
   children?: CollectionId[];
 }
 
-export class CreateCollectionDto extends ValidationBase {}
+class CreateCollectionDto extends BasicFields {}
+
 export class Collection extends ValidationBase {
   @Expose()
   @IsUUID('4')
   id: CollectionId;
 
+  @Expose()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => AdminGroup)
   admin_group?: AdminGroup;
+
+  @Expose()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ProfileGroup)
   profile_group?: ProfileGroup;
 }
 
@@ -65,18 +83,71 @@ export class PrivateCollection extends ValidationBase {
   @IsUUID('4')
   public_id: CollectionId;
 
+  @Expose()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => PrivateAdminGroup)
   admin_group?: PrivateAdminGroup;
+
+  @Expose()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => PrivateProfileGroup)
   profile_group?: PrivateProfileGroup;
+
+  static updateAdminGroup<T extends PrivateCollection>(
+    entity: T,
+    group: PrivateAdminGroup,
+  ): T & { admin_group: PrivateAdminGroup } {
+    return {
+      ...entity,
+      admin_group: group,
+    };
+  }
+
+  static updateProfileGroup<T extends PrivateCollection>(
+    entity: T,
+    group: PrivateProfileGroup,
+  ): T & { profile_group: PrivateProfileGroup } {
+    return {
+      ...entity,
+      profile_group: group,
+    };
+  }
+
+  static updateGames<T extends PrivateCollection>(
+    entity: T,
+    games: GameId[],
+  ): T & { games: GameId[] } {
+    return {
+      ...entity,
+      games,
+    };
+  }
+
+  static updateChildren<T extends PrivateCollection>(
+    entity: T,
+    children: CollectionId[],
+  ): T & {
+    children: CollectionId[];
+  } {
+    return {
+      ...entity,
+      children,
+    };
+  }
 
   static create(
     payload: unknown,
     createId: typeof UUIDv4.generate,
+    organization: OrganizationId,
   ): Observable<e.Either<ParsingError, PrivateCollection>> {
     return parseAndValidateUnknown(payload, CreateCollectionDto).pipe(
       map((result) => {
         if (e.isRight(result)) {
           const plain: PrivateCollection = {
             ...result.right,
+            organization,
             public_id: createId(),
           };
 
@@ -85,6 +156,18 @@ export class PrivateCollection extends ValidationBase {
         return result;
       }),
     );
+  }
+
+  static createFromDto(
+    dto: { name: string; description?: string },
+    collectionId = UUIDv4.generate<CollectionId>(),
+    organization = UUIDv4.generate<OrganizationId>(),
+  ) {
+    return transformToClass(PrivateCollection, {
+      ...dto,
+      public_id: collectionId,
+      organization,
+    });
   }
 
   static toPrivateEntity(data: unknown) {

@@ -18,7 +18,7 @@ import { AdminProfile, PrivateAdminProfile } from './AdminProfile';
 
 export type AdminGroupId = Tagged<'AdminGroupId', UUIDv4>;
 
-class ValidationBase {
+export class ValidationBase {
   @Expose()
   @MinLength(1)
   @MaxLength(100)

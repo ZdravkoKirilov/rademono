@@ -20,8 +20,7 @@ describe('AdminGroup entity', () => {
 
         const data = {
           name: 'Admins',
-          organization: UUIDv4.generate(),
-        };
+        } as CreateAdminGroupDto;
 
         PrivateAdminGroup.create(data, createId).subscribe((res) => {
           if (e.isLeft(res)) {
@@ -41,7 +40,6 @@ describe('AdminGroup entity', () => {
         const createId = () => publicId;
 
         const data = {
-          organization: UUIDv4.generate(),
           profiles: [],
         };
 
@@ -56,32 +54,12 @@ describe('AdminGroup entity', () => {
         });
       });
 
-      it('breaks without an organization', (done) => {
-        const publicId = UUIDv4.generate<AdminGroupId>();
-        const createId = () => publicId;
-
-        const data = {
-          name: 'Name',
-        };
-
-        PrivateAdminGroup.create(data, createId).subscribe((res) => {
-          if (e.isRight(res)) {
-            return breakTest();
-          }
-          expect(res.left).toBeInstanceOf(ParsingError);
-          expect(res.left.errors.length).toBe(1);
-          expect(res.left.errors[0].property).toBe('organization');
-          done();
-        });
-      });
-
       it('breaks with too long description', (done) => {
         const publicId = UUIDv4.generate<AdminGroupId>();
         const createId = () => publicId;
 
         const data = {
           name: 'Name',
-          organization: UUIDv4.generate(),
           description: new Array(5002).fill('g'),
         };
 
@@ -102,7 +80,6 @@ describe('AdminGroup entity', () => {
 
         const data = {
           name: new Array(102).fill('k'),
-          organization: UUIDv4.generate(),
           description: 'bla bla bla',
         };
 
@@ -123,7 +100,6 @@ describe('AdminGroup entity', () => {
         const data = {
           name: 'Name',
           public_id: UUIDv4.generate(),
-          organization: UUIDv4.generate(),
           description: 'Desc',
         };
 
@@ -139,7 +115,6 @@ describe('AdminGroup entity', () => {
       it('breaks without a public_id', (done) => {
         const data = {
           name: 'Name',
-          organization: UUIDv4.generate(),
           description: 'Desc',
         };
 
@@ -157,7 +132,6 @@ describe('AdminGroup entity', () => {
       it('breaks with an invalid public_id', (done) => {
         const data = {
           name: 'Name',
-          organization: UUIDv4.generate(),
           description: 'Desc',
           public_id: 'not a uuid',
         };
@@ -188,7 +162,6 @@ describe('AdminGroup entity', () => {
         const data = {
           name: 'Admins',
           public_id: publicId,
-          organization: UUIDv4.generate(),
           profiles: [get('right', profile)],
         };
 
@@ -211,7 +184,6 @@ describe('AdminGroup entity', () => {
 
         const data = {
           name: 'Admins',
-          organization: UUIDv4.generate(),
           profiles: [{}],
           public_id: publicId,
         };
@@ -233,7 +205,6 @@ describe('AdminGroup entity', () => {
 
         const data = transformToClass(CreateAdminGroupDto, {
           name: 'Name',
-          organization: UUIDv4.generate(),
           description: 'Desc',
         });
 
@@ -254,7 +225,6 @@ describe('AdminGroup entity', () => {
 
         const groupData = transformToClass(CreateAdminGroupDto, {
           name: 'Name',
-          organization: UUIDv4.generate(),
           description: 'Desc',
         });
 
@@ -287,7 +257,6 @@ describe('AdminGroup entity', () => {
           public_id: UUIDv4.generate(),
           name: 'Name',
           description: 'Desc',
-          organization: UUIDv4.generate(),
           profiles: [],
         });
 

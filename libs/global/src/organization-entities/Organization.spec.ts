@@ -39,7 +39,6 @@ describe('Organization entity', () => {
               public_id: id,
               admin_group: {
                 name: 'Admins',
-                organization: id,
                 public_id: id,
                 profiles: [
                   {
