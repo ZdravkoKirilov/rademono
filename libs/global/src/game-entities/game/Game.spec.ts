@@ -1,7 +1,7 @@
 import { isLeft, isRight } from 'fp-ts/lib/Either';
 
 import { ParsingError, UUIDv4 } from '../../types';
-import { GameParser } from './Game';
+import { GameId, GameParser } from './Game';
 
 const throwError = () => {
   throw new Error('This code should not be called');
@@ -117,7 +117,7 @@ describe('Game Entity', () => {
   });
 
   describe('create', () => {
-    const publicId = UUIDv4.generate();
+    const publicId = UUIDv4.generate<GameId>();
 
     const data = {
       title: 'Game 1',

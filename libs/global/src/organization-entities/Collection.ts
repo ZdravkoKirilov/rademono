@@ -10,6 +10,7 @@
  */
 import { Expose, Type } from 'class-transformer';
 import {
+  IsNotEmpty,
   IsOptional,
   IsUUID,
   MaxLength,
@@ -33,6 +34,7 @@ class BasicFields {
   @Expose()
   @MinLength(1)
   @MaxLength(100)
+  @IsNotEmpty()
   name: StringOfLength<1, 100>;
 
   @Expose()
@@ -139,7 +141,7 @@ export class PrivateCollection extends ValidationBase {
 
   static create(
     payload: unknown,
-    createId: typeof UUIDv4.generate,
+    createId: () => CollectionId,
     organization: OrganizationId,
   ): Observable<e.Either<ParsingError, PrivateCollection>> {
     return parseAndValidateUnknown(payload, CreateCollectionDto).pipe(

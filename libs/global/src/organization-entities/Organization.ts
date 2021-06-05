@@ -9,6 +9,7 @@ import {
   IsNotEmpty,
   IsObject,
   IsOptional,
+  isUUID,
   IsUUID,
   MaxLength,
   MinLength,
@@ -29,6 +30,9 @@ import { AdminUserId } from 'src/user-entities';
 import { CreateAdminProfileDto, PrivateAdminProfile } from './AdminProfile';
 
 export type OrganizationId = Tagged<'OrganizationId', UUIDv4>;
+
+export const isOrganizationId = (value: unknown): value is OrganizationId =>
+  isUUID(value);
 
 class BasicFields {
   @Expose()
@@ -74,17 +78,17 @@ export class PrivateOrganization extends BasicFields {
 
   static create(
     payload: unknown,
-    createId: typeof UUIDv4.generate,
+    createId: () => OrganizationId,
     userId: AdminUserId,
   ): Observable<e.Either<ParsingError, PrivateOrganization>> {
-    const organizationId = createId<OrganizationId>();
+    const organizationId = createId();
 
     const group = PrivateAdminGroup.createFromDto(
       transformToClass(CreateAdminGroupDto, {
         name: 'Admins',
         organization: organizationId,
       }),
-      createId,
+      () => organizationId as any,
     );
 
     const adminProfile = PrivateAdminProfile.createFromDto(
@@ -93,7 +97,7 @@ export class PrivateOrganization extends BasicFields {
         name: 'Admin',
         group: group.public_id,
       }),
-      createId,
+      () => organizationId as any,
     );
 
     const groupWithProfile = PrivateAdminGroup.addProfile(group, adminProfile);

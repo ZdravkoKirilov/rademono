@@ -99,7 +99,7 @@ export class PrivateAdminUser {
 
   static create(
     payload: SendCodeDto,
-    createId = UUIDv4.generate,
+    createId: () => AdminUserId = UUIDv4.generate,
   ): Observable<e.Either<ParsingError, PrivateAdminUser>> {
     return parseAndValidateObject(payload, SendCodeDto).pipe(
       map((result) => {

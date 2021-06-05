@@ -58,7 +58,7 @@ export class PrivateAdminGroup extends ValidationBase {
 
   static create(
     payload: unknown,
-    createId: typeof UUIDv4.generate,
+    createId: () => AdminGroupId,
   ): Observable<e.Either<ParsingError, PrivateAdminGroup>> {
     return parseAndValidateUnknown(payload, CreateAdminGroupDto).pipe(
       map((result) => {
@@ -78,7 +78,7 @@ export class PrivateAdminGroup extends ValidationBase {
 
   static createFromDto(
     payload: CreateAdminGroupDto,
-    createId: typeof UUIDv4.generate,
+    createId: () => AdminGroupId,
   ) {
     return transformToClass(PrivateAdminGroup, {
       ...payload,

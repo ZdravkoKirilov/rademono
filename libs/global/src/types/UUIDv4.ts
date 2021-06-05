@@ -1,9 +1,11 @@
 import { v4 } from 'uuid';
 
-import { Tagged } from './Tagged';
+declare const validUUIDv4: unique symbol;
 
-export type UUIDv4 = Tagged<'__UUIDv4__', string>;
+export type UUIDv4 = string & {
+  [validUUIDv4]: true;
+};
 
-const generate = <T extends UUIDv4>() => v4() as T;
+const generate = <T extends string>() => v4() as T;
 
 export const UUIDv4 = { generate };

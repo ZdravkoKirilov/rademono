@@ -39,7 +39,7 @@ export class PrivateAdminProfile extends ValidationBase {
 
   static create(
     payload: unknown,
-    createId: typeof UUIDv4.generate,
+    createId: () => AdminProfileId,
   ): Observable<e.Either<ParsingError, PrivateAdminProfile>> {
     return parseAndValidateUnknown(payload, CreateAdminProfileDto).pipe(
       map((result) => {
@@ -58,7 +58,7 @@ export class PrivateAdminProfile extends ValidationBase {
 
   static createFromDto(
     payload: ValidationBase,
-    createId: typeof UUIDv4.generate,
+    createId: () => AdminProfileId,
   ) {
     const data = {
       ...payload,

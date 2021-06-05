@@ -38,7 +38,7 @@ export class PrivateProfileGroup extends ValidationBase {
 
   static create(
     payload: unknown,
-    createId: typeof UUIDv4.generate,
+    createId: () => ProfileGroupId,
   ): Observable<e.Either<ParsingError, PrivateProfileGroup>> {
     return parseAndValidateUnknown(payload, CreateProfileGroupDto).pipe(
       map((result) => {
