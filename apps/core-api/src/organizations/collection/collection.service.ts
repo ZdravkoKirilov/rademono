@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 
 import {
   Collection,
-  DomainError,
+  isOrganizationId,
   OrganizationId,
   ParsingError,
   PrivateCollection,
@@ -29,10 +29,11 @@ export class CollectionService {
 
   create(
     payload: unknown,
-    organization: OrganizationId,
-  ): Observable<
-    e.Either<UnexpectedError | DomainError | ParsingError, Collection>
-  > {
+    organization: unknown,
+  ): Observable<e.Either<UnexpectedError | ParsingError, Collection>> {
+    if (!isOrganizationId(organization)) {
+      return toLeftObs(new ParsingError('Valid organizationId is required'));
+    }
     return PrivateCollection.create(payload, this.createId, organization).pipe(
       switchMap((mbDto) => {
         if (e.isLeft(mbDto)) {
@@ -52,7 +53,10 @@ export class CollectionService {
     );
   }
 
-  getAll(organizationId: OrganizationId) {
+  getAll(organizationId: unknown) {
+    if (!isOrganizationId(organizationId)) {
+      return toLeftObs(new ParsingError('Valid organizationId is required'));
+    }
     return this.repo.getCollections(organizationId).pipe(
       map((res) => {
         if (e.isRight(res)) {

@@ -81,4 +81,8 @@ export class CollectionRepository {
       }),
     );
   }
+
+  deleteAll() {
+    return this.repo.deleteAll();
+  }
 }
