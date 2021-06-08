@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-import { AppRoutes, SharedModule } from '@games-admin/shared';
+import { AppRoutes, RouteParams, SharedModule } from '@games-admin/shared';
 
 import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
 import { OrganizationDashboardComponent } from './components/organization-dashboard/organization-dashboard.component';
@@ -16,7 +16,7 @@ const routes: AppRoutes = [
     component: CreateOrganizationComponent,
   },
   {
-    path: ':name',
+    path: `:${RouteParams.organizationId}`,
     component: OrganizationDashboardComponent,
     children: [
       {

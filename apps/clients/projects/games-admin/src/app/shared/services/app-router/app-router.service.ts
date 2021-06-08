@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router, Route, ActivatedRoute } from '@angular/router';
 
+import { OrganizationId } from '@end/global';
+
 type RouteData = {
   key: string;
 };
@@ -9,6 +11,10 @@ type AppRoute = Omit<Route, 'data'> & {
   data?: RouteData;
   children?: AppRoutes;
 };
+
+export enum RouteParams {
+  organizationId = 'organizationId',
+}
 
 export type AppRoutes = AppRoute[];
 @Injectable({
@@ -48,5 +54,9 @@ export class AppRouterService {
   isRouteActive(key: RouteData['key']) {
     const state = this.getRouteData();
     return state.data?.key === key;
+  }
+
+  getOrganizationId(): OrganizationId | undefined {
+    return this.getRouteData().params[RouteParams.organizationId];
   }
 }

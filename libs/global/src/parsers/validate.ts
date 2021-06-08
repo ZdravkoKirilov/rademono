@@ -8,6 +8,8 @@ import * as o from 'fp-ts/lib/Option';
 import * as e from 'fp-ts/lib/Either';
 
 import { ParsingError } from '../types';
+import { isEmpty } from 'fp-ts/lib/Array';
+import { toRightObs } from './fp-ts-adaptors';
 
 const stripUndefinedFields = (obj: any) => {
   Object.keys(obj).forEach((key) => {
@@ -93,6 +95,9 @@ export const parseAndValidateManyUnknown = <
     validationOptions: ValidatorOptions;
   } = { validationOptions: { whitelist: true } },
 ): Observable<e.Either<ParsingError, Target[]>> => {
+  if (isEmpty(data)) {
+    return toRightObs([]);
+  }
   return forkJoin(
     data.map((elem) => {
       return parseAndValidateUnknown(elem, targetClass, options);

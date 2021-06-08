@@ -32,16 +32,16 @@ export type CollectionId = Tagged<'CollectionId', UUIDv4>;
 
 class BasicFields {
   @Expose()
-  @MinLength(1)
+  @MinLength(2)
   @MaxLength(100)
   @IsNotEmpty()
-  name: StringOfLength<1, 100>;
+  name: StringOfLength<2, 100>;
 
   @Expose()
   @IsOptional()
-  @MinLength(1)
+  @MinLength(10)
   @MaxLength(5000)
-  description?: StringOfLength<1, 5000>;
+  description?: StringOfLength<10, 5000>;
 }
 
 class ValidationBase extends BasicFields {
@@ -60,7 +60,7 @@ class ValidationBase extends BasicFields {
   children?: CollectionId[];
 }
 
-class CreateCollectionDto extends BasicFields {}
+export class CreateCollectionDto extends BasicFields {}
 
 export class Collection extends ValidationBase {
   @Expose()
@@ -78,6 +78,10 @@ export class Collection extends ValidationBase {
   @ValidateNested()
   @Type(() => ProfileGroup)
   profile_group?: ProfileGroup;
+
+  static create(payload: unknown) {
+    return parseAndValidateUnknown(payload, CreateCollectionDto);
+  }
 }
 
 export class PrivateCollection extends ValidationBase {

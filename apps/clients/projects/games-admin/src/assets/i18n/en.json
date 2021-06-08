@@ -27,6 +27,14 @@
       "createNewOrganization": "Create new organization"
     }
   },
+  "collections": {
+    "createCollection": "Create new collection",
+    "forms": {
+      "name": "Name",
+      "description": "Description",
+      "createNewCollection": "Create new collection"
+    }
+  },
   "common": {
     "forms": {
       "required": "{{field}} is required.",

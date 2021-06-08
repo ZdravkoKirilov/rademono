@@ -1,1 +1,68 @@
-<p>collections-list works!</p>
+<a cta="primary" routerLink="create" translate class="inline-block mb-2"
+  >collections.createCollection</a
+>
+
+<div *ngIf="collections$ | async as collQuery">
+  <div
+    *ngIf="collQuery.status === 'loaded'"
+    class="padded-content card-container"
+  >
+    <div *ngFor="let collection of collQuery?.data" class="card">
+      <h2 class="h5">{{ collection.name }}</h2>
+
+      <p>
+        <a
+          cta="tertiary"
+          [routerLink]="[
+            '../',
+            'collections',
+            collection.id,
+          ]"
+        >
+          <span translate> collections.openCollection </span>
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <div
+    *ngIf="collQuery.status === 'loading'"
+    class="padded-content card-container"
+    style="--card-width: 200px; --card-height: 200px"
+  >
+    <div class="card loading">
+      <h2></h2>
+      <div class="img"></div>
+      <p></p>
+    </div>
+    <div class="card loading">
+      <h2></h2>
+      <div class="img"></div>
+      <p></p>
+    </div>
+    <div class="card loading">
+      <h2></h2>
+      <div class="img"></div>
+      <p></p>
+    </div>
+    <div class="card loading">
+      <h2></h2>
+      <div class="img"></div>
+      <p></p>
+    </div>
+  </div>
+
+  <div *ngIf="collQuery.status === 'error'" class="mt-2">
+    <ui-error [inactive]="false">
+      <span translate>collection.failedToLoadCollections</span>
+      .
+      <button
+        cta="tertiary"
+        (click)="collQuery.retry ? collQuery.retry() : null"
+        translate
+      >
+        common.retry
+      </button>
+    </ui-error>
+  </div>
+</div>

@@ -37,14 +37,11 @@ export type QueryResponse<Value = unknown, ErrorResponse = RequestError> =
 export const useQuery = <Value, ErrorResponse>(
   fn: () => Observable<Value>,
   undo?: () => Observable<Value>,
-  options = {
-    timeout: 10000,
-  },
 ): Observable<QueryResponse<Value, ErrorResponse>> => {
   const refire$ = new BehaviorSubject<QueryOrigin>(QueryOrigin.initial);
   const cancel$ = new Subject();
 
-  return new Observable((observer) => {
+  return new Observable<QueryResponse<Value, ErrorResponse>>((observer) => {
     observer.next({
       status: QueryStatus.loading,
       origin: QueryOrigin.initial,
@@ -56,7 +53,6 @@ export const useQuery = <Value, ErrorResponse>(
         switchMap((origin) => {
           return (origin === 'undo' && undo ? undo() : fn()).pipe(
             takeUntil(cancel$),
-            timeout(options.timeout),
             map((result) => {
               observer.next({
                 status: QueryStatus.loaded,

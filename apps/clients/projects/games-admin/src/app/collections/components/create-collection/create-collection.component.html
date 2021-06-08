@@ -1,0 +1,29 @@
+<form #createForm="ngForm" (ngSubmit)="submit($event)" class="form">
+  <legend>
+    <h1 translate class="h2">collections.forms.createNewCollection</h1>
+  </legend>
+  <div>
+    <ui-input-field
+      [(ngModel)]="createForm.value.name"
+      name="name"
+      [state]="error && createForm.dirty ? 'error' : ''"
+      [feedbackTxt]="
+        'common.forms.required'
+          | translate: { field: 'collections.forms.name' | translate }
+      "
+      ><span translate>collections.forms.name </span>
+    </ui-input-field>
+  </div>
+
+  <div>
+    <label translate for="description">collections.forms.description</label>
+    <ui-text-editor
+      [(ngModel)]="createForm.value.description"
+      name="description"
+    ></ui-text-editor>
+  </div>
+
+  <ui-state-button class="mt-4" [state]="(createQuery$ | async)?.status">
+    <span translate>common.forms.submit</span>
+  </ui-state-button>
+</form>

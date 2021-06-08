@@ -5,10 +5,17 @@ import { RouterModule } from '@angular/router';
 
 import { UiModule } from '@libs/ui';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { TranslationModule } from '@games-admin/translation';
 
 @NgModule({
   declarations: [NavbarComponent],
-  imports: [CommonModule, TranslateModule, RouterModule],
-  exports: [TranslateModule, CommonModule, UiModule, NavbarComponent],
+  imports: [CommonModule, TranslateModule, TranslationModule, RouterModule],
+  exports: [
+    TranslateModule,
+    TranslationModule,
+    CommonModule,
+    UiModule,
+    NavbarComponent,
+  ],
 })
 export class SharedModule {}
