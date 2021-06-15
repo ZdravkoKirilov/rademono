@@ -11,7 +11,6 @@ import add from 'date-fns/add';
 import isAfter from 'date-fns/isAfter';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import * as e from 'fp-ts/lib/Either';
-import { omit } from 'lodash/fp';
 import { Observable, of } from 'rxjs';
 import { Expose } from 'class-transformer';
 

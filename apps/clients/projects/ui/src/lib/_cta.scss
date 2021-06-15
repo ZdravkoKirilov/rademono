@@ -78,7 +78,8 @@ a[cta='outlined'] {
     transition: all 0.1s ease-out;
   }
 
-  &:hover {
+  &:hover,
+  &.active {
     position: relative;
     &::after {
       background-color: var(--primary-main);
@@ -86,8 +87,7 @@ a[cta='outlined'] {
     }
   }
 
-  &:focus,
-  &.active {
+  &:focus {
     box-shadow: 0 0 0 2px var(--primary-transparent);
     &::after {
       width: 0;

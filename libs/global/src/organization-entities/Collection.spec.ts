@@ -18,7 +18,7 @@ describe('Collection entity', () => {
 
         const data = {
           name: 'Name',
-          description: 'Desc',
+          description: 'Description Description Description',
         };
 
         PrivateCollection.create(data, createId, organizationId).subscribe(
@@ -62,7 +62,7 @@ describe('Collection entity', () => {
         const createId = () => public_id;
 
         const data = {
-          name: new Array(102).fill('a'),
+          name: new Array(102).fill('a').join(''),
           organization: UUIDv4.generate(),
         };
 
@@ -85,7 +85,7 @@ describe('Collection entity', () => {
 
         const data = {
           name: 'Name',
-          description: new Array(1001).fill('abcde'),
+          description: new Array(1001).fill('abcde').join(''),
           organization: UUIDv4.generate(),
         };
 
@@ -124,7 +124,7 @@ describe('Collection entity', () => {
         const data = {
           public_id: UUIDv4.generate(),
           name: 'Name',
-          description: 'Desc',
+          description: 'Description Description Description',
           organization: UUIDv4.generate(),
         };
 
@@ -141,7 +141,7 @@ describe('Collection entity', () => {
         const data = {
           public_id: UUIDv4.generate(),
           name: 'Name',
-          description: 'Desc',
+          description: 'Description Description Description',
           organization: UUIDv4.generate(),
         };
 
@@ -163,7 +163,7 @@ describe('Collection entity', () => {
         const data = transformToClass(PrivateCollection, {
           public_id: UUIDv4.generate(),
           name: 'Name',
-          description: 'Desc',
+          description: 'Description Description Description',
           organization: UUIDv4.generate(),
         });
 
