@@ -107,4 +107,8 @@ export class PrivateAsset extends AdvancedFields {
       }),
     );
   }
+
+  static toPrivateEntity(data: unknown) {
+    return parseAndValidateUnknown(data, PrivateAsset);
+  }
 }

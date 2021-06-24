@@ -201,5 +201,75 @@ describe('Asset entity', () => {
         });
       });
     });
+
+    describe(PrivateAsset.toPrivateEntity.name, () => {
+      const data = {
+        name: 'Some picture',
+        url: 'www.somecdn/picture.jpg',
+        public_id: UUIDv4.generate<AssetId>(),
+        organization: UUIDv4.generate<OrganizationId>(),
+        type: AssetType.image,
+      };
+
+      it('passes with correct data', (done) => {
+        PrivateAsset.toPrivateEntity(data).subscribe((res) => {
+          if (e.isLeft(res)) {
+            return breakTest();
+          }
+
+          expect(res.right).toBeInstanceOf(PrivateAsset);
+          expect(res.right).toEqual(data);
+          done();
+        });
+      });
+
+      it('fails with invalid public_id', (done) => {
+        PrivateAsset.toPrivateEntity({
+          ...data,
+          public_id: 'invalid',
+        }).subscribe((res) => {
+          if (e.isRight(res)) {
+            return breakTest();
+          }
+
+          expect(res.left).toBeInstanceOf(ParsingError);
+          expect(res.left.errors).toHaveLength(1);
+          expect(hasFieldError(res.left, 'public_id')).toBe(true);
+          done();
+        });
+      });
+
+      it('fails with invalid organizationId', (done) => {
+        PrivateAsset.toPrivateEntity({
+          ...data,
+          organization: 'invalid',
+        }).subscribe((res) => {
+          if (e.isRight(res)) {
+            return breakTest();
+          }
+
+          expect(res.left).toBeInstanceOf(ParsingError);
+          expect(res.left.errors).toHaveLength(1);
+          expect(hasFieldError(res.left, 'organization')).toBe(true);
+          done();
+        });
+      });
+
+      it('fails with invalid type', (done) => {
+        PrivateAsset.toPrivateEntity({
+          ...data,
+          type: 'invalid',
+        }).subscribe((res) => {
+          if (e.isRight(res)) {
+            return breakTest();
+          }
+
+          expect(res.left).toBeInstanceOf(ParsingError);
+          expect(res.left.errors).toHaveLength(1);
+          expect(hasFieldError(res.left, 'type')).toBe(true);
+          done();
+        });
+      });
+    });
   });
 });
