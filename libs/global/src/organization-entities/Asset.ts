@@ -13,10 +13,10 @@ import { switchMap } from 'rxjs/operators';
 import * as e from 'fp-ts/Either';
 
 import { parseAndValidateUnknown, toLeftObs } from '../parsers';
-import { StringOfLength, Tagged, Url, UUIDv4 } from '../types';
+import { StringOfLength, Tagged, Url, UUIDv4, CustomFile } from '../types';
 import { OrganizationId } from './Organization';
 
-enum AssetType {
+export enum AssetType {
   'image' = 'image',
   'audio' = 'audio',
 }
@@ -34,16 +34,9 @@ class BasicFields {
   @Expose()
   @IsOptional()
   @IsString()
-  @MinLength(2)
+  @MinLength(5)
   @MaxLength(500)
-  label?: StringOfLength<2, 500>;
-
-  @Expose()
-  @IsOptional()
-  @IsString()
-  @MinLength(2)
-  @MaxLength(500)
-  description?: StringOfLength<2, 500>;
+  description?: StringOfLength<5, 500>;
 }
 
 class AdvancedFields extends BasicFields {
@@ -54,19 +47,33 @@ class AdvancedFields extends BasicFields {
 
   @Expose()
   @IsNotEmpty()
+  @IsIn(Object.values(AssetType))
+  type: AssetType;
+
+  @Expose()
+  @IsNotEmpty()
   @IsUrl()
   url: Url;
 }
 
-export class CreateImageDto extends AdvancedFields {
+export class CreateImageDto extends BasicFields {
   @Expose()
-  @Expose()
-  @IsNotEmpty()
-  @IsIn(Object.values(AssetType))
-  type: AssetType.image;
+  @CustomFile.IsFile()
+  @CustomFile.FileType({ types: ['jpg', 'png', 'jpeg'] })
+  @CustomFile.FileSize({ maxSizeMB: 1 })
+  file: CustomFile;
 }
 
-export class Asset {}
+export class Asset extends AdvancedFields {
+  @Expose()
+  @IsNotEmpty()
+  @IsUUID('4')
+  id: AssetId;
+
+  static createImage(payload: unknown) {
+    return parseAndValidateUnknown(payload, CreateImageDto);
+  }
+}
 
 export class PrivateAsset extends AdvancedFields {
   @Expose()
@@ -74,15 +81,13 @@ export class PrivateAsset extends AdvancedFields {
   @IsUUID('4')
   public_id: AssetId;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsIn(Object.values(AssetType))
-  type: AssetType;
-
   static createImage(
     payload: unknown,
-    organization: OrganizationId,
-    fileUrl: Url,
+    {
+      organization,
+      fileUrl,
+      createId,
+    }: { organization: OrganizationId; fileUrl: Url; createId: () => AssetId },
   ) {
     return parseAndValidateUnknown(payload, BasicFields).pipe(
       switchMap((parsed) => {
@@ -95,8 +100,9 @@ export class PrivateAsset extends AdvancedFields {
             type: AssetType.image,
             url: fileUrl,
             organization,
+            public_id: createId(),
           },
-          CreateImageDto,
+          PrivateAsset,
         );
       }),
     );

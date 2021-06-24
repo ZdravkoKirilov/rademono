@@ -11,3 +11,4 @@ export * from './NanoId';
 export * from './JWT';
 export * from './Primitive';
 export * from './misc-dto';
+export { CustomFile } from './File';

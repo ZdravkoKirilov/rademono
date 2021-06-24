@@ -1,33 +1,39 @@
-import { registerDecorator, ValidationOptions } from 'class-validator';
+import {
+  isNumber,
+  registerDecorator,
+  ValidationOptions,
+} from 'class-validator';
 import { NonEmptyArray } from './Array';
-import { Type } from './Class';
 
 import { Tagged } from './Tagged';
 
 export type CustomFile = Tagged<'__File__', File>;
 
-const ensureIsFile = (file: any) => {
+export const ensureIsFile = (file: any) => {
   return typeof file === 'object' && 'size' in file && 'name' in file;
 };
 
-const hasCorrectSize = (
+const bytesToMB = (amount: number) => Math.round(amount / Math.pow(1024, 2));
+
+export const hasCorrectSize = (
   file: CustomFile,
   [maxSize, minSize]: [number | undefined, number | undefined],
 ) => {
   const max = maxSize || Infinity;
   const min = minSize || 0;
+  const fileSize = isNumber(file?.size) ? bytesToMB(file.size) : 0;
 
-  return file.size < max && file.size > min;
+  return fileSize <= max && fileSize >= min;
 };
 
-const hasFileType = (file: CustomFile, types: NonEmptyArray<string>) => {
+export const hasFileType = (file: CustomFile, types: NonEmptyArray<string>) => {
   const fileType = file.name.split('.').pop();
 
   return !!fileType && types.includes(fileType);
 };
 
 function IsFile(validationOptions?: ValidationOptions) {
-  return function (object: Type<Object>, propertyName: string) {
+  return function (object: Object, propertyName: string) {
     registerDecorator({
       name: 'isCustomFile',
       target: object.constructor,
@@ -44,12 +50,12 @@ function IsFile(validationOptions?: ValidationOptions) {
 }
 
 type MinMax = {
-  maxSize: number;
-  minSize: number;
+  maxSizeMB: number;
+  minSizeMB: number;
 };
 
 function FileSize(validationOptions: ValidationOptions & Partial<MinMax>) {
-  return function (object: Type<Object>, propertyName: string) {
+  return function (object: Object, propertyName: string) {
     registerDecorator({
       name: 'fileSize',
       target: object.constructor,
@@ -59,8 +65,8 @@ function FileSize(validationOptions: ValidationOptions & Partial<MinMax>) {
       validator: {
         validate(value: CustomFile) {
           return hasCorrectSize(value, [
-            validationOptions.minSize,
-            validationOptions.maxSize,
+            validationOptions.minSizeMB,
+            validationOptions.maxSizeMB,
           ]);
         },
       },
@@ -71,7 +77,7 @@ function FileSize(validationOptions: ValidationOptions & Partial<MinMax>) {
 function FileType(
   validationOptions: ValidationOptions & { types: NonEmptyArray<string> },
 ) {
-  return function (object: Type<Object>, propertyName: string) {
+  return function (object: Object, propertyName: string) {
     registerDecorator({
       name: 'fileType',
       target: object.constructor,
