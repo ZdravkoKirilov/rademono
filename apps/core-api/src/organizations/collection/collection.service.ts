@@ -6,7 +6,6 @@ import { Observable, of } from 'rxjs';
 import {
   Collection,
   isOrganizationId,
-  OrganizationId,
   ParsingError,
   PrivateCollection,
   switchMapEither,

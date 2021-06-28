@@ -111,4 +111,15 @@ export class PrivateAsset extends AdvancedFields {
   static toPrivateEntity(data: unknown) {
     return parseAndValidateUnknown(data, PrivateAsset);
   }
+
+  static toPublicEntity(source: PrivateAsset) {
+    return {
+      id: source.public_id,
+      name: source.name,
+      description: source.description,
+      organization: source.organization,
+      url: source.url,
+      type: source.type,
+    };
+  }
 }

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 
 import { AssetsController } from './assets.controller';
-import { FilesService } from './files.service';
+import { AssetService } from './asset.service';
 
 @Module({
   controllers: [AssetsController],
@@ -11,6 +11,6 @@ import { FilesService } from './files.service';
       dest: './upload',
     }),
   ],
-  providers: [FilesService],
+  providers: [AssetService],
 })
 export class AssetsModule {}

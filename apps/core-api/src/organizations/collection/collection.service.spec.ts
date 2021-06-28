@@ -28,7 +28,7 @@ describe(CollectionService.name, () => {
       const data = PrivateCollection.createFromDto(
         {
           name: 'Name',
-          description: 'Some desc',
+          description: 'Some description',
         },
         collectionId,
         organizationId,
@@ -68,7 +68,7 @@ describe(CollectionService.name, () => {
       const data = PrivateCollection.createFromDto(
         {
           name: 'Name',
-          description: 'Some desc',
+          description: 'Some description',
         },
         collectionId,
         organizationId,

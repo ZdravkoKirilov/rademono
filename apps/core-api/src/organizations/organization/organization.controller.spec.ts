@@ -233,7 +233,7 @@ describe(OrganizationController.name, () => {
 
       controller = module.get<OrganizationController>(OrganizationController);
 
-      controller.getAllForUser(user.public_id).subscribe((res) => {
+      controller.getAllForUser(user).subscribe((res) => {
         expect(res).toEqual([]);
         done();
       });
@@ -264,7 +264,7 @@ describe(OrganizationController.name, () => {
       controller = module.get<OrganizationController>(OrganizationController);
 
       try {
-        await controller.getAllForUser(user.public_id).toPromise();
+        await controller.getAllForUser(user).toPromise();
       } catch (err) {
         expect(err).toBeInstanceOf(KnownErrors.InternalServerErrorException);
         done();
@@ -296,7 +296,7 @@ describe(OrganizationController.name, () => {
       controller = module.get<OrganizationController>(OrganizationController);
 
       try {
-        await controller.getAllForUser(user.public_id).toPromise();
+        await controller.getAllForUser(user).toPromise();
       } catch (err) {
         expect(err).toBeInstanceOf(KnownErrors.BadRequestException);
         expect(err.message).toBe('oops');

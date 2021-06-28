@@ -136,7 +136,7 @@ describe(AdminProfileRepository.name, () => {
         name: 'Name',
         user: UUIDv4.generate(),
         group: UUIDv4.generate(),
-        public_id: UUIDv4.generate(),
+        public_id: UUIDv4.generate<UUIDv4>(),
       };
 
       const { service } = await createTestingModule({
