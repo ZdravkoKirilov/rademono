@@ -9,6 +9,7 @@ import { AssetService } from './asset.service';
   imports: [
     MulterModule.register({
       dest: './upload',
+      preservePath: true,
     }),
   ],
   providers: [AssetService],

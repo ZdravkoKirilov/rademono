@@ -1,7 +1,7 @@
 import { ValidationError } from 'class-validator';
 import { get } from 'lodash/fp';
 
-type FieldError = Pick<ValidationError, 'property' | 'constraints'> & {
+export type FieldError = Pick<ValidationError, 'property' | 'constraints'> & {
   name: string;
   errors?: FieldError[];
 };

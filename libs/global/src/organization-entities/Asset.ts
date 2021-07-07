@@ -12,7 +12,11 @@ import {
 import { switchMap } from 'rxjs/operators';
 import * as e from 'fp-ts/Either';
 
-import { parseAndValidateUnknown, toLeftObs } from '../parsers';
+import {
+  parseAndValidateUnknown,
+  toLeftObs,
+  transformToClass,
+} from '../parsers';
 import { StringOfLength, Tagged, Url, UUIDv4, CustomFile } from '../types';
 import { OrganizationId } from './Organization';
 
@@ -113,13 +117,13 @@ export class PrivateAsset extends AdvancedFields {
   }
 
   static toPublicEntity(source: PrivateAsset) {
-    return {
+    return transformToClass<Asset, Asset>(Asset, {
       id: source.public_id,
       name: source.name,
       description: source.description,
       organization: source.organization,
       url: source.url,
       type: source.type,
-    };
+    });
   }
 }
