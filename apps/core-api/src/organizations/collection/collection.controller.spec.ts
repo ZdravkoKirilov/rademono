@@ -1,9 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import {
-  DomainError,
   ParsingError,
-  PrivateAdminUser,
   PrivateCollection,
   toLeftObs,
   toRightObs,

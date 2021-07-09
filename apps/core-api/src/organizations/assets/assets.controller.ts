@@ -4,6 +4,7 @@ import {
   Param,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -13,12 +14,14 @@ import * as e from 'fp-ts/Either';
 import { AssetService } from './asset.service';
 import { isKnownError, toBadRequest, toUnexpectedError } from '@app/shared';
 import { ParsingError, UnexpectedError } from '@end/global';
+import { AuthGuard } from '@app/users/admin-users';
 
 @Controller('organization/:organizationId/assets')
 export class AssetsController {
   constructor(private assetService: AssetService) {}
 
   @Post('image')
+  @UseGuards(AuthGuard)
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: (_req, file, cb) => {
