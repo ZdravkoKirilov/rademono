@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Post,
   UploadedFile,
@@ -20,7 +21,13 @@ import { AuthGuard } from '@app/users/admin-users';
 export class AssetsController {
   constructor(private assetService: AssetService) {}
 
-  @Post('image')
+  @Get('images')
+  @UseGuards(AuthGuard)
+  getImages(@Param('organizationId') organizationId: unknown) {
+    return [];
+  }
+
+  @Post('images')
   @UseGuards(AuthGuard)
   @UseInterceptors(
     FileInterceptor('file', {
