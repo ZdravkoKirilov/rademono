@@ -62,14 +62,14 @@ class AdvancedFields extends BasicFields {
 
   @Expose()
   @IsNotEmpty()
-  @FilePath.IsFilePath({ types: ['jpg'] })
-  url: FilePath<['jpg']>;
+  @FilePath.IsFilePath({ types: ['jpg', 'png'] })
+  url: FilePath<['jpg', 'png']>;
 }
 
 export class CreateImageDto extends BasicFields {
   @Expose()
   @CustomFile.IsFile()
-  @CustomFile.FileType({ types: ['jpg', 'png', 'jpeg'] })
+  @CustomFile.FileType({ types: ['jpg', 'png'] })
   @CustomFile.FileSize({ maxSizeMB: 1 })
   file: CustomFile;
 }
