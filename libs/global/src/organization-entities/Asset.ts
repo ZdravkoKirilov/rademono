@@ -4,7 +4,6 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsUrl,
   IsUUID,
   MaxLength,
   MinLength,
@@ -17,7 +16,14 @@ import {
   toLeftObs,
   transformToClass,
 } from '../parsers';
-import { StringOfLength, Tagged, Url, UUIDv4, CustomFile } from '../types';
+import {
+  StringOfLength,
+  Tagged,
+  Url,
+  UUIDv4,
+  CustomFile,
+  FilePath,
+} from '../types';
 import { OrganizationId } from './Organization';
 
 export enum AssetType {
@@ -56,8 +62,8 @@ class AdvancedFields extends BasicFields {
 
   @Expose()
   @IsNotEmpty()
-  @IsUrl()
-  url: Url;
+  @FilePath.IsFilePath({ types: ['jpg'] })
+  url: FilePath<['jpg']>;
 }
 
 export class CreateImageDto extends BasicFields {

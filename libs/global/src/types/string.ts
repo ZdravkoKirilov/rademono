@@ -5,6 +5,5 @@ export type StringOfLength<Min extends number, Max extends number> = Tagged<
   {
     min: Min;
     max: Max;
-  }
-> &
-  string;
+  } & string
+>;

@@ -200,6 +200,24 @@ describe('Asset entity', () => {
           done();
         });
       });
+
+      it('fails with unsupported file path', (done) => {
+        PrivateAsset.createImage(data, {
+          organization: organizationId,
+          fileUrl: 'path/to/file.pdf' as Url,
+          createId: () => assetId,
+        }).subscribe((res) => {
+          if (e.isRight(res)) {
+            return breakTest();
+          }
+
+          expect(res.left).toBeInstanceOf(ParsingError);
+          expect(res.left.errors).toHaveLength(1);
+          expect(hasFieldError(res.left, 'url')).toBe(true);
+
+          done();
+        });
+      });
     });
 
     describe(PrivateAsset.toPrivateEntity.name, () => {
