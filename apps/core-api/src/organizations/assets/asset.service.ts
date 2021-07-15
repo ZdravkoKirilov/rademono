@@ -9,6 +9,7 @@ import {
   isValidUrl,
   ParsingError,
   PrivateAsset,
+  PrivateOrganization,
   switchMapEither,
   toLeftObs,
   toRightObs,
@@ -27,17 +28,30 @@ export class AssetService {
     @Inject(PUBLIC_ID_GENERATOR) private createId: typeof UUIDv4.generate,
   ) {}
 
+  doStuf(payload: unknown, organization: any, fileUrl: any) {
+    return PrivateOrganization.create(
+      { name: 'Some org' },
+      this.createId,
+      organization,
+    );
+    /*  return PrivateAsset.createImage(payload, {
+      organization,
+      fileUrl,
+      createId: this.createId,
+    }); */
+  }
+
   createImage(
     payload: unknown,
-    organization: unknown,
-    fileUrl: unknown,
+    organization: any,
+    fileUrl: any,
   ): Observable<e.Either<UnexpectedError | ParsingError, Asset>> {
-    if (!isOrganizationId(organization)) {
+    /* if (!isOrganizationId(organization)) {
       return toLeftObs(new ParsingError('Valid organizationId is required'));
     }
     if (!isValidUrl(fileUrl)) {
       return toLeftObs(new ParsingError('Valid asset url is required'));
-    }
+    } */
 
     return PrivateAsset.createImage(payload, {
       organization,

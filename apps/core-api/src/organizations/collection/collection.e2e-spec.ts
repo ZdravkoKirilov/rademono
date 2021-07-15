@@ -86,7 +86,7 @@ describe(CollectionController.name, () => {
             constraints: {
               isNotEmpty: 'name should not be empty',
               maxLength: 'name must be shorter than or equal to 100 characters',
-              minLength: 'name must be longer than or equal to 1 characters',
+              minLength: 'name must be longer than or equal to 2 characters',
             },
             property: 'name',
           },

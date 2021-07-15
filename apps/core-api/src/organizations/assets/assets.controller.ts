@@ -32,12 +32,12 @@ export class AssetsController {
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: (_req, file, cb) => {
-        if (['jpg', 'png'].includes(file.mimetype)) {
+        if (['image/jpeg'].includes(file.mimetype)) {
           cb(null, true);
         } else {
           cb(
             toBadRequest({
-              message: 'Unsupported file type',
+              message: 'Unsupported file type: ' + file.mimetype,
               name: ParsingError.name,
             }),
             false,
@@ -46,50 +46,58 @@ export class AssetsController {
       },
     }),
   )
-  uploadImage(
+  async uploadImage(
     @Body() body: unknown,
     @Param('organizationId') organizationId: unknown,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.assetService.createImage(body, organizationId, file.path).pipe(
-      map((result) => {
-        if (e.isLeft(result)) {
-          switch (result.left.name) {
-            case 'ParsingError': {
-              throw toBadRequest({
-                message: result.left.message,
-                name: result.left.name,
-                errors: result.left.errors,
-              });
-            }
-            case 'UnexpectedError': {
-              throw toUnexpectedError({
-                message: result.left.message,
-                name: result.left.name,
-              });
-            }
-            default: {
-              throw toUnexpectedError({
-                message: 'Unexpected error',
-                name: UnexpectedError.prototype.name,
-                originalError: result.left,
-              });
+    debugger;
+
+    const result = await this.assetService
+      .createImage(body, organizationId, file.path)
+      .pipe(
+        map((result) => {
+          if (e.isLeft(result)) {
+            switch (result.left.name) {
+              case 'ParsingError': {
+                throw toBadRequest({
+                  message: result.left.message,
+                  name: result.left.name,
+                  errors: result.left.errors,
+                });
+              }
+              case 'UnexpectedError': {
+                throw toUnexpectedError({
+                  message: result.left.message,
+                  name: result.left.name,
+                });
+              }
+              default: {
+                throw toUnexpectedError({
+                  message: 'Unexpected error',
+                  name: UnexpectedError.prototype.name,
+                  originalError: result.left,
+                });
+              }
             }
           }
-        }
 
-        return result.right;
-      }),
-      catchError((err) => {
-        if (isKnownError(err)) {
-          throw err;
-        }
-        throw toUnexpectedError({
-          message: 'Unexpected error',
-          name: UnexpectedError.prototype.name,
-          originalError: err,
-        });
-      }),
-    );
+          return result.right;
+        }),
+        catchError((err) => {
+          if (isKnownError(err)) {
+            throw err;
+          }
+          throw toUnexpectedError({
+            message: 'Unexpected error',
+            name: UnexpectedError.prototype.name,
+            originalError: err,
+          });
+        }),
+      )
+      .toPromise();
+
+    debugger;
+    return result;
   }
 }
