@@ -15,8 +15,8 @@ export type FilePath<T extends NonEmptyArray<string>> = Tagged<
 
 export const isFilePath = <T extends NonEmptyArray<string>>(
   source: unknown,
-  extensions: string[],
-): source is FilePath<T> => {
+  extensions: T,
+): source is FilePath<typeof extensions> => {
   return (
     isString(source) &&
     !isEmpty(source) &&

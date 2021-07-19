@@ -1,9 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
+import * as e from 'fp-ts/Either';
+import { map } from 'rxjs/operators';
+import path from 'path';
 
+import { Asset, breakTest } from '@end/global';
 import { AppModule } from '../../app.module';
-import { createTestUser, cleanRepositories } from '@app/test';
+import { createTestUser, cleanRepositories, deleteTestFiles } from '@app/test';
 import { AssetRepository } from './asset.repository';
 import { AssetsController } from './assets.controller';
 import { OrganizationRepository } from '../organization/organization.repository';
@@ -19,7 +23,6 @@ describe(AssetsController.name, () => {
     app = moduleFixture.createNestApplication();
 
     await cleanRepositories(app, repos);
-
     await app.init();
   });
 
@@ -29,6 +32,7 @@ describe(AssetsController.name, () => {
 
   afterEach(async () => {
     await cleanRepositories(app, repos);
+    await deleteTestFiles(path.join(__dirname, '../../..'));
   });
 
   describe(AssetsController.prototype.uploadImage, () => {
@@ -47,10 +51,19 @@ describe(AssetsController.name, () => {
         .post(url)
         .set('Authorization', token)
         .attach('file', 'test/file-uploading/bear.jpg')
-        .field('name', 'Bear image');
+        .field('name', 'Bear image')
+        .expect(201);
 
-      console.log(body);
-      done();
+      Asset.isValid(body)
+        .pipe(
+          map((res) => {
+            if (e.isLeft(res)) {
+              return breakTest();
+            }
+            done();
+          }),
+        )
+        .subscribe();
     });
   });
 });

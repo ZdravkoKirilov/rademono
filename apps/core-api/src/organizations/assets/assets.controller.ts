@@ -48,11 +48,9 @@ export class AssetsController {
   )
   async uploadImage(
     @Body() body: unknown,
-    @Param('organizationId') organizationId: unknown,
+    @Param('organizationId') organizationId: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    debugger;
-
     const result = await this.assetService
       .createImage(body, organizationId, file.path)
       .pipe(
@@ -97,7 +95,6 @@ export class AssetsController {
       )
       .toPromise();
 
-    debugger;
     return result;
   }
 }

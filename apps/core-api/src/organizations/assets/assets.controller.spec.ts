@@ -45,12 +45,10 @@ describe(AssetsController.name, () => {
 
       controller = module.get<AssetsController>(AssetsController);
 
-      controller
-        .uploadImage(data, UUIDv4.generate(), fakeFile)
-        .subscribe((res) => {
-          expect(res).toEqual(data);
-          done();
-        });
+      controller.uploadImage(data, UUIDv4.generate(), fakeFile).then((res) => {
+        expect(res).toEqual(data);
+        done();
+      });
     });
 
     it(`fails when ${AssetService.name} returns an UnexpectedError`, async (done) => {
@@ -74,9 +72,7 @@ describe(AssetsController.name, () => {
       controller = module.get<AssetsController>(AssetsController);
 
       try {
-        await controller
-          .uploadImage({}, UUIDv4.generate(), fakeFile)
-          .toPromise();
+        await controller.uploadImage({}, UUIDv4.generate(), fakeFile);
       } catch (err) {
         expect(err).toBeInstanceOf(KnownErrors.InternalServerErrorException);
         expect(err.message).toBe('oops');
@@ -105,9 +101,7 @@ describe(AssetsController.name, () => {
       controller = module.get<AssetsController>(AssetsController);
 
       try {
-        await controller
-          .uploadImage({}, UUIDv4.generate(), fakeFile)
-          .toPromise();
+        await controller.uploadImage({}, UUIDv4.generate(), fakeFile);
       } catch (err) {
         expect(err).toBeInstanceOf(KnownErrors.BadRequestException);
         expect(err.message).toBe('oops');
@@ -136,9 +130,7 @@ describe(AssetsController.name, () => {
       controller = module.get<AssetsController>(AssetsController);
 
       try {
-        await controller
-          .uploadImage({}, UUIDv4.generate(), fakeFile)
-          .toPromise();
+        await controller.uploadImage({}, UUIDv4.generate(), fakeFile);
       } catch (err) {
         expect(err).toBeInstanceOf(KnownErrors.InternalServerErrorException);
         expect(err.message).toBe('Unexpected error');

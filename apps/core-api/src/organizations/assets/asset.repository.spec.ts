@@ -82,7 +82,7 @@ describe(AssetRepository.name, () => {
         name: 'Name',
         public_id: UUIDv4.generate(),
         type: AssetType.image,
-        url: 'www.images.com',
+        url: 'www.images.com/image.png',
         organization: organizationId,
       };
 

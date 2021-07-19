@@ -1,6 +1,6 @@
 import * as e from 'fp-ts/Either';
 
-import { ParsingError, Url, UUIDv4 } from '../types';
+import { ParsingError, UUIDv4 } from '../types';
 import { breakTest, hasFieldError } from '../test';
 import {
   Asset,
@@ -158,7 +158,7 @@ describe('Asset entity', () => {
 
       const organizationId = UUIDv4.generate<OrganizationId>();
       const assetId = UUIDv4.generate<AssetId>();
-      const url = 'www.somecdn/picture.jpg' as Url;
+      const url = 'www.somecdn/picture.jpg' as any;
 
       it('passes with correct data', (done) => {
         PrivateAsset.createImage(data, {
@@ -186,7 +186,7 @@ describe('Asset entity', () => {
       it('fails with invalid url', (done) => {
         PrivateAsset.createImage(data, {
           organization: organizationId,
-          fileUrl: 'not a valid url' as Url,
+          fileUrl: 'not a valid url' as any,
           createId: () => assetId,
         }).subscribe((res) => {
           if (e.isRight(res)) {
@@ -204,7 +204,7 @@ describe('Asset entity', () => {
       it('fails with unsupported file path', (done) => {
         PrivateAsset.createImage(data, {
           organization: organizationId,
-          fileUrl: 'path/to/file.pdf' as Url,
+          fileUrl: 'path/to/file.pdf' as any,
           createId: () => assetId,
         }).subscribe((res) => {
           if (e.isRight(res)) {

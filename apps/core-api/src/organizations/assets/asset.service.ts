@@ -5,11 +5,10 @@ import { Observable, of } from 'rxjs';
 
 import {
   Asset,
+  isFilePath,
   isOrganizationId,
-  isValidUrl,
   ParsingError,
   PrivateAsset,
-  PrivateOrganization,
   switchMapEither,
   toLeftObs,
   toRightObs,
@@ -28,30 +27,17 @@ export class AssetService {
     @Inject(PUBLIC_ID_GENERATOR) private createId: typeof UUIDv4.generate,
   ) {}
 
-  doStuf(payload: unknown, organization: any, fileUrl: any) {
-    return PrivateOrganization.create(
-      { name: 'Some org' },
-      this.createId,
-      organization,
-    );
-    /*  return PrivateAsset.createImage(payload, {
-      organization,
-      fileUrl,
-      createId: this.createId,
-    }); */
-  }
-
   createImage(
     payload: unknown,
-    organization: any,
-    fileUrl: any,
+    organization: string,
+    fileUrl: string,
   ): Observable<e.Either<UnexpectedError | ParsingError, Asset>> {
-    /* if (!isOrganizationId(organization)) {
+    if (!isOrganizationId(organization)) {
       return toLeftObs(new ParsingError('Valid organizationId is required'));
     }
-    if (!isValidUrl(fileUrl)) {
+    if (!isFilePath<['jpg', 'png']>(fileUrl, ['jpg', 'png'])) {
       return toLeftObs(new ParsingError('Valid asset url is required'));
-    } */
+    }
 
     return PrivateAsset.createImage(payload, {
       organization,

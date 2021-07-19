@@ -19,10 +19,10 @@ import {
 import {
   StringOfLength,
   Tagged,
-  Url,
   UUIDv4,
   CustomFile,
   FilePath,
+  Primitive,
 } from '../types';
 import { OrganizationId } from './Organization';
 
@@ -83,6 +83,10 @@ export class Asset extends AdvancedFields {
   static createImage(payload: unknown) {
     return parseAndValidateUnknown(payload, CreateImageDto);
   }
+
+  static isValid(payload: Primitive<Asset>) {
+    return parseAndValidateUnknown(payload, Asset);
+  }
 }
 
 export class PrivateAsset extends AdvancedFields {
@@ -97,7 +101,11 @@ export class PrivateAsset extends AdvancedFields {
       organization,
       fileUrl,
       createId,
-    }: { organization: OrganizationId; fileUrl: Url; createId: () => AssetId },
+    }: {
+      organization: OrganizationId;
+      fileUrl: FilePath<['jpg', 'png']>;
+      createId: () => AssetId;
+    },
   ) {
     return parseAndValidateUnknown(payload, BasicFields).pipe(
       switchMap((parsed) => {
