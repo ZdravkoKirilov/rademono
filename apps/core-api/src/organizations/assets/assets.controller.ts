@@ -32,7 +32,7 @@ export class AssetsController {
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: (_req, file, cb) => {
-        if (['image/jpeg'].includes(file.mimetype)) {
+        if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
           cb(null, true);
         } else {
           cb(

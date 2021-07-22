@@ -1,5 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import express from 'express';
+import { join } from 'path';
 
 import { AppModule } from './app.module';
 
@@ -16,6 +18,9 @@ async function bootstrap() {
   SwaggerModule.setup('api/swagger', app, document);
 
   app.enableCors({ origin: ['http://localhost:4000'] });
+
+  const staticUrl = join(process.cwd(), 'uploads');
+  app.use('/uploads', express.static(staticUrl));
 
   await app.listen(3000);
 }
