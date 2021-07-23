@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -8,14 +9,14 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { catchError, map } from 'rxjs/operators';
 import * as e from 'fp-ts/Either';
 
 import { AssetService } from './asset.service';
 import { isKnownError, toBadRequest, toUnexpectedError } from '@app/shared';
-import { ParsingError, UnexpectedError } from '@end/global';
+import { UnexpectedError } from '@end/global';
 import { AuthGuard } from '@app/users/admin-users';
+import { applyImageRules } from './file-rules';
 
 @Controller('organization/:organizationId/assets')
 export class AssetsController {
@@ -27,25 +28,18 @@ export class AssetsController {
     return [];
   }
 
+  @Delete(':assetId')
+  @UseGuards(AuthGuard)
+  deleteAsset(
+    @Param('assetId') assetId: string,
+    @Param('organizationId') organizationId: string,
+  ) {
+    return this.assetService.deleteAsset(assetId, organizationId);
+  }
+
   @Post('images')
   @UseGuards(AuthGuard)
-  @UseInterceptors(
-    FileInterceptor('file', {
-      fileFilter: (_req, file, cb) => {
-        if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
-          cb(null, true);
-        } else {
-          cb(
-            toBadRequest({
-              message: 'Unsupported file type: ' + file.mimetype,
-              name: ParsingError.name,
-            }),
-            false,
-          );
-        }
-      },
-    }),
-  )
+  @UseInterceptors(applyImageRules())
   async uploadImage(
     @Body() body: unknown,
     @Param('organizationId') organizationId: string,

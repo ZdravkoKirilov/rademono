@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Db, FilterQuery } from 'mongodb';
 import { from, Observable, throwError, of } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
-import * as e from 'fp-ts/lib/Either';
+import { switchMap, catchError, map } from 'rxjs/operators';
+import * as E from 'fp-ts/lib/Either';
 
 import {
   Dictionary,
@@ -32,7 +32,7 @@ export class DbentityService<T extends UnspecifiedEntity> {
     return this.connection.collection(this._collection);
   }
 
-  insert(document: T): Observable<e.Either<UnexpectedError, T>> {
+  insert(document: T): Observable<E.Either<UnexpectedError, T>> {
     try {
       return from(this.collection.insertOne(document)).pipe(
         switchMap((res: unknown) => {
@@ -57,7 +57,25 @@ export class DbentityService<T extends UnspecifiedEntity> {
     }
   }
 
-  count(query?: FilterQuery<T>): Observable<e.Either<UnexpectedError, number>> {
+  deleteOne(
+    query: FilterQuery<T>,
+  ): Observable<E.Either<UnexpectedError, number>> {
+    return from(this.collection.deleteOne(query)).pipe(
+      map((res) => {
+        return E.right(res.deletedCount || 0);
+      }),
+      catchError((err) =>
+        toLeftObs(
+          new UnexpectedError(
+            'Failed to delete an item in collection: ' + this._collection,
+            err,
+          ),
+        ),
+      ),
+    );
+  }
+
+  count(query?: FilterQuery<T>): Observable<E.Either<UnexpectedError, number>> {
     try {
       return from(this.collection.countDocuments(query)).pipe(
         switchMap((res) => {
@@ -84,7 +102,7 @@ export class DbentityService<T extends UnspecifiedEntity> {
 
   findOne(
     query: FilterQuery<T>,
-  ): Observable<e.Either<UnexpectedError, T | undefined>> {
+  ): Observable<E.Either<UnexpectedError, T | undefined>> {
     try {
       return from(this.collection.findOne(query)).pipe(
         switchMap((res) => {
@@ -109,7 +127,7 @@ export class DbentityService<T extends UnspecifiedEntity> {
     }
   }
 
-  findAll(query: Dictionary = {}): Observable<e.Either<UnexpectedError, T[]>> {
+  findAll(query: Dictionary = {}): Observable<E.Either<UnexpectedError, T[]>> {
     return of(this.collection.find(query)).pipe(
       switchMap((res) => {
         return from(res.toArray());
@@ -148,7 +166,7 @@ export class DbentityService<T extends UnspecifiedEntity> {
   save(
     data: T,
     filter?: FilterQuery<T>,
-  ): Observable<e.Either<UnexpectedError, number>> {
+  ): Observable<E.Either<UnexpectedError, number>> {
     const target = filter || { public_id: data.public_id };
 
     try {

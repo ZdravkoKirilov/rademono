@@ -5,4 +5,4 @@ export * from './organization-entities';
 export * from './user-entities';
 export * from './email-entities';
 
-export { breakTest } from './test';
+export { breakTest, hasFieldError } from './test';

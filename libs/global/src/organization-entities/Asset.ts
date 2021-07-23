@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  isUUID,
   IsUUID,
   MaxLength,
   MinLength,
@@ -32,6 +33,8 @@ export enum AssetType {
 }
 
 export type AssetId = Tagged<'AssetId', UUIDv4>;
+
+export const isAssetId = (value: unknown): value is AssetId => isUUID(value);
 
 class BasicFields {
   @Expose()
