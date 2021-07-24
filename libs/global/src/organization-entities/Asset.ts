@@ -66,7 +66,7 @@ class AdvancedFields extends BasicFields {
   @Expose()
   @IsNotEmpty()
   @FilePath.IsFilePath({ types: ['jpg', 'png'] })
-  url: FilePath<['jpg', 'png']>;
+  path: FilePath<['jpg', 'png']>;
 }
 
 export class CreateImageDto extends BasicFields {
@@ -102,11 +102,11 @@ export class PrivateAsset extends AdvancedFields {
     payload: unknown,
     {
       organization,
-      fileUrl,
+      filePath,
       createId,
     }: {
       organization: OrganizationId;
-      fileUrl: FilePath<['jpg', 'png']>;
+      filePath: FilePath<['jpg', 'png']>;
       createId: () => AssetId;
     },
   ) {
@@ -119,7 +119,7 @@ export class PrivateAsset extends AdvancedFields {
           {
             ...parsed.right,
             type: AssetType.image,
-            url: fileUrl,
+            path: filePath,
             organization,
             public_id: createId(),
           },
@@ -139,7 +139,7 @@ export class PrivateAsset extends AdvancedFields {
       name: source.name,
       description: source.description,
       organization: source.organization,
-      url: source.url,
+      path: source.path,
       type: source.type,
     });
   }

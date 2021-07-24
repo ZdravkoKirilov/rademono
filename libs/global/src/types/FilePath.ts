@@ -11,7 +11,8 @@ import { Tagged } from './Tagged';
 export type FilePath<T extends NonEmptyArray<string>> = Tagged<
   '__FilePath__',
   T
->;
+> &
+  string;
 
 export const isFilePath = <T extends NonEmptyArray<string>>(
   source: unknown,

@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
 
 import { DatabaseModule } from '@app/database';
 import { SharedModule } from '@app/shared';
@@ -12,6 +11,8 @@ import { AssetsController } from './assets.controller';
 import { AssetService } from './asset.service';
 import { AssetRepository } from './asset.repository';
 import { ASSETS_DB } from './constants';
+import { FileService } from './file.service';
+import { applyFileNameRules } from './file-rules';
 
 @Module({
   controllers: [AssetsController],
@@ -24,19 +25,13 @@ import { ASSETS_DB } from './constants';
       useFactory: async (configService: AppConfigService) => ({
         storage: diskStorage({
           destination: configService.get('ASSETS_HOST'),
-          filename: (req, file, cb) => {
-            const randomName = Array(32)
-              .fill(null)
-              .map(() => Math.round(Math.random() * 16).toString(16))
-              .join('');
-            return cb(null, `${randomName}${extname(file.originalname)}`);
-          },
+          filename: applyFileNameRules,
         }),
         preservePath: true,
       }),
       inject: [AppConfigService],
     }),
   ],
-  providers: [AssetRepository, AssetService],
+  providers: [AssetRepository, AssetService, FileService],
 })
 export class AssetsModule {}

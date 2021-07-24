@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { switchMap } from 'rxjs/operators';
-import * as e from 'fp-ts/lib/Either';
+import { switchMap, tap } from 'rxjs/operators';
+import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import { Observable, of } from 'rxjs';
-import fs from 'fs';
-import path from 'path';
 
 import {
   Asset,
@@ -23,18 +22,20 @@ import {
 import { PUBLIC_ID_GENERATOR } from '@app/shared';
 
 import { AssetRepository } from './asset.repository';
+import { FileService } from './file.service';
 
 @Injectable()
 export class AssetService {
   constructor(
     private repo: AssetRepository,
+    private fileService: FileService,
     @Inject(PUBLIC_ID_GENERATOR) private createId: typeof UUIDv4.generate,
   ) {}
 
   deleteAsset(
     id: string,
     organization: string,
-  ): Observable<e.Either<UnexpectedError | ParsingError | DomainError, void>> {
+  ): Observable<E.Either<UnexpectedError | ParsingError | DomainError, void>> {
     if (!isOrganizationId(organization)) {
       return toLeftObs(new ParsingError('Valid organizationId is required'));
     }
@@ -42,28 +43,34 @@ export class AssetService {
     if (!isAssetId(id)) {
       return toLeftObs(new ParsingError('Valid assetId is required'));
     }
-    return this.repo.deleteAsset({ public_id: id });
-  }
 
-  deleteFile(fileName: string) {
-    const basePath = path.join(__dirname, '../../..');
-    return new Promise((resolve, reject) => {
-      fs.unlink(basePath + 'uploads/' + fileName, (err) => {
-        if (err) {
-          console.log('Failed to delete the file. ', err);
-          reject(err);
+    const matcher = { public_id: id };
+
+    return this.repo.getSingleAsset(matcher).pipe(
+      switchMap((mbAsset) => {
+        if (E.isLeft(mbAsset)) {
+          return toLeftObs(mbAsset.left);
         }
-        console.log('File deleted: ' + fileName);
-        resolve(undefined);
-      });
-    });
+        if (O.isNone(mbAsset.right)) {
+          return toLeftObs(new DomainError('Asset not found'));
+        }
+
+        const asset = mbAsset.right.value;
+
+        return this.repo.deleteAsset(matcher).pipe(
+          tap(() => {
+            this.fileService.deleteFile(asset.path);
+          }),
+        );
+      }),
+    );
   }
 
   createImage(
     payload: unknown,
     organization: string,
     fileUrl: string,
-  ): Observable<e.Either<UnexpectedError | ParsingError, Asset>> {
+  ): Observable<E.Either<UnexpectedError | ParsingError, Asset>> {
     if (!isOrganizationId(organization)) {
       return toLeftObs(new ParsingError('Valid organizationId is required'));
     }
@@ -77,7 +84,7 @@ export class AssetService {
       createId: this.createId,
     }).pipe(
       switchMap((mbDto) => {
-        if (e.isLeft(mbDto)) {
+        if (E.isLeft(mbDto)) {
           return of(mbDto);
         }
 

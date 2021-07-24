@@ -158,12 +158,12 @@ describe('Asset entity', () => {
 
       const organizationId = UUIDv4.generate<OrganizationId>();
       const assetId = UUIDv4.generate<AssetId>();
-      const url = 'www.somecdn/picture.jpg' as any;
+      const path = 'uploads/picture.jpg' as any;
 
       it('passes with correct data', (done) => {
         PrivateAsset.createImage(data, {
           organization: organizationId,
-          fileUrl: url,
+          filePath: path,
           createId: () => assetId,
         }).subscribe((res) => {
           if (e.isLeft(res)) {
@@ -173,7 +173,7 @@ describe('Asset entity', () => {
           expect(res.right).toBeInstanceOf(PrivateAsset);
           expect(res.right).toEqual({
             ...data,
-            url,
+            path: path,
             organization: organizationId,
             public_id: assetId,
             type: AssetType.image,
@@ -183,10 +183,10 @@ describe('Asset entity', () => {
         });
       });
 
-      it('fails with invalid url', (done) => {
+      it('fails with invalid path', (done) => {
         PrivateAsset.createImage(data, {
           organization: organizationId,
-          fileUrl: 'not a valid url' as any,
+          filePath: 'not a valid path' as any,
           createId: () => assetId,
         }).subscribe((res) => {
           if (e.isRight(res)) {
@@ -195,7 +195,7 @@ describe('Asset entity', () => {
 
           expect(res.left).toBeInstanceOf(ParsingError);
           expect(res.left.errors).toHaveLength(1);
-          expect(hasFieldError(res.left, 'url')).toBe(true);
+          expect(hasFieldError(res.left, 'path')).toBe(true);
 
           done();
         });
@@ -204,7 +204,7 @@ describe('Asset entity', () => {
       it('fails with unsupported file path', (done) => {
         PrivateAsset.createImage(data, {
           organization: organizationId,
-          fileUrl: 'path/to/file.pdf' as any,
+          filePath: 'path/to/file.pdf' as any,
           createId: () => assetId,
         }).subscribe((res) => {
           if (e.isRight(res)) {
@@ -213,7 +213,7 @@ describe('Asset entity', () => {
 
           expect(res.left).toBeInstanceOf(ParsingError);
           expect(res.left.errors).toHaveLength(1);
-          expect(hasFieldError(res.left, 'url')).toBe(true);
+          expect(hasFieldError(res.left, 'path')).toBe(true);
 
           done();
         });
@@ -223,7 +223,7 @@ describe('Asset entity', () => {
     describe(PrivateAsset.toPrivateEntity.name, () => {
       const data = {
         name: 'Some picture',
-        url: 'www.somecdn/picture.jpg',
+        path: 'www.somecdn/picture.jpg',
         public_id: UUIDv4.generate<AssetId>(),
         organization: UUIDv4.generate<OrganizationId>(),
         type: AssetType.image,

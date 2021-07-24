@@ -84,7 +84,7 @@ describe(AssetRepository.name, () => {
         name: 'Name',
         public_id: UUIDv4.generate(),
         type: AssetType.image,
-        url: 'www.images.com/image.png',
+        path: 'uploads/image.png',
         organization: organizationId,
       };
 
@@ -156,7 +156,7 @@ describe(AssetRepository.name, () => {
         name: 'Name',
         public_id: UUIDv4.generate<AssetId>(),
         type: AssetType.image,
-        url: 'www.images.com/image.png',
+        path: 'uploads/image.png',
         organization: organizationId,
       };
 
@@ -210,7 +210,7 @@ describe(AssetRepository.name, () => {
         name: 'Name',
         public_id: UUIDv4.generate<AssetId>(),
         type: 'invalid type',
-        url: 'www.images.com/image.png',
+        path: 'uploads/image.png',
         organization: organizationId,
       };
 
@@ -238,7 +238,7 @@ describe(AssetRepository.name, () => {
         name: 'Name',
         public_id: UUIDv4.generate<AssetId>(),
         type: AssetType.image,
-        url: 'www.images.com/image.png',
+        path: 'uploads/image.png',
         organization: organizationId,
       };
 

@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as e from 'fp-ts/Either';
+import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 
 import { PUBLIC_ID_GENERATOR } from '@app/shared';
 import {
@@ -16,6 +17,7 @@ import {
 
 import { AssetRepository } from './asset.repository';
 import { AssetService } from './asset.service';
+import { FileService } from './file.service';
 
 describe(AssetService.name, () => {
   let service: AssetService;
@@ -41,6 +43,12 @@ describe(AssetService.name, () => {
               createAsset: (data: unknown) => toRightObs(data),
             } as Partial<AssetRepository>,
           },
+          {
+            provide: FileService,
+            useValue: {
+              deleteFile: () => Promise.resolve(),
+            } as Partial<FileService>,
+          },
           { provide: PUBLIC_ID_GENERATOR, useValue: () => assetId },
         ],
       }).compile();
@@ -48,7 +56,7 @@ describe(AssetService.name, () => {
       service = module.get<AssetService>(AssetService);
 
       service.createImage(data, organizationId, fileUrl).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (E.isLeft(res)) {
           return breakTest();
         }
 
@@ -70,6 +78,12 @@ describe(AssetService.name, () => {
               createAsset: () => toLeftObs(new UnexpectedError()),
             } as Partial<AssetRepository>,
           },
+          {
+            provide: FileService,
+            useValue: {
+              deleteFile: () => Promise.resolve(),
+            } as Partial<FileService>,
+          },
           { provide: PUBLIC_ID_GENERATOR, useValue: () => assetId },
         ],
       }).compile();
@@ -77,7 +91,7 @@ describe(AssetService.name, () => {
       service = module.get<AssetService>(AssetService);
 
       service.createImage(data, organizationId, fileUrl).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (E.isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -99,6 +113,12 @@ describe(AssetService.name, () => {
               createAsset: () => breakTest(),
             } as Partial<AssetRepository>,
           },
+          {
+            provide: FileService,
+            useValue: {
+              deleteFile: () => Promise.resolve(),
+            } as Partial<FileService>,
+          },
           { provide: PUBLIC_ID_GENERATOR, useValue: () => assetId },
         ],
       }).compile();
@@ -108,7 +128,7 @@ describe(AssetService.name, () => {
       service
         .createImage(data, 'invalid organization id', fileUrl)
         .subscribe((res) => {
-          if (e.isRight(res)) {
+          if (E.isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(ParsingError);
@@ -131,6 +151,12 @@ describe(AssetService.name, () => {
               createAsset: () => breakTest(),
             } as Partial<AssetRepository>,
           },
+          {
+            provide: FileService,
+            useValue: {
+              deleteFile: () => Promise.resolve(),
+            } as Partial<FileService>,
+          },
           { provide: PUBLIC_ID_GENERATOR, useValue: () => assetId },
         ],
       }).compile();
@@ -140,7 +166,7 @@ describe(AssetService.name, () => {
       service
         .createImage(data, organizationId, 'invalid file url')
         .subscribe((res) => {
-          if (e.isRight(res)) {
+          if (E.isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(ParsingError);
@@ -163,6 +189,12 @@ describe(AssetService.name, () => {
               createAsset: () => breakTest(),
             } as Partial<AssetRepository>,
           },
+          {
+            provide: FileService,
+            useValue: {
+              deleteFile: () => Promise.resolve(),
+            } as Partial<FileService>,
+          },
           { provide: PUBLIC_ID_GENERATOR, useValue: () => assetId },
         ],
       }).compile();
@@ -170,7 +202,7 @@ describe(AssetService.name, () => {
       service = module.get<AssetService>(AssetService);
 
       service.createImage(data, organizationId, fileUrl).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (E.isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(ParsingError);
@@ -191,7 +223,14 @@ describe(AssetService.name, () => {
             provide: AssetRepository,
             useValue: {
               deleteAsset: () => toRightObs(undefined),
+              getSingleAsset: () => toRightObs(O.some({ path: 'whateva' })),
             } as Partial<AssetRepository>,
+          },
+          {
+            provide: FileService,
+            useValue: {
+              deleteFile: () => Promise.resolve(),
+            } as Partial<FileService>,
           },
           { provide: PUBLIC_ID_GENERATOR, useValue: () => assetId },
         ],
@@ -200,7 +239,7 @@ describe(AssetService.name, () => {
       service = module.get<AssetService>(AssetService);
 
       service.deleteAsset(assetId, organizationId).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (E.isLeft(res)) {
           return breakTest();
         }
 
@@ -220,6 +259,12 @@ describe(AssetService.name, () => {
               deleteAsset: () => toRightObs(undefined),
             } as Partial<AssetRepository>,
           },
+          {
+            provide: FileService,
+            useValue: {
+              deleteFile: () => Promise.resolve(),
+            } as Partial<FileService>,
+          },
           { provide: PUBLIC_ID_GENERATOR, useValue: () => assetId },
         ],
       }).compile();
@@ -229,7 +274,7 @@ describe(AssetService.name, () => {
       service
         .deleteAsset(assetId, 'not valid organization id')
         .subscribe((res) => {
-          if (e.isRight(res)) {
+          if (E.isRight(res)) {
             return breakTest();
           }
 
@@ -249,6 +294,12 @@ describe(AssetService.name, () => {
               deleteAsset: () => toRightObs(undefined),
             } as Partial<AssetRepository>,
           },
+          {
+            provide: FileService,
+            useValue: {
+              deleteFile: () => Promise.resolve(),
+            } as Partial<FileService>,
+          },
           { provide: PUBLIC_ID_GENERATOR, useValue: () => assetId },
         ],
       }).compile();
@@ -258,7 +309,7 @@ describe(AssetService.name, () => {
       service
         .deleteAsset('invalid asset id', organizationId)
         .subscribe((res) => {
-          if (e.isRight(res)) {
+          if (E.isRight(res)) {
             return breakTest();
           }
 
@@ -267,7 +318,7 @@ describe(AssetService.name, () => {
         });
     });
 
-    it('fails when the repo fails', async (done) => {
+    it('fails when the repo fails to fetch', async (done) => {
       const module: TestingModule = await Test.createTestingModule({
         imports: [],
         providers: [
@@ -275,8 +326,14 @@ describe(AssetService.name, () => {
           {
             provide: AssetRepository,
             useValue: {
-              deleteAsset: () => toLeftObs(new DomainError('Asset not found')),
+              getSingleAsset: () => toLeftObs(new DomainError('Asset not found')),
             } as Partial<AssetRepository>,
+          },
+          {
+            provide: FileService,
+            useValue: {
+              deleteFile: () => Promise.resolve(),
+            } as Partial<FileService>,
           },
           { provide: PUBLIC_ID_GENERATOR, useValue: () => assetId },
         ],
@@ -285,7 +342,42 @@ describe(AssetService.name, () => {
       service = module.get<AssetService>(AssetService);
 
       service.deleteAsset(assetId, organizationId).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (E.isRight(res)) {
+          return breakTest();
+        }
+
+        expect(res.left).toBeInstanceOf(DomainError);
+        expect(res.left.message).toBe('Asset not found');
+        done();
+      });
+    });
+
+    it('fails when the repo fails to delete', async (done) => {
+      const module: TestingModule = await Test.createTestingModule({
+        imports: [],
+        providers: [
+          AssetService,
+          {
+            provide: AssetRepository,
+            useValue: {
+              deleteAsset: () => toLeftObs(new DomainError('Asset not found')),
+              getSingleAsset: () => toRightObs(O.some({})),
+            } as Partial<AssetRepository>,
+          },
+          {
+            provide: FileService,
+            useValue: {
+              deleteFile: () => Promise.resolve(),
+            } as Partial<FileService>,
+          },
+          { provide: PUBLIC_ID_GENERATOR, useValue: () => assetId },
+        ],
+      }).compile();
+
+      service = module.get<AssetService>(AssetService);
+
+      service.deleteAsset(assetId, organizationId).subscribe((res) => {
+        if (E.isRight(res)) {
           return breakTest();
         }
 
