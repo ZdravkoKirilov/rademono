@@ -4,19 +4,12 @@ import { UUIDv4 } from '@end/global';
 import { PUBLIC_ID_GENERATOR } from '@app/shared';
 
 import { OrganizationsModule } from '../organizations';
-import { GameEditorModule } from '../game-editor';
 import { UsersModule } from '../users';
 import { AppConfigModule } from '../config';
 import { EmailsModule } from '../emails';
 
 @Module({
-  imports: [
-    AppConfigModule,
-    GameEditorModule,
-    UsersModule,
-    OrganizationsModule,
-    EmailsModule,
-  ],
+  imports: [AppConfigModule, UsersModule, OrganizationsModule, EmailsModule],
   exports: [],
   providers: [
     {

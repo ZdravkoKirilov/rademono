@@ -80,7 +80,7 @@ export class AssetService {
 
     return PrivateAsset.createImage(payload, {
       organization,
-      fileUrl,
+      filePath: fileUrl,
       createId: this.createId,
     }).pipe(
       switchMap((mbDto) => {

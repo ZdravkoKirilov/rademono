@@ -73,6 +73,6 @@ export class AuthGuard implements CanActivate {
       )
       .toPromise();
 
-    return result;
+    return !!result;
   }
 }
