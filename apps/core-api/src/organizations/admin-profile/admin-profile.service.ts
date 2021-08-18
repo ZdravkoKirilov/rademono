@@ -1,6 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 import {
   AdminProfile,
@@ -15,6 +13,10 @@ import {
   UUIDv4,
   isSome,
   isRight,
+  Observable,
+  switchMap,
+  map,
+  catchError,
 } from '@end/global';
 
 import { AdminProfileRepository } from './admin-profile.repository';

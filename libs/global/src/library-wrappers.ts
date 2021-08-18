@@ -12,6 +12,7 @@ export {
   Subject,
   throwError,
   Subscription,
+  zip,
 } from 'rxjs';
 export {
   catchError,

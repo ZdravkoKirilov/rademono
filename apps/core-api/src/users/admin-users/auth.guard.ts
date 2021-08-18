@@ -1,7 +1,5 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
-import { Observable } from 'rxjs';
-import { switchMap, map, catchError } from 'rxjs/operators';
 import jwt from 'jsonwebtoken';
 
 import {
@@ -12,6 +10,10 @@ import {
   Option,
   Either,
   isNone,
+  Observable,
+  switchMap,
+  map,
+  catchError,
 } from '@end/global';
 import { isKnownError, toUnauthorizedError } from '@app/shared';
 

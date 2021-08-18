@@ -1,6 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { map, switchMap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
 
 import {
   AdminUserId,
@@ -9,10 +7,14 @@ import {
   isLeft,
   isRight,
   left,
+  map,
+  Observable,
+  of,
   Organization,
   ParsingError,
   PrivateOrganization,
   right,
+  switchMap,
   toLeftObs,
   toRightObs,
   UnexpectedError,
@@ -73,7 +75,9 @@ export class OrganizationService {
     );
   }
 
-  getAllForUser(userId: AdminUserId) {
+  getAllForUser(
+    userId: AdminUserId,
+  ): Observable<Either<UnexpectedError | ParsingError, Organization[]>> {
     return this.repo.getOrganizations(userId).pipe(
       map((mbOrgs) => {
         if (isRight(mbOrgs)) {

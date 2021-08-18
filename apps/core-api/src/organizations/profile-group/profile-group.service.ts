@@ -1,15 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { catchError, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 import {
+  catchError,
   DomainError,
   Either,
   isLeft,
   isSome,
+  Observable,
   ParsingError,
   PrivateProfileGroup,
   ProfileGroup,
+  switchMap,
   toLeftObs,
   toRightObs,
   UnexpectedError,

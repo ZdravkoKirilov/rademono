@@ -1,6 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { catchError } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 import {
   Email,
@@ -13,6 +11,8 @@ import {
   UnexpectedError,
   UUIDv4,
   Either,
+  Observable,
+  catchError,
 } from '@end/global';
 
 import { PUBLIC_ID_GENERATOR } from '@app/shared';

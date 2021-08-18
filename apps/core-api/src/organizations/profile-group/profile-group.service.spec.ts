@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { of } from 'rxjs';
 
 import {
   UUIDv4,
@@ -13,6 +12,7 @@ import {
   omit,
   isRight,
   some,
+  of,
 } from '@end/global';
 import { PUBLIC_ID_GENERATOR } from '@app/shared';
 

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { catchError } from 'rxjs/operators';
 
 import {
   mapEither,
@@ -11,9 +10,10 @@ import {
   left,
   right,
   Either,
+  Observable,
+  catchError,
 } from '@end/global';
 import { DbentityService } from '@app/database';
-import { Observable } from 'rxjs';
 
 type EmailDBModel = Primitive<PrivateEmailEntity>;
 

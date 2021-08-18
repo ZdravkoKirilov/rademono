@@ -1,7 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Db, FilterQuery } from 'mongodb';
-import { from, Observable, throwError, of } from 'rxjs';
-import { switchMap, catchError, map } from 'rxjs/operators';
 
 import {
   Dictionary,
@@ -10,6 +8,13 @@ import {
   UnexpectedError,
   right,
   Either,
+  Observable,
+  from,
+  switchMap,
+  catchError,
+  map,
+  of,
+  throwError,
 } from '@end/global';
 
 import { DATABASE_COLLECTION, DATABASE_CONNECTION } from '../constants';

@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken';
 import { Injectable } from '@nestjs/common';
-import { Observable, zip } from 'rxjs';
-import { switchMap, catchError, map } from 'rxjs/operators';
 
 import {
   ParsingError,
@@ -19,6 +17,11 @@ import {
   isNone,
   right,
   left,
+  Observable,
+  zip,
+  switchMap,
+  catchError,
+  map,
 } from '@end/global';
 
 import { AdminUserRepository } from './admin-users.repository';

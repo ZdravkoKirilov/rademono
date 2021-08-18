@@ -1,7 +1,12 @@
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
-import { map, catchError } from 'rxjs/operators';
 
-import { PrivateAdminUser, UnexpectedError, isLeft } from '@end/global';
+import {
+  PrivateAdminUser,
+  UnexpectedError,
+  isLeft,
+  map,
+  catchError,
+} from '@end/global';
 import {
   isKnownError,
   toBadRequest,

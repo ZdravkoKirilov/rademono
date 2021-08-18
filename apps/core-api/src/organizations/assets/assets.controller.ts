@@ -9,10 +9,9 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { catchError, map } from 'rxjs/operators';
 
 import { isKnownError, toBadRequest, toUnexpectedError } from '@app/shared';
-import { isLeft, UnexpectedError } from '@end/global';
+import { catchError, isLeft, map, UnexpectedError } from '@end/global';
 import { AuthGuard } from '@app/users/admin-users';
 
 import { applyImageRules } from './file-rules';

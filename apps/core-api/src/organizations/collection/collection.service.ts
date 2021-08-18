@@ -1,6 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { map, switchMap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
 
 import {
   Collection,
@@ -8,9 +6,13 @@ import {
   isLeft,
   isOrganizationId,
   isRight,
+  map,
+  Observable,
+  of,
   ParsingError,
   PrivateCollection,
   right,
+  switchMap,
   switchMapEither,
   toLeftObs,
   toRightObs,
