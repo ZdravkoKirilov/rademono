@@ -1,8 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
 import jwt from 'jsonwebtoken';
 
 import { Connection, DATABASE_CONNECTION } from '@app/database';
@@ -12,6 +10,9 @@ import {
   Email,
   UUIDv4,
   AdminUserId,
+  isLeft,
+  isRight,
+  isNone,
 } from '@end/global';
 
 import { AppModule } from '../../app.module';
@@ -57,7 +58,7 @@ describe('AdminUserController (e2e)', () => {
         () => userId,
       ).toPromise();
 
-      if (e.isLeft(mbEntity)) {
+      if (!mbEntity || isLeft(mbEntity)) {
         return throwError();
       }
 
@@ -68,7 +69,7 @@ describe('AdminUserController (e2e)', () => {
         jwt.sign,
       ).toPromise();
 
-      if (e.isLeft(mbToken)) {
+      if (!mbToken || isLeft(mbToken)) {
         return throwError();
       }
 
@@ -149,12 +150,12 @@ describe('AdminUserController (e2e)', () => {
         })
         .toPromise();
 
-      if (e.isLeft(mbUser)) {
+      if (!mbUser || isLeft(mbUser)) {
         return throwError();
       }
 
-      if (e.isRight(mbUser)) {
-        if (o.isNone(mbUser.right)) {
+      if (isRight(mbUser)) {
+        if (isNone(mbUser.right)) {
           return throwError();
         }
 

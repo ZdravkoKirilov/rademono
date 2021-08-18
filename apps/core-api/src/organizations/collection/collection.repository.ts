@@ -9,11 +9,15 @@ import {
   UnexpectedError,
   ParsingError,
   mapEither,
+  Either,
+  isRight,
+  right,
+  left,
+  isLeft,
 } from '@end/global';
 import { Injectable } from '@nestjs/common';
 import { forkJoin, Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import * as e from 'fp-ts/Either';
 
 import { DbentityService } from '@app/database';
 
@@ -34,7 +38,7 @@ export class CollectionRepository {
 
   getCollections(
     organizationId: OrganizationId,
-  ): Observable<e.Either<UnexpectedError | ParsingError, PrivateCollection[]>> {
+  ): Observable<Either<UnexpectedError | ParsingError, PrivateCollection[]>> {
     return this.repo.findAll({ organization: organizationId }).pipe(
       switchMapEither(
         (err) =>
@@ -49,13 +53,13 @@ export class CollectionRepository {
             result.map((elem) => PrivateCollection.toPrivateEntity(elem)),
           ).pipe(
             map((results) => {
-              if (results.every(e.isRight)) {
-                return e.right(results.map((elem) => elem.right));
+              if (results.every(isRight)) {
+                return right(results.map((elem) => elem.right));
               }
-              return e.left(
+              return left(
                 new ParsingError(
                   'Failed to parse collections from db',
-                  results.filter(e.isLeft).map((elem) => elem.left),
+                  results.filter(isLeft).map((elem) => elem.left),
                 ),
               );
             }),
@@ -67,12 +71,12 @@ export class CollectionRepository {
 
   createCollection(
     collection: PrivateCollection,
-  ): Observable<e.Either<UnexpectedError, PrivateCollection>> {
+  ): Observable<Either<UnexpectedError, PrivateCollection>> {
     return this.repo.insert(collection).pipe(
       mapEither(
         (err) =>
-          e.left(new UnexpectedError('Failed to create the collection', err)),
-        () => e.right(collection),
+          left(new UnexpectedError('Failed to create the collection', err)),
+        () => right(collection),
       ),
       catchError((err) => {
         return toLeftObs(

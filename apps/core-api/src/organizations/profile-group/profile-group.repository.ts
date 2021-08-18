@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { switchMap, catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
-import { isNil } from 'lodash/fp';
 
 import {
   UUIDv4,
@@ -14,6 +11,15 @@ import {
   ParsingError,
   mapEither,
   switchMapEither,
+  Either,
+  left,
+  right,
+  isNil,
+  none,
+  isRight,
+  isLeft,
+  some,
+  Option,
 } from '@end/global';
 import { DbentityService } from '@app/database';
 
@@ -35,12 +41,12 @@ export class ProfileGroupRepository {
 
   saveProfileGroup(
     profileGroup: PrivateProfileGroup,
-  ): Observable<e.Either<UnexpectedError, PrivateProfileGroup>> {
+  ): Observable<Either<UnexpectedError, PrivateProfileGroup>> {
     return this.repo.save(profileGroup).pipe(
       mapEither(
         (err) =>
-          e.left(new UnexpectedError('Failed to save the profile group', err)),
-        () => e.right(profileGroup),
+          left(new UnexpectedError('Failed to save the profile group', err)),
+        () => right(profileGroup),
       ),
       catchError((err) => {
         return toLeftObs(
@@ -53,7 +59,7 @@ export class ProfileGroupRepository {
   getProfileGroup(
     matcher: FindOneMatcher,
   ): Observable<
-    e.Either<UnexpectedError | ParsingError, o.Option<PrivateProfileGroup>>
+    Either<UnexpectedError | ParsingError, Option<PrivateProfileGroup>>
   > {
     try {
       return this.repo.findOne(matcher).pipe(
@@ -64,13 +70,13 @@ export class ProfileGroupRepository {
             ),
           (res) => {
             if (isNil(res)) {
-              return toRightObs(o.none);
+              return toRightObs(none);
             }
 
             return PrivateProfileGroup.toPrivateEntity(res).pipe(
               map((parsed) => {
-                if (e.isRight(parsed)) {
-                  return e.right(o.some(parsed.right));
+                if (isRight(parsed)) {
+                  return right(some(parsed.right));
                 }
                 return parsed;
               }),
@@ -92,11 +98,11 @@ export class ProfileGroupRepository {
 
   groupExists(
     matcher: FindOneMatcher,
-  ): Observable<e.Either<UnexpectedError, boolean>> {
+  ): Observable<Either<UnexpectedError, boolean>> {
     try {
       return this.repo.count(matcher).pipe(
         switchMap((count) => {
-          return e.isLeft(count)
+          return isLeft(count)
             ? toLeftObs(count.left)
             : toRightObs(count.right > 0);
         }),

@@ -1,13 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { map, switchMap } from 'rxjs/operators';
-import * as e from 'fp-ts/lib/Either';
 import { Observable, of } from 'rxjs';
 
 import {
   Collection,
+  Either,
+  isLeft,
   isOrganizationId,
+  isRight,
   ParsingError,
   PrivateCollection,
+  right,
   switchMapEither,
   toLeftObs,
   toRightObs,
@@ -29,13 +32,13 @@ export class CollectionService {
   create(
     payload: unknown,
     organization: unknown,
-  ): Observable<e.Either<UnexpectedError | ParsingError, Collection>> {
+  ): Observable<Either<UnexpectedError | ParsingError, Collection>> {
     if (!isOrganizationId(organization)) {
       return toLeftObs(new ParsingError('Valid organizationId is required'));
     }
     return PrivateCollection.create(payload, this.createId, organization).pipe(
       switchMap((mbDto) => {
-        if (e.isLeft(mbDto)) {
+        if (isLeft(mbDto)) {
           return of(mbDto);
         }
 
@@ -52,14 +55,16 @@ export class CollectionService {
     );
   }
 
-  getAll(organizationId: unknown) {
+  getAll(
+    organizationId: unknown,
+  ): Observable<Either<UnexpectedError | ParsingError, Collection[]>> {
     if (!isOrganizationId(organizationId)) {
       return toLeftObs(new ParsingError('Valid organizationId is required'));
     }
     return this.repo.getCollections(organizationId).pipe(
       map((res) => {
-        if (e.isRight(res)) {
-          return e.right(res.right.map(PrivateCollection.toPublicEntity));
+        if (isRight(res)) {
+          return right(res.right.map(PrivateCollection.toPublicEntity));
         }
         return res;
       }),

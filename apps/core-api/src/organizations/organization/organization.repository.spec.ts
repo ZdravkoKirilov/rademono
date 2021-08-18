@@ -1,7 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
-import { omit } from 'lodash/fp';
 
 import {
   UUIDv4,
@@ -14,6 +11,11 @@ import {
   PrivateAdminGroup,
   OrganizationId,
   StringOfLength,
+  isLeft,
+  isRight,
+  some,
+  omit,
+  none,
 } from '@end/global';
 
 import { DbentityService } from '@app/database';
@@ -55,7 +57,7 @@ describe(OrganizationRepository.name, () => {
       });
 
       service.createOrganization(data).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toEqual(data);
@@ -74,7 +76,7 @@ describe(OrganizationRepository.name, () => {
       } as PrivateOrganization;
 
       service.createOrganization(data).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -101,7 +103,7 @@ describe(OrganizationRepository.name, () => {
       } as PrivateOrganization;
 
       service.saveOrganization(data).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toEqual(data);
@@ -125,7 +127,7 @@ describe(OrganizationRepository.name, () => {
       } as PrivateOrganization;
 
       service.saveOrganization(data).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -141,7 +143,7 @@ describe(OrganizationRepository.name, () => {
       });
 
       service.organizationExists({ name: 'Whatever' }).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toBe(true);
@@ -155,7 +157,7 @@ describe(OrganizationRepository.name, () => {
       });
 
       service.organizationExists({ name: 'Whatever' }).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toBe(false);
@@ -171,7 +173,7 @@ describe(OrganizationRepository.name, () => {
       });
 
       service.organizationExists({ name: 'Whatever' }).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -185,7 +187,7 @@ describe(OrganizationRepository.name, () => {
       });
 
       service.organizationExists({ name: 'Whatever' }).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -213,10 +215,10 @@ describe(OrganizationRepository.name, () => {
       });
 
       service.getOrganization({ name: 'Name' }).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
-        expect(res.right).toEqual(o.some(omit('id', data)));
+        expect(res.right).toEqual(some(omit('id', data)));
         done();
       });
     });
@@ -227,10 +229,10 @@ describe(OrganizationRepository.name, () => {
       });
 
       service.getOrganization({ name: 'Name' }).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
-        expect(res.right).toEqual(o.none);
+        expect(res.right).toEqual(none);
         done();
       });
     });
@@ -241,7 +243,7 @@ describe(OrganizationRepository.name, () => {
       });
 
       service.getOrganization({ name: 'Name' }).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -267,7 +269,7 @@ describe(OrganizationRepository.name, () => {
       });
 
       service.getOrganization({ name: 'Name' }).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(ParsingError);

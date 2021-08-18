@@ -2,6 +2,9 @@ import { PUBLIC_ID_GENERATOR } from '@app/shared';
 import {
   breakTest,
   CollectionId,
+  isLeft,
+  isRight,
+  omit,
   OrganizationId,
   ParsingError,
   PrivateCollection,
@@ -11,8 +14,6 @@ import {
   UUIDv4,
 } from '@end/global';
 import { Test, TestingModule } from '@nestjs/testing';
-import * as e from 'fp-ts/lib/Either';
-import { omit } from 'lodash/fp';
 
 import { CollectionRepository } from './collection.repository';
 import { CollectionService } from './collection.service';
@@ -51,7 +52,7 @@ describe(CollectionService.name, () => {
       service = module.get<CollectionService>(CollectionService);
 
       service.create(data, organizationId).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
 
@@ -91,7 +92,7 @@ describe(CollectionService.name, () => {
       service = module.get<CollectionService>(CollectionService);
 
       service.create(data, organizationId).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -122,7 +123,7 @@ describe(CollectionService.name, () => {
       service = module.get<CollectionService>(CollectionService);
 
       service.create(data, organizationId).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(ParsingError);
@@ -171,7 +172,7 @@ describe(CollectionService.name, () => {
       service = module.get<CollectionService>(CollectionService);
 
       service.getAll(organizationId).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
 

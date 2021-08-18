@@ -1,8 +1,7 @@
-import { PrivateAdminUser, UnexpectedError } from '@end/global';
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { map, catchError } from 'rxjs/operators';
-import * as e from 'fp-ts/lib/Either';
 
+import { PrivateAdminUser, UnexpectedError, isLeft } from '@end/global';
 import {
   isKnownError,
   toBadRequest,
@@ -23,7 +22,7 @@ export class OrganizationController {
     try {
       return this.organizationService.create(payload, user.public_id).pipe(
         map((result) => {
-          if (e.isLeft(result)) {
+          if (isLeft(result)) {
             switch (result.left.name) {
               case 'ParsingError': {
                 throw toBadRequest({
@@ -82,7 +81,7 @@ export class OrganizationController {
   getAllForUser(@WithUser() user: PrivateAdminUser) {
     return this.organizationService.getAllForUser(user.public_id).pipe(
       map((result) => {
-        if (e.isLeft(result)) {
+        if (isLeft(result)) {
           switch (result.left.name) {
             case 'ParsingError': {
               throw toBadRequest({

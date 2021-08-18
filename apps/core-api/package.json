@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "engines": {
-    "node": "15.3.0"
+    "node": "15.4.0"
   },
   "scripts": {
     "prebuild": "rimraf dist",
@@ -31,10 +31,7 @@
     "@nestjs/core": "^8.0.6",
     "@nestjs/platform-express": "^8.0.6",
     "@nestjs/swagger": "^5.0.9",
-    "class-transformer": "^0.3.1",
-    "fp-ts": "^2.9.3",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.20",
     "mongodb": "^3.6.5",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

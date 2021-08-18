@@ -1,11 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { catchError, switchMap } from 'rxjs/operators';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
 import { Observable } from 'rxjs';
 
 import {
   DomainError,
+  Either,
+  isLeft,
+  isSome,
   ParsingError,
   PrivateProfileGroup,
   ProfileGroup,
@@ -28,11 +29,11 @@ export class ProfileGroupService {
   create(
     payload: unknown,
   ): Observable<
-    e.Either<UnexpectedError | ParsingError | DomainError, ProfileGroup>
+    Either<UnexpectedError | ParsingError | DomainError, ProfileGroup>
   > {
     return PrivateProfileGroup.create(payload, this.createId).pipe(
       switchMap((mbGroup) => {
-        if (e.isLeft(mbGroup)) {
+        if (isLeft(mbGroup)) {
           return toLeftObs(mbGroup.left);
         }
 
@@ -46,16 +47,16 @@ export class ProfileGroupService {
               (
                 retrieved,
               ): Observable<
-                e.Either<
+                Either<
                   DomainError | ParsingError | UnexpectedError,
                   PrivateProfileGroup
                 >
               > => {
-                if (e.isLeft(retrieved)) {
+                if (isLeft(retrieved)) {
                   return toLeftObs(retrieved.left);
                 }
 
-                if (o.isSome(retrieved.right)) {
+                if (isSome(retrieved.right)) {
                   return toLeftObs(
                     new DomainError(
                       'Profile group with that name already exists.',
@@ -67,7 +68,7 @@ export class ProfileGroupService {
               },
             ),
             switchMap((saveResult) => {
-              if (e.isLeft(saveResult)) {
+              if (isLeft(saveResult)) {
                 return toLeftObs(saveResult.left);
               }
               return toRightObs(

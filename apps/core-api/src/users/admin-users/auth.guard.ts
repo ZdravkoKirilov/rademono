@@ -1,14 +1,21 @@
-import { DecodedJWT, PrivateAdminUser, toLeftObs } from '@end/global';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
 import jwt from 'jsonwebtoken';
 
-import { AdminUserRepository } from './admin-users.repository';
+import {
+  DecodedJWT,
+  isLeft,
+  PrivateAdminUser,
+  toLeftObs,
+  Option,
+  Either,
+  isNone,
+} from '@end/global';
 import { isKnownError, toUnauthorizedError } from '@app/shared';
+
+import { AdminUserRepository } from './admin-users.repository';
 
 export type RequestWithUser = Request & { user: PrivateAdminUser };
 
@@ -35,8 +42,8 @@ export class AuthGuard implements CanActivate {
     const result = await PrivateAdminUser.toTokenDto({ token: authToken })
       .pipe(
         switchMap(
-          (mbDto): Observable<e.Either<unknown, DecodedJWT>> => {
-            if (e.isLeft(mbDto)) {
+          (mbDto): Observable<Either<unknown, DecodedJWT>> => {
+            if (isLeft(mbDto)) {
               return toLeftObs(false);
             }
 
@@ -46,18 +53,18 @@ export class AuthGuard implements CanActivate {
         switchMap(
           (
             mbDecoded,
-          ): Observable<e.Either<unknown, o.Option<PrivateAdminUser>>> => {
-            if (e.isLeft(mbDecoded)) {
+          ): Observable<Either<unknown, Option<PrivateAdminUser>>> => {
+            if (isLeft(mbDecoded)) {
               return toLeftObs(false);
             }
             return this.repo.findUser({ email: mbDecoded.right.email });
           },
         ),
         map((mbUser) => {
-          if (e.isLeft(mbUser)) {
+          if (isLeft(mbUser)) {
             return forbid();
           }
-          if (o.isNone(mbUser.right)) {
+          if (isNone(mbUser.right)) {
             return forbid();
           }
           request.user = mbUser.right.value;

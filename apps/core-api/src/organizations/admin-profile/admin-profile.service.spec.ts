@@ -1,8 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as e from 'fp-ts/lib/Either';
 import { of } from 'rxjs';
-import * as o from 'fp-ts/lib/Option';
-import { omit } from 'lodash/fp';
 
 import {
   UUIDv4,
@@ -10,6 +7,12 @@ import {
   toLeftObs,
   toRightObs,
   DomainError,
+  right,
+  none,
+  isLeft,
+  omit,
+  isRight,
+  some,
 } from '@end/global';
 import { PUBLIC_ID_GENERATOR } from '@app/shared';
 
@@ -38,8 +41,8 @@ describe('AdminProfileService', () => {
           {
             provide: AdminProfileRepository,
             useValue: {
-              getProfile: () => of(e.right(o.none)),
-              saveProfile: () => of(e.right(undefined)),
+              getProfile: () => of(right(none)),
+              saveProfile: () => of(right(undefined)),
             } as Partial<AdminProfileRepository>,
           },
           {
@@ -52,7 +55,7 @@ describe('AdminProfileService', () => {
       service = module.get<AdminProfileService>(AdminProfileService);
 
       service.create(payload).subscribe((dto) => {
-        if (e.isLeft(dto)) {
+        if (isLeft(dto)) {
           return throwError();
         }
         expect(dto.right).toEqual({
@@ -79,7 +82,7 @@ describe('AdminProfileService', () => {
             useValue: {
               getProfile: () =>
                 toLeftObs(new UnexpectedError('Failed to find the profile')),
-              saveProfile: () => of(e.right(undefined)),
+              saveProfile: () => of(right(undefined)),
             } as Partial<AdminProfileRepository>,
           },
           {
@@ -92,7 +95,7 @@ describe('AdminProfileService', () => {
       service = module.get<AdminProfileService>(AdminProfileService);
 
       service.create(payload).subscribe((dto) => {
-        if (e.isRight(dto)) {
+        if (isRight(dto)) {
           return throwError();
         }
         expect(dto.left).toBeInstanceOf(UnexpectedError);
@@ -115,7 +118,7 @@ describe('AdminProfileService', () => {
           {
             provide: AdminProfileRepository,
             useValue: {
-              getProfile: () => of(e.right(o.none)),
+              getProfile: () => of(right(none)),
               saveProfile: () =>
                 toLeftObs(
                   new UnexpectedError('Failed to save the admin profile'),
@@ -132,7 +135,7 @@ describe('AdminProfileService', () => {
       service = module.get<AdminProfileService>(AdminProfileService);
 
       service.create(payload).subscribe((dto) => {
-        if (e.isRight(dto)) {
+        if (isRight(dto)) {
           return throwError();
         }
         expect(dto.left).toBeInstanceOf(UnexpectedError);
@@ -155,8 +158,8 @@ describe('AdminProfileService', () => {
           {
             provide: AdminProfileRepository,
             useValue: {
-              getProfile: () => toRightObs(o.some({})),
-              saveProfile: () => of(e.right(undefined)),
+              getProfile: () => toRightObs(some({})),
+              saveProfile: () => of(right(undefined)),
             } as Partial<AdminProfileRepository>,
           },
           {
@@ -169,7 +172,7 @@ describe('AdminProfileService', () => {
       service = module.get<AdminProfileService>(AdminProfileService);
 
       service.create(payload).subscribe((dto) => {
-        if (e.isRight(dto)) {
+        if (isRight(dto)) {
           return throwError();
         }
         expect(dto.left).toBeInstanceOf(DomainError);
@@ -192,7 +195,7 @@ describe('AdminProfileService', () => {
           {
             provide: AdminProfileRepository,
             useValue: {
-              getProfile: () => of(e.right(o.none)),
+              getProfile: () => of(right(none)),
               saveProfile: () => {
                 return throwError();
               },
@@ -208,7 +211,7 @@ describe('AdminProfileService', () => {
       service = module.get<AdminProfileService>(AdminProfileService);
 
       service.create(payload).subscribe((dto) => {
-        if (e.isRight(dto)) {
+        if (isRight(dto)) {
           return throwError();
         }
         expect(dto.left).toBeInstanceOf(UnexpectedError);

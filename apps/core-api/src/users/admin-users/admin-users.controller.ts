@@ -8,9 +8,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { catchError, map } from 'rxjs/operators';
-import * as e from 'fp-ts/lib/Either';
 
-import { PrivateAdminUser, UnexpectedError } from '@end/global';
+import { isLeft, PrivateAdminUser, UnexpectedError } from '@end/global';
 
 import {
   isKnownError,
@@ -36,7 +35,7 @@ export class AdminUsersController {
   requestAuthToken(@Body() payload: unknown) {
     return this.adminUsersService.requestAuthToken(payload).pipe(
       map((result) => {
-        if (e.isLeft(result)) {
+        if (isLeft(result)) {
           switch (result.left.name) {
             case 'ParsingError': {
               throw toBadRequest({
@@ -89,7 +88,7 @@ export class AdminUsersController {
   requestLoginCode(@Body() payload: unknown) {
     return this.adminUsersService.requestLoginCode(payload).pipe(
       map((result) => {
-        if (e.isLeft(result)) {
+        if (isLeft(result)) {
           switch (result.left.name) {
             case 'ParsingError': {
               throw toBadRequest({

@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
 
 import {
   Email,
@@ -10,6 +8,10 @@ import {
   ParsingError,
   UnexpectedError,
   toLeftObs,
+  isLeft,
+  isRight,
+  right,
+  none,
 } from '@end/global';
 
 import { AdminUserRepository } from './admin-users.repository';
@@ -53,10 +55,10 @@ describe('AdminUsersService', () => {
       const payload = { email: 'email@email.com' };
 
       service.requestLoginCode(payload).subscribe((dto) => {
-        if (e.isLeft(dto)) {
+        if (isLeft(dto)) {
           return throwError();
         }
-        expect(dto).toEqual(e.right(undefined));
+        expect(dto).toEqual(right(undefined));
         done();
       });
     });
@@ -80,7 +82,7 @@ describe('AdminUsersService', () => {
       const payload = { email: 'email' };
 
       service.requestLoginCode(payload).subscribe((mbDto) => {
-        if (e.isRight(mbDto)) {
+        if (isRight(mbDto)) {
           return throwError();
         }
 
@@ -107,7 +109,7 @@ describe('AdminUsersService', () => {
       service = module.get<AdminUsersService>(AdminUsersService);
 
       service.requestLoginCode(undefined).subscribe((mbDto) => {
-        if (e.isRight(mbDto)) {
+        if (isRight(mbDto)) {
           return throwError();
         }
 
@@ -139,7 +141,7 @@ describe('AdminUsersService', () => {
       const payload = { email: 'email@email.com' };
 
       service.requestLoginCode(payload).subscribe((mbDto) => {
-        if (e.isRight(mbDto)) {
+        if (isRight(mbDto)) {
           return throwError();
         }
 
@@ -155,7 +157,7 @@ describe('AdminUsersService', () => {
           {
             provide: AdminUserRepository,
             useValue: {
-              findUser: () => toRightObs(o.none),
+              findUser: () => toRightObs(none),
               saveUser: () => toLeftObs(new UnexpectedError()),
             } as Partial<AdminUserRepository>,
           },
@@ -170,7 +172,7 @@ describe('AdminUsersService', () => {
       const payload = { email: 'email@email.com' };
 
       service.requestLoginCode(payload).subscribe((mbDto) => {
-        if (e.isRight(mbDto)) {
+        if (isRight(mbDto)) {
           return throwError();
         }
 
@@ -208,7 +210,7 @@ describe('AdminUsersService', () => {
       const payload = { email: 'email@email.com' };
 
       service.requestLoginCode(payload).subscribe((dto) => {
-        if (e.isRight(dto)) {
+        if (isRight(dto)) {
           return throwError();
         }
         expect(dto.left).toBeInstanceOf(UnexpectedError);

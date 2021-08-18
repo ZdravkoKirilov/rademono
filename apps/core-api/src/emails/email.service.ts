@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { catchError } from 'rxjs/operators';
-import * as e from 'fp-ts/lib/Either';
 import { Observable } from 'rxjs';
 
 import {
@@ -13,6 +12,7 @@ import {
   toRightObs,
   UnexpectedError,
   UUIDv4,
+  Either,
 } from '@end/global';
 
 import { PUBLIC_ID_GENERATOR } from '@app/shared';
@@ -27,7 +27,7 @@ export class EmailService {
 
   createLoginCodeEmail(
     recipientEmail: Email,
-  ): Observable<e.Either<UnexpectedError, PrivateEmailEntity>> {
+  ): Observable<Either<UnexpectedError, PrivateEmailEntity>> {
     const data: Omit<Primitive<PrivateEmailEntity>, 'public_id'> = {
       from: 'noreply@oblache.tech',
       to: recipientEmail,

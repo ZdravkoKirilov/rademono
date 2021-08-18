@@ -45,7 +45,7 @@ export const useQuery = <Value, ErrorResponse>(
     observer.next({
       status: QueryStatus.loading,
       origin: QueryOrigin.initial,
-      cancel: () => cancel$.next(),
+      cancel: () => cancel$.next(undefined),
     });
 
     return refire$

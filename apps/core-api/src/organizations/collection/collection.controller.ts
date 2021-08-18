@@ -1,7 +1,6 @@
-import { UnexpectedError } from '@end/global';
+import { isLeft, UnexpectedError } from '@end/global';
 import { Controller, Post, Body, UseGuards, Get, Param } from '@nestjs/common';
 import { map, catchError } from 'rxjs/operators';
-import * as e from 'fp-ts/Either';
 
 import { isKnownError, toBadRequest, toUnexpectedError } from '@app/shared';
 
@@ -20,7 +19,7 @@ export class CollectionController {
   ) {
     return this.collectionService.create(payload, organizationId).pipe(
       map((result) => {
-        if (e.isLeft(result)) {
+        if (isLeft(result)) {
           switch (result.left.name) {
             case 'ParsingError': {
               throw toBadRequest({
@@ -65,7 +64,7 @@ export class CollectionController {
   getAll(@Param('organizationId') organizationId: unknown) {
     return this.collectionService.getAll(organizationId).pipe(
       map((result) => {
-        if (e.isLeft(result)) {
+        if (isLeft(result)) {
           switch (result.left.name) {
             case 'ParsingError': {
               throw toBadRequest({

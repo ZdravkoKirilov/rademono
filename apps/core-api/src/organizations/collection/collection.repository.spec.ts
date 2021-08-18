@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as e from 'fp-ts/lib/Either';
-import { get, omit } from 'lodash/fp';
 import {
   UUIDv4,
   breakTest,
@@ -9,6 +7,10 @@ import {
   toLeftObs,
   PrivateCollection,
   ParsingError,
+  get,
+  omit,
+  isLeft,
+  isRight,
 } from '@end/global';
 
 import { DbentityService } from '@app/database';
@@ -48,7 +50,7 @@ describe(CollectionRepository.name, () => {
       });
 
       service.createCollection(data).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toEqual(data);
@@ -66,7 +68,7 @@ describe(CollectionRepository.name, () => {
       });
 
       service.createCollection(data).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -90,7 +92,7 @@ describe(CollectionRepository.name, () => {
       });
 
       service.getCollections(UUIDv4.generate()).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toEqual([collection1, collection2]);
@@ -104,7 +106,7 @@ describe(CollectionRepository.name, () => {
       });
 
       service.getCollections(UUIDv4.generate()).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toEqual([]);
@@ -118,7 +120,7 @@ describe(CollectionRepository.name, () => {
       });
 
       service.getCollections(UUIDv4.generate()).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -142,7 +144,7 @@ describe(CollectionRepository.name, () => {
       });
 
       service.getCollections(UUIDv4.generate()).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(ParsingError);

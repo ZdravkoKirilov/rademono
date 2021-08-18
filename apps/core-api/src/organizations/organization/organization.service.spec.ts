@@ -1,8 +1,12 @@
+import { Test, TestingModule } from '@nestjs/testing';
+
 import { PUBLIC_ID_GENERATOR } from '@app/shared';
 import {
   AdminUserId,
   breakTest,
   DomainError,
+  isLeft,
+  isRight,
   ParsingError,
   PrivateAdminGroup,
   StringOfLength,
@@ -11,8 +15,6 @@ import {
   UnexpectedError,
   UUIDv4,
 } from '@end/global';
-import { Test, TestingModule } from '@nestjs/testing';
-import * as e from 'fp-ts/lib/Either';
 
 import { OrganizationRepository } from './organization.repository';
 import { OrganizationService } from './organization.service';
@@ -48,7 +50,7 @@ describe(OrganizationService.name, () => {
       service = module.get<OrganizationService>(OrganizationService);
 
       service.create(data, userId).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toEqual({
@@ -88,7 +90,7 @@ describe(OrganizationService.name, () => {
       service = module.get<OrganizationService>(OrganizationService);
 
       service.create(data, userId).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(ParsingError);
@@ -122,7 +124,7 @@ describe(OrganizationService.name, () => {
       service = module.get<OrganizationService>(OrganizationService);
 
       service.create(data, userId).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(DomainError);
@@ -157,7 +159,7 @@ describe(OrganizationService.name, () => {
       service = module.get<OrganizationService>(OrganizationService);
 
       service.create(data, userId).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -200,7 +202,7 @@ describe(OrganizationService.name, () => {
       service = module.get<OrganizationService>(OrganizationService);
 
       service.getAllForUser(userId).subscribe((result) => {
-        if (e.isLeft(result)) {
+        if (isLeft(result)) {
           return breakTest();
         }
         expect(result.right).toHaveLength(2);

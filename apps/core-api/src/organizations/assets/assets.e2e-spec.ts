@@ -1,11 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import * as e from 'fp-ts/Either';
 import { map } from 'rxjs/operators';
 import path from 'path';
 
-import { Asset, breakTest } from '@end/global';
+import { Asset, breakTest, isLeft } from '@end/global';
 import { AppModule } from '../../app.module';
 import { createTestUser, cleanRepositories, deleteTestFiles } from '@app/test';
 import { AssetRepository } from './asset.repository';
@@ -57,7 +56,7 @@ describe(AssetsController.name, () => {
       Asset.isValid(body)
         .pipe(
           map((res) => {
-            if (e.isLeft(res)) {
+            if (isLeft(res)) {
               return breakTest();
             }
             done();

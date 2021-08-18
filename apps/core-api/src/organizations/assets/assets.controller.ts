@@ -10,13 +10,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { catchError, map } from 'rxjs/operators';
-import * as e from 'fp-ts/Either';
 
-import { AssetService } from './asset.service';
 import { isKnownError, toBadRequest, toUnexpectedError } from '@app/shared';
-import { UnexpectedError } from '@end/global';
+import { isLeft, UnexpectedError } from '@end/global';
 import { AuthGuard } from '@app/users/admin-users';
+
 import { applyImageRules } from './file-rules';
+import { AssetService } from './asset.service';
 
 @Controller('organization/:organizationId/assets')
 export class AssetsController {
@@ -49,7 +49,7 @@ export class AssetsController {
       .createImage(body, organizationId, file.path)
       .pipe(
         map((result) => {
-          if (e.isLeft(result)) {
+          if (isLeft(result)) {
             switch (result.left.name) {
               case 'ParsingError': {
                 throw toBadRequest({

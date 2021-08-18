@@ -1,8 +1,6 @@
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { isNil } from 'lodash/fp';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
+import { Injectable } from '@nestjs/common';
 
 import {
   Email,
@@ -14,9 +12,16 @@ import {
   toLeftObs,
   switchMapEither,
   mapEither,
+  Either,
+  left,
+  right,
+  isNil,
+  none,
+  some,
+  isRight,
+  Option,
 } from '@end/global';
 import { DbentityService } from '@app/database';
-import { Injectable } from '@nestjs/common';
 
 type AdminUserDBModel = {
   id?: number;
@@ -27,8 +32,6 @@ type AdminUserDBModel = {
   lastLogin?: Date;
   type?: string;
 };
-
-type UpdateOneMatcher = { public_id: UUIDv4 };
 
 type FindOneMatcher =
   | { email: Email }
@@ -41,12 +44,12 @@ export class AdminUserRepository {
 
   saveUser(
     updatedUser: PrivateAdminUser,
-  ): Observable<e.Either<UnexpectedError, undefined>> {
+  ): Observable<Either<UnexpectedError, undefined>> {
     return this.repo.save(updatedUser).pipe(
       mapEither(
-        (err) => e.left(new UnexpectedError('Failed to save the user', err)),
+        (err) => left(new UnexpectedError('Failed to save the user', err)),
         () => {
-          return e.right(undefined);
+          return right(undefined);
         },
       ),
       catchError((err) => {
@@ -58,19 +61,19 @@ export class AdminUserRepository {
   findUser(
     criteria: FindOneMatcher,
   ): Observable<
-    e.Either<UnexpectedError | ParsingError, o.Option<PrivateAdminUser>>
+    Either<UnexpectedError | ParsingError, Option<PrivateAdminUser>>
   > {
     return this.repo.findOne(criteria).pipe(
       switchMapEither(
         (err) => toLeftObs(new UnexpectedError('Failed to find the user', err)),
         (res) => {
           if (isNil(res)) {
-            return of(e.right(o.none));
+            return of(right(none));
           }
           return PrivateAdminUser.toPrivateEntity(res).pipe(
             map((res) => {
-              if (e.isRight(res)) {
-                return e.right(o.some(res.right));
+              if (isRight(res)) {
+                return right(some(res.right));
               }
               return res;
             }),

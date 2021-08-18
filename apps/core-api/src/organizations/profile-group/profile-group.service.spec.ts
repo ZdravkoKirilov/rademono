@@ -1,8 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as e from 'fp-ts/lib/Either';
 import { of } from 'rxjs';
-import * as o from 'fp-ts/lib/Option';
-import { omit } from 'lodash/fp';
 
 import {
   UUIDv4,
@@ -10,6 +7,12 @@ import {
   toLeftObs,
   toRightObs,
   DomainError,
+  right,
+  none,
+  isLeft,
+  omit,
+  isRight,
+  some,
 } from '@end/global';
 import { PUBLIC_ID_GENERATOR } from '@app/shared';
 
@@ -43,8 +46,8 @@ describe('ProfileGroupService', () => {
           {
             provide: ProfileGroupRepository,
             useValue: createFakeRepo({
-              getProfileGroup: () => of(e.right(o.none)),
-              saveProfileGroup: () => of(e.right(undefined)),
+              getProfileGroup: () => of(right(none)),
+              saveProfileGroup: () => of(right(undefined)),
             }),
           },
           {
@@ -57,7 +60,7 @@ describe('ProfileGroupService', () => {
       service = module.get<ProfileGroupService>(ProfileGroupService);
 
       service.create(payload).subscribe((dto) => {
-        if (e.isLeft(dto)) {
+        if (isLeft(dto)) {
           return throwError();
         }
         expect(dto.right).toEqual({
@@ -86,7 +89,7 @@ describe('ProfileGroupService', () => {
                 toLeftObs(
                   new UnexpectedError('Failed to find the profile group'),
                 ),
-              saveProfileGroup: () => of(e.right(undefined)),
+              saveProfileGroup: () => of(right(undefined)),
             }),
           },
           {
@@ -99,7 +102,7 @@ describe('ProfileGroupService', () => {
       service = module.get<ProfileGroupService>(ProfileGroupService);
 
       service.create(payload).subscribe((dto) => {
-        if (e.isRight(dto)) {
+        if (isRight(dto)) {
           return throwError();
         }
         expect(dto.left).toBeInstanceOf(UnexpectedError);
@@ -122,7 +125,7 @@ describe('ProfileGroupService', () => {
           {
             provide: ProfileGroupRepository,
             useValue: createFakeRepo({
-              getProfileGroup: () => of(e.right(o.none)),
+              getProfileGroup: () => of(right(none)),
               saveProfileGroup: () =>
                 toLeftObs(
                   new UnexpectedError('Failed to save the profile group'),
@@ -139,7 +142,7 @@ describe('ProfileGroupService', () => {
       service = module.get<ProfileGroupService>(ProfileGroupService);
 
       service.create(payload).subscribe((dto) => {
-        if (e.isRight(dto)) {
+        if (isRight(dto)) {
           return throwError();
         }
         expect(dto.left).toBeInstanceOf(UnexpectedError);
@@ -162,8 +165,8 @@ describe('ProfileGroupService', () => {
           {
             provide: ProfileGroupRepository,
             useValue: createFakeRepo({
-              getProfileGroup: () => toRightObs(o.some({})),
-              saveProfileGroup: () => of(e.right(undefined)),
+              getProfileGroup: () => toRightObs(some({})),
+              saveProfileGroup: () => of(right(undefined)),
             }),
           },
           {
@@ -176,7 +179,7 @@ describe('ProfileGroupService', () => {
       service = module.get<ProfileGroupService>(ProfileGroupService);
 
       service.create(payload).subscribe((dto) => {
-        if (e.isRight(dto)) {
+        if (isRight(dto)) {
           return throwError();
         }
         expect(dto.left).toBeInstanceOf(DomainError);
@@ -201,7 +204,7 @@ describe('ProfileGroupService', () => {
           {
             provide: ProfileGroupRepository,
             useValue: createFakeRepo({
-              getProfileGroup: () => of(e.right(o.none)),
+              getProfileGroup: () => of(right(none)),
               saveProfileGroup: () => {
                 return throwError();
               },
@@ -217,7 +220,7 @@ describe('ProfileGroupService', () => {
       service = module.get<ProfileGroupService>(ProfileGroupService);
 
       service.create(payload).subscribe((dto) => {
-        if (e.isRight(dto)) {
+        if (isRight(dto)) {
           return throwError();
         }
         expect(dto.left).toBeInstanceOf(UnexpectedError);

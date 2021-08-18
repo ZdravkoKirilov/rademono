@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { catchError, map } from 'rxjs/operators';
 import { from, Observable } from 'rxjs';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
-import { isNil } from 'lodash/fp';
 
 import {
   UUIDv4,
@@ -14,6 +11,14 @@ import {
   ParsingError,
   mapEither,
   switchMapEither,
+  Either,
+  left,
+  right,
+  isNil,
+  none,
+  isRight,
+  some,
+  Option,
 } from '@end/global';
 import { DbentityService } from '@app/database';
 
@@ -33,12 +38,12 @@ export class AdminProfileRepository {
 
   saveProfile(
     adminProfile: PrivateAdminProfile,
-  ): Observable<e.Either<UnexpectedError, PrivateAdminProfile>> {
+  ): Observable<Either<UnexpectedError, PrivateAdminProfile>> {
     return this.repo.save(adminProfile).pipe(
       mapEither(
         (err) =>
-          e.left(new UnexpectedError('Failed to save the admin profile', err)),
-        () => e.right(adminProfile),
+          left(new UnexpectedError('Failed to save the admin profile', err)),
+        () => right(adminProfile),
       ),
       catchError((err) => {
         return toLeftObs(
@@ -51,7 +56,7 @@ export class AdminProfileRepository {
   getProfile(
     matcher: FindOneMatcher,
   ): Observable<
-    e.Either<UnexpectedError | ParsingError, o.Option<PrivateAdminProfile>>
+    Either<UnexpectedError | ParsingError, Option<PrivateAdminProfile>>
   > {
     return from(this.repo.findOne(matcher)).pipe(
       switchMapEither(
@@ -59,13 +64,13 @@ export class AdminProfileRepository {
           toLeftObs(new UnexpectedError('Failed to find the profile', err)),
         (res) => {
           if (isNil(res)) {
-            return toRightObs(o.none);
+            return toRightObs(none);
           }
 
           return PrivateAdminProfile.toPrivateEntity(res).pipe(
             map((parsed) => {
-              if (e.isRight(parsed)) {
-                return e.right(o.some(parsed.right));
+              if (isRight(parsed)) {
+                return right(some(parsed.right));
               }
               return parsed;
             }),
@@ -82,14 +87,14 @@ export class AdminProfileRepository {
 
   profileExists(
     matcher: FindOneMatcher,
-  ): Observable<e.Either<UnexpectedError, boolean>> {
+  ): Observable<Either<UnexpectedError, boolean>> {
     return this.repo.count(matcher).pipe(
       mapEither(
         (err) => {
-          return e.left(err);
+          return left(err);
         },
         (res) => {
-          return e.right(res > 0);
+          return right(res > 0);
         },
       ),
       catchError((err) => {

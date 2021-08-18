@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 
 import { PUBLIC_ID_GENERATOR } from '@app/shared';
 import {
@@ -13,6 +11,9 @@ import {
   UUIDv4,
   hasFieldError,
   DomainError,
+  isLeft,
+  isRight,
+  some,
 } from '@end/global';
 
 import { AssetRepository } from './asset.repository';
@@ -56,7 +57,7 @@ describe(AssetService.name, () => {
       service = module.get<AssetService>(AssetService);
 
       service.createImage(data, organizationId, fileUrl).subscribe((res) => {
-        if (E.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
 
@@ -91,7 +92,7 @@ describe(AssetService.name, () => {
       service = module.get<AssetService>(AssetService);
 
       service.createImage(data, organizationId, fileUrl).subscribe((res) => {
-        if (E.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -128,7 +129,7 @@ describe(AssetService.name, () => {
       service
         .createImage(data, 'invalid organization id', fileUrl)
         .subscribe((res) => {
-          if (E.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(ParsingError);
@@ -166,7 +167,7 @@ describe(AssetService.name, () => {
       service
         .createImage(data, organizationId, 'invalid file url')
         .subscribe((res) => {
-          if (E.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(ParsingError);
@@ -202,7 +203,7 @@ describe(AssetService.name, () => {
       service = module.get<AssetService>(AssetService);
 
       service.createImage(data, organizationId, fileUrl).subscribe((res) => {
-        if (E.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(ParsingError);
@@ -223,7 +224,7 @@ describe(AssetService.name, () => {
             provide: AssetRepository,
             useValue: {
               deleteAsset: () => toRightObs(undefined),
-              getSingleAsset: () => toRightObs(O.some({ path: 'whateva' })),
+              getSingleAsset: () => toRightObs(some({ path: 'whateva' })),
             } as Partial<AssetRepository>,
           },
           {
@@ -239,7 +240,7 @@ describe(AssetService.name, () => {
       service = module.get<AssetService>(AssetService);
 
       service.deleteAsset(assetId, organizationId).subscribe((res) => {
-        if (E.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
 
@@ -274,7 +275,7 @@ describe(AssetService.name, () => {
       service
         .deleteAsset(assetId, 'not valid organization id')
         .subscribe((res) => {
-          if (E.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
 
@@ -309,7 +310,7 @@ describe(AssetService.name, () => {
       service
         .deleteAsset('invalid asset id', organizationId)
         .subscribe((res) => {
-          if (E.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
 
@@ -326,7 +327,8 @@ describe(AssetService.name, () => {
           {
             provide: AssetRepository,
             useValue: {
-              getSingleAsset: () => toLeftObs(new DomainError('Asset not found')),
+              getSingleAsset: () =>
+                toLeftObs(new DomainError('Asset not found')),
             } as Partial<AssetRepository>,
           },
           {
@@ -342,7 +344,7 @@ describe(AssetService.name, () => {
       service = module.get<AssetService>(AssetService);
 
       service.deleteAsset(assetId, organizationId).subscribe((res) => {
-        if (E.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
 
@@ -361,7 +363,7 @@ describe(AssetService.name, () => {
             provide: AssetRepository,
             useValue: {
               deleteAsset: () => toLeftObs(new DomainError('Asset not found')),
-              getSingleAsset: () => toRightObs(O.some({})),
+              getSingleAsset: () => toRightObs(some({})),
             } as Partial<AssetRepository>,
           },
           {
@@ -377,7 +379,7 @@ describe(AssetService.name, () => {
       service = module.get<AssetService>(AssetService);
 
       service.deleteAsset(assetId, organizationId).subscribe((res) => {
-        if (E.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
 

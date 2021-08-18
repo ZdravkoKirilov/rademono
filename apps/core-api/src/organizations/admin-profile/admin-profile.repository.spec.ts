@@ -1,7 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
-import { omit } from 'lodash/fp';
 
 import {
   UUIDv4,
@@ -11,6 +8,11 @@ import {
   PrivateAdminProfile,
   toRightObs,
   toLeftObs,
+  omit,
+  isLeft,
+  isRight,
+  some,
+  none,
 } from '@end/global';
 import { AdminProfileRepository } from './admin-profile.repository';
 import { DbentityService } from '@app/database';
@@ -49,7 +51,7 @@ describe(AdminProfileRepository.name, () => {
       });
 
       service.saveProfile(data).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toEqual(data);
@@ -70,7 +72,7 @@ describe(AdminProfileRepository.name, () => {
       } as PrivateAdminProfile;
 
       service.saveProfile(data).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -88,7 +90,7 @@ describe(AdminProfileRepository.name, () => {
       service
         .profileExists({ public_id: UUIDv4.generate() })
         .subscribe((res) => {
-          if (e.isLeft(res)) {
+          if (isLeft(res)) {
             return breakTest();
           }
           expect(res.right).toBe(true);
@@ -104,7 +106,7 @@ describe(AdminProfileRepository.name, () => {
       service
         .profileExists({ public_id: UUIDv4.generate() })
         .subscribe((res) => {
-          if (e.isLeft(res)) {
+          if (isLeft(res)) {
             return breakTest();
           }
           expect(res.right).toBe(false);
@@ -120,7 +122,7 @@ describe(AdminProfileRepository.name, () => {
       service
         .profileExists({ public_id: UUIDv4.generate() })
         .subscribe((res) => {
-          if (e.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -144,10 +146,10 @@ describe(AdminProfileRepository.name, () => {
       });
 
       service.getProfile({ public_id: data.public_id }).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
-        expect(res.right).toEqual(o.some(omit('id', data)));
+        expect(res.right).toEqual(some(omit('id', data)));
         done();
       });
     });
@@ -158,10 +160,10 @@ describe(AdminProfileRepository.name, () => {
       });
 
       service.getProfile({ public_id: UUIDv4.generate() }).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
-        expect(res.right).toEqual(o.none);
+        expect(res.right).toEqual(none);
         done();
       });
     });
@@ -172,7 +174,7 @@ describe(AdminProfileRepository.name, () => {
       });
 
       service.getProfile({ public_id: UUIDv4.generate() }).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -194,7 +196,7 @@ describe(AdminProfileRepository.name, () => {
       });
 
       service.getProfile({ public_id: UUIDv4.generate() }).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(ParsingError);

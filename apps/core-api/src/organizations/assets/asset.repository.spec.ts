@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as E from 'fp-ts/lib/Either';
-import * as O from 'fp-ts/lib/Option';
 
 import {
   UUIDv4,
@@ -14,6 +12,10 @@ import {
   AssetType,
   AssetId,
   DomainError,
+  isLeft,
+  isRight,
+  some,
+  none,
 } from '@end/global';
 import { AssetRepository } from './asset.repository';
 import { DbentityService } from '@app/database';
@@ -49,7 +51,7 @@ describe(AssetRepository.name, () => {
       });
 
       service.createAsset(data).subscribe((res) => {
-        if (E.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toEqual(data);
@@ -67,7 +69,7 @@ describe(AssetRepository.name, () => {
       } as PrivateAsset;
 
       service.createAsset(data).subscribe((res) => {
-        if (E.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -93,7 +95,7 @@ describe(AssetRepository.name, () => {
       });
 
       service.getAssets(organizationId).subscribe((res) => {
-        if (E.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toEqual([data]);
@@ -107,7 +109,7 @@ describe(AssetRepository.name, () => {
       });
 
       service.getAssets(organizationId).subscribe((res) => {
-        if (E.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toEqual([]);
@@ -121,7 +123,7 @@ describe(AssetRepository.name, () => {
       });
 
       service.getAssets(organizationId).subscribe((res) => {
-        if (E.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -139,7 +141,7 @@ describe(AssetRepository.name, () => {
       });
 
       service.getAssets(organizationId).subscribe((res) => {
-        if (E.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(ParsingError);
@@ -165,10 +167,10 @@ describe(AssetRepository.name, () => {
       });
 
       service.getSingleAsset({ public_id: data.public_id }).subscribe((res) => {
-        if (E.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
-        expect(res.right).toEqual(O.some(data));
+        expect(res.right).toEqual(some(data));
         done();
       });
     });
@@ -181,10 +183,10 @@ describe(AssetRepository.name, () => {
       service
         .getSingleAsset({ public_id: UUIDv4.generate<AssetId>() })
         .subscribe((res) => {
-          if (E.isLeft(res)) {
+          if (isLeft(res)) {
             return breakTest();
           }
-          expect(res.right).toEqual(O.none);
+          expect(res.right).toEqual(none);
           done();
         });
     });
@@ -197,7 +199,7 @@ describe(AssetRepository.name, () => {
       service
         .getSingleAsset({ public_id: UUIDv4.generate<AssetId>() })
         .subscribe((res) => {
-          if (E.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -221,7 +223,7 @@ describe(AssetRepository.name, () => {
       service
         .getSingleAsset({ public_id: UUIDv4.generate<AssetId>() })
         .subscribe((res) => {
-          if (E.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(ParsingError);
@@ -248,7 +250,7 @@ describe(AssetRepository.name, () => {
       });
 
       service.deleteAsset({ public_id: data.public_id }).subscribe((res) => {
-        if (E.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toBeUndefined();
@@ -264,7 +266,7 @@ describe(AssetRepository.name, () => {
       service
         .deleteAsset({ public_id: UUIDv4.generate<AssetId>() })
         .subscribe((res) => {
-          if (E.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(DomainError);
@@ -280,7 +282,7 @@ describe(AssetRepository.name, () => {
       service
         .deleteAsset({ public_id: UUIDv4.generate<AssetId>() })
         .subscribe((res) => {
-          if (E.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -296,7 +298,7 @@ describe(AssetRepository.name, () => {
       service
         .deleteAsset({ public_id: UUIDv4.generate<AssetId>() })
         .subscribe((res) => {
-          if (E.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -313,7 +315,7 @@ describe(AssetRepository.name, () => {
       service
         .deleteAsset({ public_id: UUIDv4.generate<AssetId>() })
         .subscribe((res) => {
-          if (E.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -330,7 +332,7 @@ describe(AssetRepository.name, () => {
       service
         .deleteAsset({ public_id: UUIDv4.generate<AssetId>() })
         .subscribe((res) => {
-          if (E.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(UnexpectedError);

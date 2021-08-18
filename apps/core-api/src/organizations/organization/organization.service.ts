@@ -1,14 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { map, switchMap } from 'rxjs/operators';
-import * as e from 'fp-ts/lib/Either';
 import { Observable, of } from 'rxjs';
 
 import {
   AdminUserId,
   DomainError,
+  Either,
+  isLeft,
+  isRight,
+  left,
   Organization,
   ParsingError,
   PrivateOrganization,
+  right,
   toLeftObs,
   toRightObs,
   UnexpectedError,
@@ -30,21 +34,21 @@ export class OrganizationService {
     payload: unknown,
     userId: AdminUserId,
   ): Observable<
-    e.Either<UnexpectedError | DomainError | ParsingError, Organization>
+    Either<UnexpectedError | DomainError | ParsingError, Organization>
   > {
     return PrivateOrganization.create(payload, this.createId, userId).pipe(
       switchMap((mbDto) => {
-        if (e.isLeft(mbDto)) {
+        if (isLeft(mbDto)) {
           return of(mbDto);
         }
 
         return this.repo.organizationExists({ name: mbDto.right.name }).pipe(
           map((res) => {
-            if (e.isLeft(res)) {
+            if (isLeft(res)) {
               return res;
             }
             if (res.right) {
-              return e.left(
+              return left(
                 new DomainError('Organization with that name already exists'),
               );
             }
@@ -72,8 +76,8 @@ export class OrganizationService {
   getAllForUser(userId: AdminUserId) {
     return this.repo.getOrganizations(userId).pipe(
       map((mbOrgs) => {
-        if (e.isRight(mbOrgs)) {
-          return e.right(mbOrgs.right.map(PrivateOrganization.toPublicEntity));
+        if (isRight(mbOrgs)) {
+          return right(mbOrgs.right.map(PrivateOrganization.toPublicEntity));
         }
         return mbOrgs;
       }),

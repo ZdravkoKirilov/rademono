@@ -1,3 +1,8 @@
+import jwt from 'jsonwebtoken';
+import { Injectable } from '@nestjs/common';
+import { Observable, zip } from 'rxjs';
+import { switchMap, catchError, map } from 'rxjs/operators';
+
 import {
   ParsingError,
   toLeftObs,
@@ -8,13 +13,13 @@ import {
   AdminUser,
   PrivateAdminUser,
   switchMapRight,
+  Either,
+  isLeft,
+  Option,
+  isNone,
+  right,
+  left,
 } from '@end/global';
-import jwt from 'jsonwebtoken';
-import { Injectable } from '@nestjs/common';
-import { Observable, zip } from 'rxjs';
-import { switchMap, catchError, map } from 'rxjs/operators';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
 
 import { AdminUserRepository } from './admin-users.repository';
 import { EmailService } from '@app/emails';
@@ -29,11 +34,11 @@ export class AdminUsersService {
   getCurrentUser(
     token: unknown,
   ): Observable<
-    e.Either<UnexpectedError | DomainError | ParsingError, AdminUser>
+    Either<UnexpectedError | DomainError | ParsingError, AdminUser>
   > {
     return PrivateAdminUser.toTokenDto({ token }).pipe(
       switchMap((mbDto) => {
-        if (e.isLeft(mbDto)) {
+        if (isLeft(mbDto)) {
           return toLeftObs(mbDto.left);
         }
 
@@ -43,12 +48,12 @@ export class AdminUsersService {
         (
           mbDecoded,
         ): Observable<
-          e.Either<
+          Either<
             DomainError | ParsingError | UnexpectedError,
-            o.Option<PrivateAdminUser>
+            Option<PrivateAdminUser>
           >
         > => {
-          if (e.isLeft(mbDecoded)) {
+          if (isLeft(mbDecoded)) {
             return toLeftObs(mbDecoded.left);
           }
 
@@ -56,11 +61,11 @@ export class AdminUsersService {
         },
       ),
       switchMap((mbUser) => {
-        if (e.isLeft(mbUser)) {
+        if (isLeft(mbUser)) {
           return toLeftObs(mbUser.left);
         }
 
-        if (o.isNone(mbUser.right)) {
+        if (isNone(mbUser.right)) {
           return toLeftObs(new DomainError('Invalid token'));
         }
 
@@ -75,22 +80,22 @@ export class AdminUsersService {
   requestAuthToken(
     payload: unknown,
   ): Observable<
-    e.Either<ParsingError | UnexpectedError | DomainError, TokenDto>
+    Either<ParsingError | UnexpectedError | DomainError, TokenDto>
   > {
     return PrivateAdminUser.toSignInDto(payload).pipe(
       switchMap((mbSignInDto) => {
-        if (e.isLeft(mbSignInDto)) {
+        if (isLeft(mbSignInDto)) {
           return toLeftObs(mbSignInDto.left);
         }
 
         return this.repo.findUser({ loginCode: mbSignInDto.right.code });
       }),
       switchMap((data) => {
-        if (e.isLeft(data)) {
+        if (isLeft(data)) {
           return toLeftObs(data.left);
         }
 
-        if (o.isNone(data.right)) {
+        if (isNone(data.right)) {
           return toLeftObs(new DomainError('Login code is invalid'));
         }
 
@@ -115,19 +120,19 @@ export class AdminUsersService {
 
   requestLoginCode(
     payload: unknown,
-  ): Observable<e.Either<ParsingError | UnexpectedError, undefined>> {
+  ): Observable<Either<ParsingError | UnexpectedError, undefined>> {
     return PrivateAdminUser.toSendCodeDto(payload).pipe(
       switchMap((dto) => {
-        if (e.isLeft(dto)) {
+        if (isLeft(dto)) {
           return toLeftObs(dto.left);
         }
         return this.repo.findUser({ email: dto.right.email }).pipe(
           switchMap((maybeUser) => {
-            if (e.isLeft(maybeUser)) {
+            if (isLeft(maybeUser)) {
               return toLeftObs(maybeUser.left);
             }
 
-            if (o.isNone(maybeUser.right)) {
+            if (isNone(maybeUser.right)) {
               return PrivateAdminUser.create(dto.right);
             }
 
@@ -136,27 +141,27 @@ export class AdminUsersService {
         );
       }),
       switchMap((mbUser) => {
-        if (e.isLeft(mbUser)) {
+        if (isLeft(mbUser)) {
           return toLeftObs(mbUser.left);
         }
 
         const userWithLoginToken = PrivateAdminUser.addLoginCode(mbUser.right);
         return this.repo
           .saveUser(userWithLoginToken)
-          .pipe(map(() => e.right(userWithLoginToken)));
+          .pipe(map(() => right(userWithLoginToken)));
       }),
       switchMapRight<
         PrivateAdminUser,
         UnexpectedError | ParsingError,
-        e.Either<UnexpectedError, undefined>
+        Either<UnexpectedError, undefined>
       >((user) => {
         return this.emailService.createLoginCodeEmail(user.email).pipe(
           map((mbSaved) => {
-            return e.isLeft(mbSaved)
-              ? e.left(
+            return isLeft(mbSaved)
+              ? left(
                   new UnexpectedError('Failed to send an email', mbSaved.left),
                 )
-              : e.right(undefined);
+              : right(undefined);
           }),
         );
       }),

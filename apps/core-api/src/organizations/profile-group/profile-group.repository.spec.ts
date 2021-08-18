@@ -1,7 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
-import { omit } from 'lodash/fp';
 
 import {
   UUIDv4,
@@ -11,6 +8,11 @@ import {
   PrivateProfileGroup,
   toRightObs,
   toLeftObs,
+  isLeft,
+  isRight,
+  some,
+  omit,
+  none,
 } from '@end/global';
 import { DbentityService } from '@app/database';
 import {
@@ -51,7 +53,7 @@ describe(ProfileGroupRepository.name, () => {
       });
 
       service.saveProfileGroup(data).subscribe((res) => {
-        if (e.isLeft(res)) {
+        if (isLeft(res)) {
           return breakTest();
         }
         expect(res.right).toEqual(data);
@@ -71,7 +73,7 @@ describe(ProfileGroupRepository.name, () => {
       } as PrivateProfileGroup;
 
       service.saveProfileGroup(data).subscribe((res) => {
-        if (e.isRight(res)) {
+        if (isRight(res)) {
           return breakTest();
         }
         expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -89,7 +91,7 @@ describe(ProfileGroupRepository.name, () => {
       service
         .groupExists({ name: 'Whatever', organization: UUIDv4.generate() })
         .subscribe((res) => {
-          if (e.isLeft(res)) {
+          if (isLeft(res)) {
             return breakTest();
           }
           expect(res.right).toBe(true);
@@ -105,7 +107,7 @@ describe(ProfileGroupRepository.name, () => {
       service
         .groupExists({ name: 'Whatever', organization: UUIDv4.generate() })
         .subscribe((res) => {
-          if (e.isLeft(res)) {
+          if (isLeft(res)) {
             return breakTest();
           }
           expect(res.right).toBe(false);
@@ -123,7 +125,7 @@ describe(ProfileGroupRepository.name, () => {
       service
         .groupExists({ name: 'Whatever', organization: '1' })
         .subscribe((res) => {
-          if (e.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -139,7 +141,7 @@ describe(ProfileGroupRepository.name, () => {
       service
         .groupExists({ name: 'Whatever', organization: '2' })
         .subscribe((res) => {
-          if (e.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -164,10 +166,10 @@ describe(ProfileGroupRepository.name, () => {
       service
         .getProfileGroup({ name: 'Name', organization: '1' })
         .subscribe((res) => {
-          if (e.isLeft(res)) {
+          if (isLeft(res)) {
             return breakTest();
           }
-          expect(res.right).toEqual(o.some(omit('id', data)));
+          expect(res.right).toEqual(some(omit('id', data)));
           done();
         });
     });
@@ -180,10 +182,10 @@ describe(ProfileGroupRepository.name, () => {
       service
         .getProfileGroup({ name: 'Name', organization: '1' })
         .subscribe((res) => {
-          if (e.isLeft(res)) {
+          if (isLeft(res)) {
             return breakTest();
           }
-          expect(res.right).toEqual(o.none);
+          expect(res.right).toEqual(none);
           done();
         });
     });
@@ -198,7 +200,7 @@ describe(ProfileGroupRepository.name, () => {
       service
         .getProfileGroup({ name: 'Name', organization: '1' })
         .subscribe((res) => {
-          if (e.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -214,7 +216,7 @@ describe(ProfileGroupRepository.name, () => {
       service
         .getProfileGroup({ name: 'Name', organization: '1' })
         .subscribe((res) => {
-          if (e.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(UnexpectedError);
@@ -237,7 +239,7 @@ describe(ProfileGroupRepository.name, () => {
       service
         .getProfileGroup({ name: 'Name', organization: '1' })
         .subscribe((res) => {
-          if (e.isRight(res)) {
+          if (isRight(res)) {
             return breakTest();
           }
           expect(res.left).toBeInstanceOf(ParsingError);

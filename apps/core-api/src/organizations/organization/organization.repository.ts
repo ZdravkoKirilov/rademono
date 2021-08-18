@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { switchMap, catchError, map } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
-import { isNil } from 'lodash/fp';
 
 import {
   UUIDv4,
@@ -16,6 +13,15 @@ import {
   mapEither,
   PrivateAdminGroup,
   AdminUserId,
+  Either,
+  right,
+  isLeft,
+  left,
+  isRight,
+  isNil,
+  none,
+  some,
+  Option,
 } from '@end/global';
 
 import { DbentityService } from '@app/database';
@@ -36,9 +42,7 @@ export class OrganizationRepository {
 
   getOrganizations(
     userId: AdminUserId,
-  ): Observable<
-    e.Either<ParsingError | UnexpectedError, PrivateOrganization[]>
-  > {
+  ): Observable<Either<ParsingError | UnexpectedError, PrivateOrganization[]>> {
     const query = { 'admin_group.profiles': { $elemMatch: { user: userId } } };
 
     return this.repo.findAll(query).pipe(
@@ -56,13 +60,13 @@ export class OrganizationRepository {
             result.map((elem) => PrivateOrganization.toPrivateEntity(elem)),
           ).pipe(
             map((results) => {
-              if (results.every(e.isRight)) {
-                return e.right(results.map((elem) => elem.right));
+              if (results.every(isRight)) {
+                return right(results.map((elem) => elem.right));
               }
-              return e.left(
+              return left(
                 new ParsingError(
                   'Failed to parse organizations',
-                  results.filter(e.isLeft).map((elem) => elem.left),
+                  results.filter(isLeft).map((elem) => elem.left),
                 ),
               );
             }),
@@ -131,15 +135,13 @@ export class OrganizationRepository {
 
   createOrganization(
     organization: PrivateOrganization,
-  ): Observable<e.Either<UnexpectedError, PrivateOrganization>> {
+  ): Observable<Either<UnexpectedError, PrivateOrganization>> {
     try {
       return this.repo.insert(organization).pipe(
         mapEither(
           (err) =>
-            e.left(
-              new UnexpectedError('Failed to create the organization', err),
-            ),
-          () => e.right(organization),
+            left(new UnexpectedError('Failed to create the organization', err)),
+          () => right(organization),
         ),
         catchError((err) => {
           return toLeftObs(
@@ -156,13 +158,13 @@ export class OrganizationRepository {
 
   saveOrganization(
     updatedOrganization: PrivateOrganization,
-  ): Observable<e.Either<UnexpectedError, PrivateOrganization>> {
+  ): Observable<Either<UnexpectedError, PrivateOrganization>> {
     try {
       return this.repo.save(updatedOrganization).pipe(
         mapEither(
           (err) =>
-            e.left(new UnexpectedError('Failed to save the organization', err)),
-          () => e.right(updatedOrganization),
+            left(new UnexpectedError('Failed to save the organization', err)),
+          () => right(updatedOrganization),
         ),
         catchError((err) => {
           return toLeftObs(
@@ -179,11 +181,11 @@ export class OrganizationRepository {
 
   organizationExists(
     matcher: FindOneMatcher,
-  ): Observable<e.Either<UnexpectedError, boolean>> {
+  ): Observable<Either<UnexpectedError, boolean>> {
     try {
       return this.repo.count(matcher).pipe(
         switchMap((count) => {
-          return e.isLeft(count)
+          return isLeft(count)
             ? toLeftObs(count.left)
             : toRightObs(count.right > 0);
         }),
@@ -209,7 +211,7 @@ export class OrganizationRepository {
   getOrganization(
     matcher: FindOneMatcher,
   ): Observable<
-    e.Either<UnexpectedError | ParsingError, o.Option<PrivateOrganization>>
+    Either<UnexpectedError | ParsingError, Option<PrivateOrganization>>
   > {
     return this.repo.findOne(matcher).pipe(
       switchMapEither(
@@ -219,13 +221,13 @@ export class OrganizationRepository {
           ),
         (res) => {
           if (isNil(res)) {
-            return toRightObs(o.none);
+            return toRightObs(none);
           }
 
           return PrivateOrganization.toPrivateEntity(res).pipe(
             map((parsed) => {
-              if (e.isRight(parsed)) {
-                return e.right(o.some(parsed.right));
+              if (isRight(parsed)) {
+                return right(some(parsed.right));
               }
               return parsed;
             }),

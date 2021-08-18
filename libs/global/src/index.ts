@@ -5,3 +5,5 @@ export * from './user-entities';
 export * from './email-entities';
 
 export { breakTest, hasFieldError } from './test';
+
+export * from './library-wrappers';

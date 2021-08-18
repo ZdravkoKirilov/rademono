@@ -1,17 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import * as e from 'fp-ts/lib/Either';
-import * as o from 'fp-ts/lib/Option';
 import { Observable } from 'rxjs';
 
 import {
   AdminProfile,
   DomainError,
+  Either,
+  isLeft,
   ParsingError,
   PrivateAdminProfile,
+  right,
   toLeftObs,
   UnexpectedError,
   UUIDv4,
+  isSome,
+  isRight,
 } from '@end/global';
 
 import { AdminProfileRepository } from './admin-profile.repository';
@@ -26,11 +29,11 @@ export class AdminProfileService {
   create(
     payload: unknown,
   ): Observable<
-    e.Either<UnexpectedError | ParsingError | DomainError, AdminProfile>
+    Either<UnexpectedError | ParsingError | DomainError, AdminProfile>
   > {
     return PrivateAdminProfile.create(payload, this.createId).pipe(
       switchMap((mbProfile) => {
-        if (e.isLeft(mbProfile)) {
+        if (isLeft(mbProfile)) {
           return toLeftObs(mbProfile.left);
         }
         return this.repo
@@ -40,7 +43,7 @@ export class AdminProfileService {
           })
           .pipe(
             map((res) => {
-              return e.right({
+              return right({
                 parsed: mbProfile.right,
                 retrieved: res,
               });
@@ -48,21 +51,21 @@ export class AdminProfileService {
           );
       }),
       switchMap((mbExisting) => {
-        if (e.isLeft(mbExisting)) {
+        if (isLeft(mbExisting)) {
           return toLeftObs(mbExisting.left);
         }
-        if (e.isLeft(mbExisting.right.retrieved)) {
+        if (isLeft(mbExisting.right.retrieved)) {
           return toLeftObs(mbExisting.right.retrieved.left);
         }
-        if (o.isSome(mbExisting.right.retrieved.right)) {
+        if (isSome(mbExisting.right.retrieved.right)) {
           return toLeftObs(
             new DomainError('Profile already exists in this group'),
           );
         }
         return this.repo.saveProfile(mbExisting.right.parsed).pipe(
           map((mbSaved) => {
-            return e.isRight(mbSaved)
-              ? e.right(
+            return isRight(mbSaved)
+              ? right(
                   PrivateAdminProfile.toPublicEntity(mbExisting.right.parsed),
                 )
               : mbSaved;

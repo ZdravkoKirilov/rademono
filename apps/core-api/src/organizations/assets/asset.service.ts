@@ -1,14 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { switchMap, tap } from 'rxjs/operators';
-import * as E from 'fp-ts/Either';
-import * as O from 'fp-ts/Option';
 import { Observable, of } from 'rxjs';
 
 import {
   Asset,
   DomainError,
+  Either,
   isAssetId,
   isFilePath,
+  isLeft,
+  isNone,
   isOrganizationId,
   ParsingError,
   PrivateAsset,
@@ -35,7 +36,7 @@ export class AssetService {
   deleteAsset(
     id: string,
     organization: string,
-  ): Observable<E.Either<UnexpectedError | ParsingError | DomainError, void>> {
+  ): Observable<Either<UnexpectedError | ParsingError | DomainError, void>> {
     if (!isOrganizationId(organization)) {
       return toLeftObs(new ParsingError('Valid organizationId is required'));
     }
@@ -48,10 +49,10 @@ export class AssetService {
 
     return this.repo.getSingleAsset(matcher).pipe(
       switchMap((mbAsset) => {
-        if (E.isLeft(mbAsset)) {
+        if (isLeft(mbAsset)) {
           return toLeftObs(mbAsset.left);
         }
-        if (O.isNone(mbAsset.right)) {
+        if (isNone(mbAsset.right)) {
           return toLeftObs(new DomainError('Asset not found'));
         }
 
@@ -70,7 +71,7 @@ export class AssetService {
     payload: unknown,
     organization: string,
     fileUrl: string,
-  ): Observable<E.Either<UnexpectedError | ParsingError, Asset>> {
+  ): Observable<Either<UnexpectedError | ParsingError, Asset>> {
     if (!isOrganizationId(organization)) {
       return toLeftObs(new ParsingError('Valid organizationId is required'));
     }
@@ -84,7 +85,7 @@ export class AssetService {
       createId: this.createId,
     }).pipe(
       switchMap((mbDto) => {
-        if (E.isLeft(mbDto)) {
+        if (isLeft(mbDto)) {
           return of(mbDto);
         }
 
