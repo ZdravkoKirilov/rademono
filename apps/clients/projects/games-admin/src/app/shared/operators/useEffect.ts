@@ -1,7 +1,12 @@
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { switchMap, map, withLatestFrom } from 'rxjs/operators';
-import { noop } from 'lodash/fp';
-
+import {
+  BehaviorSubject,
+  map,
+  noop,
+  Observable,
+  of,
+  switchMap,
+  withLatestFrom,
+} from '@end/global';
 import { QueryOrigin, QueryResponse, QueryStatus } from './useQuery';
 
 export type PendingQuery = {

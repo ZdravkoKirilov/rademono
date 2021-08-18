@@ -1,8 +1,16 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
 
-import { AdminUser, SendCodeDto, SignInDto, TokenDto } from '@end/global';
+import {
+  AdminUser,
+  BehaviorSubject,
+  Observable,
+  of,
+  SendCodeDto,
+  SignInDto,
+  switchMap,
+  tap,
+  TokenDto,
+} from '@end/global';
 import {
   AppRouterService,
   BaseHttpService,

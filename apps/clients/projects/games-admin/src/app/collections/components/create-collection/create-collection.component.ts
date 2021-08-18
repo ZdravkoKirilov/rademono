@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
 import { NgForm } from '@angular/forms';
 
 import {
@@ -7,6 +6,7 @@ import {
   CreateCollectionDto,
   mapEither,
   ParsingError,
+  Observable,
 } from '@end/global';
 import { RequestError } from '@libs/ui';
 import { AppRouterService, QueryResponse, useQuery } from '@games-admin/shared';

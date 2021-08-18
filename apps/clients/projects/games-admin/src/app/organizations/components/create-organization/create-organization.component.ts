@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
 
 import {
   CreateOrganizationDto,
   mapEither,
   ParsingError,
   Organization,
+  Observable,
 } from '@end/global';
 import { OrganizationService } from '@games-admin/organizations/services/organization.service';
 import { QueryResponse, useQuery } from '@games-admin/shared';

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Organization } from '@end/global';
-import { Observable } from 'rxjs';
+import { Observable, Organization } from '@end/global';
 
 import { OrganizationService } from '@games-admin/organizations';
 import { QueryResponse, useQuery } from '@games-admin/shared';

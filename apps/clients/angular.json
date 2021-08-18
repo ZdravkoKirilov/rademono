@@ -233,46 +233,6 @@
           }
         }
       }
-    },
-    "render-kit": {
-      "projectType": "library",
-      "root": "projects/render-kit",
-      "sourceRoot": "projects/render-kit/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "projects/render-kit/tsconfig.lib.json",
-            "project": "projects/render-kit/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/render-kit/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/render-kit/src/test.ts",
-            "tsConfig": "projects/render-kit/tsconfig.spec.json",
-            "karmaConfig": "projects/render-kit/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/render-kit/tsconfig.lib.json",
-              "projects/render-kit/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
     }
   },
   "defaultProject": "games-admin"

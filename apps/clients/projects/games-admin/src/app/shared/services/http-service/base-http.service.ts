@@ -4,16 +4,19 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, switchMap } from 'rxjs/operators';
-import { throwError, Observable, of } from 'rxjs';
 
 import {
+  catchError,
   ClassType,
+  Observable,
+  of,
   parseAndValidateManyUnknown,
   parseAndValidateUnknown,
+  switchMap,
   switchMapEither,
   toRightObs,
   Url,
+  throwError,
 } from '@end/global';
 import { LocalStorageService } from '../storage';
 

@@ -6,8 +6,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from '@end/global';
 
 import { UsersService } from '../../../services/users.service';
 

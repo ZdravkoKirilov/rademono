@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { map, filter } from 'rxjs/operators';
+import { filter, map } from '@end/global';
 
 import { AppRouterService } from '@games-admin/shared';
 import { UsersService } from '@games-admin/users/services/users.service';

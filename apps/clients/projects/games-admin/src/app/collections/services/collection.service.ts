@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
 
-import { Collection, CreateCollectionDto, OrganizationId } from '@end/global';
+import {
+  BehaviorSubject,
+  Collection,
+  CreateCollectionDto,
+  of,
+  OrganizationId,
+  switchMap,
+  tap,
+} from '@end/global';
 
 import { BaseHttpService, endpoints } from '@games-admin/shared';
 

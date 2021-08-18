@@ -1,7 +1,14 @@
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { catchError, map, switchMap, takeUntil, timeout } from 'rxjs/operators';
-import { noop } from 'lodash/fp';
-
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  noop,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  takeUntil,
+} from '@end/global';
 import { RequestError } from '@libs/ui';
 
 export enum QueryStatus {
