@@ -73,7 +73,7 @@
 
   &:disabled,
   &[aria-disabled='true'] {
-    background-image: url(linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%));
+    background-image: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
   }
   &:disabled:hover,
   &[aria-disabled='true'] {

@@ -1,17 +1,18 @@
+@use 'sass:math';
 @import './media_queries';
 
 $grid-columns: 12;
 
 @for $i from 1 through $grid-columns {
   .width-#{$i} {
-    width: ($i / 12) * 100%;
+    width: math.div($i, 12) * 100%;
   }
 }
 
 @include above_phone {
   @for $i from 1 through $grid-columns {
     .width-xs-#{$i} {
-      width: ($i / 12) * 100%;
+      width: math.div($i, 12) * 100%;
     }
   }
 }
@@ -19,7 +20,7 @@ $grid-columns: 12;
 @include above_tablet {
   @for $i from 1 through $grid-columns {
     .width-s-#{$i} {
-      width: ($i / 12) * 100%;
+      width: math.div($i, 12) * 100%;
     }
   }
 }
@@ -27,7 +28,7 @@ $grid-columns: 12;
 @include above_landscape_tablet {
   @for $i from 1 through $grid-columns {
     .width-m-#{$i} {
-      width: ($i / 12) * 100%;
+      width: math.div($i, 12) * 100%;
     }
   }
 }
@@ -35,7 +36,7 @@ $grid-columns: 12;
 @include above_small_laptop {
   @for $i from 1 through $grid-columns {
     .width-l-#{$i} {
-      width: ($i / 12) * 100%;
+      width: math.div($i, 12) * 100%;
     }
   }
 }
