@@ -27,157 +27,154 @@ describe('parsers/validate', () => {
   }
 
   describe('validateObject', () => {
-    it('has no errors with correct data', async () => {
+    it('has no errors with correct data', (done) => {
       const instance = new TestData();
       instance.name = 'John';
       instance.age = 25;
 
-      const errors = await validateObject(instance).toPromise();
-      expect(errors.length).toBe(0);
+      validateObject(instance).subscribe((errors) => {
+        expect(errors.length).toBe(0);
+        done();
+      });
     });
 
-    it('returns error with incorrect data', async () => {
+    it('returns error with incorrect data', (done) => {
       const instance = new TestData();
       instance.age = 25;
 
-      const errors = await validateObject(instance).toPromise();
-      expect(errors.length).toBe(1);
-      expect(errors[0].property).toEqual('name');
+      validateObject(instance).subscribe((errors) => {
+        expect(errors.length).toBe(1);
+        expect(errors[0].property).toEqual('name');
+        done();
+      });
     });
   });
 
   describe('parseToClass', () => {
-    it('passes with correct data', async () => {
+    it('passes with correct data', (done) => {
       const plainData = { name: 'John', age: 25 };
 
-      const result = await parseToClass(plainData, TestData).toPromise();
-
-      if (isSome(result)) {
-        expect(result.value).toBeInstanceOf(TestData);
-        expect(result.value).toEqual({
-          name: 'John',
-          age: 25,
-        });
-      } else {
-        throwError();
-      }
+      parseToClass(plainData, TestData).subscribe((result) => {
+        if (isSome(result)) {
+          expect(result.value).toBeInstanceOf(TestData);
+          expect(result.value).toEqual({
+            name: 'John',
+            age: 25,
+          });
+        } else {
+          throwError();
+        }
+        done();
+      });
     });
 
-    it('removes unknown fields', async () => {
+    it('removes unknown fields', (done) => {
       const plainData = { name: 'John', age: 25, born: new Date() };
 
-      const result = await parseToClass(plainData, TestData).toPromise();
-
-      if (isSome(result)) {
-        expect(result.value).toBeInstanceOf(TestData);
-        expect(result.value).toEqual({
-          name: 'John',
-          age: 25,
-        });
-      } else {
-        throwError();
-      }
+      parseToClass(plainData, TestData).subscribe((result) => {
+        if (isSome(result)) {
+          expect(result.value).toBeInstanceOf(TestData);
+          expect(result.value).toEqual({
+            name: 'John',
+            age: 25,
+          });
+          done();
+        } else {
+          throwError();
+        }
+      });
     });
 
-    it('returns None when input is not an object', async () => {
-      const primitiveValue = await parseToClass(5, TestData).toPromise();
-      expect(isNone(primitiveValue)).toBe(true);
-
-      const nullValue = await parseToClass(null, TestData).toPromise();
-      expect(isNone(nullValue)).toBe(true);
+    it('returns None when input is not an object', (done) => {
+      parseToClass(5, TestData).subscribe((result) => {
+        expect(isNone(result)).toBe(true);
+        done();
+      });
     });
   });
 
   describe('parseAndValidateUnknown', () => {
-    it('passes with valid data', async () => {
+    it('passes with valid data', (done) => {
       const validData = { name: 'Steven', age: 10 };
 
-      const result = await parseAndValidateUnknown(
-        validData,
-        TestData,
-      ).toPromise();
+      parseAndValidateUnknown(validData, TestData).subscribe((result) => {
+        if (isRight(result)) {
+          expect(result.right).toBeInstanceOf(TestData);
 
-      if (isRight(result)) {
-        expect(result.right).toBeInstanceOf(TestData);
+          expect(result.right).toEqual({
+            name: 'Steven',
+            age: 10,
+          });
 
-        expect(result.right).toEqual({
-          name: 'Steven',
-          age: 10,
-        });
-      } else {
-        throwError();
-      }
+          done();
+        } else {
+          throwError();
+        }
+      });
     });
 
-    it('fails when payload is not an object', async () => {
-      const result = await parseAndValidateUnknown(
-        undefined,
-        TestData,
-      ).toPromise();
-
-      if (isLeft(result)) {
-        expect(result.left).toBeInstanceOf(ParsingError);
-      } else {
-        throwError();
-      }
+    it('fails when payload is not an object', (done) => {
+      parseAndValidateUnknown(undefined, TestData).subscribe((result) => {
+        if (isLeft(result)) {
+          expect(result.left).toBeInstanceOf(ParsingError);
+          done();
+        } else {
+          throwError();
+        }
+      });
     });
 
-    it('fails when there are invalid fields', async () => {
+    it('fails when there are invalid fields', (done) => {
       const invalidData = {
         name: 'Steven',
         age: new Date(),
       };
 
-      const result = await parseAndValidateUnknown(
-        invalidData,
-        TestData,
-      ).toPromise();
-
-      if (isLeft(result)) {
-        expect(result.left).toBeInstanceOf(ParsingError);
-      } else {
-        throwError();
-      }
+      parseAndValidateUnknown(invalidData, TestData).subscribe((result) => {
+        if (isLeft(result)) {
+          expect(result.left).toBeInstanceOf(ParsingError);
+          done();
+        } else {
+          throwError();
+        }
+      });
     });
   });
 
   describe('parseAndValidateObject', () => {
-    it('passes with valid data', async () => {
+    it('passes with valid data', (done) => {
       const validData = { name: 'Steven', age: 10 };
 
-      const result = await parseAndValidateObject(
-        validData,
-        TestData,
-      ).toPromise();
+      parseAndValidateObject(validData, TestData).subscribe((result) => {
+        if (isRight(result)) {
+          expect(result.right).toBeInstanceOf(TestData);
 
-      if (isRight(result)) {
-        expect(result.right).toBeInstanceOf(TestData);
+          expect(result.right).toEqual({
+            name: 'Steven',
+            age: 10,
+          });
 
-        expect(result.right).toEqual({
-          name: 'Steven',
-          age: 10,
-        });
-      } else {
-        throwError();
-      }
+          done();
+        } else {
+          throwError();
+        }
+      });
     });
 
-    it('fails when there are invalid fields', async () => {
+    it('fails when there are invalid fields', (done) => {
       const invalidData = {
         name: 'Steven',
         age: new Date(),
       };
 
-      const result = await parseAndValidateObject(
-        invalidData,
-        TestData,
-      ).toPromise();
-
-      if (isLeft(result)) {
-        expect(result.left).toBeInstanceOf(ParsingError);
-      } else {
-        throwError();
-      }
+      parseAndValidateObject(invalidData, TestData).subscribe((result) => {
+        if (isLeft(result)) {
+          expect(result.left).toBeInstanceOf(ParsingError);
+          done();
+        } else {
+          throwError();
+        }
+      });
     });
   });
 });

@@ -1,4 +1,3 @@
-export * from './entity-parsing';
 export {
   parseAndValidateObject,
   parseAndValidateManyUnknown,

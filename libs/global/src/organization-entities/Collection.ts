@@ -23,10 +23,10 @@ import { map } from 'rxjs/operators';
 
 import { parseAndValidateUnknown, transformToClass } from '../parsers';
 import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
-import { GameId } from '../game-entities';
 import { OrganizationId } from './Organization';
 import { AdminGroup, PrivateAdminGroup } from './AdminGroup';
 import { PrivateProfileGroup, ProfileGroup } from './ProfileGroup';
+import { GameId } from '../games';
 
 export type CollectionId = Tagged<'CollectionId', UUIDv4>;
 
