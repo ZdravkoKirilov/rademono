@@ -12,8 +12,8 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@libs/ui": ["dist/ui/ui", "dist/ui"],
-      "@libs/render-kit": ["dist/render-kit/render-kit", "dist/render-kit"],
       "@games-admin/*": ["projects/games-admin/src/app/*"],
+      "@games-arena/*": ["projects/games-arena/src/app/*"],
       "@env": ["projects/games-admin/src/environments/environment.ts"]
     }
   },
