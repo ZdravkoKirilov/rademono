@@ -233,6 +233,109 @@
           }
         }
       }
+    },
+    "games-arena": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/games-arena",
+      "sourceRoot": "projects/games-arena/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/games-arena",
+            "index": "projects/games-arena/src/index.html",
+            "main": "projects/games-arena/src/main.ts",
+            "polyfills": "projects/games-arena/src/polyfills.ts",
+            "tsConfig": "projects/games-arena/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/games-arena/src/favicon.ico",
+              "projects/games-arena/src/assets"
+            ],
+            "styles": [
+              "projects/games-arena/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/games-arena/src/environments/environment.ts",
+                  "with": "projects/games-arena/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "games-arena:build:production"
+            },
+            "development": {
+              "browserTarget": "games-arena:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "games-arena:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/games-arena/src/test.ts",
+            "polyfills": "projects/games-arena/src/polyfills.ts",
+            "tsConfig": "projects/games-arena/tsconfig.spec.json",
+            "karmaConfig": "projects/games-arena/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/games-arena/src/favicon.ico",
+              "projects/games-arena/src/assets"
+            ],
+            "styles": [
+              "projects/games-arena/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
     }
   },
   "defaultProject": "games-admin"
