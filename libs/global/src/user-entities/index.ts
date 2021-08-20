@@ -7,4 +7,4 @@ export {
   SignInDto,
   AdminUserId,
 } from './AdminUser';
-export * from './Consumer';
+export * from './User';

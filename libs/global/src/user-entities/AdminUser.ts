@@ -23,17 +23,23 @@ import {
 import {
   Email,
   NanoId,
-  Tagged,
   UUIDv4,
   JWT,
   ParsingError,
   DomainError,
   DecodedJWT,
   Dictionary,
+  Nominal,
 } from '../types';
 
-export type AdminUserId = Tagged<'AdminUserId', UUIDv4>;
+export type AdminUserId = Nominal<UUIDv4>;
 
+/**
+ * Superusers are basically part of the product team, while standard users
+ * are real clients. Superusers can help clients with setups and support
+ * problems because they have access to everything.
+ * Superusers can only be created via manual database update.
+ */
 export enum AdminUserTypes {
   superuser = 'superuser',
   standard = 'standard',

@@ -106,7 +106,7 @@ export class UsersService {
     );
   }
 
-  requestToken(dto: SignInDto) {
+  private requestToken(dto: SignInDto) {
     return useQuery<TokenDto, RequestError>(() =>
       this.http.post({
         url: endpoints.requestAuthToken,

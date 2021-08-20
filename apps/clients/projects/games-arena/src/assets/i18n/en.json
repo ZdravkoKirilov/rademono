@@ -1,0 +1,17 @@
+{
+  "users": {
+    "auth": {
+      "signIn": "Sign in",
+      "sendCode": "Send code",
+      "codeSent": "Code sent",
+      "sendindCode": "Sending code...",
+      "alreadyHaveCode": "I already have the code",
+      "sendCodeAgain": "Send new code",
+      "signInWithCode": "Sign in with code",
+      "signingIn": "Signing in...",
+      "code": "Code",
+      "logout": "Logout",
+      "loggingOut": "Logging out..."
+    }
+  }
+}
