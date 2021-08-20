@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 
 import {
-  PrivateAdminUser,
+  User,
   UnexpectedError,
   isLeft,
   map,
@@ -23,7 +23,7 @@ export class OrganizationController {
 
   @Post()
   @UseGuards(AuthGuard)
-  create(@Body() payload: unknown, @WithUser() user: PrivateAdminUser) {
+  create(@Body() payload: unknown, @WithUser() user: User) {
     try {
       return this.organizationService.create(payload, user.public_id).pipe(
         map((result) => {
@@ -83,7 +83,7 @@ export class OrganizationController {
 
   @Get()
   @UseGuards(AuthGuard)
-  getAllForUser(@WithUser() user: PrivateAdminUser) {
+  getAllForUser(@WithUser() user: User) {
     return this.organizationService.getAllForUser(user.public_id).pipe(
       map((result) => {
         if (isLeft(result)) {

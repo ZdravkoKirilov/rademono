@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AdminUser, Observable } from '@end/global';
+import { PublicUser, Observable } from '@end/global';
 import { QueryResponse } from '@games-admin/shared';
 import { UsersService } from '@games-admin/users';
 import { RequestError } from '@libs/ui';
@@ -13,7 +13,7 @@ import { RequestError } from '@libs/ui';
 export class CurrentUserProviderComponent implements OnInit {
   constructor(private userService: UsersService) {}
 
-  user$: Observable<QueryResponse<AdminUser | null, RequestError>>;
+  user$: Observable<QueryResponse<PublicUser | null, RequestError>>;
 
   ngOnInit(): void {
     this.user$ = this.userService.getOrFetchUser();

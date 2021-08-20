@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 import { OnChange } from '@libs/ui';
 import {
-  AdminUser,
+  PublicUser,
   mapEither,
-  PrivateAdminUser,
+  User,
   SignInDto,
   Subscription,
   tap,
@@ -31,10 +31,10 @@ export class RedeemComponent {
   ) {}
 
   sendCode$: Subscription;
-  sendCodeQuery: QueryResponse<AdminUser, unknown>;
+  sendCodeQuery: QueryResponse<PublicUser, unknown>;
 
   @OnChange<unknown, RedeemComponent>(function (value, self) {
-    PrivateAdminUser.toSignInDto({ code: value })
+    User.toSignInDto({ code: value })
       .pipe(
         mapEither(
           () => {

@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import {
   DecodedJWT,
   isLeft,
-  PrivateAdminUser,
+  User,
   toLeftObs,
   Option,
   Either,
@@ -19,7 +19,7 @@ import { isKnownError, toUnauthorizedError } from '@app/shared';
 
 import { AdminUserRepository } from './admin-users.repository';
 
-export type RequestWithUser = Request & { user: PrivateAdminUser };
+export type RequestWithUser = Request & { user: User };
 
 const forbid = () => {
   throw toUnauthorizedError({
@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
       forbid();
     }
 
-    const result = await PrivateAdminUser.toTokenDto({ token: authToken })
+    const result = await User.toTokenDto({ token: authToken })
       .pipe(
         switchMap(
           (mbDto): Observable<Either<unknown, DecodedJWT>> => {
@@ -49,13 +49,13 @@ export class AuthGuard implements CanActivate {
               return toLeftObs(false);
             }
 
-            return PrivateAdminUser.decodeToken(mbDto.right.token, jwt.verify);
+            return User.decodeToken(mbDto.right.token, jwt.verify);
           },
         ),
         switchMap(
           (
             mbDecoded,
-          ): Observable<Either<unknown, Option<PrivateAdminUser>>> => {
+          ): Observable<Either<unknown, Option<User>>> => {
             if (isLeft(mbDecoded)) {
               return toLeftObs(false);
             }

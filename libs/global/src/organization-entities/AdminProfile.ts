@@ -6,7 +6,7 @@ import * as e from 'fp-ts/lib/Either';
 
 import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
 import { parseAndValidateUnknown, transformToClass } from '../parsers';
-import { AdminUserId } from '../user-entities';
+import { UserId } from '../user-entities';
 import { ProfileGroupId } from './ProfileGroup';
 
 export type AdminProfileId = Tagged<'AdminProfileId', UUIDv4>;
@@ -19,7 +19,7 @@ class ValidationBase {
 
   @Expose()
   @IsUUID('4')
-  user: AdminUserId;
+  user: UserId;
 
   @Expose()
   @IsUUID('4')

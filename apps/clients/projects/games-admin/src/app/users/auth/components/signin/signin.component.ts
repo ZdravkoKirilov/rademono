@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 
-import {
-  PrivateAdminUser,
-  SendCodeDto,
-  mapEither,
-  Subscription,
-  tap,
-} from '@end/global';
+import { User, SendCodeDto, mapEither, Subscription, tap } from '@end/global';
 import { OnChange } from '@libs/ui';
 import { AutoUnsubscribe, QueryResponse } from '@games-admin/shared';
 
@@ -29,7 +23,7 @@ export class SigninComponent {
   codeQuery: QueryResponse<void, unknown>;
 
   @OnChange<unknown, SigninComponent>(function (value, self) {
-    PrivateAdminUser.toSendCodeDto({ email: value })
+    User.toSendCodeDto({ email: value })
       .pipe(
         mapEither(
           () => {

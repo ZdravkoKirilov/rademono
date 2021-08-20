@@ -1,5 +1,5 @@
 import * as e from 'fp-ts/lib/Either';
-import { AdminUserId } from 'src/user-entities';
+import { UserId } from 'src/user-entities';
 
 import { transformToClass } from '../parsers';
 import { breakTest } from '../test';
@@ -25,7 +25,7 @@ describe('Organization entity', () => {
       it('passes with enough data', (done) => {
         const id = UUIDv4.generate<OrganizationId>();
         const createId = () => id;
-        const userId = UUIDv4.generate<AdminUserId>();
+        const userId = UUIDv4.generate<UserId>();
 
         const payload = { name: 'Name' };
 
@@ -58,7 +58,7 @@ describe('Organization entity', () => {
       it('fails if the "name" field is missing', (done) => {
         const id = UUIDv4.generate<OrganizationId>();
         const createId = () => id;
-        const userId = UUIDv4.generate<AdminUserId>();
+        const userId = UUIDv4.generate<UserId>();
 
         const payload = { description: 'whatever' };
 
@@ -77,7 +77,7 @@ describe('Organization entity', () => {
       it('fails if the "name" field is too long', (done) => {
         const id = UUIDv4.generate<OrganizationId>();
         const createId = () => id;
-        const userId = UUIDv4.generate<AdminUserId>();
+        const userId = UUIDv4.generate<UserId>();
 
         const payload = {
           description: 'whatever',
@@ -98,7 +98,7 @@ describe('Organization entity', () => {
 
       it('fails if the "description" field is too long', (done) => {
         const id = UUIDv4.generate<OrganizationId>();
-        const userId = UUIDv4.generate<AdminUserId>();
+        const userId = UUIDv4.generate<UserId>();
 
         const createId = () => id;
         const payload = {

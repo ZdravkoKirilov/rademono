@@ -11,7 +11,7 @@
     "start:games-admin": "ng serve --project=games-admin --port 4000",
     "start:showcases": "ng serve --project=showcases --port 4001",
     "start:games-arena": "ng serve --project=games-arena --port 4002",
-    "start:apps": "npm run start:games-admin & npm run start:showcases & npm run start:games-arena",
+    "start:apps": "npm run start:games-admin & npm run start:games-arena",
     "build:ui:watch": "ng build --project=ui --watch",
     "build:ui": "ng build --project=ui",
     "start": "run-s build:ui start:apps",

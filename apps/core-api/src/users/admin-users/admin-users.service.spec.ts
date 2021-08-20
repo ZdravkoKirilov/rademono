@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import {
   Email,
   UUIDv4,
-  AdminUserTypes,
+  UserTypes,
   toRightObs,
   ParsingError,
   UnexpectedError,
@@ -22,7 +22,7 @@ const throwError = () => {
   throw new Error('This shouldn`t be reached');
 };
 
-describe('AdminUsersService', () => {
+describe(AdminUsersService.name, () => {
   let service: AdminUsersService;
 
   describe(AdminUsersService.prototype.requestLoginCode.name, () => {
@@ -37,7 +37,7 @@ describe('AdminUsersService', () => {
                 toRightObs({
                   public_id: UUIDv4.generate(),
                   email: Email.generate('email@email.com'),
-                  type: AdminUserTypes.standard,
+                  type: UserTypes.admin,
                 }),
               saveUser: () => toRightObs(undefined),
             } as Partial<AdminUserRepository>,
@@ -192,7 +192,7 @@ describe('AdminUsersService', () => {
                 toRightObs({
                   public_id: UUIDv4.generate(),
                   email: Email.generate('email@email.com'),
-                  type: AdminUserTypes.standard,
+                  type: UserTypes.standard,
                 }),
               saveUser: () => toRightObs(undefined),
             } as Partial<AdminUserRepository>,

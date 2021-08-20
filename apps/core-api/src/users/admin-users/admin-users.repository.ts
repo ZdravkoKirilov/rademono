@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import {
   Email,
-  PrivateAdminUser,
+  User,
   NanoId,
   UUIDv4,
   ParsingError,
@@ -44,9 +44,7 @@ type FindOneMatcher =
 export class AdminUserRepository {
   constructor(private repo: DbentityService<AdminUserDBModel>) {}
 
-  saveUser(
-    updatedUser: PrivateAdminUser,
-  ): Observable<Either<UnexpectedError, undefined>> {
+  saveUser(updatedUser: User): Observable<Either<UnexpectedError, undefined>> {
     return this.repo.save(updatedUser).pipe(
       mapEither(
         (err) => left(new UnexpectedError('Failed to save the user', err)),
@@ -62,9 +60,7 @@ export class AdminUserRepository {
 
   findUser(
     criteria: FindOneMatcher,
-  ): Observable<
-    Either<UnexpectedError | ParsingError, Option<PrivateAdminUser>>
-  > {
+  ): Observable<Either<UnexpectedError | ParsingError, Option<User>>> {
     return this.repo.findOne(criteria).pipe(
       switchMapEither(
         (err) => toLeftObs(new UnexpectedError('Failed to find the user', err)),
@@ -72,7 +68,7 @@ export class AdminUserRepository {
           if (isNil(res)) {
             return of(right(none));
           }
-          return PrivateAdminUser.toPrivateEntity(res).pipe(
+          return User.toPrivateEntity(res).pipe(
             map((res) => {
               if (isRight(res)) {
                 return right(some(res.right));

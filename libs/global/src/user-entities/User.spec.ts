@@ -3,31 +3,25 @@ import { get } from 'lodash/fp';
 import { add, sub } from 'date-fns';
 
 import { Email, NanoId, ParsingError, UUIDv4 } from '../types';
-import {
-  AdminUserId,
-  AdminUserTypes,
-  PrivateAdminUser,
-  SendCodeDto,
-  SignInDto,
-} from './AdminUser';
+import { UserId, UserTypes, User, SendCodeDto, SignInDto } from './User';
 
-describe(PrivateAdminUser.name, () => {
-  describe(PrivateAdminUser.create.name, () => {
+describe(User.name, () => {
+  describe(User.createAdminUser.name, () => {
     it('passes with correct data', (done) => {
       const payload = {
         email: Email.generate('email@gmail.com'),
       };
-      const publicId = UUIDv4.generate<AdminUserId>();
+      const publicId = UUIDv4.generate<UserId>();
       const createId = () => publicId;
 
-      PrivateAdminUser.create(payload, createId).subscribe((res) => {
+      User.createAdminUser(payload, createId).subscribe((res) => {
         expect(e.isRight(res)).toBe(true);
         expect(get('right', res)).toEqual({
           email: payload.email,
           public_id: publicId,
-          type: AdminUserTypes.standard,
+          type: UserTypes.admin,
         });
-        expect(get('right', res)).toBeInstanceOf(PrivateAdminUser);
+        expect(get('right', res)).toBeInstanceOf(User);
         done();
       });
     });
@@ -36,10 +30,10 @@ describe(PrivateAdminUser.name, () => {
       const payload = {
         email: Email.generate('email'),
       };
-      const publicId = UUIDv4.generate<AdminUserId>();
+      const publicId = UUIDv4.generate<UserId>();
       const createId = () => publicId;
 
-      PrivateAdminUser.create(payload, createId).subscribe((res) => {
+      User.createAdminUser(payload, createId).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -47,13 +41,34 @@ describe(PrivateAdminUser.name, () => {
     });
   });
 
-  describe(PrivateAdminUser.toSendCodeDto.name, () => {
+  describe(User.createUser.name, () => {
+    it('passes with correct data', (done) => {
+      const payload = {
+        email: Email.generate('email@gmail.com'),
+      };
+      const publicId = UUIDv4.generate<UserId>();
+      const createId = () => publicId;
+
+      User.createUser(payload, createId).subscribe((res) => {
+        expect(e.isRight(res)).toBe(true);
+        expect(get('right', res)).toEqual({
+          email: payload.email,
+          public_id: publicId,
+          type: UserTypes.standard,
+        });
+        expect(get('right', res)).toBeInstanceOf(User);
+        done();
+      });
+    });
+  });
+
+  describe(User.toSendCodeDto.name, () => {
     it('passes with correct data', (done) => {
       const payload = {
         email: 'email@gmail.com',
       };
 
-      PrivateAdminUser.toSendCodeDto(payload).subscribe((res) => {
+      User.toSendCodeDto(payload).subscribe((res) => {
         expect(e.isRight(res)).toBe(true);
         expect(get('right', res)).toEqual(payload);
         expect(get('right', res)).toBeInstanceOf(SendCodeDto);
@@ -66,7 +81,7 @@ describe(PrivateAdminUser.name, () => {
         email: 1,
       };
 
-      PrivateAdminUser.toSendCodeDto(payload).subscribe((res) => {
+      User.toSendCodeDto(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -76,7 +91,7 @@ describe(PrivateAdminUser.name, () => {
     it('fails when payload is not an object', (done) => {
       const payload = null as any;
 
-      PrivateAdminUser.toSendCodeDto(payload).subscribe((res) => {
+      User.toSendCodeDto(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -84,13 +99,13 @@ describe(PrivateAdminUser.name, () => {
     });
   });
 
-  describe(PrivateAdminUser.toSignInDto.name, () => {
+  describe(User.toSignInDto.name, () => {
     it('passes with correct data', (done) => {
       const payload = {
         code: NanoId.generate(),
       };
 
-      PrivateAdminUser.toSignInDto(payload).subscribe((res) => {
+      User.toSignInDto(payload).subscribe((res) => {
         expect(e.isRight(res)).toBe(true);
         expect(get('right', res)).toBeInstanceOf(SignInDto);
         expect(get('right', res)).toEqual(payload);
@@ -103,7 +118,7 @@ describe(PrivateAdminUser.name, () => {
         code: 1,
       };
 
-      PrivateAdminUser.toSignInDto(payload).subscribe((res) => {
+      User.toSignInDto(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -113,7 +128,7 @@ describe(PrivateAdminUser.name, () => {
     it('fails when payload is not an object', (done) => {
       const payload = null as any;
 
-      PrivateAdminUser.toSignInDto(payload).subscribe((res) => {
+      User.toSignInDto(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -121,45 +136,45 @@ describe(PrivateAdminUser.name, () => {
     });
   });
 
-  describe(PrivateAdminUser.toPrivateEntity.name, () => {
+  describe(User.toPrivateEntity.name, () => {
     it('passes with correct data and required fields only', (done) => {
-      const publicId = UUIDv4.generate<AdminUserId>();
+      const publicId = UUIDv4.generate<UserId>();
 
       const payload = {
         email: Email.generate('email@gmail.com'),
-        type: AdminUserTypes.standard,
+        type: UserTypes.admin,
         public_id: publicId,
       };
 
-      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
+      User.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isRight(res)).toBe(true);
         expect(get('right', res)).toEqual({
           email: payload.email,
           public_id: publicId,
-          type: AdminUserTypes.standard,
+          type: UserTypes.admin,
         });
-        expect(get('right', res)).toBeInstanceOf(PrivateAdminUser);
+        expect(get('right', res)).toBeInstanceOf(User);
         done();
       });
     });
 
     it('passes with correct data and required + optional fields', (done) => {
-      const publicId = UUIDv4.generate<AdminUserId>();
+      const publicId = UUIDv4.generate<UserId>();
       const loginCode = NanoId.generate();
 
-      const payload: PrivateAdminUser = {
+      const payload: User = {
         email: Email.generate('email@gmail.com'),
-        type: AdminUserTypes.standard,
+        type: UserTypes.admin,
         public_id: publicId,
         lastLogin: new Date(),
         loginCode: loginCode,
         loginCodeExpiration: new Date(),
       };
 
-      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
+      User.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isRight(res)).toBe(true);
         expect(get('right', res)).toEqual(payload);
-        expect(get('right', res)).toBeInstanceOf(PrivateAdminUser);
+        expect(get('right', res)).toBeInstanceOf(User);
         done();
       });
     });
@@ -167,7 +182,7 @@ describe(PrivateAdminUser.name, () => {
     it('fails if payload is not an object', (done) => {
       const payload = null as any;
 
-      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
+      User.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
@@ -175,18 +190,18 @@ describe(PrivateAdminUser.name, () => {
     });
 
     it('fails if email is missing', (done) => {
-      const publicId = UUIDv4.generate<AdminUserId>();
+      const publicId = UUIDv4.generate<UserId>();
       const loginCode = NanoId.generate();
 
-      const payload: Partial<PrivateAdminUser> = {
-        type: AdminUserTypes.standard,
+      const payload: Partial<User> = {
+        type: UserTypes.admin,
         public_id: publicId,
         lastLogin: new Date(),
         loginCode: loginCode,
         loginCodeExpiration: new Date(),
       };
 
-      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
+      User.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -195,10 +210,10 @@ describe(PrivateAdminUser.name, () => {
     });
 
     it('fails if type is missing', (done) => {
-      const publicId = UUIDv4.generate<AdminUserId>();
+      const publicId = UUIDv4.generate<UserId>();
       const loginCode = NanoId.generate();
 
-      const payload: Partial<PrivateAdminUser> = {
+      const payload: Partial<User> = {
         email: Email.generate('email@gmail.com'),
         public_id: publicId,
         lastLogin: new Date(),
@@ -206,7 +221,7 @@ describe(PrivateAdminUser.name, () => {
         loginCodeExpiration: new Date(),
       };
 
-      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
+      User.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -217,15 +232,15 @@ describe(PrivateAdminUser.name, () => {
     it('fails if public_id is missing', (done) => {
       const loginCode = NanoId.generate();
 
-      const payload: Partial<PrivateAdminUser> = {
+      const payload: Partial<User> = {
         email: Email.generate('email@gmail.com'),
-        type: AdminUserTypes.standard,
+        type: UserTypes.admin,
         lastLogin: new Date(),
         loginCode: loginCode,
         loginCodeExpiration: new Date(),
       };
 
-      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
+      User.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -234,19 +249,19 @@ describe(PrivateAdminUser.name, () => {
     });
 
     it('fails if lastLogin is invalid', (done) => {
-      const publicId = UUIDv4.generate<AdminUserId>();
+      const publicId = UUIDv4.generate<UserId>();
       const loginCode = NanoId.generate();
 
-      const payload: Partial<PrivateAdminUser> = {
+      const payload: Partial<User> = {
         email: Email.generate('email@gmail.com'),
-        type: AdminUserTypes.standard,
+        type: UserTypes.admin,
         lastLogin: 1 as any,
         public_id: publicId,
         loginCode: loginCode,
         loginCodeExpiration: new Date(),
       };
 
-      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
+      User.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -255,18 +270,18 @@ describe(PrivateAdminUser.name, () => {
     });
 
     it('fails if loginCode is invalid', (done) => {
-      const publicId = UUIDv4.generate<AdminUserId>();
+      const publicId = UUIDv4.generate<UserId>();
 
-      const payload: Partial<PrivateAdminUser> = {
+      const payload: Partial<User> = {
         email: Email.generate('email@gmail.com'),
-        type: AdminUserTypes.standard,
+        type: UserTypes.admin,
         lastLogin: new Date(),
         public_id: publicId,
         loginCode: '#ghghg' as any,
         loginCodeExpiration: new Date(),
       };
 
-      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
+      User.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -275,19 +290,19 @@ describe(PrivateAdminUser.name, () => {
     });
 
     it('fails if loginCodeExpiration is invalid', (done) => {
-      const publicId = UUIDv4.generate<AdminUserId>();
+      const publicId = UUIDv4.generate<UserId>();
       const loginCode = NanoId.generate();
 
-      const payload: Partial<PrivateAdminUser> = {
+      const payload: Partial<User> = {
         email: Email.generate('email@gmail.com'),
-        type: AdminUserTypes.standard,
+        type: UserTypes.admin,
         lastLogin: new Date(),
         public_id: publicId,
         loginCode: loginCode,
         loginCodeExpiration: 'whaat' as any,
       };
 
-      PrivateAdminUser.toPrivateEntity(payload).subscribe((res) => {
+      User.toPrivateEntity(payload).subscribe((res) => {
         expect(e.isLeft(res)).toBe(true);
         expect(get('left', res)).toBeInstanceOf(ParsingError);
         expect(get('left.errors', res).length).toBe(1);
@@ -296,20 +311,20 @@ describe(PrivateAdminUser.name, () => {
     });
   });
 
-  describe(PrivateAdminUser.addLoginCode.name, () => {
+  describe(User.addLoginCode.name, () => {
     it('produces correct entity', () => {
       const now = new Date();
       const expiration = add(now, { minutes: 30 });
       const code = NanoId.generate();
       const createCode = () => code;
 
-      const entity: PrivateAdminUser = {
+      const entity: User = {
         email: Email.generate('email@gmail.com'),
-        type: AdminUserTypes.standard,
-        public_id: UUIDv4.generate<AdminUserId>(),
+        type: UserTypes.admin,
+        public_id: UUIDv4.generate<UserId>(),
       };
 
-      const result = PrivateAdminUser.addLoginCode(entity, now, createCode);
+      const result = User.addLoginCode(entity, now, createCode);
 
       expect(result).toEqual({
         ...entity,
@@ -319,20 +334,20 @@ describe(PrivateAdminUser.name, () => {
     });
   });
 
-  describe(PrivateAdminUser.signIn.name, () => {
+  describe(User.signIn.name, () => {
     it('modifies the user entity', () => {
-      const publicId = UUIDv4.generate<AdminUserId>();
+      const publicId = UUIDv4.generate<UserId>();
       const now = new Date();
 
-      const payload: PrivateAdminUser = {
+      const payload: User = {
         email: Email.generate('email@email.com'),
-        type: AdminUserTypes.standard,
+        type: UserTypes.admin,
         public_id: publicId,
         loginCode: NanoId.generate(),
         loginCodeExpiration: new Date(),
       };
 
-      const result = PrivateAdminUser.signIn(payload, now);
+      const result = User.signIn(payload, now);
 
       expect(result).toEqual({
         email: payload.email,
@@ -343,34 +358,34 @@ describe(PrivateAdminUser.name, () => {
     });
   });
 
-  describe(PrivateAdminUser.verifyLoginCode.name, () => {
+  describe(User.verifyLoginCode.name, () => {
     it('passes when the login code is fresh', () => {
       const now = new Date();
 
-      const entity: PrivateAdminUser = {
+      const entity: User = {
         email: Email.generate('email@email.com'),
-        type: AdminUserTypes.standard,
-        public_id: UUIDv4.generate<AdminUserId>(),
+        type: UserTypes.admin,
+        public_id: UUIDv4.generate<UserId>(),
         loginCode: NanoId.generate(),
         loginCodeExpiration: add(now, { hours: 5 }),
       };
 
-      const isValid = PrivateAdminUser.verifyLoginCode(entity, now);
+      const isValid = User.verifyLoginCode(entity, now);
       expect(isValid).toBe(true);
     });
 
     it('fails when the login code has expired', () => {
       const now = new Date();
 
-      const entity: PrivateAdminUser = {
+      const entity: User = {
         email: Email.generate('email@email.com'),
-        type: AdminUserTypes.standard,
-        public_id: UUIDv4.generate<AdminUserId>(),
+        type: UserTypes.admin,
+        public_id: UUIDv4.generate<UserId>(),
         loginCode: NanoId.generate(),
         loginCodeExpiration: sub(now, { hours: 5 }),
       };
 
-      const isValid = PrivateAdminUser.verifyLoginCode(entity, now);
+      const isValid = User.verifyLoginCode(entity, now);
       expect(isValid).toBe(false);
     });
   });

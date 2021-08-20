@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import {
-  AdminUserId,
+  UserId,
   DomainError,
   Either,
   isLeft,
@@ -34,7 +34,7 @@ export class OrganizationService {
 
   create(
     payload: unknown,
-    userId: AdminUserId,
+    userId: UserId,
   ): Observable<
     Either<UnexpectedError | DomainError | ParsingError, Organization>
   > {
@@ -76,7 +76,7 @@ export class OrganizationService {
   }
 
   getAllForUser(
-    userId: AdminUserId,
+    userId: UserId,
   ): Observable<Either<UnexpectedError | ParsingError, Organization[]>> {
     return this.repo.getOrganizations(userId).pipe(
       map((mbOrgs) => {

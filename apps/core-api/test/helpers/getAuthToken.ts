@@ -2,11 +2,11 @@ import jwt from 'jsonwebtoken';
 import { INestApplication } from '@nestjs/common';
 
 import {
-  AdminUserId,
+  UserId,
   breakTest,
   Email,
   JWT,
-  PrivateAdminUser,
+  User,
   UUIDv4,
   isLeft,
 } from '@end/global';
@@ -24,9 +24,9 @@ export const createTestUser = async (
     await repository.deleteAll();
   }
 
-  const userId = UUIDv4.generate<AdminUserId>();
+  const userId = UUIDv4.generate<UserId>();
 
-  const mbEntity = await PrivateAdminUser.create(
+  const mbEntity = await User.createAdminUser(
     {
       email: Email.generate(email),
     },
@@ -39,7 +39,7 @@ export const createTestUser = async (
 
   await repository.saveUser(mbEntity.right).toPromise();
 
-  const mbToken = await PrivateAdminUser.generateToken(
+  const mbToken = await User.generateToken(
     mbEntity.right,
     () => jwt.sign({ email: mbEntity.right.email }, 'secret') as JWT,
   ).toPromise();

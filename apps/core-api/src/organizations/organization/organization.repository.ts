@@ -9,7 +9,7 @@ import {
   switchMapEither,
   mapEither,
   PrivateAdminGroup,
-  AdminUserId,
+  UserId,
   Either,
   right,
   isLeft,
@@ -43,7 +43,7 @@ export class OrganizationRepository {
   constructor(private repo: DbentityService<OrganizationDBModel>) {}
 
   getOrganizations(
-    userId: AdminUserId,
+    userId: UserId,
   ): Observable<Either<ParsingError | UnexpectedError, PrivateOrganization[]>> {
     const query = { 'admin_group.profiles': { $elemMatch: { user: userId } } };
 
@@ -84,7 +84,7 @@ export class OrganizationRepository {
   }
 
   /*   getOrganization2(
-    userId: AdminUserId,
+    userId: UserId,
   ): Observable<
     e.Either<ParsingError | UnexpectedError, PrivateOrganization[]>
   > {

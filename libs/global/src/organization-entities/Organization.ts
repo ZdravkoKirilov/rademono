@@ -26,7 +26,7 @@ import {
   CreateAdminGroupDto,
   PrivateAdminGroup,
 } from './AdminGroup';
-import { AdminUserId } from 'src/user-entities';
+import { UserId } from 'src/user-entities';
 import { CreateAdminProfileDto, PrivateAdminProfile } from './AdminProfile';
 
 export type OrganizationId = Tagged<'OrganizationId', UUIDv4>;
@@ -79,7 +79,7 @@ export class PrivateOrganization extends BasicFields {
   static create(
     payload: unknown,
     createId: () => OrganizationId,
-    userId: AdminUserId,
+    userId: UserId,
   ): Observable<e.Either<ParsingError, PrivateOrganization>> {
     const organizationId = createId();
 

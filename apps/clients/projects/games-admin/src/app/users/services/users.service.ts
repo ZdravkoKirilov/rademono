@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import {
-  AdminUser,
+  PublicUser,
   BehaviorSubject,
   Observable,
   of,
@@ -33,15 +33,15 @@ export class UsersService {
     private storage: LocalStorageService,
   ) {}
 
-  private _user$ = new BehaviorSubject<AdminUser | null>(null);
+  private _user$ = new BehaviorSubject<PublicUser | null>(null);
 
   user$ = this._user$.asObservable();
 
   private userQuery$: Observable<
-    QueryResponse<AdminUser | null, RequestError>
+    QueryResponse<PublicUser | null, RequestError>
   > | null;
 
-  getOrFetchUser(): Observable<QueryResponse<AdminUser | null, RequestError>> {
+  getOrFetchUser(): Observable<QueryResponse<PublicUser | null, RequestError>> {
     this.userQuery$ =
       this.userQuery$ ||
       this.user$.pipe(
@@ -64,10 +64,10 @@ export class UsersService {
   }
 
   private fetchUser() {
-    return useQuery<AdminUser, RequestError>(() =>
+    return useQuery<PublicUser, RequestError>(() =>
       this.http.get({
         url: endpoints.getCurrentUser,
-        responseShape: AdminUser,
+        responseShape: PublicUser,
       }),
     ).pipe(
       tap((res) => {

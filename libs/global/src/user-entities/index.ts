@@ -1,10 +1,9 @@
 export {
-  AdminUser,
-  PrivateAdminUser,
-  AdminUserTypes,
+  PublicUser,
+  User,
+  UserTypes,
   TokenDto,
   SendCodeDto,
   SignInDto,
-  AdminUserId,
-} from './AdminUser';
-export * from './User';
+  UserId,
+} from './User';

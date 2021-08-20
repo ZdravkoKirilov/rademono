@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import express from 'express';
 import { join } from 'path';
+import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
 
@@ -17,6 +18,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api/swagger', app, document);
 
+  app.use(cookieParser());
   app.enableCors({ origin: ['http://localhost:4000'] });
 
   const staticUrl = join(process.cwd(), 'uploads');

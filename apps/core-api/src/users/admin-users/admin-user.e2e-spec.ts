@@ -5,11 +5,11 @@ import jwt from 'jsonwebtoken';
 
 import { Connection, DATABASE_CONNECTION } from '@app/database';
 import {
-  PrivateAdminUser,
-  AdminUserTypes,
+  User,
+  UserTypes,
   Email,
   UUIDv4,
-  AdminUserId,
+  UserId,
   isLeft,
   isRight,
   isNone,
@@ -49,9 +49,9 @@ describe('AdminUserController (e2e)', () => {
 
   describe('/admin-users/current (GET)', () => {
     it('returns the current user given a valid auth token', async (done) => {
-      const userId = UUIDv4.generate<AdminUserId>();
+      const userId = UUIDv4.generate<UserId>();
 
-      const mbEntity = await PrivateAdminUser.create(
+      const mbEntity = await User.createAdminUser(
         {
           email: Email.generate('email3@email.com'),
         },
@@ -64,7 +64,7 @@ describe('AdminUserController (e2e)', () => {
 
       await repository.saveUser(mbEntity.right).toPromise();
 
-      const mbToken = await PrivateAdminUser.generateToken(
+      const mbToken = await User.generateToken(
         mbEntity.right,
         jwt.sign,
       ).toPromise();
@@ -82,7 +82,7 @@ describe('AdminUserController (e2e)', () => {
 
       expect(body).toEqual({
         id: userId,
-        type: AdminUserTypes.standard,
+        type: UserTypes.admin,
         email: 'email3@email.com',
       });
 
@@ -166,7 +166,7 @@ describe('AdminUserController (e2e)', () => {
           .expect(201)
           .send({ code: loginCode });
 
-        const decoded = await PrivateAdminUser.decodeToken(
+        const decoded = await User.decodeToken(
           body.token,
           jwt.verify,
         ).toPromise();

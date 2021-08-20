@@ -6,15 +6,11 @@ import {
   HttpStatus,
   HttpCode,
   UseGuards,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 
-import {
-  isLeft,
-  PrivateAdminUser,
-  UnexpectedError,
-  catchError,
-  map,
-} from '@end/global';
+import { isLeft, User, UnexpectedError, catchError, map } from '@end/global';
 
 import {
   isKnownError,
@@ -32,12 +28,15 @@ export class AdminUsersController {
 
   @Get('current')
   @UseGuards(AuthGuard)
-  getCurrentUser(@WithUser() user: PrivateAdminUser) {
-    return PrivateAdminUser.exposePublic(user || {});
+  getCurrentUser(@WithUser() user: User) {
+    return User.exposePublic(user || {});
   }
 
   @Post('token')
-  requestAuthToken(@Body() payload: unknown) {
+  requestAuthToken(
+    @Body() payload: unknown,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     return this.adminUsersService.requestAuthToken(payload).pipe(
       map((result) => {
         if (isLeft(result)) {
@@ -70,7 +69,16 @@ export class AdminUsersController {
             }
           }
         }
-        return result.right;
+        const { accessToken, refreshToken } = result.right;
+
+        /* refresh token is valid for 48 hours */
+        res.cookie('refreshToken', refreshToken.token, {
+          httpOnly: true,
+          expires: new Date(new Date().getTime() + 48 * 60 * 60 * 1000),
+          sameSite: 'none',
+        });
+
+        return accessToken;
       }),
       catchError((err) => {
         if (isKnownError(err)) {
