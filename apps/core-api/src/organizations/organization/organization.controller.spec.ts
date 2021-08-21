@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import {
   DomainError,
   ParsingError,
-  PrivateAdminUser,
+  User,
   toLeftObs,
   toRightObs,
   UnexpectedError,
@@ -12,7 +12,7 @@ import {
 
 import { KnownErrors } from '@app/shared';
 
-import { AuthGuard } from '../../users/admin-users';
+import { AuthGuard } from '../../users';
 import { OrganizationController } from './organization.controller';
 import { OrganizationService } from './organization.service';
 
@@ -23,7 +23,7 @@ describe(OrganizationController.name, () => {
     it('passes when OrganizationService.create passes', async (done) => {
       const user = {
         public_id: UUIDv4.generate(),
-      } as PrivateAdminUser;
+      } as User;
 
       const data = {
         name: 'Monster inc',
@@ -59,7 +59,7 @@ describe(OrganizationController.name, () => {
     it('fails when OrganizationService.create randomly throws', async (done) => {
       const user = {
         public_id: UUIDv4.generate(),
-      } as PrivateAdminUser;
+      } as User;
 
       const data = {
         name: 'Monster inc',
@@ -99,7 +99,7 @@ describe(OrganizationController.name, () => {
     it('fails when OrganizationService.create returns an UnexpectedError', async (done) => {
       const user = {
         public_id: UUIDv4.generate(),
-      } as PrivateAdminUser;
+      } as User;
 
       const data = {
         name: 'Monster inc',
@@ -136,7 +136,7 @@ describe(OrganizationController.name, () => {
     it('fails when OrganizationService.create returns a DomainError', async (done) => {
       const user = {
         public_id: UUIDv4.generate(),
-      } as PrivateAdminUser;
+      } as User;
 
       const data = {
         name: 'Monster inc',
@@ -173,7 +173,7 @@ describe(OrganizationController.name, () => {
     it('fails when OrganizationService.create returns a ParsingError', async (done) => {
       const user = {
         public_id: UUIDv4.generate(),
-      } as PrivateAdminUser;
+      } as User;
 
       const data = {
         name: 'Monster inc',
@@ -212,7 +212,7 @@ describe(OrganizationController.name, () => {
     it('passes when the service passes', async (done) => {
       const user = {
         public_id: UUIDv4.generate(),
-      } as PrivateAdminUser;
+      } as User;
 
       const module: TestingModule = await Test.createTestingModule({
         controllers: [OrganizationController],
@@ -242,7 +242,7 @@ describe(OrganizationController.name, () => {
     it('fails when the service returns an UnexpectedError', async (done) => {
       const user = {
         public_id: UUIDv4.generate(),
-      } as PrivateAdminUser;
+      } as User;
 
       const module: TestingModule = await Test.createTestingModule({
         controllers: [OrganizationController],
@@ -274,7 +274,7 @@ describe(OrganizationController.name, () => {
     it('fails when the service returns a ParsingError', async (done) => {
       const user = {
         public_id: UUIDv4.generate(),
-      } as PrivateAdminUser;
+      } as User;
 
       const module: TestingModule = await Test.createTestingModule({
         controllers: [OrganizationController],

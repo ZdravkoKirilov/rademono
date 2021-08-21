@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { DatabaseModule } from '@app/database';
 import { SharedModule } from '@app/shared';
-import { AdminUsersModule } from '@app/users/admin-users';
+import { UsersModule } from '@app/users';
 
 import { COLLECTION_DB } from './constants';
 import { CollectionRepository } from './collection.repository';
@@ -15,7 +15,7 @@ import { CollectionService } from './collection.service';
   imports: [
     DatabaseModule.forFeature(COLLECTION_DB),
     SharedModule,
-    AdminUsersModule,
+    UsersModule,
   ],
 })
 export class CollectionModule {}

@@ -11,7 +11,7 @@ import {
 
 import { KnownErrors } from '@app/shared';
 
-import { AuthGuard } from '../../users/admin-users';
+import { AuthGuard } from '../../users';
 import { CollectionController } from './collection.controller';
 import { CollectionService } from './collection.service';
 

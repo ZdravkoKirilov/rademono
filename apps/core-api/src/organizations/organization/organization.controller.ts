@@ -1,12 +1,6 @@
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 
-import {
-  User,
-  UnexpectedError,
-  isLeft,
-  map,
-  catchError,
-} from '@end/global';
+import { User, UnexpectedError, isLeft, map, catchError } from '@end/global';
 import {
   isKnownError,
   toBadRequest,
@@ -14,7 +8,7 @@ import {
   toUnexpectedError,
 } from '@app/shared';
 
-import { AuthGuard, WithUser } from '@app/users/admin-users';
+import { AuthGuard, WithUser } from '@app/users';
 import { OrganizationService } from './organization.service';
 
 @Controller('organization')

@@ -15,7 +15,7 @@ import {
   isNone,
 } from '@end/global';
 
-import { AppModule } from '../../app.module';
+import { AppModule } from '../app.module';
 import { AdminUserRepository } from './admin-users.repository';
 import { ADMIN_USERS_COLLECTION } from './constants';
 

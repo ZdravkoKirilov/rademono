@@ -8,7 +8,7 @@ import {
   UUIDv4,
 } from '@end/global';
 import { KnownErrors } from '@app/shared';
-import { AuthGuard } from '@app/users/admin-users';
+import { AuthGuard } from '@app/users';
 
 import { AssetService } from './asset.service';
 import { AssetsController } from './assets.controller';

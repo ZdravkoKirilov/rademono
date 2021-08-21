@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { SharedModule } from '@app/shared';
-import { AdminUsersModule } from '@app/users/admin-users';
+import { UsersModule } from '@app/users';
 
 import { OrganizationService } from './organization.service';
 import { OrganizationController } from './organization.controller';
@@ -16,7 +16,7 @@ import { ORGANIZATIONS_COLLECTION } from './constants';
   providers: [OrganizationService, OrganizationRepository],
   imports: [
     SharedModule,
-    AdminUsersModule,
+    UsersModule,
     AdminProfileModule,
     ProfileGroupModule,
     DatabaseModule.forFeature(ORGANIZATIONS_COLLECTION),

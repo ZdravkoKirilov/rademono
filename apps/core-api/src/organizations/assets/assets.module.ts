@@ -4,7 +4,7 @@ import { diskStorage } from 'multer';
 
 import { DatabaseModule } from '@app/database';
 import { SharedModule } from '@app/shared';
-import { AdminUsersModule } from '@app/users/admin-users';
+import { UsersModule } from '@app/users';
 import { AppConfigModule, AppConfigService } from '@app/config';
 
 import { AssetsController } from './assets.controller';
@@ -18,7 +18,7 @@ import { applyFileNameRules } from './file-rules';
   controllers: [AssetsController],
   imports: [
     DatabaseModule.forFeature(ASSETS_DB),
-    AdminUsersModule,
+    UsersModule,
     SharedModule,
     MulterModule.registerAsync({
       imports: [AppConfigModule],

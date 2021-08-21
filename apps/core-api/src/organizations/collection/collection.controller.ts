@@ -3,7 +3,7 @@ import { Controller, Post, Body, UseGuards, Get, Param } from '@nestjs/common';
 
 import { isKnownError, toBadRequest, toUnexpectedError } from '@app/shared';
 
-import { AuthGuard } from '@app/users/admin-users';
+import { AuthGuard } from '@app/users';
 import { CollectionService } from './collection.service';
 
 @Controller('organization/:organizationId/collection')

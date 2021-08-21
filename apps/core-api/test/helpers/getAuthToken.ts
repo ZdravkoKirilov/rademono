@@ -11,7 +11,7 @@ import {
   isLeft,
 } from '@end/global';
 
-import { AdminUserRepository } from '../../src/users/admin-users/admin-users.repository';
+import { AdminUserRepository } from '../../src/users/admin-users.repository';
 
 export const createTestUser = async (
   module: INestApplication,

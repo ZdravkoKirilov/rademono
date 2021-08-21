@@ -12,7 +12,7 @@ import {
 
 import { isKnownError, toBadRequest, toUnexpectedError } from '@app/shared';
 import { catchError, isLeft, map, UnexpectedError } from '@end/global';
-import { AuthGuard } from '@app/users/admin-users';
+import { AuthGuard } from '@app/users';
 
 import { applyImageRules } from './file-rules';
 import { AssetService } from './asset.service';
