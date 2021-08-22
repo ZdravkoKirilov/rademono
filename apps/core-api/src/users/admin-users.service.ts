@@ -23,9 +23,9 @@ import {
   catchError,
   map,
 } from '@end/global';
+import { EmailService } from '@app/emails';
 
 import { AdminUserRepository } from './admin-users.repository';
-import { EmailService } from '@app/emails';
 
 @Injectable()
 export class AdminUsersService {
@@ -156,7 +156,7 @@ export class AdminUsersService {
             }
 
             if (isNone(maybeUser.right)) {
-              return User.createAdminUser(dto.right);
+              return User.createUser(dto.right);
             }
 
             return toRightObs(maybeUser.right.value);

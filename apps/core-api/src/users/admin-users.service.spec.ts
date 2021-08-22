@@ -37,7 +37,7 @@ describe(AdminUsersService.name, () => {
                 toRightObs({
                   public_id: UUIDv4.generate(),
                   email: Email.generate('email@email.com'),
-                  type: UserTypes.admin,
+                  type: UserTypes.standard,
                 }),
               saveUser: () => toRightObs(undefined),
             } as Partial<AdminUserRepository>,

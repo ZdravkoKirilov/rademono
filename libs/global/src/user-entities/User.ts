@@ -35,14 +35,13 @@ import {
 export type UserId = Nominal<UUIDv4>;
 
 /**
- * Superusers are basically part of the product team, while admin/standard users
+ * Superusers are basically part of the product team, while standard users
  * are real clients. Superusers can help clients with setups and support
  * problems because they have access to everything.
  * Superusers can only be created via manual database update.
  */
 export enum UserTypes {
   superuser = 'superuser',
-  admin = 'admin',
   standard = 'standard',
 }
 
@@ -101,26 +100,6 @@ export class User {
 
   static toTokenDto(payload: unknown) {
     return parseAndValidateUnknown(payload, TokenDto);
-  }
-
-  static createAdminUser(
-    payload: SendCodeDto,
-    createId: () => UserId = UUIDv4.generate,
-  ): Observable<e.Either<ParsingError, User>> {
-    return parseAndValidateObject(payload, SendCodeDto).pipe(
-      map((result) => {
-        if (e.isRight(result)) {
-          const plain: User = {
-            ...result.right,
-            public_id: createId(),
-            type: UserTypes.admin,
-          };
-
-          return e.right(transformToClass(User, plain));
-        }
-        return result;
-      }),
-    );
   }
 
   static createUser(

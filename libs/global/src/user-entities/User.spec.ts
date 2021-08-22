@@ -6,41 +6,6 @@ import { Email, NanoId, ParsingError, UUIDv4 } from '../types';
 import { UserId, UserTypes, User, SendCodeDto, SignInDto } from './User';
 
 describe(User.name, () => {
-  describe(User.createAdminUser.name, () => {
-    it('passes with correct data', (done) => {
-      const payload = {
-        email: Email.generate('email@gmail.com'),
-      };
-      const publicId = UUIDv4.generate<UserId>();
-      const createId = () => publicId;
-
-      User.createAdminUser(payload, createId).subscribe((res) => {
-        expect(e.isRight(res)).toBe(true);
-        expect(get('right', res)).toEqual({
-          email: payload.email,
-          public_id: publicId,
-          type: UserTypes.admin,
-        });
-        expect(get('right', res)).toBeInstanceOf(User);
-        done();
-      });
-    });
-
-    it('fails when email is invalid', (done) => {
-      const payload = {
-        email: Email.generate('email'),
-      };
-      const publicId = UUIDv4.generate<UserId>();
-      const createId = () => publicId;
-
-      User.createAdminUser(payload, createId).subscribe((res) => {
-        expect(e.isLeft(res)).toBe(true);
-        expect(get('left', res)).toBeInstanceOf(ParsingError);
-        done();
-      });
-    });
-  });
-
   describe(User.createUser.name, () => {
     it('passes with correct data', (done) => {
       const payload = {
@@ -57,6 +22,20 @@ describe(User.name, () => {
           type: UserTypes.standard,
         });
         expect(get('right', res)).toBeInstanceOf(User);
+        done();
+      });
+    });
+
+    it('fails when email is invalid', (done) => {
+      const payload = {
+        email: Email.generate('email'),
+      };
+      const publicId = UUIDv4.generate<UserId>();
+      const createId = () => publicId;
+
+      User.createUser(payload, createId).subscribe((res) => {
+        expect(e.isLeft(res)).toBe(true);
+        expect(get('left', res)).toBeInstanceOf(ParsingError);
         done();
       });
     });
@@ -142,7 +121,7 @@ describe(User.name, () => {
 
       const payload = {
         email: Email.generate('email@gmail.com'),
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         public_id: publicId,
       };
 
@@ -151,7 +130,7 @@ describe(User.name, () => {
         expect(get('right', res)).toEqual({
           email: payload.email,
           public_id: publicId,
-          type: UserTypes.admin,
+          type: UserTypes.standard,
         });
         expect(get('right', res)).toBeInstanceOf(User);
         done();
@@ -164,7 +143,7 @@ describe(User.name, () => {
 
       const payload: User = {
         email: Email.generate('email@gmail.com'),
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         public_id: publicId,
         lastLogin: new Date(),
         loginCode: loginCode,
@@ -194,7 +173,7 @@ describe(User.name, () => {
       const loginCode = NanoId.generate();
 
       const payload: Partial<User> = {
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         public_id: publicId,
         lastLogin: new Date(),
         loginCode: loginCode,
@@ -234,7 +213,7 @@ describe(User.name, () => {
 
       const payload: Partial<User> = {
         email: Email.generate('email@gmail.com'),
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         lastLogin: new Date(),
         loginCode: loginCode,
         loginCodeExpiration: new Date(),
@@ -254,7 +233,7 @@ describe(User.name, () => {
 
       const payload: Partial<User> = {
         email: Email.generate('email@gmail.com'),
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         lastLogin: 1 as any,
         public_id: publicId,
         loginCode: loginCode,
@@ -274,7 +253,7 @@ describe(User.name, () => {
 
       const payload: Partial<User> = {
         email: Email.generate('email@gmail.com'),
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         lastLogin: new Date(),
         public_id: publicId,
         loginCode: '#ghghg' as any,
@@ -295,7 +274,7 @@ describe(User.name, () => {
 
       const payload: Partial<User> = {
         email: Email.generate('email@gmail.com'),
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         lastLogin: new Date(),
         public_id: publicId,
         loginCode: loginCode,
@@ -320,7 +299,7 @@ describe(User.name, () => {
 
       const entity: User = {
         email: Email.generate('email@gmail.com'),
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         public_id: UUIDv4.generate<UserId>(),
       };
 
@@ -341,7 +320,7 @@ describe(User.name, () => {
 
       const payload: User = {
         email: Email.generate('email@email.com'),
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         public_id: publicId,
         loginCode: NanoId.generate(),
         loginCodeExpiration: new Date(),
@@ -364,7 +343,7 @@ describe(User.name, () => {
 
       const entity: User = {
         email: Email.generate('email@email.com'),
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         public_id: UUIDv4.generate<UserId>(),
         loginCode: NanoId.generate(),
         loginCodeExpiration: add(now, { hours: 5 }),
@@ -379,7 +358,7 @@ describe(User.name, () => {
 
       const entity: User = {
         email: Email.generate('email@email.com'),
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         public_id: UUIDv4.generate<UserId>(),
         loginCode: NanoId.generate(),
         loginCodeExpiration: sub(now, { hours: 5 }),

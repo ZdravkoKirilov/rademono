@@ -26,7 +26,7 @@ export const createTestUser = async (
 
   const userId = UUIDv4.generate<UserId>();
 
-  const mbEntity = await User.createAdminUser(
+  const mbEntity = await User.createUser(
     {
       email: Email.generate(email),
     },

@@ -51,7 +51,7 @@ describe('AdminUserController (e2e)', () => {
     it('returns the current user given a valid auth token', async (done) => {
       const userId = UUIDv4.generate<UserId>();
 
-      const mbEntity = await User.createAdminUser(
+      const mbEntity = await User.createUser(
         {
           email: Email.generate('email3@email.com'),
         },
@@ -82,7 +82,7 @@ describe('AdminUserController (e2e)', () => {
 
       expect(body).toEqual({
         id: userId,
-        type: UserTypes.admin,
+        type: UserTypes.standard,
         email: 'email3@email.com',
       });
 
