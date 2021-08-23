@@ -22,18 +22,11 @@ import {
   map,
   catchError,
   of,
+  Primitive,
 } from '@end/global';
 import { DbentityService } from '@app/database';
 
-type AdminUserDBModel = {
-  id?: number;
-  public_id: string;
-  email?: string;
-  loginCode?: string;
-  loginCodeExpiration?: Date;
-  lastLogin?: Date;
-  type?: string;
-};
+type UserDBModel = Primitive<User>;
 
 type FindOneMatcher =
   | { email: Email }
@@ -41,8 +34,8 @@ type FindOneMatcher =
   | { public_id: UUIDv4 };
 
 @Injectable()
-export class AdminUserRepository {
-  constructor(private repo: DbentityService<AdminUserDBModel>) {}
+export class UserRepository {
+  constructor(private repo: DbentityService<UserDBModel>) {}
 
   saveUser(updatedUser: User): Observable<Either<UnexpectedError, undefined>> {
     return this.repo.save(updatedUser).pipe(

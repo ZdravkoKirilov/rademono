@@ -1,4 +1,4 @@
-import { catchError, isLeft, map, UnexpectedError } from '@end/global';
+import { ApiUrls, catchError, isLeft, map, UnexpectedError } from '@end/global';
 import { Controller, Post, Body, UseGuards, Get, Param } from '@nestjs/common';
 
 import { isKnownError, toBadRequest, toUnexpectedError } from '@app/shared';
@@ -6,11 +6,11 @@ import { isKnownError, toBadRequest, toUnexpectedError } from '@app/shared';
 import { AuthGuard } from '@app/users';
 import { CollectionService } from './collection.service';
 
-@Controller('organization/:organizationId/collection')
+@Controller()
 export class CollectionController {
   constructor(private readonly collectionService: CollectionService) {}
 
-  @Post()
+  @Post(ApiUrls.collections)
   @UseGuards(AuthGuard)
   create(
     @Body() payload: unknown,
@@ -58,7 +58,7 @@ export class CollectionController {
     );
   }
 
-  @Get()
+  @Get(ApiUrls.collections)
   @UseGuards(AuthGuard)
   getAll(@Param('organizationId') organizationId: unknown) {
     return this.collectionService.getAll(organizationId).pipe(

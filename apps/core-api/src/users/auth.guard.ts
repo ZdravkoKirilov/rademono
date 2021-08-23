@@ -17,7 +17,7 @@ import {
 } from '@end/global';
 import { isKnownError, toUnauthorizedError } from '@app/shared';
 
-import { AdminUserRepository } from './admin-users.repository';
+import { UserRepository } from './users.repository';
 
 export type RequestWithUser = Request & { user: User };
 
@@ -30,7 +30,7 @@ const forbid = () => {
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private repo: AdminUserRepository) {}
+  constructor(private repo: UserRepository) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: RequestWithUser = context.switchToHttp().getRequest();
@@ -53,9 +53,7 @@ export class AuthGuard implements CanActivate {
           },
         ),
         switchMap(
-          (
-            mbDecoded,
-          ): Observable<Either<unknown, Option<User>>> => {
+          (mbDecoded): Observable<Either<unknown, Option<User>>> => {
             if (isLeft(mbDecoded)) {
               return toLeftObs(false);
             }

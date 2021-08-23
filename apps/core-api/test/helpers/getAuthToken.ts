@@ -11,14 +11,14 @@ import {
   isLeft,
 } from '@end/global';
 
-import { AdminUserRepository } from '../../src/users/admin-users.repository';
+import { UserRepository } from '../../src/users/users.repository';
 
 export const createTestUser = async (
   module: INestApplication,
   email: string,
   deleteAll = true,
 ) => {
-  const repository = module.get(AdminUserRepository);
+  const repository = module.get(UserRepository);
 
   if (deleteAll) {
     await repository.deleteAll();

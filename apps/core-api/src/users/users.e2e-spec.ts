@@ -13,15 +13,17 @@ import {
   isLeft,
   isRight,
   isNone,
+  ApiUrls,
 } from '@end/global';
 
 import { AppModule } from '../app.module';
-import { AdminUserRepository } from './admin-users.repository';
+import { UserRepository } from './users.repository';
 import { ADMIN_USERS_COLLECTION } from './constants';
+import { UsersController } from './users.controller';
 
-describe('AdminUserController (e2e)', () => {
+describe(UsersController.name + ' (e2e)', () => {
   let app: INestApplication;
-  let repository: AdminUserRepository;
+  let repository: UserRepository;
   let connection: Connection;
 
   const throwError = () => {
@@ -40,14 +42,14 @@ describe('AdminUserController (e2e)', () => {
     connection = app.get(DATABASE_CONNECTION);
     await connection.collection(ADMIN_USERS_COLLECTION).deleteMany({});
     await app.init();
-    repository = moduleFixture.get(AdminUserRepository);
+    repository = moduleFixture.get(UserRepository);
   });
 
   afterAll(async () => {
     await app.close();
   });
 
-  describe('/admin-users/current (GET)', () => {
+  describe(ApiUrls.getCurrentUser + ' (GET)', () => {
     it('returns the current user given a valid auth token', async (done) => {
       const userId = UUIDv4.generate<UserId>();
 
@@ -76,7 +78,7 @@ describe('AdminUserController (e2e)', () => {
       const token = mbToken.right.token;
 
       const { body } = await request(app.getHttpServer())
-        .get('/admin-users/current')
+        .get(ApiUrls.getCurrentUser)
         .set('Authorization', token)
         .expect(200);
 
@@ -91,7 +93,7 @@ describe('AdminUserController (e2e)', () => {
 
     it('returns Forbidden error when the token is invalid', async (done) => {
       const { body } = await request(app.getHttpServer())
-        .get('/admin-users/current')
+        .get(ApiUrls.getCurrentUser)
         .set('Authorization', 'whatever')
         .expect(401);
 
@@ -104,10 +106,10 @@ describe('AdminUserController (e2e)', () => {
     });
   });
 
-  describe('/admin-users/request-login-code (POST)', () => {
+  describe(ApiUrls.getLoginCode + ' (POST)', () => {
     it('succeeds with correct data', async (done) => {
       const { body } = await request(app.getHttpServer())
-        .post('/admin-users/request-login-code')
+        .post(ApiUrls.getLoginCode)
         .expect(204)
         .send({ email: 'email@email.com' });
 
@@ -117,7 +119,7 @@ describe('AdminUserController (e2e)', () => {
 
     it('fails with invalid email', async (done) => {
       const { body } = await request(app.getHttpServer())
-        .post('/admin-users/request-login-code')
+        .post(ApiUrls.getLoginCode)
         .send({ email: 'email' })
         .expect(400);
 
@@ -137,10 +139,10 @@ describe('AdminUserController (e2e)', () => {
     });
   });
 
-  describe('/admin-users/token (POST)', () => {
+  describe(ApiUrls.getAuthToken + ' (POST)', () => {
     it('returns a token given a valid login code', async (done) => {
       await request(app.getHttpServer())
-        .post('/admin-users/request-login-code')
+        .post(ApiUrls.getLoginCode)
         .expect(204)
         .send({ email: 'email2@email.com' });
 
@@ -162,7 +164,7 @@ describe('AdminUserController (e2e)', () => {
         const loginCode = mbUser.right.value.loginCode;
 
         const { body } = await request(app.getHttpServer())
-          .post('/admin-users/token')
+          .post(ApiUrls.getAuthToken)
           .expect(201)
           .send({ code: loginCode });
 
@@ -183,7 +185,7 @@ describe('AdminUserController (e2e)', () => {
       const loginCode = 'invalid';
 
       const { body } = await request(app.getHttpServer())
-        .post('/admin-users/token')
+        .post(ApiUrls.getAuthToken)
         .expect(400)
         .send({ code: loginCode });
 

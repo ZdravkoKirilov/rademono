@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { PUBLIC_ID_GENERATOR } from '@app/shared';
 import {
-  AdminUserId,
+  UserId,
   breakTest,
   DomainError,
   isLeft,
@@ -29,7 +29,7 @@ describe(OrganizationService.name, () => {
       };
 
       const public_id = UUIDv4.generate();
-      const userId = UUIDv4.generate<AdminUserId>();
+      const userId = UUIDv4.generate<UserId>();
 
       const module: TestingModule = await Test.createTestingModule({
         imports: [],
@@ -73,7 +73,7 @@ describe(OrganizationService.name, () => {
       const data = {};
 
       const public_id = UUIDv4.generate();
-      const userId = UUIDv4.generate<AdminUserId>();
+      const userId = UUIDv4.generate<UserId>();
 
       const module: TestingModule = await Test.createTestingModule({
         imports: [],
@@ -105,7 +105,7 @@ describe(OrganizationService.name, () => {
       };
 
       const public_id = UUIDv4.generate();
-      const userId = UUIDv4.generate<AdminUserId>();
+      const userId = UUIDv4.generate<UserId>();
 
       const module: TestingModule = await Test.createTestingModule({
         imports: [],
@@ -139,7 +139,7 @@ describe(OrganizationService.name, () => {
       };
 
       const public_id = UUIDv4.generate();
-      const userId = UUIDv4.generate<AdminUserId>();
+      const userId = UUIDv4.generate<UserId>();
 
       const module: TestingModule = await Test.createTestingModule({
         imports: [],
@@ -171,7 +171,7 @@ describe(OrganizationService.name, () => {
 
   describe(OrganizationService.prototype.getAllForUser.name, () => {
     it('returns all organizations', async (done) => {
-      const userId = UUIDv4.generate<AdminUserId>();
+      const userId = UUIDv4.generate<UserId>();
 
       const adminGroup = PrivateAdminGroup.createFromDto(
         {

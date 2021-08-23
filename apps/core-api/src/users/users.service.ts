@@ -25,12 +25,12 @@ import {
 } from '@end/global';
 import { EmailService } from '@app/emails';
 
-import { AdminUserRepository } from './admin-users.repository';
+import { UserRepository } from './users.repository';
 
 @Injectable()
-export class AdminUsersService {
+export class UsersService {
   constructor(
-    private readonly repo: AdminUserRepository,
+    private readonly repo: UserRepository,
     private readonly emailService: EmailService,
   ) {}
 

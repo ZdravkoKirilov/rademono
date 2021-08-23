@@ -1,4 +1,4 @@
-import { FilePath, isFilePath } from './FilePath';
+import { FilePath, isFilePath } from './Path';
 
 describe('FilePath', () => {
   describe(FilePath.IsFilePath.name, () => {

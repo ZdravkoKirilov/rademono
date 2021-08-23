@@ -1,13 +1,13 @@
 import { environment } from '@env';
 
-import { OrganizationId, Url } from '@end/global';
+import { ApiUrls, buildApiUrls, Url } from '@end/global';
 
 export const endpoints = {
-  requestAuthCode: `${environment.apiHost}/admin-users/request-login-code` as Url,
-  requestAuthToken: `${environment.apiHost}/admin-users/token` as Url,
-  getCurrentUser: `${environment.apiHost}/admin-users/current` as Url,
+  requestAuthCode: `${environment.apiHost}${ApiUrls.getLoginCode}` as Url,
+  requestAuthToken: `${environment.apiHost}${ApiUrls.getAuthToken}` as Url,
+  getCurrentUser: `${environment.apiHost}${ApiUrls.getCurrentUser}` as Url,
   organization: `${environment.apiHost}/organization` as Url,
 
-  collection: (orgId: OrganizationId) =>
-    `${endpoints.organization}/${orgId}/collection` as Url,
+  collection: (...args: Parameters<typeof buildApiUrls.collections>) =>
+    (environment.apiHost + buildApiUrls.collections(...args)) as Url,
 };

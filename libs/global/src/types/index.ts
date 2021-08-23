@@ -9,7 +9,7 @@ export * from './Email';
 export * from './NanoId';
 export * from './JWT';
 export * from './Primitive';
-export * from './FilePath';
+export * from './Path';
 export * from './misc-dto';
 export * from './Nominal';
 export { CustomFile } from './File';

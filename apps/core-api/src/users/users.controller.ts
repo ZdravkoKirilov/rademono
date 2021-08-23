@@ -10,7 +10,14 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 
-import { isLeft, User, UnexpectedError, catchError, map } from '@end/global';
+import {
+  isLeft,
+  User,
+  UnexpectedError,
+  catchError,
+  map,
+  ApiUrls,
+} from '@end/global';
 
 import {
   isKnownError,
@@ -18,21 +25,21 @@ import {
   toForbiddenError,
   toUnexpectedError,
 } from '@app/shared';
-import { AdminUsersService } from './admin-users.service';
+import { UsersService } from './users.service';
 import { AuthGuard } from './auth.guard';
 import { WithUser } from './with-user';
 
-@Controller('admin-users')
-export class AdminUsersController {
-  constructor(private readonly adminUsersService: AdminUsersService) {}
+@Controller('')
+export class UsersController {
+  constructor(private readonly adminUsersService: UsersService) {}
 
-  @Get('current')
+  @Get(ApiUrls.getCurrentUser)
   @UseGuards(AuthGuard)
   getCurrentUser(@WithUser() user: User) {
     return User.exposePublic(user || {});
   }
 
-  @Post('token')
+  @Post(ApiUrls.getAuthToken)
   requestAuthToken(
     @Body() payload: unknown,
     @Res({ passthrough: true }) res: Response,
@@ -96,7 +103,7 @@ export class AdminUsersController {
     );
   }
 
-  @Post('request-login-code')
+  @Post(ApiUrls.getLoginCode)
   @HttpCode(HttpStatus.NO_CONTENT)
   requestLoginCode(@Body() payload: unknown) {
     return this.adminUsersService.requestLoginCode(payload).pipe(

@@ -2,19 +2,19 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { toRightObs } from '@end/global';
 
-import { AdminUsersController } from './admin-users.controller';
-import { AdminUsersService } from './admin-users.service';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
 import { AuthGuard } from './auth.guard';
 
-describe('AdminUsersController', () => {
-  let controller: AdminUsersController;
+describe(UsersController.name, () => {
+  let controller: UsersController;
 
   it('succeeds with correct data', async (done) => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [AdminUsersController],
+      controllers: [UsersController],
       providers: [
         {
-          provide: AdminUsersService,
+          provide: UsersService,
           useValue: {
             requestLoginCode: () => toRightObs(undefined),
           },
@@ -27,7 +27,7 @@ describe('AdminUsersController', () => {
       })
       .compile();
 
-    controller = module.get<AdminUsersController>(AdminUsersController);
+    controller = module.get<UsersController>(UsersController);
 
     controller
       .requestLoginCode({ email: 'email@email.com' })

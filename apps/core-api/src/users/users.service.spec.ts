@@ -14,24 +14,24 @@ import {
   none,
 } from '@end/global';
 
-import { AdminUserRepository } from './admin-users.repository';
-import { AdminUsersService } from './admin-users.service';
+import { UserRepository } from './users.repository';
+import { UsersService } from './users.service';
 import { EmailService } from '@app/emails';
 
 const throwError = () => {
   throw new Error('This shouldn`t be reached');
 };
 
-describe(AdminUsersService.name, () => {
-  let service: AdminUsersService;
+describe(UsersService.name, () => {
+  let service: UsersService;
 
-  describe(AdminUsersService.prototype.requestLoginCode.name, () => {
+  describe(UsersService.prototype.requestLoginCode.name, () => {
     it('passes with correct data', async (done) => {
       const module: TestingModule = await Test.createTestingModule({
         providers: [
-          AdminUsersService,
+          UsersService,
           {
-            provide: AdminUserRepository,
+            provide: UserRepository,
             useValue: {
               findUser: () =>
                 toRightObs({
@@ -40,7 +40,7 @@ describe(AdminUsersService.name, () => {
                   type: UserTypes.standard,
                 }),
               saveUser: () => toRightObs(undefined),
-            } as Partial<AdminUserRepository>,
+            } as Partial<UserRepository>,
           },
           {
             provide: EmailService,
@@ -51,7 +51,7 @@ describe(AdminUsersService.name, () => {
         ],
       }).compile();
 
-      service = module.get<AdminUsersService>(AdminUsersService);
+      service = module.get<UsersService>(UsersService);
       const payload = { email: 'email@email.com' };
 
       service.requestLoginCode(payload).subscribe((dto) => {
@@ -66,9 +66,9 @@ describe(AdminUsersService.name, () => {
     it('fails with invalid email', async (done) => {
       const module: TestingModule = await Test.createTestingModule({
         providers: [
-          AdminUsersService,
+          UsersService,
           {
-            provide: AdminUserRepository,
+            provide: UserRepository,
             useValue: {},
           },
           {
@@ -78,7 +78,7 @@ describe(AdminUsersService.name, () => {
         ],
       }).compile();
 
-      service = module.get<AdminUsersService>(AdminUsersService);
+      service = module.get<UsersService>(UsersService);
       const payload = { email: 'email' };
 
       service.requestLoginCode(payload).subscribe((mbDto) => {
@@ -94,9 +94,9 @@ describe(AdminUsersService.name, () => {
     it('fails with nullish payload', async (done) => {
       const module: TestingModule = await Test.createTestingModule({
         providers: [
-          AdminUsersService,
+          UsersService,
           {
-            provide: AdminUserRepository,
+            provide: UserRepository,
             useValue: {},
           },
           {
@@ -106,7 +106,7 @@ describe(AdminUsersService.name, () => {
         ],
       }).compile();
 
-      service = module.get<AdminUsersService>(AdminUsersService);
+      service = module.get<UsersService>(UsersService);
 
       service.requestLoginCode(undefined).subscribe((mbDto) => {
         if (isRight(mbDto)) {
@@ -121,9 +121,9 @@ describe(AdminUsersService.name, () => {
     it('fails when repo.findUser fails', async (done) => {
       const module: TestingModule = await Test.createTestingModule({
         providers: [
-          AdminUsersService,
+          UsersService,
           {
-            provide: AdminUserRepository,
+            provide: UserRepository,
             useValue: {
               findUser: () => {
                 throw new Error('Whoops');
@@ -137,7 +137,7 @@ describe(AdminUsersService.name, () => {
         ],
       }).compile();
 
-      service = module.get<AdminUsersService>(AdminUsersService);
+      service = module.get<UsersService>(UsersService);
       const payload = { email: 'email@email.com' };
 
       service.requestLoginCode(payload).subscribe((mbDto) => {
@@ -153,13 +153,13 @@ describe(AdminUsersService.name, () => {
     it('fails when repo.saveUser fails', async (done) => {
       const module: TestingModule = await Test.createTestingModule({
         providers: [
-          AdminUsersService,
+          UsersService,
           {
-            provide: AdminUserRepository,
+            provide: UserRepository,
             useValue: {
               findUser: () => toRightObs(none),
               saveUser: () => toLeftObs(new UnexpectedError()),
-            } as Partial<AdminUserRepository>,
+            } as Partial<UserRepository>,
           },
           {
             provide: EmailService,
@@ -168,7 +168,7 @@ describe(AdminUsersService.name, () => {
         ],
       }).compile();
 
-      service = module.get<AdminUsersService>(AdminUsersService);
+      service = module.get<UsersService>(UsersService);
       const payload = { email: 'email@email.com' };
 
       service.requestLoginCode(payload).subscribe((mbDto) => {
@@ -184,9 +184,9 @@ describe(AdminUsersService.name, () => {
     it('fails when email saving fails', async (done) => {
       const module: TestingModule = await Test.createTestingModule({
         providers: [
-          AdminUsersService,
+          UsersService,
           {
-            provide: AdminUserRepository,
+            provide: UserRepository,
             useValue: {
               findUser: () =>
                 toRightObs({
@@ -195,7 +195,7 @@ describe(AdminUsersService.name, () => {
                   type: UserTypes.standard,
                 }),
               saveUser: () => toRightObs(undefined),
-            } as Partial<AdminUserRepository>,
+            } as Partial<UserRepository>,
           },
           {
             provide: EmailService,
@@ -206,7 +206,7 @@ describe(AdminUsersService.name, () => {
         ],
       }).compile();
 
-      service = module.get<AdminUsersService>(AdminUsersService);
+      service = module.get<UsersService>(UsersService);
       const payload = { email: 'email@email.com' };
 
       service.requestLoginCode(payload).subscribe((dto) => {

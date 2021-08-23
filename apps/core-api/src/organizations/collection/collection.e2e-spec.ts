@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 
-import { UUIDv4 } from '@end/global';
+import { buildApiUrls, OrganizationId, UUIDv4 } from '@end/global';
 
 import { AppModule } from '../../app.module';
 import { createTestUser, cleanRepositories } from '@app/test';
@@ -43,7 +43,7 @@ describe(CollectionController.name, () => {
         .send({ name: 'Monster inc' })
         .expect(201);
 
-      const url = '/organization/' + createdOrganization.id + '/collection';
+      const url = buildApiUrls.collections(createdOrganization.id);
 
       const { body: createdCollection } = await request(app.getHttpServer())
         .post(url)
@@ -57,7 +57,7 @@ describe(CollectionController.name, () => {
 
     it('requires authentication', async (done) => {
       const { body } = await request(app.getHttpServer())
-        .post('/organization/fakeId/collection')
+        .post(buildApiUrls.collections('fakeId' as any))
         .set('Authorization', 'whatever')
         .expect(401);
 
@@ -72,10 +72,10 @@ describe(CollectionController.name, () => {
     it('fails with invalid data', async (done) => {
       const { token } = await createTestUser(app, 'email12@email.com');
 
-      const orgId = UUIDv4.generate();
+      const orgId = UUIDv4.generate<OrganizationId>();
 
       const { body } = await request(app.getHttpServer())
-        .post(`/organization/${orgId}/collection`)
+        .post(buildApiUrls.collections(orgId))
         .set('Authorization', token)
         .send({})
         .expect(400);
@@ -101,7 +101,7 @@ describe(CollectionController.name, () => {
       const { token } = await createTestUser(app, 'email12@email.com');
 
       const { body } = await request(app.getHttpServer())
-        .post(`/organization/fakeId/collection`)
+        .post(buildApiUrls.collections('fakeId' as any))
         .set('Authorization', token)
         .send({ name: 'Some collection' })
         .expect(400);
@@ -131,8 +131,8 @@ describe(CollectionController.name, () => {
         .send({ name: 'Monster inc 2' })
         .expect(201);
 
-      const url1 = '/organization/' + createdOrganization1.id + '/collection';
-      const url2 = '/organization/' + createdOrganization2.id + '/collection';
+      const url1 = buildApiUrls.collections(createdOrganization1.id);
+      const url2 = buildApiUrls.collections(createdOrganization2.id);
 
       await request(app.getHttpServer())
         .post(url1)
@@ -172,7 +172,7 @@ describe(CollectionController.name, () => {
       const { token } = await createTestUser(app, 'email12@email.com');
 
       const { body } = await request(app.getHttpServer())
-        .get(`/organization/fakeId/collection`)
+        .get(buildApiUrls.collections('fakeId' as any))
         .set('Authorization', token)
         .expect(400);
 
