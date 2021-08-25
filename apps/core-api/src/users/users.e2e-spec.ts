@@ -18,7 +18,7 @@ import {
 
 import { AppModule } from '../app.module';
 import { UserRepository } from './users.repository';
-import { ADMIN_USERS_COLLECTION } from './constants';
+import { USERS_COLLECTION } from './constants';
 import { UsersController } from './users.controller';
 
 describe(UsersController.name + ' (e2e)', () => {
@@ -31,7 +31,7 @@ describe(UsersController.name + ' (e2e)', () => {
   };
 
   afterEach(async () => {
-    await connection.collection(ADMIN_USERS_COLLECTION).deleteMany({});
+    await connection.collection(USERS_COLLECTION).deleteMany({});
   });
 
   beforeAll(async () => {
@@ -40,7 +40,7 @@ describe(UsersController.name + ' (e2e)', () => {
     }).compile();
     app = moduleFixture.createNestApplication();
     connection = app.get(DATABASE_CONNECTION);
-    await connection.collection(ADMIN_USERS_COLLECTION).deleteMany({});
+    await connection.collection(USERS_COLLECTION).deleteMany({});
     await app.init();
     repository = moduleFixture.get(UserRepository);
   });

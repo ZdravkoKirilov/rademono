@@ -4,6 +4,7 @@ import { GenericPath } from './types';
 export enum ApiUrls {
   getLoginCode = '/users/code',
   getAuthToken = '/users/token',
+  refreshAuthToken = '/users/token/refresh',
   getCurrentUser = '/users/current',
   collections = '/organization/:organizationId/collections',
 }

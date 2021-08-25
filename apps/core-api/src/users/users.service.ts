@@ -27,6 +27,8 @@ import { EmailService } from '@app/emails';
 
 import { UserRepository } from './users.repository';
 
+type CommonErrors = UnexpectedError | DomainError | ParsingError;
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -34,11 +36,7 @@ export class UsersService {
     private readonly emailService: EmailService,
   ) {}
 
-  getCurrentUser(
-    token: unknown,
-  ): Observable<
-    Either<UnexpectedError | DomainError | ParsingError, PublicUser>
-  > {
+  getCurrentUser(token: unknown): Observable<Either<CommonErrors, PublicUser>> {
     return User.toTokenDto({ token }).pipe(
       switchMap((mbDto) => {
         if (isLeft(mbDto)) {
@@ -138,6 +136,56 @@ export class UsersService {
       catchError((err) =>
         toLeftObs(new UnexpectedError('Something went wrong', err)),
       ),
+    );
+  }
+
+  refreshAuthToken(
+    token: unknown,
+  ): Observable<
+    Either<
+      CommonErrors,
+      {
+        accessToken: TokenDto;
+        refreshToken: TokenDto;
+      }
+    >
+  > {
+    return User.decodeToken(token, jwt.verify).pipe(
+      switchMap(
+        (mbDecoded): Observable<Either<CommonErrors, Option<User>>> => {
+          if (isLeft(mbDecoded)) {
+            return toLeftObs(mbDecoded.left);
+          }
+          return this.repo.findUser({ email: mbDecoded.right.email });
+        },
+      ),
+      switchMap((mbUser) => {
+        if (isLeft(mbUser)) {
+          return toLeftObs(mbUser.left);
+        }
+        if (isNone(mbUser.right)) {
+          return toLeftObs(new DomainError('Refresh token is invalid'));
+        }
+        return zip(
+          User.generateToken(mbUser.right.value, jwt.sign),
+          User.generateToken(mbUser.right.value, jwt.sign, {
+            expiresIn: '48h',
+          }),
+        ).pipe(
+          map(([mbAccessToken, mbRefreshToken]) => {
+            if (isLeft(mbAccessToken)) {
+              return mbAccessToken;
+            }
+            if (isLeft(mbRefreshToken)) {
+              return mbRefreshToken;
+            }
+            return right({
+              accessToken: mbAccessToken.right,
+              refreshToken: mbRefreshToken.right,
+            });
+          }),
+        );
+      }),
     );
   }
 

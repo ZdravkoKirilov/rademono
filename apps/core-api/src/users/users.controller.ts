@@ -20,6 +20,7 @@ import {
 } from '@end/global';
 
 import {
+  Cookies,
   isKnownError,
   toBadRequest,
   toForbiddenError,
@@ -31,7 +32,7 @@ import { WithUser } from './with-user';
 
 @Controller('')
 export class UsersController {
-  constructor(private readonly adminUsersService: UsersService) {}
+  constructor(private readonly userService: UsersService) {}
 
   @Get(ApiUrls.getCurrentUser)
   @UseGuards(AuthGuard)
@@ -39,12 +40,72 @@ export class UsersController {
     return User.exposePublic(user || {});
   }
 
+  @Get(ApiUrls.refreshAuthToken)
+  refreshAuthToken(
+    @Cookies('rft') refreshToken: unknown,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.userService.refreshAuthToken(refreshToken).pipe(
+      map((result) => {
+        if (isLeft(result)) {
+          switch (result.left.name) {
+            case 'ParsingError': {
+              throw toBadRequest({
+                message: result.left.message,
+                name: result.left.name,
+                errors: result.left.errors,
+              });
+            }
+            case 'UnexpectedError': {
+              throw toUnexpectedError({
+                message: result.left.message,
+                name: result.left.name,
+              });
+            }
+            case 'DomainError': {
+              throw toForbiddenError({
+                message: result.left.message,
+                name: result.left.name,
+                errors: result.left.errors,
+              });
+            }
+            default: {
+              throw toUnexpectedError({
+                message: 'Unexpected error',
+                name: UnexpectedError.prototype.name,
+              });
+            }
+          }
+        }
+
+        res.cookie('rft', result.right.refreshToken.token, {
+          httpOnly: true,
+          sameSite: 'none',
+        });
+
+        return result.right.accessToken.token;
+      }),
+      catchError((err) => {
+        if (isKnownError(err)) {
+          throw err;
+        }
+        // TODO: log
+
+        throw toUnexpectedError({
+          message: 'Unexpected error',
+          name: UnexpectedError.prototype.name,
+          originalError: err,
+        });
+      }),
+    );
+  }
+
   @Post(ApiUrls.getAuthToken)
   requestAuthToken(
     @Body() payload: unknown,
     @Res({ passthrough: true }) res: Response,
   ) {
-    return this.adminUsersService.requestAuthToken(payload).pipe(
+    return this.userService.requestAuthToken(payload).pipe(
       map((result) => {
         if (isLeft(result)) {
           switch (result.left.name) {
@@ -78,10 +139,8 @@ export class UsersController {
         }
         const { accessToken, refreshToken } = result.right;
 
-        /* refresh token is valid for 48 hours */
-        res.cookie('refreshToken', refreshToken.token, {
+        res.cookie('rft', refreshToken.token, {
           httpOnly: true,
-          expires: new Date(new Date().getTime() + 48 * 60 * 60 * 1000),
           sameSite: 'none',
         });
 
@@ -106,7 +165,7 @@ export class UsersController {
   @Post(ApiUrls.getLoginCode)
   @HttpCode(HttpStatus.NO_CONTENT)
   requestLoginCode(@Body() payload: unknown) {
-    return this.adminUsersService.requestLoginCode(payload).pipe(
+    return this.userService.requestLoginCode(payload).pipe(
       map((result) => {
         if (isLeft(result)) {
           switch (result.left.name) {
