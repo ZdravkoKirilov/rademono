@@ -6,7 +6,7 @@ import {
 } from 'class-validator';
 
 import { NonEmptyArray } from './Array';
-import { Tagged } from './Tagged';
+import { Nominal } from './Nominal';
 
 /**
  * Represents strings like '/something/else/another'
@@ -16,11 +16,7 @@ export type GenericPath = string & { readonly _: unique symbol };
 /**
  * Represents strings like '/path/to/file.jpg'
  */
-export type FilePath<T extends NonEmptyArray<string>> = Tagged<
-  '__FilePath__',
-  T
-> &
-  string;
+export type FilePath<T extends NonEmptyArray<string>> = Nominal<T & string>;
 
 export const isFilePath = <T extends NonEmptyArray<string>>(
   source: unknown,

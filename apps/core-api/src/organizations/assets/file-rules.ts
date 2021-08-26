@@ -3,7 +3,6 @@ import { extname } from 'path';
 import { Request } from 'express';
 
 import { toBadRequest } from '@app/shared';
-import { ParsingError } from '@end/global';
 
 export const applyImageRules = () =>
   FileInterceptor('file', {
@@ -14,7 +13,7 @@ export const applyImageRules = () =>
         cb(
           toBadRequest({
             message: 'Unsupported file type: ' + file.mimetype,
-            name: ParsingError.name,
+            name: 'InvalidFileType',
           }),
           false,
         );

@@ -31,10 +31,22 @@ const toFieldErrors = (
   });
 };
 
+type CustomErrorTypes =
+  | 'InvalidAccessToken'
+  | 'InvalidRefreshToken'
+  | 'UnexpectedError'
+  | 'InvalidFileType'
+  | 'Unauthorized'
+  | 'ParsingError'
+  | 'InvalidLoginCode'
+  | 'NameTaken'
+  | 'EntityExists'
+  | 'EntityNotFound';
+
 export class DomainError extends Error {
   readonly name = 'DomainError';
 
-  constructor(public message: string, public errors?: AnyError[]) {
+  constructor(public message: CustomErrorTypes, public errors?: AnyError[]) {
     super();
   }
 }
@@ -71,7 +83,7 @@ export class UnexpectedError extends Error {
 
 export type HttpApiError = {
   message: string;
-  name: string; // localization key
+  name: CustomErrorTypes; // localization key
   errors?: FieldError[] | AnyError[] | ParsingError;
-  originalError?: unknown;
+  originalError?: Error;
 };

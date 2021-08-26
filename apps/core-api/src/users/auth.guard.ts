@@ -3,7 +3,7 @@ import { Request } from 'express';
 import jwt from 'jsonwebtoken';
 
 import {
-  DecodedJWT,
+  TokenPayload,
   isLeft,
   User,
   toLeftObs,
@@ -44,7 +44,7 @@ export class AuthGuard implements CanActivate {
     const result = await User.toTokenDto({ token: authToken })
       .pipe(
         switchMap(
-          (mbDto): Observable<Either<unknown, DecodedJWT>> => {
+          (mbDto): Observable<Either<unknown, TokenPayload>> => {
             if (isLeft(mbDto)) {
               return toLeftObs(false);
             }

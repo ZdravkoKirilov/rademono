@@ -50,9 +50,7 @@ export class OrganizationService {
               return res;
             }
             if (res.right) {
-              return left(
-                new DomainError('Organization with that name already exists'),
-              );
+              return left(new DomainError('NameTaken'));
             }
             return mbDto;
           }),

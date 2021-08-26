@@ -55,7 +55,7 @@ export class AssetService {
           return toLeftObs(mbAsset.left);
         }
         if (isNone(mbAsset.right)) {
-          return toLeftObs(new DomainError('Asset not found'));
+          return toLeftObs(new DomainError('EntityNotFound'));
         }
 
         const asset = mbAsset.right.value;

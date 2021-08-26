@@ -64,7 +64,7 @@ export class UsersService {
         }
 
         if (isNone(mbUser.right)) {
-          return toLeftObs(new DomainError('Invalid token'));
+          return toLeftObs(new DomainError('InvalidAccessToken'));
         }
 
         return toRightObs(User.exposePublic(mbUser.right.value));
@@ -100,13 +100,13 @@ export class UsersService {
         }
 
         if (isNone(data.right)) {
-          return toLeftObs(new DomainError('Login code is invalid'));
+          return toLeftObs(new DomainError('InvalidLoginCode'));
         }
 
         const user = data.right.value;
 
         if (!User.verifyLoginCode(user, new Date())) {
-          return toLeftObs(new DomainError('Login code is invalid'));
+          return toLeftObs(new DomainError('InvalidLoginCode'));
         }
 
         return zip(
@@ -164,7 +164,7 @@ export class UsersService {
           return toLeftObs(mbUser.left);
         }
         if (isNone(mbUser.right)) {
-          return toLeftObs(new DomainError('Refresh token is invalid'));
+          return toLeftObs(new DomainError('InvalidRefreshToken'));
         }
         return zip(
           User.generateToken(mbUser.right.value, jwt.sign),

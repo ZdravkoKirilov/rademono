@@ -10,14 +10,15 @@ import {
   switchMap,
   tap,
   TokenDto,
+  AccessTokenDto,
 } from '@end/global';
 import {
   AppRouterService,
   BaseHttpService,
   endpoints,
-  LocalStorageService,
   QueryResponse,
   QueryStatus,
+  TokenService,
   useQuery,
   valueToQueryResponse,
 } from '@games-admin/shared';
@@ -30,7 +31,7 @@ export class UsersService {
   constructor(
     private http: BaseHttpService,
     private router: AppRouterService,
-    private storage: LocalStorageService,
+    private tokenService: TokenService,
   ) {}
 
   private _user$ = new BehaviorSubject<PublicUser | null>(null);
@@ -46,7 +47,7 @@ export class UsersService {
       this.userQuery$ ||
       this.user$.pipe(
         switchMap((user) => {
-          const token = this.storage.getToken();
+          const token = this.tokenService.getToken();
 
           if (user) {
             return valueToQueryResponse(user);
@@ -78,11 +79,11 @@ export class UsersService {
     );
   }
 
-  login(dto: SignInDto) {
+  loginWithCode(dto: SignInDto) {
     return this.requestToken(dto).pipe(
       switchMap((res) => {
         if (res.status === QueryStatus.loaded) {
-          this.storage.saveToken(res.data.token);
+          this.tokenService.saveToken(res.data.token);
           return this.fetchUser();
         }
         return of(res);
@@ -90,11 +91,27 @@ export class UsersService {
     );
   }
 
-  logout(invalidateToken = false) {
-    this.storage.removeToken();
-    this._user$.next(null);
+  loginWithRefreshToken() {
+    return this.http
+      .get({
+        url: endpoints.refreshAuthToken,
+        responseShape: AccessTokenDto,
+      })
+      .pipe(
+        tap((data) => {
+          this.tokenService.saveToken(data.token);
+        }),
+      );
+  }
 
-    this.router.goToLogin();
+  logout() {
+    return this.http.get({ url: endpoints.logout }).pipe(
+      tap(() => {
+        this.tokenService.removeToken();
+        this._user$.next(null);
+        this.router.goToLogin();
+      }),
+    );
   }
 
   requestLoginCode(dto: SendCodeDto) {

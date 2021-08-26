@@ -39,7 +39,7 @@ export class OrganizationController {
               case 'DomainError': {
                 throw toForbiddenError({
                   message: result.left.message,
-                  name: result.left.name,
+                  name: result.left.message,
                   errors: result.left.errors,
                 });
               }

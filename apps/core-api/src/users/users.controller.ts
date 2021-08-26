@@ -17,6 +17,10 @@ import {
   catchError,
   map,
   ApiUrls,
+  Observable,
+  AccessToken,
+  PublicUser,
+  TokenDto,
 } from '@end/global';
 
 import {
@@ -36,15 +40,24 @@ export class UsersController {
 
   @Get(ApiUrls.getCurrentUser)
   @UseGuards(AuthGuard)
-  getCurrentUser(@WithUser() user: User) {
-    return User.exposePublic(user || {});
+  getCurrentUser(@WithUser() user: User): PublicUser {
+    return User.exposePublic(user);
+  }
+
+  @Get(ApiUrls.logout)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  logout(@Res({ passthrough: true }) res: Response): void {
+    res.cookie('rft', '', {
+      httpOnly: true,
+      sameSite: 'none',
+    });
   }
 
   @Get(ApiUrls.refreshAuthToken)
   refreshAuthToken(
     @Cookies('rft') refreshToken: unknown,
     @Res({ passthrough: true }) res: Response,
-  ) {
+  ): Observable<AccessToken> {
     return this.userService.refreshAuthToken(refreshToken).pipe(
       map((result) => {
         if (isLeft(result)) {
@@ -65,7 +78,7 @@ export class UsersController {
             case 'DomainError': {
               throw toForbiddenError({
                 message: result.left.message,
-                name: result.left.name,
+                name: result.left.message,
                 errors: result.left.errors,
               });
             }
@@ -104,7 +117,7 @@ export class UsersController {
   requestAuthToken(
     @Body() payload: unknown,
     @Res({ passthrough: true }) res: Response,
-  ) {
+  ): Observable<TokenDto> {
     return this.userService.requestAuthToken(payload).pipe(
       map((result) => {
         if (isLeft(result)) {
@@ -125,7 +138,7 @@ export class UsersController {
             case 'DomainError': {
               throw toForbiddenError({
                 message: result.left.message,
-                name: result.left.name,
+                name: 'Unauthorized',
                 errors: result.left.errors,
               });
             }
@@ -164,7 +177,7 @@ export class UsersController {
 
   @Post(ApiUrls.getLoginCode)
   @HttpCode(HttpStatus.NO_CONTENT)
-  requestLoginCode(@Body() payload: unknown) {
+  requestLoginCode(@Body() payload: unknown): Observable<void> {
     return this.userService.requestLoginCode(payload).pipe(
       map((result) => {
         if (isLeft(result)) {
@@ -190,7 +203,6 @@ export class UsersController {
             }
           }
         }
-        return result.right;
       }),
       catchError((err) => {
         if (isKnownError(err)) {

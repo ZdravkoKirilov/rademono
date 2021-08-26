@@ -19,7 +19,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 
-import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
+import { ParsingError, StringOfLength, Nominal, UUIDv4 } from '../types';
 import { parseAndValidateUnknown, transformToClass } from '../parsers';
 import {
   AdminGroup,
@@ -29,7 +29,7 @@ import {
 import { UserId } from 'src/user-entities';
 import { CreateAdminProfileDto, PrivateAdminProfile } from './AdminProfile';
 
-export type OrganizationId = Tagged<'OrganizationId', UUIDv4>;
+export type OrganizationId = Nominal<UUIDv4>;
 
 export const isOrganizationId = (value: unknown): value is OrganizationId =>
   isUUID(value);

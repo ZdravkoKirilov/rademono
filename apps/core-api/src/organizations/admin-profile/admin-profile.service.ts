@@ -60,9 +60,7 @@ export class AdminProfileService {
           return toLeftObs(mbExisting.right.retrieved.left);
         }
         if (isSome(mbExisting.right.retrieved.right)) {
-          return toLeftObs(
-            new DomainError('Profile already exists in this group'),
-          );
+          return toLeftObs(new DomainError('EntityExists'));
         }
         return this.repo.saveProfile(mbExisting.right.parsed).pipe(
           map((mbSaved) => {

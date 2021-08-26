@@ -18,7 +18,7 @@ import {
   Url,
   throwError,
 } from '@end/global';
-import { LocalStorageService } from '../storage';
+import { TokenService } from '../token/token.service';
 
 type BaseParams<Value> = {
   url: Url;
@@ -33,11 +33,11 @@ type ParamsWithPayload<Value> = BaseParams<Value> & {
   providedIn: 'root',
 })
 export class BaseHttpService {
-  constructor(private http: HttpClient, private storage: LocalStorageService) {}
+  constructor(private http: HttpClient, private tokenService: TokenService) {}
 
   private createDefaultHeaders(overrides: Record<string, string> = {}) {
     let headers = new HttpHeaders();
-    const token = this.storage.getToken();
+    const token = this.tokenService.getToken();
 
     if (token) {
       headers = headers.append('Authorization', token);
@@ -63,11 +63,11 @@ export class BaseHttpService {
           return toRightObs(value);
         }),
         switchMapEither(
-          (err) => throwError(err),
+          (err) => throwError(() => err),
           (value) => of(value),
         ),
         catchError((err: HttpErrorResponse) => {
-          return throwError(err);
+          return throwError(() => err);
         }),
       );
   }
@@ -85,11 +85,11 @@ export class BaseHttpService {
           return toRightObs(value);
         }),
         switchMapEither(
-          (err) => throwError(err),
+          (err) => throwError(() => err),
           (value) => of(value),
         ),
         catchError((err: HttpErrorResponse) => {
-          return throwError(err);
+          return throwError(() => err);
         }),
       );
   }
@@ -107,11 +107,11 @@ export class BaseHttpService {
           return toRightObs(value);
         }),
         switchMapEither(
-          (err) => throwError(err),
+          (err) => throwError(() => err),
           (value) => of(value),
         ),
         catchError((err: HttpErrorResponse) => {
-          return throwError(err);
+          return throwError(() => err);
         }),
       );
   }

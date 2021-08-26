@@ -54,7 +54,7 @@ export class RedeemComponent {
 
     if (this.dto) {
       this.sendCode$ = this.usersService
-        .login(this.dto)
+        .loginWithCode(this.dto)
         .pipe(
           tap((res) => {
             this.sendCodeQuery = res;

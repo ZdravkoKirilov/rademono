@@ -1,8 +1,7 @@
 import { isURL, isString } from 'class-validator';
+import { Nominal } from './Nominal';
 
-import { Tagged } from './Tagged';
-
-export type Url<A extends string = string> = Tagged<'__Url__', A>;
+export type Url = Nominal<string>;
 
 export const isValidUrl = (source: unknown): source is Url =>
   isString(source) && isURL(source);

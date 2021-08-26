@@ -18,13 +18,13 @@ import {
   Email,
   ParsingError,
   StringOfLength,
-  Tagged,
   UUIDv4,
   Primitive,
+  Nominal,
 } from '../types';
 import { parseAndValidateUnknown, transformToClass } from '../parsers';
 
-export type EmailId = Tagged<'EmailId', UUIDv4>;
+export type EmailId = Nominal<UUIDv4>;
 
 export enum EmailType {
   signin = 'signin',

@@ -27,7 +27,6 @@ import {
   JWT,
   ParsingError,
   DomainError,
-  DecodedJWT,
   Dictionary,
   Nominal,
 } from '../types';
@@ -172,26 +171,70 @@ export class User {
     );
   }
 
+  static generateAccessToken(
+    entity: User,
+    generate: (
+      data: Dictionary,
+      secret: string,
+      options: { expiresIn: string },
+    ) => string,
+    options: { expiresIn: string } = { expiresIn: '1h' },
+    secret = 'access-secret',
+  ): Observable<e.Either<ParsingError, TokenDto>> {
+    return parseAndValidateObject(
+      {
+        token: generate(
+          { email: entity.email, id: entity.public_id },
+          secret,
+          options,
+        ),
+      },
+      AccessTokenDto,
+    );
+  }
+
+  static generateRefreshToken(
+    entity: User,
+    generate: (
+      data: Dictionary,
+      secret: string,
+      options: { expiresIn: string },
+    ) => string,
+    options: { expiresIn: string } = { expiresIn: '24h' },
+    secret = 'refresh-secret',
+  ): Observable<e.Either<ParsingError, TokenDto>> {
+    return parseAndValidateObject(
+      {
+        token: generate(
+          { email: entity.email, id: entity.public_id },
+          secret,
+          options,
+        ),
+      },
+      RefreshTokenDto,
+    );
+  }
+
   static decodeToken(
     token: unknown,
     // eslint-disable-next-line @typescript-eslint/ban-types
     decode: (token: string, secret: string) => string | object,
     secret = 'secret',
-  ): Observable<e.Either<DomainError | ParsingError, DecodedJWT>> {
+  ): Observable<e.Either<DomainError | ParsingError, TokenPayload>> {
     return parseAndValidateObject({ token }, TokenDto).pipe(
       switchMap((mbToken) => {
         if (e.isLeft(mbToken)) {
-          return toLeftObs(new DomainError('Invalid jwt token'));
+          return toLeftObs(new DomainError('InvalidAccessToken'));
         }
         try {
           return of(decode(mbToken.right.token, secret)).pipe(
-            switchMap((res) => parseAndValidateUnknown(res, DecodedJWT)),
+            switchMap((res) => parseAndValidateUnknown(res, TokenPayload)),
             catchError((err) => {
-              return toLeftObs(new DomainError('Invalid jwt token', [err]));
+              return toLeftObs(new DomainError('InvalidAccessToken', [err]));
             }),
           );
         } catch (err) {
-          return toLeftObs(new DomainError('Invalid jwt token', [err]));
+          return toLeftObs(new DomainError('InvalidAccessToken', [err]));
         }
       }),
     );
@@ -205,6 +248,20 @@ export class User {
       lastLogin: now,
     };
   }
+}
+
+export type AccessToken = Nominal<JWT>;
+
+type RefreshToken = Nominal<JWT>;
+
+export class TokenPayload {
+  @Expose()
+  @IsEmail()
+  email: Email;
+
+  @Expose()
+  @IsUUID('4')
+  id: UserId;
 }
 
 export class SendCodeDto {
@@ -223,4 +280,16 @@ export class TokenDto {
   @Expose()
   @IsJWT()
   token: JWT;
+}
+
+export class AccessTokenDto {
+  @Expose()
+  @IsJWT()
+  token: AccessToken;
+}
+
+export class RefreshTokenDto {
+  @Expose()
+  @IsJWT()
+  token: RefreshToken;
 }

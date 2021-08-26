@@ -6,6 +6,7 @@ export enum ApiUrls {
   getAuthToken = '/users/token',
   refreshAuthToken = '/users/token/refresh',
   getCurrentUser = '/users/current',
+  logout = '/users/logout',
   collections = '/organization/:organizationId/collections',
 }
 

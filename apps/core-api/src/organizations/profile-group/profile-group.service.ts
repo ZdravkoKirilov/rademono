@@ -58,11 +58,7 @@ export class ProfileGroupService {
                 }
 
                 if (isSome(retrieved.right)) {
-                  return toLeftObs(
-                    new DomainError(
-                      'Profile group with that name already exists.',
-                    ),
-                  );
+                  return toLeftObs(new DomainError('NameTaken'));
                 }
 
                 return this.repo.saveProfileGroup(mbGroup.right);

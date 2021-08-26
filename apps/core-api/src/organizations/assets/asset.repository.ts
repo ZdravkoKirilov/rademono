@@ -117,7 +117,7 @@ export class AssetRepository {
           return of(assetCount);
         }
         if (assetCount.right === 0) {
-          return toLeftObs(new DomainError('Asset not found'));
+          return toLeftObs(new DomainError('EntityNotFound'));
         }
         if (assetCount.right > 1) {
           return toLeftObs(new UnexpectedError('Multiple assets found'));

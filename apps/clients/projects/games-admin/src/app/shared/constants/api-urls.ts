@@ -6,6 +6,8 @@ export const endpoints = {
   requestAuthCode: `${environment.apiHost}${ApiUrls.getLoginCode}` as Url,
   requestAuthToken: `${environment.apiHost}${ApiUrls.getAuthToken}` as Url,
   getCurrentUser: `${environment.apiHost}${ApiUrls.getCurrentUser}` as Url,
+  refreshAuthToken: `${environment.apiHost}${ApiUrls.refreshAuthToken}` as Url,
+  logout: `${environment}${ApiUrls.logout}` as Url,
   organization: `${environment.apiHost}/organization` as Url,
 
   collection: (...args: Parameters<typeof buildApiUrls.collections>) =>
