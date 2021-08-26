@@ -20,7 +20,6 @@ import {
   Observable,
   AccessToken,
   PublicUser,
-  TokenDto,
 } from '@end/global';
 
 import {
@@ -91,12 +90,12 @@ export class UsersController {
           }
         }
 
-        res.cookie('rft', result.right.refreshToken.token, {
+        res.cookie('rft', result.right.refreshToken, {
           httpOnly: true,
           sameSite: 'none',
         });
 
-        return result.right.accessToken.token;
+        return result.right.accessToken;
       }),
       catchError((err) => {
         if (isKnownError(err)) {
@@ -117,7 +116,7 @@ export class UsersController {
   requestAuthToken(
     @Body() payload: unknown,
     @Res({ passthrough: true }) res: Response,
-  ): Observable<TokenDto> {
+  ): Observable<AccessToken> {
     return this.userService.requestAuthToken(payload).pipe(
       map((result) => {
         if (isLeft(result)) {
@@ -152,7 +151,7 @@ export class UsersController {
         }
         const { accessToken, refreshToken } = result.right;
 
-        res.cookie('rft', refreshToken.token, {
+        res.cookie('rft', refreshToken, {
           httpOnly: true,
           sameSite: 'none',
         });

@@ -2,9 +2,9 @@ import { customAlphabet } from 'nanoid';
 import { isString, pipe, entries, reduce } from 'lodash/fp';
 import { registerDecorator, ValidationOptions } from 'class-validator';
 
-import { Nominal } from './Nominal';
+import { Tagged } from './Tagged';
 
-export type NanoId = Nominal<string>;
+export type NanoId = Tagged<'NanoId', string>;
 
 const mapping = {
   0: 'R',

@@ -23,7 +23,7 @@ import {
   CustomFile,
   FilePath,
   Primitive,
-  Nominal,
+  Tagged,
 } from '../types';
 import { OrganizationId } from './Organization';
 
@@ -32,7 +32,7 @@ export enum AssetType {
   'audio' = 'audio',
 }
 
-export type AssetId = Nominal<UUIDv4>;
+export type AssetId = Tagged<'AssetId', UUIDv4>;
 
 export const isAssetId = (value: unknown): value is AssetId => isUUID(value);
 

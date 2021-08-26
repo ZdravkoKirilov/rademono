@@ -4,9 +4,9 @@ import {
   ValidationOptions,
 } from 'class-validator';
 import { NonEmptyArray } from './Array';
-import { Nominal } from './Nominal';
+import { Tagged } from './Tagged';
 
-export type CustomFile = Nominal<File>;
+export type CustomFile = Tagged<'File', File>;
 
 export const ensureIsFile = (file: any) => {
   return typeof file === 'object' && 'size' in file && 'name' in file;

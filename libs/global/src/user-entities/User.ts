@@ -28,10 +28,10 @@ import {
   ParsingError,
   DomainError,
   Dictionary,
-  Nominal,
+  Tagged,
 } from '../types';
 
-export type UserId = Nominal<UUIDv4>;
+export type UserId = Tagged<'UserId', UUIDv4>;
 
 /**
  * Superusers are basically part of the product team, while standard users
@@ -97,8 +97,8 @@ export class User {
     return parseAndValidateUnknown(payload, SignInDto);
   }
 
-  static toTokenDto(payload: unknown) {
-    return parseAndValidateUnknown(payload, TokenDto);
+  static toAccessTokenDto(payload: unknown) {
+    return parseAndValidateUnknown(payload, AccessTokenDto);
   }
 
   static createUser(
@@ -153,24 +153,6 @@ export class User {
     return expires ? isAfter(expires, now) : false;
   }
 
-  static generateToken(
-    entity: User,
-    generate: (
-      data: Dictionary,
-      secret: string,
-      options: { expiresIn: string },
-    ) => string,
-    options: { expiresIn: string } = { expiresIn: '2h' },
-    secret = 'secret',
-  ): Observable<e.Either<ParsingError, TokenDto>> {
-    return parseAndValidateObject(
-      {
-        token: generate({ email: entity.email }, secret, options),
-      },
-      TokenDto,
-    );
-  }
-
   static generateAccessToken(
     entity: User,
     generate: (
@@ -180,14 +162,10 @@ export class User {
     ) => string,
     options: { expiresIn: string } = { expiresIn: '1h' },
     secret = 'access-secret',
-  ): Observable<e.Either<ParsingError, TokenDto>> {
+  ): Observable<e.Either<ParsingError, AccessTokenDto>> {
     return parseAndValidateObject(
       {
-        token: generate(
-          { email: entity.email, id: entity.public_id },
-          secret,
-          options,
-        ),
+        token: generate({ id: entity.public_id }, secret, options),
       },
       AccessTokenDto,
     );
@@ -202,26 +180,47 @@ export class User {
     ) => string,
     options: { expiresIn: string } = { expiresIn: '24h' },
     secret = 'refresh-secret',
-  ): Observable<e.Either<ParsingError, TokenDto>> {
+  ): Observable<e.Either<ParsingError, RefreshTokenDto>> {
     return parseAndValidateObject(
       {
-        token: generate(
-          { email: entity.email, id: entity.public_id },
-          secret,
-          options,
-        ),
+        token: generate({ id: entity.public_id }, secret, options),
       },
       RefreshTokenDto,
     );
   }
 
-  static decodeToken(
+  static decodeAccessToken(
     token: unknown,
     // eslint-disable-next-line @typescript-eslint/ban-types
     decode: (token: string, secret: string) => string | object,
-    secret = 'secret',
+    secret = 'access-secret',
   ): Observable<e.Either<DomainError | ParsingError, TokenPayload>> {
-    return parseAndValidateObject({ token }, TokenDto).pipe(
+    return parseAndValidateObject({ token }, AccessTokenDto).pipe(
+      switchMap((mbToken) => {
+        if (e.isLeft(mbToken)) {
+          return toLeftObs(new DomainError('InvalidAccessToken'));
+        }
+        try {
+          return of(decode(mbToken.right.token, secret)).pipe(
+            switchMap((res) => parseAndValidateUnknown(res, TokenPayload)),
+            catchError((err) => {
+              return toLeftObs(new DomainError('InvalidAccessToken', [err]));
+            }),
+          );
+        } catch (err) {
+          return toLeftObs(new DomainError('InvalidAccessToken', [err]));
+        }
+      }),
+    );
+  }
+
+  static decodeRefreshToken(
+    token: unknown,
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    decode: (token: string, secret: string) => string | object,
+    secret = 'refresh-secret',
+  ): Observable<e.Either<DomainError | ParsingError, TokenPayload>> {
+    return parseAndValidateObject({ token }, RefreshTokenDto).pipe(
       switchMap((mbToken) => {
         if (e.isLeft(mbToken)) {
           return toLeftObs(new DomainError('InvalidAccessToken'));
@@ -250,15 +249,11 @@ export class User {
   }
 }
 
-export type AccessToken = Nominal<JWT>;
+export type AccessToken = Tagged<'AccessToken', JWT>;
 
-type RefreshToken = Nominal<JWT>;
+export type RefreshToken = Tagged<'RefreshToken', JWT>;
 
 export class TokenPayload {
-  @Expose()
-  @IsEmail()
-  email: Email;
-
   @Expose()
   @IsUUID('4')
   id: UserId;
@@ -274,12 +269,6 @@ export class SignInDto {
   @Expose()
   @NanoId.IsNanoId()
   code: NanoId;
-}
-
-export class TokenDto {
-  @Expose()
-  @IsJWT()
-  token: JWT;
 }
 
 export class AccessTokenDto {

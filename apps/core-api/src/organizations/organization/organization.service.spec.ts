@@ -175,7 +175,7 @@ describe(OrganizationService.name, () => {
 
       const adminGroup = PrivateAdminGroup.createFromDto(
         {
-          name: 'The doors' as StringOfLength<1, 100>,
+          name: StringOfLength.generate<1, 100>('The doors'),
         },
         UUIDv4.generate,
       );

@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
       forbid();
     }
 
-    const result = await User.toTokenDto({ token: authToken })
+    const result = await User.toAccessTokenDto({ token: authToken })
       .pipe(
         switchMap(
           (mbDto): Observable<Either<unknown, TokenPayload>> => {
@@ -49,7 +49,7 @@ export class AuthGuard implements CanActivate {
               return toLeftObs(false);
             }
 
-            return User.decodeToken(mbDto.right.token, jwt.verify);
+            return User.decodeAccessToken(mbDto.right.token, jwt.verify);
           },
         ),
         switchMap(
@@ -57,7 +57,7 @@ export class AuthGuard implements CanActivate {
             if (isLeft(mbDecoded)) {
               return toLeftObs(false);
             }
-            return this.repo.findUser({ email: mbDecoded.right.email });
+            return this.repo.findUser({ public_id: mbDecoded.right.id });
           },
         ),
         map((mbUser) => {

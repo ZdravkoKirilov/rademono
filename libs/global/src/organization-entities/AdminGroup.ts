@@ -17,11 +17,11 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 
-import { Nominal, ParsingError, StringOfLength, UUIDv4 } from '../types';
+import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
 import { parseAndValidateUnknown, transformToClass } from '../parsers';
 import { AdminProfile, PrivateAdminProfile } from './AdminProfile';
 
-export type AdminGroupId = Nominal<UUIDv4>;
+export type AdminGroupId = Tagged<'AdminGroupId', UUIDv4>;
 
 export class ValidationBase {
   @Expose()

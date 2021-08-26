@@ -1,6 +1,6 @@
-import { Nominal } from './Nominal';
+import { Tagged } from './Tagged';
 
-export type Email = Nominal<string>;
+export type Email = Tagged<'Email', string>;
 
 const generate = <T extends Email>(from: string) => from as T;
 

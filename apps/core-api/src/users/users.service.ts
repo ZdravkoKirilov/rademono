@@ -6,7 +6,6 @@ import {
   toLeftObs,
   toRightObs,
   UnexpectedError,
-  TokenDto,
   DomainError,
   PublicUser,
   User,
@@ -22,6 +21,8 @@ import {
   switchMap,
   catchError,
   map,
+  AccessToken,
+  RefreshToken,
 } from '@end/global';
 import { EmailService } from '@app/emails';
 
@@ -37,13 +38,13 @@ export class UsersService {
   ) {}
 
   getCurrentUser(token: unknown): Observable<Either<CommonErrors, PublicUser>> {
-    return User.toTokenDto({ token }).pipe(
+    return User.toAccessTokenDto({ token }).pipe(
       switchMap((mbDto) => {
         if (isLeft(mbDto)) {
           return toLeftObs(mbDto.left);
         }
 
-        return User.decodeToken(mbDto.right.token, jwt.verify);
+        return User.decodeAccessToken(mbDto.right.token, jwt.verify);
       }),
       switchMap(
         (
@@ -55,7 +56,7 @@ export class UsersService {
             return toLeftObs(mbDecoded.left);
           }
 
-          return this.repo.findUser({ email: mbDecoded.right.email });
+          return this.repo.findUser({ public_id: mbDecoded.right.id });
         },
       ),
       switchMap((mbUser) => {
@@ -81,8 +82,8 @@ export class UsersService {
     Either<
       ParsingError | UnexpectedError | DomainError,
       {
-        accessToken: TokenDto;
-        refreshToken: TokenDto;
+        accessToken: AccessToken;
+        refreshToken: RefreshToken;
       }
     >
   > {
@@ -110,13 +111,11 @@ export class UsersService {
         }
 
         return zip(
-          User.generateToken(user, jwt.sign),
+          User.generateAccessToken(user, jwt.sign),
           this.repo.saveUser(User.signIn(user)),
         ).pipe(
           switchMap(([mbTokenDto]) => {
-            return User.generateToken(user, jwt.sign, {
-              expiresIn: '48h',
-            }).pipe(
+            return User.generateRefreshToken(user, jwt.sign).pipe(
               map((mbRefreshTokenDto) => {
                 if (isLeft(mbTokenDto)) {
                   return mbTokenDto;
@@ -125,8 +124,8 @@ export class UsersService {
                   return mbRefreshTokenDto;
                 }
                 return right({
-                  accessToken: mbTokenDto.right,
-                  refreshToken: mbRefreshTokenDto.right,
+                  accessToken: mbTokenDto.right.token,
+                  refreshToken: mbRefreshTokenDto.right.token,
                 });
               }),
             );
@@ -145,18 +144,18 @@ export class UsersService {
     Either<
       CommonErrors,
       {
-        accessToken: TokenDto;
-        refreshToken: TokenDto;
+        accessToken: AccessToken;
+        refreshToken: RefreshToken;
       }
     >
   > {
-    return User.decodeToken(token, jwt.verify).pipe(
+    return User.decodeRefreshToken(token, jwt.verify).pipe(
       switchMap(
         (mbDecoded): Observable<Either<CommonErrors, Option<User>>> => {
           if (isLeft(mbDecoded)) {
             return toLeftObs(mbDecoded.left);
           }
-          return this.repo.findUser({ email: mbDecoded.right.email });
+          return this.repo.findUser({ public_id: mbDecoded.right.id });
         },
       ),
       switchMap((mbUser) => {
@@ -167,10 +166,8 @@ export class UsersService {
           return toLeftObs(new DomainError('InvalidRefreshToken'));
         }
         return zip(
-          User.generateToken(mbUser.right.value, jwt.sign),
-          User.generateToken(mbUser.right.value, jwt.sign, {
-            expiresIn: '48h',
-          }),
+          User.generateAccessToken(mbUser.right.value, jwt.sign),
+          User.generateRefreshToken(mbUser.right.value, jwt.sign),
         ).pipe(
           map(([mbAccessToken, mbRefreshToken]) => {
             if (isLeft(mbAccessToken)) {
@@ -180,8 +177,8 @@ export class UsersService {
               return mbRefreshToken;
             }
             return right({
-              accessToken: mbAccessToken.right,
-              refreshToken: mbRefreshToken.right,
+              accessToken: mbAccessToken.right.token,
+              refreshToken: mbRefreshToken.right.token,
             });
           }),
         );

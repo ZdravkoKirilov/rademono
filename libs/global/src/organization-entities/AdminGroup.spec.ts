@@ -152,7 +152,7 @@ describe('AdminGroup entity', () => {
 
         const profile = PrivateAdminProfile.createFromDto(
           {
-            name: 'John Doe' as StringOfLength<1, 100>,
+            name: StringOfLength.generate<1, 100>('John Doe'),
             user: UUIDv4.generate(),
             group: UUIDv4.generate(),
           },

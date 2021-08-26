@@ -4,10 +4,10 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import * as e from 'fp-ts/lib/Either';
 
-import { Nominal, ParsingError, StringOfLength, UUIDv4 } from '../types';
+import { ParsingError, StringOfLength, Tagged, UUIDv4 } from '../types';
 import { parseAndValidateUnknown, transformToClass } from '../parsers';
 
-export type ProfileGroupId = Nominal<UUIDv4>;
+export type ProfileGroupId = Tagged<'ProfileGroupId', UUIDv4>;
 
 class ValidationBase {
   @Expose()
