@@ -20,6 +20,7 @@ import {
   Observable,
   AccessToken,
   PublicUser,
+  AccessTokenDto,
 } from '@end/global';
 
 import {
@@ -116,7 +117,7 @@ export class UsersController {
   requestAuthToken(
     @Body() payload: unknown,
     @Res({ passthrough: true }) res: Response,
-  ): Observable<AccessToken> {
+  ): Observable<AccessTokenDto> {
     return this.userService.requestAuthToken(payload).pipe(
       map((result) => {
         if (isLeft(result)) {
@@ -156,7 +157,7 @@ export class UsersController {
           sameSite: 'none',
         });
 
-        return accessToken;
+        return { token: accessToken };
       }),
       catchError((err) => {
         if (isKnownError(err)) {

@@ -328,7 +328,7 @@ describe(AssetService.name, () => {
             provide: AssetRepository,
             useValue: {
               getSingleAsset: () =>
-                toLeftObs(new DomainError('Asset not found')),
+                toLeftObs(new DomainError('EntityNotFound')),
             } as Partial<AssetRepository>,
           },
           {
@@ -349,7 +349,7 @@ describe(AssetService.name, () => {
         }
 
         expect(res.left).toBeInstanceOf(DomainError);
-        expect(res.left.message).toBe('Asset not found');
+        expect(res.left.message).toBe('EntityNotFound');
         done();
       });
     });
@@ -362,7 +362,7 @@ describe(AssetService.name, () => {
           {
             provide: AssetRepository,
             useValue: {
-              deleteAsset: () => toLeftObs(new DomainError('Asset not found')),
+              deleteAsset: () => toLeftObs(new DomainError('EntityNotFound')),
               getSingleAsset: () => toRightObs(some({})),
             } as Partial<AssetRepository>,
           },
@@ -384,7 +384,7 @@ describe(AssetService.name, () => {
         }
 
         expect(res.left).toBeInstanceOf(DomainError);
-        expect(res.left.message).toBe('Asset not found');
+        expect(res.left.message).toBe('EntityNotFound');
         done();
       });
     });

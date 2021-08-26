@@ -183,9 +183,7 @@ describe('ProfileGroupService', () => {
           return throwError();
         }
         expect(dto.left).toBeInstanceOf(DomainError);
-        expect(dto.left.message).toBe(
-          'Profile group with that name already exists.',
-        );
+        expect(dto.left.message).toBe('NameTaken');
         done();
       });
     });

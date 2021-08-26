@@ -1,15 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { INestApplication } from '@nestjs/common';
 
-import {
-  UserId,
-  breakTest,
-  Email,
-  JWT,
-  User,
-  UUIDv4,
-  isLeft,
-} from '@end/global';
+import { UserId, breakTest, Email, User, UUIDv4, isLeft } from '@end/global';
 
 import { UserRepository } from '../../src/users/users.repository';
 
@@ -39,9 +31,9 @@ export const createTestUser = async (
 
   await repository.saveUser(mbEntity.right).toPromise();
 
-  const mbToken = await User.generateToken(
+  const mbToken = await User.generateAccessToken(
     mbEntity.right,
-    () => jwt.sign({ email: mbEntity.right.email }, 'secret') as JWT,
+    jwt.sign,
   ).toPromise();
 
   if (!mbToken || isLeft(mbToken)) {

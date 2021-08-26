@@ -176,7 +176,7 @@ describe('AdminProfileService', () => {
           return throwError();
         }
         expect(dto.left).toBeInstanceOf(DomainError);
-        expect(dto.left.message).toBe('Profile already exists in this group');
+        expect(dto.left.message).toBe('EntityExists');
         done();
       });
     });

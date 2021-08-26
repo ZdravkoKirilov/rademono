@@ -66,7 +66,7 @@ describe(UsersController.name + ' (e2e)', () => {
 
       await repository.saveUser(mbEntity.right).toPromise();
 
-      const mbToken = await User.generateToken(
+      const mbToken = await User.generateAccessToken(
         mbEntity.right,
         jwt.sign,
       ).toPromise();
@@ -168,14 +168,14 @@ describe(UsersController.name + ' (e2e)', () => {
           .expect(201)
           .send({ code: loginCode });
 
-        const decoded = await User.decodeToken(
+        const decoded = await User.decodeAccessToken(
           body.token,
           jwt.verify,
         ).toPromise();
 
         expect(decoded).toEqual({
           _tag: 'Right',
-          right: { email: 'email2@email.com' },
+          right: { id: mbUser.right.value.public_id },
         });
         done();
       }

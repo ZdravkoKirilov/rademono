@@ -148,7 +148,7 @@ describe(OrganizationController.name, () => {
           {
             provide: OrganizationService,
             useValue: {
-              create: () => toLeftObs(new DomainError('oops')),
+              create: () => toLeftObs(new DomainError('UnexpectedError')),
             },
           },
         ],
@@ -165,7 +165,7 @@ describe(OrganizationController.name, () => {
         await controller.create(data, user).toPromise();
       } catch (err) {
         expect(err).toBeInstanceOf(KnownErrors.ForbiddenException);
-        expect(err.message).toBe('oops');
+        expect(err.message).toBe('UnexpectedError');
         done();
       }
     });

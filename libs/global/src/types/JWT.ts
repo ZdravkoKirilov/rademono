@@ -1,3 +1,3 @@
-import { Tagged } from './Tagged';
+import { Nominal } from './Nominal';
 
-export type JWT = Tagged<'JWT', string>;
+export type JWT = Nominal<string>;

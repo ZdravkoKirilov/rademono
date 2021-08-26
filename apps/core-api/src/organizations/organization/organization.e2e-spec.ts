@@ -110,8 +110,8 @@ describe(OrganizationController.name, () => {
         .expect(403);
 
       expect(body).toEqual({
-        message: 'Organization with that name already exists',
-        name: 'DomainError',
+        message: 'NameTaken',
+        name: 'NameTaken',
       });
 
       done();
