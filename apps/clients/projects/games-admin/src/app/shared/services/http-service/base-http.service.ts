@@ -54,7 +54,7 @@ export class BaseHttpService {
     const headers = this.createDefaultHeaders();
 
     return this.http
-      .post<Value>(params.url, params.data, { headers })
+      .post<Value>(params.url, params.data, { headers, withCredentials: true })
       .pipe(
         switchMap((value) => {
           if (params.responseShape) {
@@ -72,11 +72,16 @@ export class BaseHttpService {
       );
   }
 
-  get<Value>(params: BaseParams<Value>): Observable<Value> {
+  get<Value>(
+    params: BaseParams<Value> & { withCredentials?: boolean },
+  ): Observable<Value> {
     const headers = this.createDefaultHeaders();
 
     return this.http
-      .get<Value>(params.url, { headers })
+      .get<Value>(params.url, {
+        headers,
+        withCredentials: true,
+      })
       .pipe(
         switchMap((value) => {
           if (params.responseShape) {
@@ -98,7 +103,7 @@ export class BaseHttpService {
     const headers = this.createDefaultHeaders();
 
     return this.http
-      .get<Value[]>(params.url, { headers })
+      .get<Value[]>(params.url, { headers, withCredentials: true })
       .pipe(
         switchMap((value) => {
           if (params.responseShape) {

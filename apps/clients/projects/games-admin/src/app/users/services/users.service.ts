@@ -9,7 +9,6 @@ import {
   SignInDto,
   switchMap,
   tap,
-  TokenDto,
   AccessTokenDto,
 } from '@end/global';
 import {
@@ -38,6 +37,8 @@ export class UsersService {
 
   user$ = this._user$.asObservable();
 
+  shouldRefresh = true;
+
   private userQuery$: Observable<
     QueryResponse<PublicUser | null, RequestError>
   > | null;
@@ -47,17 +48,17 @@ export class UsersService {
       this.userQuery$ ||
       this.user$.pipe(
         switchMap((user) => {
-          const token = this.tokenService.getToken();
-
           if (user) {
             return valueToQueryResponse(user);
           }
 
-          if (token) {
-            return this.fetchUser();
-          }
-
-          return valueToQueryResponse(null);
+          return this.fetchUser().pipe(
+            switchMap((res) => {
+              return res.status === 'loaded'
+                ? valueToQueryResponse(res.data)
+                : valueToQueryResponse(null);
+            }),
+          );
         }),
       );
 
@@ -96,10 +97,12 @@ export class UsersService {
       .get({
         url: endpoints.refreshAuthToken,
         responseShape: AccessTokenDto,
+        withCredentials: true,
       })
       .pipe(
         tap((data) => {
           this.tokenService.saveToken(data.token);
+          this.router.goToHome();
         }),
       );
   }
@@ -109,6 +112,7 @@ export class UsersService {
       tap(() => {
         this.tokenService.removeToken();
         this._user$.next(null);
+        this.shouldRefresh = false;
         this.router.goToLogin();
       }),
     );
@@ -124,7 +128,7 @@ export class UsersService {
   }
 
   private requestToken(dto: SignInDto) {
-    return useQuery<TokenDto, RequestError>(() =>
+    return useQuery<AccessTokenDto, RequestError>(() =>
       this.http.post({
         url: endpoints.requestAuthToken,
         data: dto,

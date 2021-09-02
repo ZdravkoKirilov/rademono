@@ -3,13 +3,21 @@ import { environment } from '@env';
 import { ApiUrls, buildApiUrls, Url } from '@end/global';
 
 export const endpoints = {
-  requestAuthCode: `${environment.apiHost}${ApiUrls.getLoginCode}` as Url,
-  requestAuthToken: `${environment.apiHost}${ApiUrls.getAuthToken}` as Url,
-  getCurrentUser: `${environment.apiHost}${ApiUrls.getCurrentUser}` as Url,
-  refreshAuthToken: `${environment.apiHost}${ApiUrls.refreshAuthToken}` as Url,
-  logout: `${environment}${ApiUrls.logout}` as Url,
-  organization: `${environment.apiHost}/organization` as Url,
+  requestAuthCode: Url.generate(
+    `${environment.apiHost}${ApiUrls.getLoginCode}`,
+  ),
+  requestAuthToken: Url.generate(
+    `${environment.apiHost}${ApiUrls.getAuthToken}`,
+  ),
+  getCurrentUser: Url.generate(
+    `${environment.apiHost}${ApiUrls.getCurrentUser}`,
+  ),
+  refreshAuthToken: Url.generate(
+    `${environment.apiHost}${ApiUrls.refreshAuthToken}`,
+  ),
+  logout: Url.generate(`${environment.apiHost}${ApiUrls.logout}`),
+  organization: Url.generate(`${environment.apiHost}/organization`),
 
   collection: (...args: Parameters<typeof buildApiUrls.collections>) =>
-    (environment.apiHost + buildApiUrls.collections(...args)) as Url,
+    Url.generate(environment.apiHost + buildApiUrls.collections(...args)),
 };

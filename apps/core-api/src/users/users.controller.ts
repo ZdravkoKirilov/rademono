@@ -18,7 +18,6 @@ import {
   map,
   ApiUrls,
   Observable,
-  AccessToken,
   PublicUser,
   AccessTokenDto,
 } from '@end/global';
@@ -47,9 +46,14 @@ export class UsersController {
   @Get(ApiUrls.logout)
   @HttpCode(HttpStatus.NO_CONTENT)
   logout(@Res({ passthrough: true }) res: Response): void {
+    const expiration = new Date();
+    expiration.setDate(expiration.getDate() + 7);
+
     res.cookie('rft', '', {
       httpOnly: true,
       sameSite: 'none',
+      secure: true,
+      expires: expiration,
     });
   }
 
@@ -57,7 +61,7 @@ export class UsersController {
   refreshAuthToken(
     @Cookies('rft') refreshToken: unknown,
     @Res({ passthrough: true }) res: Response,
-  ): Observable<AccessToken> {
+  ): Observable<AccessTokenDto> {
     return this.userService.refreshAuthToken(refreshToken).pipe(
       map((result) => {
         if (isLeft(result)) {
@@ -91,12 +95,17 @@ export class UsersController {
           }
         }
 
+        const expiration = new Date();
+        expiration.setDate(expiration.getDate() + 7);
+
         res.cookie('rft', result.right.refreshToken, {
           httpOnly: true,
           sameSite: 'none',
+          secure: true,
+          expires: expiration,
         });
 
-        return result.right.accessToken;
+        return { token: result.right.accessToken };
       }),
       catchError((err) => {
         if (isKnownError(err)) {
@@ -152,9 +161,14 @@ export class UsersController {
         }
         const { accessToken, refreshToken } = result.right;
 
+        const expiration = new Date();
+        expiration.setDate(expiration.getDate() + 7);
+
         res.cookie('rft', refreshToken, {
           httpOnly: true,
           sameSite: 'none',
+          secure: true,
+          expires: expiration,
         });
 
         return { token: accessToken };

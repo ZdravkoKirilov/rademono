@@ -1,29 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { filter, map } from '@end/global';
 
-import { AppRouterService } from '@games-admin/shared';
-import { UsersService } from '@games-admin/users/services/users.service';
+import { TokenService } from '@games-admin/shared';
 
 @Injectable({ providedIn: 'root' })
 export class WithoutAuthGuard implements CanActivate {
-  constructor(
-    private userService: UsersService,
-    private router: AppRouterService,
-  ) {}
+  constructor(private tokenService: TokenService) {}
 
   canActivate() {
-    return this.userService.getOrFetchUser().pipe(
-      filter((res) => {
-        return res.status === 'loaded';
-      }),
-      map((res) => {
-        if (res.status === 'loaded' && res.data !== null) {
-          this.router.goToHome();
-          return false;
-        }
-        return true;
-      }),
-    );
+    return !this.tokenService.getToken();
   }
 }

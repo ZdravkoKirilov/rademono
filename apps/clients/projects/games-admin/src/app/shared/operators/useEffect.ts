@@ -1,7 +1,6 @@
 import {
   BehaviorSubject,
   map,
-  noop,
   Observable,
   of,
   switchMap,
@@ -28,13 +27,16 @@ export function useConfirm<Value, Err>(
   );
 }
 
-export const valueToQueryResponse = <T>(data: T, refresh = noop) => {
+export const valueToQueryResponse = <T>(
+  data: T,
+  refresh = () => undefined,
+): Observable<QueryResponse<T>> => {
   return of({
     status: QueryStatus.loaded,
     data,
     origin: QueryOrigin.cache,
     refresh: refresh,
-    undo: noop,
+    undo: () => undefined,
   } as QueryResponse<T>);
 };
 

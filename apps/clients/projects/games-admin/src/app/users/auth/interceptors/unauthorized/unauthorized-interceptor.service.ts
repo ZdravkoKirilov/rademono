@@ -5,9 +5,19 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, switchMap, throwError } from '@end/global';
+
+import {
+  catchError,
+  Observable,
+  switchMap,
+  throwError,
+  Url,
+} from '@end/global';
+import { endpoints } from '@games-admin/shared';
 
 import { UsersService } from '../../../services/users.service';
+
+const exclusions: Url[] = [endpoints.logout, endpoints.refreshAuthToken];
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +26,16 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
   constructor(private userService: UsersService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
+    if (exclusions.includes(request.url as Url)) {
+      return next.handle(request);
+    }
     return next.handle(request).pipe(
       catchError((err) => {
-        if (err instanceof HttpErrorResponse && err.status === 401) {
+        if (
+          err instanceof HttpErrorResponse &&
+          err.status === 401 &&
+          this.userService.shouldRefresh
+        ) {
           return this.userService.loginWithRefreshToken().pipe(
             switchMap((accessToken) => {
               const clonedRequest = request.clone({

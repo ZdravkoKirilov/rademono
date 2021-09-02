@@ -11,10 +11,13 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
         }
       },
-      "root": "projects/games-admin",
-      "sourceRoot": "projects/games-admin/src",
+      "root": "projects/games-admin/",
+      "sourceRoot": "projects/games-admin/src/",
       "prefix": "app",
       "architect": {
         "build": {
@@ -60,19 +63,33 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "games-admin:build"
+            "browserTarget": "games-admin:build",
+            "ssl": true
           },
           "configurations": {
             "production": {
               "browserTarget": "games-admin:build:production"
+            },
+            "development": {
+              "browserTarget": "games-admin:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -261,9 +278,7 @@
               "projects/games-arena/src/favicon.ico",
               "projects/games-arena/src/assets"
             ],
-            "styles": [
-              "projects/games-arena/src/styles.scss"
-            ],
+            "styles": ["projects/games-arena/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -329,9 +344,7 @@
               "projects/games-arena/src/favicon.ico",
               "projects/games-arena/src/assets"
             ],
-            "styles": [
-              "projects/games-arena/src/styles.scss"
-            ],
+            "styles": ["projects/games-arena/src/styles.scss"],
             "scripts": []
           }
         }

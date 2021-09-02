@@ -13,6 +13,7 @@ export {
   throwError,
   Subscription,
   zip,
+  firstValueFrom,
 } from 'rxjs';
 export {
   catchError,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { firstValueFrom } from '@end/global';
 
 import { UsersService } from '@games-admin/users/services/users.service';
 
@@ -11,6 +12,6 @@ export class LogoutComponent implements OnInit {
   constructor(private usersService: UsersService) {}
 
   ngOnInit(): void {
-    this.usersService.logout();
+    firstValueFrom(this.usersService.logout().pipe());
   }
 }
