@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "build": "ng build",
+    "build:games-admin": "ng build --project=games-admin",
+    "build:games-arena": "ng build --project=ui && ng build --project=games-arena",
     "test": "jest projects",
     "test:watch": "jest projects --watch",
     "lint": "ng lint",
