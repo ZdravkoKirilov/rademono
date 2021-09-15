@@ -2,7 +2,7 @@
   "name": "rademono",
   "private": "true",
   "engines": {
-    "node": "15.3.0"
+    "node": "15.4.0"
   },
   "workspaces": [
     "libs/global"
@@ -15,7 +15,10 @@
     "start:api": "cd apps/core-api && docker-compose start && npm run start:dev",
     "start:clients": "cd apps/clients && npm run build:ui && npm run start:apps",
     "start:ui-lib": "cd apps/clients && npm run build:ui:watch",
-    "start:global": "run-p start:lib:global test:lib:global"
+    "start:global": "run-p start:lib:global test:lib:global",
+    "build:ui": "cd libs/global && npm run build",
+    "build:api": "cd apps/core-api && npm run build",
+    "build:api:ci": "run-s build:ui build:api"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.6.1",
