@@ -57,3 +57,5 @@ testem.log
 Thumbs.db
 .Identifier
 *.Zone.Identifier
+
+apps/core-api/.env.production
