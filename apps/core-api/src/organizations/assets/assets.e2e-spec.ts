@@ -14,7 +14,7 @@ describe(AssetsController.name, () => {
   let app: INestApplication;
   const repos = [AssetRepository, OrganizationRepository];
 
-  beforeAll(async () => {
+  beforeAll(async (done) => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -22,10 +22,12 @@ describe(AssetsController.name, () => {
 
     await cleanRepositories(app, repos);
     await app.init();
+    done();
   });
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await app.close();
+    done();
   });
 
   afterEach(async () => {

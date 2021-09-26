@@ -34,7 +34,7 @@ describe(UsersController.name + ' (e2e)', () => {
     await connection.collection(USERS_COLLECTION).deleteMany({});
   });
 
-  beforeAll(async () => {
+  beforeAll(async (done) => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -43,10 +43,12 @@ describe(UsersController.name + ' (e2e)', () => {
     await connection.collection(USERS_COLLECTION).deleteMany({});
     await app.init();
     repository = moduleFixture.get(UserRepository);
+    done();
   });
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await app.close();
+    done();
   });
 
   describe(ApiUrls.getCurrentUser + ' (GET)', () => {

@@ -14,7 +14,7 @@ describe(CollectionController.name, () => {
   let app: INestApplication;
   const repos = [CollectionRepository, OrganizationRepository];
 
-  beforeAll(async () => {
+  beforeAll(async (done) => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -23,10 +23,12 @@ describe(CollectionController.name, () => {
     await cleanRepositories(app, repos);
 
     await app.init();
+    done();
   });
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await app.close();
+    done();
   });
 
   afterEach(async () => {

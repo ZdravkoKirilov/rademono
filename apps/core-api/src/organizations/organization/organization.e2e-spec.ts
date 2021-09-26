@@ -17,7 +17,7 @@ describe(OrganizationController.name, () => {
     AdminProfileRepository,
   ];
 
-  beforeAll(async () => {
+  beforeAll(async (done) => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -26,10 +26,12 @@ describe(OrganizationController.name, () => {
     await cleanRepositories(app, repos);
 
     await app.init();
+    done();
   });
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await app.close();
+    done();
   });
 
   afterEach(async () => {
