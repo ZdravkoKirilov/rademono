@@ -6,12 +6,15 @@ import path from 'path';
 import { Asset, breakTest, isLeft, map } from '@end/global';
 import { AppModule } from '../../app.module';
 import { createTestUser, cleanRepositories, deleteTestFiles } from '@app/test';
+import { DATABASE_CONNECTION, DBConnection } from '@app/database';
 import { AssetRepository } from './asset.repository';
 import { AssetsController } from './assets.controller';
 import { OrganizationRepository } from '../organization/organization.repository';
 
 describe(AssetsController.name, () => {
   let app: INestApplication;
+  let connection: DBConnection;
+
   const repos = [AssetRepository, OrganizationRepository];
 
   beforeAll(async (done) => {
@@ -19,6 +22,7 @@ describe(AssetsController.name, () => {
       imports: [AppModule],
     }).compile();
     app = moduleFixture.createNestApplication();
+    connection = app.get(DATABASE_CONNECTION);
 
     await cleanRepositories(app, repos);
     await app.init();
@@ -27,6 +31,7 @@ describe(AssetsController.name, () => {
 
   afterAll(async (done) => {
     await app.close();
+    await connection.client.close();
     done();
   });
 

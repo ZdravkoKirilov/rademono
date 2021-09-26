@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
 
-import { Connection, DATABASE_CONNECTION } from '@app/database';
+import { DATABASE_CONNECTION, DBConnection } from '@app/database';
 import {
   User,
   UserTypes,
@@ -24,14 +24,15 @@ import { UsersController } from './users.controller';
 describe(UsersController.name + ' (e2e)', () => {
   let app: INestApplication;
   let repository: UserRepository;
-  let connection: Connection;
+  let connection: DBConnection;
 
   const throwError = () => {
     throw new Error('This shouldn`t be reached');
   };
 
-  afterEach(async () => {
-    await connection.collection(USERS_COLLECTION).deleteMany({});
+  afterEach(async (done) => {
+    await connection.connection.collection(USERS_COLLECTION).deleteMany({});
+    done();
   });
 
   beforeAll(async (done) => {
@@ -40,7 +41,7 @@ describe(UsersController.name + ' (e2e)', () => {
     }).compile();
     app = moduleFixture.createNestApplication();
     connection = app.get(DATABASE_CONNECTION);
-    await connection.collection(USERS_COLLECTION).deleteMany({});
+    await connection.connection.collection(USERS_COLLECTION).deleteMany({});
     await app.init();
     repository = moduleFixture.get(UserRepository);
     done();
@@ -48,6 +49,7 @@ describe(UsersController.name + ' (e2e)', () => {
 
   afterAll(async (done) => {
     await app.close();
+    await connection.client.close();
     done();
   });
 

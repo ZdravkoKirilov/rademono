@@ -1,9 +1,10 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 import { AppConfigModule, AppConfigService } from '@app/config';
 import { DbentityService } from './dbentity/dbentity.service';
 import { DATABASE_COLLECTION, DATABASE_CONNECTION } from './constants';
+import { DBConnection } from './types';
 
 @Module({
   imports: [AppConfigModule],
@@ -11,7 +12,9 @@ import { DATABASE_COLLECTION, DATABASE_CONNECTION } from './constants';
     {
       provide: DATABASE_CONNECTION,
       inject: [AppConfigService],
-      useFactory: async (configService: AppConfigService): Promise<Db> => {
+      useFactory: async (
+        configService: AppConfigService,
+      ): Promise<DBConnection> => {
         try {
           const client = await MongoClient.connect(
             configService.get('DB_HOST'),
@@ -19,7 +22,10 @@ import { DATABASE_COLLECTION, DATABASE_CONNECTION } from './constants';
               useUnifiedTopology: true,
             },
           );
-          return client.db(configService.get('DB_NAME'));
+          return {
+            client,
+            connection: client.db(configService.get('DB_NAME')),
+          };
         } catch (e) {
           throw e;
         }

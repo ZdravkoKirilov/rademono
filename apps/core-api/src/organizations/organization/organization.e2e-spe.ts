@@ -4,6 +4,7 @@ import request from 'supertest';
 
 import { AppModule } from '../../app.module';
 import { createTestUser, cleanRepositories } from '@app/test';
+import { DATABASE_CONNECTION, DBConnection } from '@app/database';
 import { OrganizationRepository } from './organization.repository';
 import { ProfileGroupRepository } from '../profile-group/profile-group.repository';
 import { AdminProfileRepository } from '../admin-profile/admin-profile.repository';
@@ -11,6 +12,8 @@ import { OrganizationController } from './organization.controller';
 
 describe(OrganizationController.name, () => {
   let app: INestApplication;
+  let connection: DBConnection;
+
   const repos = [
     OrganizationRepository,
     ProfileGroupRepository,
@@ -22,6 +25,7 @@ describe(OrganizationController.name, () => {
       imports: [AppModule],
     }).compile();
     app = moduleFixture.createNestApplication();
+    connection = app.get(DATABASE_CONNECTION);
 
     await cleanRepositories(app, repos);
 
@@ -31,6 +35,7 @@ describe(OrganizationController.name, () => {
 
   afterAll(async (done) => {
     await app.close();
+    await connection.client.close();
     done();
   });
 
