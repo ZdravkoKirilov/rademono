@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-node@v16.9.1
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
+      - name: Install top level dependencies
         run: npm run ci
 
       # Runs a set of commands using the runners shell
@@ -35,4 +35,4 @@ jobs:
         run: npm run ci:prep:core-api
         
       - name: Run unit tests
-      - run: npm run ci:test:core-api:unit
+        run: npm run ci:test:core-api:unit
