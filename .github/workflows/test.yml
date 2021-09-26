@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  prepare:
+  run-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,19 +21,10 @@ jobs:
 
       - name: Setup core-api
         run: npm run ci:prep:core-api
-  unit-test:
-    runs-on: ubuntu-latest
-    needs: prepare
 
-    steps:
       - name: Run unit tests
         run: npm run ci:test:core-api:unit
 
-  integration-test:
-    runs-on: ubuntu-latest
-    needs: prepare
-
-    steps:
       - name: Start containers
         run: docker-compose -f "apps/core-api/docker-compose.yml" up -d --build
 
