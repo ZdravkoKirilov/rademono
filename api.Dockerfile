@@ -3,10 +3,11 @@ FROM node:16-alpine AS development
 WORKDIR /usr/src/app
 COPY package*.json ./
 
-RUN npm install --silent
+RUN npm ci
 
 COPY . .
 
+RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
 
 
