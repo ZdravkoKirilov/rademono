@@ -7,7 +7,7 @@ RUN npm install --silent
 
 COPY . .
 
-RUN npm run build:api:ci
+RUN npm run ci:build:api
 
 
 FROM node:16-alpine
