@@ -30,7 +30,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Install top level dependencies
-        run: npm run ci
+        run: npm ci
 
       # Runs a set of commands using the runners shell
       - name: Setup core-api
