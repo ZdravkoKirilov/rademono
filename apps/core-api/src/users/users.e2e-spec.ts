@@ -89,7 +89,7 @@ describe(UsersController.name + ' (e2e)', () => {
       expect(body).toEqual({
         id: userId,
         type: UserTypes.standard,
-        email: 'email33@email.com',
+        email: 'email3@email.com',
       });
 
       done();
