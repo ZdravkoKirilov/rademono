@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Db, FilterQuery } from 'mongodb';
 
 import {
   Dictionary,
@@ -18,13 +17,14 @@ import {
 } from '@end/global';
 
 import { DATABASE_COLLECTION, DATABASE_CONNECTION } from '../constants';
+import { DBConnection, FilterQuery } from '../types';
 
 type UnspecifiedEntity = { public_id: string };
 
 @Injectable()
 export class DbentityService<T extends UnspecifiedEntity> {
   constructor(
-    @Inject(DATABASE_CONNECTION) private connection: Db,
+    @Inject(DATABASE_CONNECTION) private connection: DBConnection,
     @Inject(DATABASE_COLLECTION) private _collection: string,
   ) {
     if (!_collection) {
@@ -35,7 +35,7 @@ export class DbentityService<T extends UnspecifiedEntity> {
   }
 
   get collection() {
-    return this.connection.collection(this._collection);
+    return this.connection.connection.collection(this._collection);
   }
 
   insert(document: T): Observable<Either<UnexpectedError, T>> {
@@ -53,7 +53,7 @@ export class DbentityService<T extends UnspecifiedEntity> {
           );
         }),
       );
-    } catch (err) {
+    } catch (err: any) {
       return toLeftObs(
         new UnexpectedError(
           'Failed to insert a document in collection: ' + this._collection,
@@ -96,7 +96,7 @@ export class DbentityService<T extends UnspecifiedEntity> {
           );
         }),
       );
-    } catch (err) {
+    } catch (err: any) {
       return toLeftObs(
         new UnexpectedError(
           'Failed to find the count in collection: ' + this._collection,
@@ -123,7 +123,7 @@ export class DbentityService<T extends UnspecifiedEntity> {
           );
         }),
       );
-    } catch (err) {
+    } catch (err: any) {
       return toLeftObs(
         new UnexpectedError(
           'Failed to find a document in collection: ' + this._collection,
@@ -152,10 +152,10 @@ export class DbentityService<T extends UnspecifiedEntity> {
     );
   }
 
-  query<T>(cb: (conn: Db) => Observable<T>) {
+  query<T>(cb: (conn: DBConnection['connection']) => Observable<T>) {
     try {
-      return cb(this.connection);
-    } catch (err) {
+      return cb(this.connection.connection);
+    } catch (err: any) {
       return throwError(
         new UnexpectedError(
           'Failed to execute query: ' + JSON.stringify(cb),
@@ -191,7 +191,7 @@ export class DbentityService<T extends UnspecifiedEntity> {
           );
         }),
       );
-    } catch (err) {
+    } catch (err: any) {
       return toLeftObs(
         new UnexpectedError(
           'Failed to save a document in collection: ' + this._collection,

@@ -2,15 +2,14 @@ name: Test core-api
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [master]
     paths:
       - 'apps/core-api/**'
   workflow_dispatch:
 
 jobs:
-  unit-test:
+  run-tests:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -22,6 +21,16 @@ jobs:
 
       - name: Setup core-api
         run: npm run ci:prep:core-api
-        
+
       - name: Run unit tests
         run: npm run ci:test:core-api:unit
+
+      - name: Start containers
+        run: docker-compose -f "apps/core-api/docker-compose.yml" up -d --build
+
+      - name: Run integration tests
+        run: npm run ci:test:core-api:integration
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f "apps/core-api/docker-compose.yml" down

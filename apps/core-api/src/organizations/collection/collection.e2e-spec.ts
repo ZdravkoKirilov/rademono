@@ -6,27 +6,34 @@ import { buildApiUrls, OrganizationId, UUIDv4 } from '@end/global';
 
 import { AppModule } from '../../app.module';
 import { createTestUser, cleanRepositories } from '@app/test';
+import { DATABASE_CONNECTION, DBConnection } from '@app/database';
 import { CollectionRepository } from './collection.repository';
 import { CollectionController } from './collection.controller';
 import { OrganizationRepository } from '../organization/organization.repository';
 
 describe(CollectionController.name, () => {
   let app: INestApplication;
+  let connection: DBConnection;
+
   const repos = [CollectionRepository, OrganizationRepository];
 
-  beforeAll(async () => {
+  beforeAll(async (done) => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
     app = moduleFixture.createNestApplication();
+    connection = app.get(DATABASE_CONNECTION);
 
     await cleanRepositories(app, repos);
 
     await app.init();
+    done();
   });
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await app.close();
+    await connection.client.close();
+    done();
   });
 
   afterEach(async () => {
