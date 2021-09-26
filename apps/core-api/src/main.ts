@@ -19,6 +19,7 @@ async function bootstrap() {
   SwaggerModule.setup('api/swagger', app, document);
 
   app.use(cookieParser());
+
   app.enableCors({ origin: ['https://localhost:4000'], credentials: true });
 
   const staticUrl = join(process.cwd(), 'uploads');
