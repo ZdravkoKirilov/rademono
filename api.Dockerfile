@@ -3,9 +3,12 @@ FROM node:16-alpine AS development
 WORKDIR /usr/src/app
 COPY package*.json ./
 
-RUN npm install --silent
+RUN npm ci
 
-COPY . .
+COPY ./tsconfig.json ./tsconfig.json
+COPY ./node_modules ./node_modules
+COPY ./apps/core-api ./apps/core-api
+COPY ./libs/global ./libs/global
 
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
