@@ -21,7 +21,8 @@
     "ci:build:global": "cd libs/global && npm run ci:build",
     "ci:prep:core-api": "npm run ci:build:global && cd apps/core-api && npm ci",
     "ci:build:api": "cd apps/core-api && npm run build",
-    "ci:test:core-api:unit": "cd apps/core-api && npm run test"
+    "ci:test:core-api:unit": "cd apps/core-api && npm run test",
+    "ci:test:core-api:integration": "cd apps/core-api && npm run test:e2e"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.6.1",
