@@ -10,7 +10,7 @@ COPY ./tsconfig.json ./tsconfig.json
 COPY ./apps/core-api ./apps/core-api
 COPY ./libs/global ./libs/global
 
-RUN ls
+RUN cd ./node_modules && ls
 
 COPY ./node_modules/@end/global ./node_modules/@end/global
 
