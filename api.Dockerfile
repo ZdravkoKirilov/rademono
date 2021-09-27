@@ -24,4 +24,6 @@ COPY --from=development /usr/src/app/apps/core-api/node_modules ./node_modules
 COPY --from=development /usr/src/app/node_modules/@end/global ./node_modules/@end/global
 COPY --from=development /usr/src/app/apps/core-api/dist ./dist
 
+RUN ls
+RUN cd node_modules && ls
 CMD ["node", "dist/main"]
