@@ -3,14 +3,16 @@ FROM node:16-alpine AS development
 WORKDIR /usr/src/app
 COPY package*.json ./
 
-RUN ls
 RUN npm ci
 RUN ls
 
 COPY ./tsconfig.json ./tsconfig.json
-COPY ./node_modules ./node_modules
 COPY ./apps/core-api ./apps/core-api
 COPY ./libs/global ./libs/global
+
+RUN ls
+
+COPY ./node_modules ./node_modules
 
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
