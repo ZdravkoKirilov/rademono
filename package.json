@@ -2,7 +2,7 @@
   "name": "rademono",
   "private": "true",
   "engines": {
-    "node": "15.4.0"
+    "node": "16.x"
   },
   "workspaces": [
     "libs/global"

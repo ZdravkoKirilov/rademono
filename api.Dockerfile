@@ -1,18 +1,14 @@
 FROM node:16-alpine AS development
 
 WORKDIR /usr/src/app
-COPY package*.json ./
+COPY . ./
 
-RUN npm ci
-RUN ls
+RUN npm install
 
 COPY ./tsconfig.json ./tsconfig.json
 COPY ./apps/core-api ./apps/core-api
 COPY ./libs/global ./libs/global
-
-RUN cd ./node_modules && ls
-
-COPY ./node_modules/@end/global ./node_modules/@end/global
+COPY ./node_modules ./node_modules
 
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
