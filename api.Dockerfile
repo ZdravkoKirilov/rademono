@@ -12,7 +12,7 @@ COPY ./libs/global ./libs/global
 
 RUN ls
 
-COPY ./node_modules ./node_modules
+COPY ./node_modules/@end/global ./node_modules/@end/global
 
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
