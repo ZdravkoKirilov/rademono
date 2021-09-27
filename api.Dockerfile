@@ -1,20 +1,20 @@
-FROM node:16-alpine AS development
+FROM node:latest AS development
 
 WORKDIR /usr/src/app
 COPY package*.json ./
 
-RUN npm install -g npm && npm ci
+RUN npm ci
 
-COPY ./tsconfig.json ./tsconfig.json
-COPY ./apps/core-api ./apps/core-api
-COPY ./libs/global ./libs/global
-COPY ./libs/global ./node_modules/@end/global
+COPY tsconfig.json ./tsconfig.json
+COPY apps/core-api ./apps/core-api
+COPY libs/global ./libs/global
+COPY node_modules ./node_modules
 
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
 
 
-FROM node:16-alpine
+FROM node:latest
 
 WORKDIR /usr/src/app
 EXPOSE 3000
