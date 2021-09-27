@@ -3,7 +3,7 @@ FROM node:16-alpine AS development
 WORKDIR /usr/src/app
 COPY package*.json ./
 
-RUN npm ci
+RUN npm install
 
 COPY ./tsconfig.json ./tsconfig.json
 COPY ./node_modules ./node_modules
