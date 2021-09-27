@@ -8,8 +8,9 @@ RUN npm install
 COPY ./tsconfig.json ./tsconfig.json
 COPY ./apps/core-api ./apps/core-api
 COPY ./libs/global ./libs/global
-COPY ./node_modules ./node_modules
+COPY ./libs/global ./node_modules/@end/global
 
+RUN ls
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
 

@@ -23,7 +23,7 @@ async function bootstrap() {
   app.enableCors({ origin: ['https://localhost:4000'], credentials: true });
 
   const staticUrl = join(process.cwd(), 'uploads');
-  
+
   app.use('/uploads', express.static(staticUrl));
 
   await app.listen(3000);
