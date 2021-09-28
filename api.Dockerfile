@@ -1,6 +1,6 @@
 FROM node:latest AS development
 
-WORKDIR /usr/src/app
+WORKDIR /app
 COPY package*.json ./
 
 RUN npm ci
@@ -16,11 +16,11 @@ RUN npm run ci:build:api
 
 FROM node:latest
 
-WORKDIR /usr/src/app
+WORKDIR /app
 EXPOSE 3000
 
-COPY --from=development /usr/src/app/apps/core-api/node_modules ./node_modules
-COPY --from=development /usr/src/app/node_modules/@end/global ./node_modules/@end/global
-COPY --from=development /usr/src/app/apps/core-api/dist ./dist
+COPY --from=development /app/apps/core-api/node_modules ./node_modules
+COPY --from=development /app/node_modules/@end/global ./node_modules/@end/global
+COPY --from=development /app/apps/core-api/dist ./dist
 
 CMD ["node", "dist/main"]
