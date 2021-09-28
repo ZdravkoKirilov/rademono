@@ -5,10 +5,11 @@ COPY package*.json ./
 
 RUN npm ci
 
+RUN cd node_modules && ls
 COPY tsconfig.json ./tsconfig.json
 COPY apps/core-api ./apps/core-api
 COPY libs/global ./libs/global
-COPY node_modules ./node_modules
+ADD node_modules ./node_modules
 
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
