@@ -2,7 +2,7 @@ name: Test core-api
 
 on:
   push:
-    branches: [master]
+    branches: [ci-test]
     paths:
       - 'apps/core-api/**'
   workflow_dispatch:
@@ -19,6 +19,13 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - run: |
-          docker build . -f api.Dockerfile -t ${{ secrets.ACR_LOGINSERVER }}/my-api:latest
-          docker push ${{ secrets.ACR_LOGINSERVER }}/my-api:latest
+      - name: Check docker version
+        run: docker version
+
+      - name: Build image
+        run: docker build . -f api.Dockerfile -t ${{ secrets.ACR_LOGINSERVER }}/my-api:latest
+
+      - name: Deploy image
+        run: docker push ${{ secrets.ACR_LOGINSERVER }}/my-api:latest
+          
+          
