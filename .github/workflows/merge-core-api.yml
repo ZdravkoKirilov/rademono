@@ -23,7 +23,7 @@ jobs:
         run: docker version
 
       - name: Build image
-        run: docker build . -f api.Dockerfile -t ${{ secrets.ACR_LOGINSERVER }}/my-api:latest
+        run: docker build --pull --rm -f api.Dockerfile -t ${{ secrets.ACR_LOGINSERVER }}/my-api:latest .
 
       - name: Deploy image
         run: docker push ${{ secrets.ACR_LOGINSERVER }}/my-api:latest
