@@ -6,9 +6,11 @@ COPY tsconfig.json ./tsconfig.json
 COPY apps/core-api ./apps/core-api
 COPY libs/global ./libs/global
 
-RUN npm ci
+RUN mkdir -p ./kurci
+RUN npm install --prefix ./kurci
 
-COPY node_modules ./modules
+RUN ls
+COPY kurci ./modules
 
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
@@ -20,7 +22,7 @@ WORKDIR /app
 EXPOSE 3000
 
 COPY --from=development /app/apps/core-api/node_modules ./node_modules
-COPY --from=development /app/modules/@end/global ./node_modules/@end/global
+COPY --from=development /app/kurci/@end/global ./node_modules/@end/global
 COPY --from=development /app/apps/core-api/dist ./dist
 
 CMD ["node", "dist/main"]
