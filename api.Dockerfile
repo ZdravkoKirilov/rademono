@@ -7,7 +7,7 @@ COPY tsconfig.json ./tsconfig.json
 COPY apps/core-api ./apps/core-api
 COPY libs/global ./libs/global
 
-RUN npm install
+RUN npm ci
 
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api

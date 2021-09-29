@@ -1,4 +1,4 @@
-name: Test core-api
+name: Merge core-api
 
 on:
   push:
@@ -9,8 +9,35 @@ on:
   workflow_dispatch:
 
 jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install top level dependencies
+        run: npm ci
+
+      - name: Setup core-api
+        run: npm run ci:prep:core-api
+
+      - name: Run unit tests
+        run: npm run ci:test:core-api:unit
+
+      - name: Start containers
+        run: docker-compose -f "apps/core-api/docker-compose.yml" up -d --build
+
+      - name: Run integration tests
+        run: npm run ci:test:core-api:integration
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f "apps/core-api/docker-compose.yml" down
   deploy:
     runs-on: ubuntu-latest
+    needs: run-tests
     steps:
       - uses: actions/checkout@v2
 
