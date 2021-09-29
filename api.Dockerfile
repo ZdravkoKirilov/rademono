@@ -1,6 +1,7 @@
 FROM node:latest AS development
 
 WORKDIR /app
+RUN mkdir -p ./modules
 COPY package*.json ./modules
 
 RUN npm install --prefix ./modules
@@ -9,9 +10,6 @@ RUN ls
 RUN cd modules && ls
 RUN cd modules/node_modules && ls
 
-COPY tsconfig.json ./tsconfig.json
-COPY apps/core-api ./apps/core-api
-COPY libs/global ./libs/global
 COPY modules/node_modules ./node_modules
 
 RUN npm run ci:prep:core-api
