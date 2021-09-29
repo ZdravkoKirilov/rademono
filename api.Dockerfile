@@ -6,10 +6,6 @@ COPY package*.json ./modules/
 
 RUN npm install --prefix ./modules
 
-RUN ls
-RUN cd modules && ls
-RUN cd modules/node_modules && ls
-
 COPY /modules/node_modules ./node_modules
 
 RUN npm run ci:prep:core-api
