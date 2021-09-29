@@ -10,7 +10,7 @@ RUN ls
 RUN cd modules && ls
 RUN cd modules/node_modules && ls
 
-COPY modules/node_modules ./node_modules
+COPY /modules/node_modules ./node_modules
 
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
