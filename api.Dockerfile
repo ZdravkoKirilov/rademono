@@ -2,7 +2,7 @@ FROM node:latest AS development
 
 WORKDIR /app
 RUN mkdir -p ./modules
-COPY package*.json ./modules
+COPY package*.json ./modules/
 
 RUN npm install --prefix ./modules
 
