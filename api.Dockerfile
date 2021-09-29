@@ -2,11 +2,9 @@ FROM node:latest AS development
 
 WORKDIR /app
 COPY package*.json ./
-
-RUN rm -rf node_modules
+COPY .dockerignore ./.dockerignore
 RUN npm ci
 
-RUN cd node_modules && ls
 COPY tsconfig.json ./tsconfig.json
 COPY apps/core-api ./apps/core-api
 COPY libs/global ./libs/global
