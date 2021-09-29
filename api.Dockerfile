@@ -1,12 +1,13 @@
 FROM node:latest AS development
 
 WORKDIR /app
-COPY package*.json ./
+RUN mkdir -p ./kurci
+
+COPY package*.json ./kurci/
 COPY tsconfig.json ./tsconfig.json
 COPY apps/core-api ./apps/core-api
 COPY libs/global ./libs/global
 
-RUN mkdir -p ./kurci
 RUN npm install --prefix ./kurci
 
 RUN ls
