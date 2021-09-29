@@ -3,8 +3,7 @@ FROM node:latest AS development
 WORKDIR /app
 COPY package*.json ./
 
-RUN npm -v
-RUN node -v
+RUN rm -rf node_modules
 RUN npm ci
 
 RUN cd node_modules && ls
