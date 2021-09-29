@@ -1,10 +1,9 @@
 FROM node:latest AS development
 
 WORKDIR /app
-COPY package*.json ./
+COPY package*.json ./modules
 
-RUN cat package.json
-RUN mkdir -p ./modules && npm install --prefix ./modules
+RUN npm install --prefix ./modules
 
 RUN ls
 RUN cd modules && ls
