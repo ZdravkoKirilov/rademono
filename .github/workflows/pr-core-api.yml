@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - 'apps/core-api/**'
+      - 'libs/global/**'
   workflow_dispatch:
 
 jobs:
