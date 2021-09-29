@@ -3,11 +3,13 @@ FROM node:latest AS development
 WORKDIR /app
 COPY package*.json ./
 
-RUN npm install
-
 COPY tsconfig.json ./tsconfig.json
 COPY apps/core-api ./apps/core-api
 COPY libs/global ./libs/global
+
+RUN npm install
+
+RUN cd node_modules && ls
 
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
