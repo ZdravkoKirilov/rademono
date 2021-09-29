@@ -9,8 +9,6 @@ COPY libs/global ./libs/global
 
 RUN npm install
 
-RUN cd node_modules && ls
-
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
 
