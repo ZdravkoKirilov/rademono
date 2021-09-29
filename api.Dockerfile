@@ -2,13 +2,18 @@ FROM node:latest AS development
 
 WORKDIR /app
 COPY package*.json ./
-COPY .dockerignore ./.dockerignore
-RUN npm ci
+
+RUN cat package.json
+RUN mkdir -p ./modules && npm install --prefix ./modules
+
+RUN ls
+RUN cd modules && ls
+RUN cd modules/node_modules && ls
 
 COPY tsconfig.json ./tsconfig.json
 COPY apps/core-api ./apps/core-api
 COPY libs/global ./libs/global
-COPY node_modules ./node_modules
+COPY modules/node_modules ./node_modules
 
 RUN npm run ci:prep:core-api
 RUN npm run ci:build:api
