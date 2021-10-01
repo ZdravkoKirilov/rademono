@@ -23,6 +23,9 @@ jobs:
       - name: Setup core-api
         run: npm run ci:prep:core-api
 
+      - name: Run global lib tests
+        run: npm run ci:test:global
+
       - name: Run unit tests
         run: npm run ci:test:core-api:unit
 
