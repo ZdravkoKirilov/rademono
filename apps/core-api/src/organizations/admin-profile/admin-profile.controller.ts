@@ -10,4 +10,9 @@ export class AdminProfileController {
   create(@Body() payload: unknown) {
     return this.adminProfileService.create(payload);
   }
+
+  @Post('pesho')
+  pesho(@Body() payload: unknown) {
+    return this.adminProfileService.create(payload);
+  }
 }
