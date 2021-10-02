@@ -1,0 +1,31 @@
+name: Test admin
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - 'apps/clients/projects/games-admin/**'
+      - 'apps/clients/projects/ui/**'
+      - 'libs/global/**'
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install top level dependencies
+        run: npm ci
+
+      - name: Setup admin
+        run: npm run ci:prep:admin
+
+      - name: Run global lib tests
+        run: npm run ci:test:global
+
+      - name: Run unit tests
+        run: npm run ci:test:admin
