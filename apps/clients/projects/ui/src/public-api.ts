@@ -15,5 +15,6 @@ export * from './generated-icons/warning';
 export * from './generated-icons/error';
 export * from './generated-icons/cross';
 export { SvgIconComponent } from '@ngneat/svg-icon';
+
 export * from './lib/helpers';
 export * from './lib/types';
