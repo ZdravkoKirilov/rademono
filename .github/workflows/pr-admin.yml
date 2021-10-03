@@ -1,8 +1,8 @@
 name: Test admin
 
 on:
-  push:
-    branches: [ci-test]
+  pull_request:
+    branches: [master]
     paths:
       - 'apps/clients/projects/games-admin/**'
       - 'apps/clients/projects/ui/**'
@@ -27,5 +27,8 @@ jobs:
       - name: Run global lib tests
         run: npm run ci:test:global
 
-      - name: Run unit tests
+      - name: Run ui-lib tests
+        run: npm run ci:test:ui-lib
+
+      - name: Run admin unit tests
         run: npm run ci:test:admin

@@ -17,7 +17,8 @@
     "build:ui:watch": "ng build --project=ui --watch",
     "build:ui": "ng build --project=ui",
     "generate-icons": "svg-generator",
-    "ci:test:admin": "jest --config ./jest.config.ts projects/games-admin"
+    "ci:test:admin": "jest --config ./jest.config.ts projects/games-admin",
+    "ci:test:ui-lib": "jest --config ./jest.config.ts projects/ui"
   },
   "private": true,
   "dependencies": {
