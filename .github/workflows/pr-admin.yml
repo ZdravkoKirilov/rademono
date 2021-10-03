@@ -27,8 +27,5 @@ jobs:
       - name: Run global lib tests
         run: npm run ci:test:global
 
-      - name: Run ui-lib tests
-        run: npm run ci:test:ui-lib
-
-      - name: Run admin unit tests
+      - name: Run ui + admin unit tests
         run: npm run ci:test:admin
