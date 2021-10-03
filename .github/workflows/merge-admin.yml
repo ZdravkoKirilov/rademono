@@ -37,7 +37,6 @@ jobs:
           action: 'upload'
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: '/apps/clients' # App source code path
-          output_location: 'dist/games-admin' # Built app content directory - optional
+          app_location: '/apps/clients/dist/games-admin' # App source code path
           skip_app_build: true
           ###### End of Repository/Build Configurations ######
