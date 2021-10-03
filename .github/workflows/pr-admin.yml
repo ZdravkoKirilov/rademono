@@ -7,7 +7,6 @@ on:
       - 'apps/clients/projects/games-admin/**'
       - 'apps/clients/projects/ui/**'
       - 'libs/global/**'
-  workflow_dispatch:
 
 jobs:
   run-tests:
