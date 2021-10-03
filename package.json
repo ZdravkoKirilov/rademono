@@ -23,7 +23,7 @@
     "ci:test:core-api:unit": "cd apps/core-api && npm run test",
     "ci:test:core-api:integration": "cd apps/core-api && npm run test:e2e",
     "ci:prep:admin": "npm run ci:build:global && cd apps/clients && npm ci && npm run build:ui",
-    "ci:test:admin": "cd apps/clients && npm run ci:test:-ui-lib && npm run ci:test:admin"
+    "ci:test:admin": "cd apps/clients && npm run ci:test:ui-lib && npm run ci:test:admin"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.6.1",
