@@ -6,7 +6,7 @@ if (environment.production && !process.env.API_HOST) {
   throw new Error('API_HOST is a required env variable');
 }
 
-const apiHost = process.env.API_HOST || environment.apiHost;
+const apiHost = (process.env.API_HOST || environment.apiHost) + '/api';
 
 export const endpoints = {
   requestAuthCode: Url.generate(`${apiHost}${ApiUrls.getLoginCode}`),
