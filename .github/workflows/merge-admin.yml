@@ -26,7 +26,7 @@ jobs:
         run: npm run ci:prep:admin
 
       - name: Build admin
-        run: npm run ci:build:admin
+        run: API_HOST=${{ secrets.API_HOST }} npm run ci:build:admin
 
       - name: Deploy
         id: builddeploy
