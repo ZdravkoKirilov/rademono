@@ -6,6 +6,7 @@
     "build": "ng build",
     "build:games-admin": "ng build --project=games-admin",
     "build:games-arena": "ng build --project=ui && ng build --project=games-arena",
+    "run:games-admin": "NODE_ENV=production node set-admin-env.mjs && ng serve --project=games-admin --configuration production --port 4000",
     "test": "jest projects",
     "test:watch": "jest projects --watch",
     "lint": "ng lint",

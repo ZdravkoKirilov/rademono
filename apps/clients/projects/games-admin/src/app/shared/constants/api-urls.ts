@@ -2,12 +2,7 @@ import { environment } from '@env';
 
 import { ApiUrls, buildApiUrls, Url } from '@end/global';
 
-if (environment.production && !process.env.API_HOST) {
-  throw new Error('API_HOST is a required env variable');
-}
-
-const apiHost =
-  (globalThis.process?.env?.API_HOST || environment.apiHost) + '/api';
+const apiHost = environment.apiHost + '/api';
 
 export const endpoints = {
   requestAuthCode: Url.generate(`${apiHost}${ApiUrls.getLoginCode}`),

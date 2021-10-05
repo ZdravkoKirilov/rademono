@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  nodeEnv: 'local',
   apiHost: 'http://localhost:3000',
 };
 
